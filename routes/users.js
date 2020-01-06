@@ -1,3 +1,4 @@
+const multer = require('multer')
 const bcrypt = require('bcrypt')
 const express = require('express')
 const jwt = require('jsonwebtoken')
@@ -7,9 +8,20 @@ const saltRounds = 10
 const router = express.Router();
 
 
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' +file.originalname )
+    }
+})
+let upload = multer({ storage: storage }).single('file')
+
+
 // Get All Users
 router.get('/users', (req,res,next) => {
-  Users.findAll({attributes: ['id', 'firstName','password', 'lastName', 'userType', 'email', 'userStatus', 'phone_number', 'is_verified']})
+  Users.findAll({attributes: ['id', 'image', 'address', 'pin', 'firstName', 'lastName', 'userType', 'email', 'userStatus', 'phone_number', 'is_verified']})
       .then(data => {res.send(data)})
       .catch(err => {console.log(err); res.status(404).send(err)})
 })
@@ -17,6 +29,7 @@ router.get('/users', (req,res,next) => {
 // Create User
 router.post('/users/register', (req,res,next) => {
   const userData = req.body
+    console.log(userData,20)
   const userEmail = userData.email
   const userPass = userData.password
   Users.findAll({where: {email: userEmail}})
@@ -25,14 +38,14 @@ router.post('/users/register', (req,res,next) => {
               res.status(404).json({error: 'User already exist'})
             } else {
               bcrypt.hash(userPass.toString(), saltRounds, (err, hash) => {
-                if (err) {console.log(err)}
+                if (err) {console.log(err,28)}
                 else{
                   const hasedPass = {...userData, password: hash}
                   Users.create(hasedPass)
                        .then(data => {
                           res.status(200).json({"message": "User Created Successfully"})
                         })
-                        .catch(err => {console.log(err)})
+                        .catch(err => {console.log(err,35)})
                 }
               })
             }
@@ -50,7 +63,7 @@ router.post('/users/login', (req,res,next) => {
   console.log(userEmail, 51)
   Users.findAll({where: {email: userEmail}})
        .then(data => {
-         if(data.length === 0){res.status(200).json({error: "User Doesn't Exist"})}
+         if(data.length === 0){res.status(400).json({error: "User Doesn't Exist"})}
          else{
           const passFromDB = data[0].dataValues.password.toString()
           console.log(typeof passFromDB)
@@ -62,8 +75,12 @@ router.post('/users/login', (req,res,next) => {
                   const id = data[0].dataValues.id
                   const userName = data[0].dataValues.firstName + " " + data[0].dataValues.lastName
                   const email = data[0].dataValues.email
+                  const userType = data[0].dataValues.userType
                   const phone_number = data[0].dataValues.phone_number
-                  const payload = {id, userName, email, phone_number}
+                  const pin = data[0].dataValues.pin
+                  const address = data[0].dataValues.address
+                  const image = data[0].dataValues.image
+                  const payload = {id, userName, email, phone_number, pin, address, image, userType}
                   const token = jwt.sign({
                     exp: Math.floor(Date.now() / 1000) + (60 * 60),
                     data: payload
@@ -91,7 +108,18 @@ router.put('/users/disable/:id', (req,res,next) => {
 
 // Update Users
 router.put('/users/update/:id', (req,res,next) => {
-  const {firstName, lastName, phone_number, email} = req.body
+    console.log(req.body, req.file, 107)
+  const {firstName, lastName, phone_number, email, pin, address} = req.body
+    let image
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        res.send(req.file)
+        image = req.file
+    })
   Users.findAll({where: {email: email}})
        .then(data => {
          if(data.length > 1){res.status(200).json({error: 'Email Taken'})}
@@ -100,7 +128,10 @@ router.put('/users/update/:id', (req,res,next) => {
             firstName,
             lastName,
             phone_number,
-            email
+            email,
+            pin,
+            image,
+            address
             }, {where: {id: req.params.id}})
                 .then(data => {
                   res.json(data)
@@ -112,12 +143,40 @@ router.put('/users/update/:id', (req,res,next) => {
        })
 })
 
+// Update Image
+router.put('/users/image/:id', (req,res,next) => {
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        console.log(req.file.filename, 150)
+        Users.findAll({where: {id: req.params.id}})
+            .then(data => {
+                if(data.length > 1){res.status(200).json({error: 'Email Taken'})}
+                else {
+                    Users.update({
+                        image: req.file.filename
+                    }, {where: {id: req.params.id}})
+                        .then(data => {
+                            res.json(data)
+                        })
+                        .catch(err => {
+                            res.json({error: err})
+                        })
+                }
+            })
+    })
+})
+
 // Update Password
 router.put('/users/password-reset/:id', (req,res,next) => {
+    console.log(req.body, 175)
   const {oldPassword, newPassword,confirmPassword} = req.body
   Users.findAll({where: {id: req.params.id}})
        .then(data => {
-         if(data.length === 0){res.status(200).json({error: `User Doesn't exist`})}
+         if(data.length === 0){res.status(400).json({error: `User Doesn't exist`})}
          else {
           const passFromDB = data[0].dataValues.password.toString()
           bcrypt.compare(oldPassword.toString(), passFromDB, function(err, resData) {
@@ -140,10 +199,10 @@ router.put('/users/password-reset/:id', (req,res,next) => {
                     }
                   })
                 } else{
-                  res.status(200).json({error: `Password Didn't Match`})
+                  res.status(400).json({error: `Password Didn't Match`})
                 }
               } else {
-                res.status(200).json({error: "Wrong Password"})
+                res.status(400).json({error: "Wrong Password"})
               }
             }
         })}

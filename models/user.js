@@ -28,7 +28,8 @@ const Users = db.define('Users', {
       type: Sequelize.STRING
     },
     image: {
-      type: Sequelize.STRING
+        defaultValue: 'default.png',
+        type: Sequelize.STRING
     },
     phone_number: {
       type: Sequelize.INTEGER

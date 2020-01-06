@@ -34,6 +34,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       image: {
+        defaultValue: 'default.png',
         type: Sequelize.STRING
       },
       phone_number: {
