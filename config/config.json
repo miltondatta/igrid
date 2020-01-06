@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "iGrid",
+    "password": 123456,
+    "database": "iGrid",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "iGrid",
+    "password": 123456,
+    "database": "iGrid",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "iGrid",
+    "password": 123456,
+    "database": "iGrid",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
