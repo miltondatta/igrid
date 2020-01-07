@@ -51,7 +51,6 @@ class Sidenav extends Component {
     }
 
     render(){
-        console.log(this.props)
         const {pathname} = this.props.location
         const {userName} = this.state
         const {image} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
@@ -59,7 +58,10 @@ class Sidenav extends Component {
         return(
             <div className='h-100 ui-sidenav'>
                 <div className='ui-user-details'>
+                    <div>
                     <img className={'ui-user-avatar'} src={'http://localhost:5000/' + image} alt={'user'} />{userName}
+                    </div>
+                    <i onClick={this.props.handleSideNav} className="fas fa-bars"></i>
                 </div>
                 <div className='ui-sidenav'>
                     <small className='ml-4 mb-1 mt-3'>Home</small>

@@ -24,6 +24,7 @@
     position: relative;
     align-items: center;
     background-color: #1d1d1d;
+    justify-content: space-between;
 }
 
 .ui-sidenav .ui-cat-title{
@@ -32,6 +33,10 @@
 
 .ui-sidenav .ui-user-details .fa-user-circle{
     font-size: 28px;
+}
+
+.ui-sidenav .ui-user-details .fa-bars{
+    font-size: 20px
 }
 
 .ui-sidenav .ui-user-details .fa-chevron-down{
