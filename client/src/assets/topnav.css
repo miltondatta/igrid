@@ -1,0 +1,52 @@
+.ui-topnav{
+    height: 60px;
+    overflow: hidden;
+    position: relative;
+    background-color: #dc3545;
+    box-shadow: 0 -5px 19px black;
+}
+
+.ui-topnav .ui-user-nav{
+    font-size: 19px;
+    text-align: right;
+}
+
+.ui-topnav .ui-user-nav i{
+    font-size: 22px;
+}
+
+.ui-topnav::before{
+    content: '';
+    width: 640px;
+    height: 500px;
+    position: absolute;
+    background-color: rgba(255,255,255,.1);
+    border-top-left-radius: 50%;
+    right: 0;
+    top: 0
+}
+
+.ui-topnav img{
+    width: 120px;
+    height: 40px;
+}
+
+.ui-topnav .ui-search{
+    width: 450px;
+    height: 40px;
+    border: none;
+    padding: 5px;
+    outline: none;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #ff7676;
+    background-color: #e86974;
+}
+
+.ui-topnav .ui-search::placeholder{
+    color: #eee
+}
+
+.ui-topnav .ui-topnav-container{
+    z-index: 5;
+}

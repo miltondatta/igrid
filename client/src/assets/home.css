@@ -1,0 +1,83 @@
+.ui-home{
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.ui-home .ui-noticeboard{
+    height: 200px;
+}
+
+.ui-homecomponent{
+    width: 81%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.ui-homecomponent .ui-cards{
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 1px 5px #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+.ui-homecomponent .ui-cards a{
+    color: #444;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+}
+
+.ui-homecomponent .ui-cards a::before{
+    content: '';
+    width: 339px;
+    height: 133px;
+    position: absolute;
+    background: #ff3c4e0d;
+    transform: rotate(35deg);
+    left: -87px;
+    bottom: -55px;
+    z-index: 0;
+}
+
+.ui-homecomponent .ui-cards a::after{
+    content: '';
+    width: 339px;
+    height: 133px;
+    position: absolute;
+    background: #ffbac057;
+    transform: rotate(25deg);
+    left: -87px;
+    bottom: -76px;
+    z-index: -1;
+}
+
+.ui-homecomponent .ui-cards:hover{
+    -webkit-transform: translateY(-5px);
+    -moz-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 3px 2px #777;
+}
+
+.ui-homecomponent .ui-cards a{
+    color: #444;
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    text-decoration: none;
+}
+
+.ui-card-left{
+    height: 150px;
+    display: flex;
+    color: white;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+}

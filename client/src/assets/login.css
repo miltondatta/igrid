@@ -1,0 +1,52 @@
+.ui-user{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-user .ui-user-container{
+    width: 680px;
+    height: 365px;
+    display: grid;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: 'white';
+    box-shadow: 0 0 5px #aaa;
+    grid-template-columns: 60% 40%;
+}
+
+.ui-user .ui-user-container .ui-login{
+    padding: 35px;
+    background-color: white;
+}
+
+.ui-user .ui-user-container .ui-login label{
+    color: #777;
+    font-size: 13px;
+    margin-top: 25px;
+}
+
+.ui-user .ui-user-container .ui-login input{
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 5px 0;
+    border-bottom: 1px solid #dc3545;
+}
+
+.ui-user .ui-user-container .ui-login .ui-signin{
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 15px;
+    padding: 7px 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px #666;
+    background-color: #dc3545;
+}
+
+.ui-user .ui-user-container .ui-logo img{
+    width: 160px;
+}
