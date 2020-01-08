@@ -25,7 +25,7 @@ class Topnav extends Component{
                 <div className='ui-topnav w-100'>
                     <div className={`position-relative ui-topnav-container d-flex justify-content-between w-80 m-auto align-items-center h-100`}>
                         <div>
-                            <img alt='Logo' className='ml-4 mr-3' src={process.env.PUBLIC_URL + './media/image/logo.png'} />
+                            <img alt='Logo' className='ml-4 mr-3' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
                             <input placeholder='Search' className='ui-search' />
                         </div>
                         <div className={'text-white mr-4 ui-user-nav d-flex align-items-center'}>
