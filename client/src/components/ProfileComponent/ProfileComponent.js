@@ -52,8 +52,8 @@ class ProfileComponent extends Component{
 
     render(){
         return(
-            <div className={'bg-white w-80 mx-auto p-3 mt-5 rounded'}>
-                <nav className="navbar navbar-light bg-light mb-3">
+            <div className={'bg-white p-3 rounded shadow'}>
+                <nav className="navbar navbar-light mb-3 f-weight-500">
                     <p className="navbar-brand m-0">Update Profile</p>
                 </nav>
                 <form>
@@ -83,8 +83,8 @@ class ProfileComponent extends Component{
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label htmlFor="inputEmail4">Your BRAC PIN</label>
-                                <input type="text" className="form-control" id="inputEmail4" name='pin' onChange={this.handleChange} placeholder="BRAC PIN" />
+                            <label htmlFor="inputEmail4">Your PIN</label>
+                                <input type="text" className="form-control" id="inputEmail4" name='pin' onChange={this.handleChange} placeholder="PIN" />
                         </div>
                         <div className="form-group col-md-6">
                             <label htmlFor="customFile">Upload Image</label>

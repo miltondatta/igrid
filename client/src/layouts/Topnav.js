@@ -1,11 +1,14 @@
-import React, {Component} from 'react'
 import jwt from "jsonwebtoken";
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
+import React, {Component} from 'react'
+import {sidenav} from "../utility/constant";
 
 class Topnav extends Component{
+
     constructor(props){
         super(props)
         this.state = {
+            currentHover: '',
             showUserOption: false
         }
     }
@@ -16,21 +19,60 @@ class Topnav extends Component{
         }))
     }
 
+    handleMouseOver = (e) => {
+        if (e === this.state.currentHover){} else {
+            this.setState({
+                currentHover: e
+            })
+        }
+    }
+
+    renderCategory = () => {
+        const {currentHover} = this.state
+        const {pathname} = this.props.location
+        let emptyArr = []
+        const {userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        return(
+            <>
+                {sidenav.map((items, index) => {
+                    return(
+                        <div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
+                            {(userType !== 1 && items.id === 1) ? null : <div>
+                                <i className={`text-dark f-14px ${items.icon}`}></i>
+                                <p className={'text-dark f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
+                                {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
+                                    {items.categories.map((subItems, key) => (
+                                        <>
+                                            <p key={key + 10} className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                <a key={subItems.id} href={subItems.link}> - {subItems.name}</a>
+                                            </p>
+                                        </>
+                                    ))}
+                                </div>}
+                            </div>}
+                        </div>
+                    )
+                })}
+            </>
+        )
+    }
+
     render(){
         const {home} = this.props
         const {showUserOption} = this.state
         const {userName, image} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         if(home){
             return (
-                <div className='ui-topnav w-100'>
-                    <div className={`position-relative ui-topnav-container d-flex justify-content-between w-80 m-auto align-items-center h-100`}>
-                        <div>
-                            <img alt='Logo' className='ml-4 mr-3' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
-                            <input placeholder='Search' className='ui-search' />
+                <div className='ui-topnav w-100 px-4'>
+                    <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
+                        <input placeholder='Search' className='ui-search' />
+                        <div className={'text-center w-100'}>
+                            <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
                         </div>
-                        <div className={'text-white mr-4 ui-user-nav d-flex align-items-center'}>
-                            <img className={'ui-user-avatar'} onClick={this.handleUserOptions} src={'http://localhost:5000/' + image} alt={'user'} />
-                            <span onClick={this.handleUserOptions}>{userName}</span> <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
+                        <div className={'text-black ui-user-nav d-flex align-items-center'}>
+                            <span onClick={this.handleUserOptions}>{userName}</span>
+                            <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/' + image} alt={'user'} />
+                             <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
                             {showUserOption && <div className={'ui-user-dropdown'}>
                                 <p> <Link to={'/profile'}>Profile</Link> </p>
                                 <p> <Link to={'/pass-reset'}>Update Password</Link> </p>
@@ -42,14 +84,45 @@ class Topnav extends Component{
             )
         } else {
             return (
-                <div className='ui-topnav overflow-hidden w-100'>
-                    <div className={`position-relative ui-topnav-container d-flex w-100 align-items-center h-100`}>
-                        <img alt='Logo' className='ml-4 mr-3' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
-                        <input placeholder='Search' className='ui-search' />
+                <>
+                    <div className='ui-topnav w-100 px-4'>
+                        <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
+                            <div>
+                                <input placeholder='Search' className='ui-search' />
+                            </div>
+                            <div className={'text-center w-100'}>
+                                <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
+                            </div>
+                            <div className={'text-black ui-user-nav d-flex align-items-center'}>
+                                <span onClick={this.handleUserOptions}>{userName}</span>
+                                <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/' + image} alt={'user'} />
+                                <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
+                                {showUserOption && <div className={'ui-user-dropdown'}>
+                                    <p> <Link to={'/profile'}>Profile</Link> </p>
+                                    <p> <Link to={'/pass-reset'}>Update Password</Link> </p>
+                                    <p> <a onClick={() => {localStorage.removeItem('user')}} href={'/'}>Logout</a> </p>
+                                </div>}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div className='bg-white h-75px w-100 d-flex justify-content-center align-items-center'>
+                        <div className={'px-4 text-white h-100 text-center d-flex align-items-center ui-hover-option'}>
+                            <Link to={'/'} >
+                                <i className={'text-dark fas fa-home f-14px'}></i>
+                                <p className={'text-dark f-weight-500 mb-0 f-14px'}>Homepage</p>
+                            </Link>
+                        </div>
+                        <div className={'px-4 text-white h-100 text-center d-flex align-items-center ui-hover-option'}>
+                            <Link to={'/'} >
+                                <i className="fas fa-ticket-alt text-dark"></i>
+                                <p className={'text-dark f-weight-500 mb-0 f-14px'}>Support History</p>
+                            </Link>
+                        </div>
+                        {this.renderCategory()}
+                    </div>
+                </>
             )}
     }
 }
 
-export default Topnav
+export default withRouter(Topnav)

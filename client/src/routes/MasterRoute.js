@@ -2,9 +2,7 @@ import Loading from './Loading';
 import Loadable from 'react-loadable'
 import React, {Component} from 'react'
 import {Switch, Route, withRouter, Redirect} from 'react-router-dom'
-import Sidenav from '../layouts/Sidenav';
 import Topnav from '../layouts/Topnav';
-import BranchRequesition from "../containers/BranchRequesition";
 
 const AsyncHome = Loadable({
     loader: () => import('../containers/Home'),
@@ -61,21 +59,8 @@ const AsyncDeliveryRequest = Loadable({
 });
 
 class MasterRoute extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            sideNav: false
-        }
-    }
-
-    handleSideNav = () => {
-        this.setState((prevState) => ({
-            sideNav: !prevState.sideNav
-        }))
-    }
 
     render(){
-        const {sideNav} = this.state
         const {pathname} = this.props.location
         if(pathname === '/login') {
             return(
@@ -106,8 +91,8 @@ class MasterRoute extends Component{
                 )
             } else {
                 return (
-                    <div className={`ui-container h-100 ${sideNav && 'ui-grid-70'}`} style={{gridTemplateColumns: !sideNav && "250px auto"}}>
-                        <Sidenav sideNav={sideNav} handleSideNav={this.handleSideNav} />
+                    <div className={`ui-container h-100`}>
+                        {/*<Sidenav sideNav={sideNav} handleSideNav={this.handleSideNav} />*/}
                         <div>
                             <Topnav/>
                             <div className='ui-body-container'>

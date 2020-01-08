@@ -47,8 +47,8 @@ class PasswordResetComponent extends Component{
     render(){
         const {oldPassword, newPassword, confirmPassword} = this.state
         return(
-            <div className={'bg-white w-80 mx-auto p-3 mt-5 rounded'}>
-                <nav className="navbar navbar-light bg-light mb-3">
+            <div className={'bg-white p-3 rounded shadow'}>
+                <nav className="navbar navbar-light mb-3 f-weight-500">
                     <p className="navbar-brand m-0">Update Password</p>
                 </nav>
                 <form>

@@ -4,9 +4,9 @@ import {requestOn} from "../../utility/constant";
 class BranchRequesitionComponent extends Component {
     render() {
         return (
-            <div className={'bg-glass w-90 mx-auto p-3 mt-4 rounded'}>
-                <nav className="navbar bg-pink text-center mb-3 p-2 rounded">
-                    <p className="text-white m-0">Branch Requisition</p>
+            <div className={'bg-white p-3 mt-4 rounded shadow'}>
+                <nav className="navbar text-center mb-3 p-2 rounded">
+                    <p className="text-dark f-weight-500 f-20px m-0">Branch Requisition</p>
                 </nav>
                 <table className="table table-bordered table-dark">
                     <thead className={'bg-gray-pink'}>

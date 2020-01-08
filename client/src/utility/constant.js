@@ -13,7 +13,7 @@ export const sidenav = [
     {
         id: 1,
         name: 'Material Requisition',
-        icon: 'fas fa-sitemap',
+        icon: 'fas fa-keyboard',
         subCat: true,
         categories: [
             {
@@ -89,38 +89,6 @@ export const sidenav = [
                 name: 'Region Requisitions',
                 link: '',
                 icon: "fas fa-water"
-            },
-        ]
-    },
-    {
-        id: 1,
-        name: 'Material Requisition',
-        icon: 'fas fa-sitemap',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Hardware',
-                link: '',
-                icon: "fas fa-satellite"
-            },
-            {
-                id: 2,
-                name: 'Accessories',
-                link: '',
-                icon: "far fa-keyboard"
-            },
-            {
-                id: 3,
-                name: 'Stationary',
-                link: '',
-                icon: "fab fa-500px"
-            },
-            {
-                id: 4,
-                name: 'Others',
-                link: '',
-                icon: "fab fa-ethereum"
             },
         ]
     },

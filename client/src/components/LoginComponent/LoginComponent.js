@@ -78,12 +78,12 @@ class LoginComponent extends Component {
 
                         <div className='d-flex justify-content-between align-items-center mt-4'>
                             <button className='ui-signin' onClick={this.submitLogin}>SIGN IN</button>
-                            <a href='/' className='text-danger'>Forgot Password?</a>
+                            <a href='/' className='text-blue'>Forgot Password?</a>
                         </div>
 
                     </div>
-                    <div className='bg-danger d-flex justify-content-center align-items-center ui-logo'>
-                        <img alt='Logo' src={process.env.PUBLIC_URL + './media/image/logo.png'} />
+                    <div className='bg-project d-flex justify-content-center align-items-center ui-logo'>
+                        <img alt='Logo' src={process.env.PUBLIC_URL + './media/image/logo_white.png'} />
                     </div>
                 </div>
         )
