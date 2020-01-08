@@ -16,7 +16,7 @@
 
 .ui-sidenav .ui-user-details{
     color: #ddd;
-    height: 70px;
+    height: 60px;
     display: flex;
     padding: 0 20px;
     font-size: 17px;
@@ -46,14 +46,31 @@
 .ui-sidenav .ui-subcategory{
     width: 100%;
     overflow: hidden;
-    padding: 0 30px 0 0;
     background-color: #1d1d1d;
 }
 
-.ui-sidenav .ui-subcategory p:hover{
+.ui-sidenav .ui-subcategory .ui-subcat-active{
+    position: relative;
     background: #dc3545;
     border-top-right-radius: 25px;
+    margin-right: 30px !important;
     border-bottom-right-radius: 25px;
+}
+
+.ui-sidenav .ui-subcategory .ui-subcat-active::before{
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 5px;
+    position: absolute;
+    right: 15px;
+    top: 43%;
+
+}
+
+.ui-sidenav .ui-subcategory .ui-subcat-hover:hover{
+    background: #252525;
 }
 
 .ui-sidenav .ui-subcategory p{
