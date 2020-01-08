@@ -4,11 +4,25 @@ import React, {Component} from 'react'
 import {Switch, Route, withRouter, Redirect} from 'react-router-dom'
 import Sidenav from '../layouts/Sidenav';
 import Topnav from '../layouts/Topnav';
+import BranchRequesition from "../containers/BranchRequesition";
 
 const AsyncHome = Loadable({
     loader: () => import('../containers/Home'),
     loading: Loading,
   });
+
+const AsyncMIS = Loadable({
+    loader: () => import('../containers/MIS'),
+    loading: Loading,
+});
+const AsyncHomeLand = Loadable({
+    loader: () => import('../containers/HomeLand'),
+    loading: Loading,
+});
+const AsyncProile = Loadable({
+    loader: () => import('../containers/User/Profile'),
+    loading: Loading,
+});
 const AsyncLogin = Loadable({
     loader: () => import('../containers/User/Login'),
     loading: Loading,
@@ -21,20 +35,28 @@ const AsyncDocManagement = Loadable({
     loader: () => import('../containers/DocManagement'),
     loading: Loading,
 });
-const AsyncMIS = Loadable({
-    loader: () => import('../containers/MIS'),
-    loading: Loading,
-});
 const AsyncLocationFinder = Loadable({
     loader: () => import('../containers/LocationFinder'),
     loading: Loading,
 });
-const AsyncProile = Loadable({
-    loader: () => import('../containers/User/Profile'),
-    loading: Loading,
-});
 const AsyncPasswordReset = Loadable({
     loader: () => import('../containers/User/PasswordReset'),
+    loading: Loading,
+});
+const AsyncRequestHistory = Loadable({
+    loader: () => import('../containers/RequestHistory'),
+    loading: Loading,
+});
+const AsyncRequestDetails = Loadable({
+    loader: () => import('../containers/RequestDetails'),
+    loading: Loading,
+});
+const AsyncBranchRequesition = Loadable({
+    loader: () => import('../containers/BranchRequesition'),
+    loading: Loading,
+});
+const AsyncDeliveryRequest = Loadable({
+    loader: () => import('../containers/DeliveryRequest'),
     loading: Loading,
 });
 
@@ -45,11 +67,13 @@ class MasterRoute extends Component{
             sideNav: false
         }
     }
+
     handleSideNav = () => {
         this.setState((prevState) => ({
             sideNav: !prevState.sideNav
         }))
     }
+
     render(){
         const {sideNav} = this.state
         const {pathname} = this.props.location
@@ -82,18 +106,23 @@ class MasterRoute extends Component{
                 )
             } else {
                 return (
-                    <div className='ui-container h-100' style={{gridTemplateColumns: sideNav ? "85px auto" : "250px auto"}}>
-                        <Sidenav handleSideNav={this.handleSideNav} />
+                    <div className={`ui-container h-100 ${sideNav && 'ui-grid-70'}`} style={{gridTemplateColumns: !sideNav && "250px auto"}}>
+                        <Sidenav sideNav={sideNav} handleSideNav={this.handleSideNav} />
                         <div>
                             <Topnav/>
                             <div className='ui-body-container'>
                                 <Switch>
-                                    <Route exact path='/asset' component={AsyncAsset}/>
-                                    <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/mis' component={AsyncMIS}/>
-                                    <Route exact path='/location' component={AsyncLocationFinder}/>
+                                    <Route exact path='/home' component={AsyncHomeLand}/>
                                     <Route exact path='/profile' component={AsyncProile}/>
+                                    <Route exact path='/asset/:option' component={AsyncAsset}/>
+                                    <Route exact path='/documents' component={AsyncDocManagement}/>
+                                    <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
+                                    <Route exact path='/request-history' component={AsyncRequestHistory}/>
+                                    <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
+                                    <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
+                                    <Route exact path='/branch-requesition' component={AsyncBranchRequesition}/>
                                 </Switch>
                             </div>
                         </div>

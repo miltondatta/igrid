@@ -1,3 +1,14 @@
+const devBaseUrl = 'http://localhost:5000/api/v1/'
+const prodBaseUrl = 'http://localhost:5000/api/v1/'
+
+export const apiUrl = () => {
+    if(process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        return devBaseUrl
+    } else {
+        return prodBaseUrl
+    }
+}
+
 export const sidenav = [
     {
         id: 1,
@@ -8,25 +19,25 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'Hardware',
-                link: '',
+                link: '/asset/1',
                 icon: "fas fa-satellite"
             },
             {
                 id: 2,
                 name: 'Accessories',
-                link: '',
+                link: '/asset/2',
                 icon: "far fa-keyboard"
             },
             {
                 id: 3,
                 name: 'Stationary',
-                link: '',
+                link: '/asset/3',
                 icon: "fab fa-500px"
             },
             {
                 id: 4,
                 name: 'Others',
-                link: '',
+                link: '/asset/4',
                 icon: "fab fa-ethereum"
             },
         ]
@@ -40,19 +51,19 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'Requisition Form',
-                link: '',
+                link: '/request-history',
                 icon: "fas fa-satellite"
             },
             {
                 id: 2,
                 name: 'Branch Requisition',
-                link: '',
+                link: '/branch-requesition',
                 icon: "far fa-keyboard"
             },
             {
                 id: 3,
-                name: 'Delivery Requisition',
-                link: '',
+                name: 'Delivery Request',
+                link: '/delivery-request',
                 icon: "fab fa-500px"
             },
             {
@@ -114,3 +125,56 @@ export const sidenav = [
         ]
     },
 ]
+
+export const requestOn = {
+    1:'Hardware',
+    2:'Accessories',
+    3:'Stationary',
+    4:'Others'
+}
+
+export const hardwareOptions = {
+    1: 'Android Tab',
+    2: 'Wireless Router',
+    3: 'Modem (GP)',
+    4: 'SIM (GP)',
+    5: 'System Unit  (PC)',
+    6: 'Monitor',
+    7: 'UPS',
+    8: 'Printer',
+    9: 'Laptop',
+    10: 'Smart Phone',
+    11: 'Generator',
+    12: 'Projector',
+    13: 'Scanner',
+    14: 'Printer Laser',
+    15: 'IPS',
+    16: 'AVR',
+    17: 'Bag for Tab',
+    18: 'Voltage Stabilizer',
+}
+
+export const stationaryOptions = {
+    1: 'Ribbon',
+    2: 'DVD RW',
+    3: 'Key Board',
+    4: 'Mouse',
+    5: 'Power Cable',
+    6: 'Printer Cable - Parallel',
+    7: 'Power Strip',
+    8: 'White Paper',
+    9: 'Roll Paper',
+    10:' Printer Cable - USB',
+    11: 'TAB Cover',
+}
+
+export const accessoriesOptions = {
+    1: 'Dust Blower',
+    2: 'USB Cable',
+    3: 'VGA Cable',
+    4: 'Ink Bottle'
+}
+
+export const otherOptions = {
+    1: 'Others',
+}

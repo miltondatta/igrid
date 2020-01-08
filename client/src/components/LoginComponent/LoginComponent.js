@@ -2,6 +2,7 @@ import Axios from 'axios'
 import jwt from 'jsonwebtoken'
 import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom'
+import {apiUrl} from "../../utility/constant";
 
 class LoginComponent extends Component {
     constructor(props){
@@ -26,7 +27,7 @@ class LoginComponent extends Component {
             email,
             password
         }
-        Axios.post('http://localhost:5000/api/v1/users/login',payload)
+        Axios.post(apiUrl() + 'users/login',payload)
              .then(resData => {
                  if(resData){
                     console.log(jwt.decode(resData.data.token))

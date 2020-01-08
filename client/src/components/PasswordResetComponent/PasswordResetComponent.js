@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Axios from "axios";
 import jwt from "jsonwebtoken";
+import {apiUrl} from "../../utility/constant";
 
 class PasswordResetComponent extends Component{
     constructor(props){
@@ -30,7 +31,7 @@ class PasswordResetComponent extends Component{
         console.log(this.state, 26)
         if (newPassword === confirmPassword) {
             const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-            Axios.put('http://localhost:5000/api/v1/users/password-reset/'+id, payload)
+            Axios.put(apiUrl() + 'users/password-reset/'+id, payload)
                 .then(resData => {
                     this.setState({
                         oldPassword: '',
@@ -48,7 +49,7 @@ class PasswordResetComponent extends Component{
         return(
             <div className={'bg-white w-80 mx-auto p-3 mt-5 rounded'}>
                 <nav className="navbar navbar-light bg-light mb-3">
-                    <a className="navbar-brand" href="#">Update Password</a>
+                    <p className="navbar-brand m-0">Update Password</p>
                 </nav>
                 <form>
                     <div className="form-group">

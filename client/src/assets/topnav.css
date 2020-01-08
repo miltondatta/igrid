@@ -1,6 +1,5 @@
 .ui-topnav{
     height: 60px;
-    overflow: hidden;
     position: relative;
     background-color: #dc3545;
     box-shadow: 0 -5px 19px black;
@@ -9,10 +8,54 @@
 .ui-topnav .ui-user-nav{
     font-size: 19px;
     text-align: right;
+    position: relative;
 }
 
 .ui-topnav .ui-user-nav i{
     font-size: 22px;
+}
+
+.ui-topnav .ui-user-dropdown{
+    padding: 10px;
+    bottom: -160px;
+    text-align: left;
+    background: #fff;
+    box-shadow: 0 5px 3px #aaa;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    position: absolute;
+    border-radius: 5px;
+    right: -21px;
+    -webkit-animation: user-dropdown .5s;
+    -o-animation: user-dropdown .5s;
+    animation: user-dropdown .5s;
+}
+
+.ui-topnav .ui-user-dropdown::before{
+    content: '';
+    width: 40px;
+    height: 40px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background: #fff7fb;
+    position: absolute;
+    z-index: -1;
+    top: -2px;
+    right: 8px
+}
+
+.ui-topnav .ui-user-dropdown a{
+    padding: 5px;
+    color: #dc3545;
+    text-decoration: none;
+}
+
+.ui-topnav .ui-user-dropdown p:hover{
+    border-radius: 5px;
+    background: #fff7fb;
 }
 
 .ui-topnav::before{
@@ -49,4 +92,12 @@
 
 .ui-topnav .ui-topnav-container{
     z-index: 5;
+}
+
+@keyframes user-dropdown {
+    from{
+        bottom: -150px;
+    } to{
+        bottom: -160px;
+      }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import jwt from "jsonwebtoken";
 
 const HomeComponent = () => {
     return(
@@ -27,7 +28,7 @@ const HomeComponent = () => {
                 </div>
                 <div className={'row m-2 ui-cards border-right-red'}>
                     <div className={'col-4 ui-card-left bg-red'}><i className="fas fa-laptop-medical"></i></div>
-                    <Link to={'/asset'} className={'col-8'}>ASSET REQUISITION & TRACKING</Link>
+                    <Link to={'/home'} className={'col-8'}>ASSET REQUISITION & TRACKING</Link>
                 </div>
             </div>
             </>

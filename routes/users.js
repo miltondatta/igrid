@@ -35,7 +35,7 @@ router.post('/users/register', (req,res,next) => {
   Users.findAll({where: {email: userEmail}})
       .then(data => {
             if(data.length !== 0){
-              res.status(404).json({error: 'User already exist'})
+              res.status(404).json({message: 'User already exist'})
             } else {
               bcrypt.hash(userPass.toString(), saltRounds, (err, hash) => {
                 if (err) {console.log(err,28)}
@@ -63,7 +63,7 @@ router.post('/users/login', (req,res,next) => {
   console.log(userEmail, 51)
   Users.findAll({where: {email: userEmail}})
        .then(data => {
-         if(data.length === 0){res.status(400).json({error: "User Doesn't Exist"})}
+         if(data.length === 0){res.status(400).json({message: "User Doesn't Exist"})}
          else{
           const passFromDB = data[0].dataValues.password.toString()
           console.log(typeof passFromDB)
@@ -87,7 +87,7 @@ router.post('/users/login', (req,res,next) => {
                   }, 'secret');
                   res.status(200).json({token: token})
                 } else {
-                  res.status(400).json({error: "Password Didn't Match"})
+                  res.status(400).json({message: "Password Didn't Match"})
                 }
               }
           });
@@ -102,7 +102,7 @@ router.put('/users/disable/:id', (req,res,next) => {
          res.json(data)
        })
        .catch(err => {
-         res.json({error: err})
+         res.json({message: err})
        })
 })
 
@@ -122,7 +122,7 @@ router.put('/users/update/:id', (req,res,next) => {
     })
   Users.findAll({where: {email: email}})
        .then(data => {
-         if(data.length > 1){res.status(200).json({error: 'Email Taken'})}
+         if(data.length > 1){res.status(200).json({message: 'Email Taken'})}
          else {
           Users.update({
             firstName,
@@ -137,7 +137,7 @@ router.put('/users/update/:id', (req,res,next) => {
                   res.json(data)
                 })
                 .catch(err => {
-                  res.json({error: err})
+                  res.json({message: err})
                 })
          }
        })
@@ -154,7 +154,7 @@ router.put('/users/image/:id', (req,res,next) => {
         console.log(req.file.filename, 150)
         Users.findAll({where: {id: req.params.id}})
             .then(data => {
-                if(data.length > 1){res.status(200).json({error: 'Email Taken'})}
+                if(data.length > 1){res.status(200).json({message: 'Email Taken'})}
                 else {
                     Users.update({
                         image: req.file.filename
@@ -163,7 +163,7 @@ router.put('/users/image/:id', (req,res,next) => {
                             res.json(data)
                         })
                         .catch(err => {
-                            res.json({error: err})
+                            res.json({message: err})
                         })
                 }
             })
@@ -176,7 +176,7 @@ router.put('/users/password-reset/:id', (req,res,next) => {
   const {oldPassword, newPassword,confirmPassword} = req.body
   Users.findAll({where: {id: req.params.id}})
        .then(data => {
-         if(data.length === 0){res.status(400).json({error: `User Doesn't exist`})}
+         if(data.length === 0){res.status(400).json({message: `User Doesn't exist`})}
          else {
           const passFromDB = data[0].dataValues.password.toString()
           bcrypt.compare(oldPassword.toString(), passFromDB, function(err, resData) {
@@ -194,15 +194,15 @@ router.put('/users/password-reset/:id', (req,res,next) => {
                               res.json({message: "Password Changed Successfully"})
                             })
                             .catch(err => {
-                              res.json({error: err})
+                              res.json({message: err})
                             })
                     }
                   })
                 } else{
-                  res.status(400).json({error: `Password Didn't Match`})
+                  res.status(400).json({message: `Password Didn't Match`})
                 }
               } else {
-                res.status(400).json({error: "Wrong Password"})
+                res.status(400).json({message: "Wrong Password"})
               }
             }
         })}

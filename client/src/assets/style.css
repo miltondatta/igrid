@@ -20,6 +20,10 @@ html,body, #root{
    height: 0
 }
 
+.f-22px{
+   font-size: 22px;
+}
+
 .w-90{
    width: 89%;
 }
@@ -34,6 +38,10 @@ html,body, #root{
 
 .ui-container{
    display: grid;
+}
+
+.ui-grid-70{
+   grid-template-columns: 70px auto;
 }
 
 .ui-container .ui-body-container{
@@ -62,8 +70,11 @@ html,body, #root{
 }
 
 .bg-red{background-color: #dc3545}
+.bg-pink{background-color: #e04a58}
 .bg-orange{background-color: #fdbc00}
 .bg-purple{background-color: #7639ea}
+.bg-glass{background-color: #ffffff9e}
+.bg-gray-pink{background-color: #de6f7e}
 
 .border-right-red{border-right: 2px solid #dc3545}
 .border-right-orange{border-right: 2px solid #fdbc00}

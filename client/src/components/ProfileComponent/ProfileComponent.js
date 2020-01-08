@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import React, {Component} from 'react'
 import jwt from "jsonwebtoken";
+import {apiUrl} from "../../utility/constant";
 
 class ProfileComponent extends Component{
     constructor(props){
@@ -37,12 +38,12 @@ class ProfileComponent extends Component{
             address,
         }
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        Axios.put('http://localhost:5000/api/v1/users/update/'+id, payload)
+        Axios.put(apiUrl() + 'users/update/'+id, payload)
             .then(resData => {
                 console.log(resData)
             })
             .catch(err => {console.log(err)})
-        Axios.put('http://localhost:5000/api/v1/users/image/'+id, data)
+        Axios.put(apiUrl() + 'users/image/'+id, data)
             .then(resData => {
                 console.log(resData)
             })
@@ -50,11 +51,10 @@ class ProfileComponent extends Component{
     }
 
     render(){
-        console.log(this.state)
         return(
             <div className={'bg-white w-80 mx-auto p-3 mt-5 rounded'}>
                 <nav className="navbar navbar-light bg-light mb-3">
-                    <a className="navbar-brand" href="#">Update Profile</a>
+                    <p className="navbar-brand m-0">Update Profile</p>
                 </nav>
                 <form>
                     <div className="form-row">
