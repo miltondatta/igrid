@@ -36,8 +36,9 @@ class Topnav extends Component{
             <>
                 {sidenav.map((items, index) => {
                     return(
-                        <div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
-                            {(userType !== 1 && items.id === 1) ? null : <div>
+                        <>
+                        {(userType !== 1 && items.id === 1) ? null : items.subCat ? <div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
+                            <div>
                                 <i className={`text-dark f-14px ${items.icon}`}></i>
                                 <p className={'text-dark f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
                                 {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
@@ -49,8 +50,23 @@ class Topnav extends Component{
                                         </>
                                     ))}
                                 </div>}
-                            </div>}
-                        </div>
+                            </div>
+                        </div> : <Link to={items.link} className={'h-100'}><div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
+                            <div>
+                                <i className={`text-dark f-14px ${items.icon}`}></i>
+                                <p className={'text-dark f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
+                                {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
+                                    {items.categories.map((subItems, key) => (
+                                        <>
+                                            <p key={key + 10} className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                <a key={subItems.id} href={subItems.link}> - {subItems.name}</a>
+                                            </p>
+                                        </>
+                                    ))}
+                                </div>}
+                            </div>
+                        </div></Link>}
+                        </>
                     )
                 })}
             </>
@@ -106,18 +122,6 @@ class Topnav extends Component{
                         </div>
                     </div>
                     <div className='bg-white h-75px w-100 d-flex justify-content-center align-items-center'>
-                        <div className={'px-4 text-white h-100 text-center d-flex align-items-center ui-hover-option'}>
-                            <Link to={'/'} >
-                                <i className={'text-dark fas fa-home f-14px'}></i>
-                                <p className={'text-dark f-weight-500 mb-0 f-14px'}>Homepage</p>
-                            </Link>
-                        </div>
-                        <div className={'px-4 text-white h-100 text-center d-flex align-items-center ui-hover-option'}>
-                            <Link to={'/'} >
-                                <i className="fas fa-ticket-alt text-dark"></i>
-                                <p className={'text-dark f-weight-500 mb-0 f-14px'}>Support History</p>
-                            </Link>
-                        </div>
                         {this.renderCategory()}
                     </div>
                 </>

@@ -4,7 +4,7 @@ class DeliveryRequestComponent extends Component {
     render() {
         return (
             <div>
-                <div className={'bg-white p-3 mt-4 rounded shadow'}>
+                <div className={'bg-white p-3 rounded shadow'}>
                     <nav className="navbar text-center mb-3 p-2 rounded">
                         <p className="text-dark f-weight-500 f-20px m-0">Delivery Request</p>
                     </nav>

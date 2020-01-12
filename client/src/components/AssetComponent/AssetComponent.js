@@ -7,16 +7,26 @@ import {
     stationaryOptions
 } from "../../utility/constant";
 import {withRouter} from 'react-router-dom'
+import DataTable from "react-data-table-component";
+
+const FilterOption = (props) => {
+    return(
+        <div>
+            <input onChange={props.handleFilter} className={'rounded p-2 border'} placeholder={'Filter By Title'} />
+        </div>
+    )
+}
 
 class AssetComponent extends Component{
     constructor(props){
         super(props)
         this.state={
             items: 0,
-            request: this.props.match.params.option ? this.props.match.params.option : 0,
-            productSet: [],
             quantity: '',
-            submitProduct: false
+            productSet: [],
+            filterText: '',
+            submitProduct: false,
+            request: this.props.match.params.option ? this.props.match.params.option : 0,
         }
     }
 
@@ -29,8 +39,16 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const {request, items, quantity} = this.state
-        const productCombination = {request, items, quantity}
+        const {request, items, quantity, productSet} = this.state
+        const length = productSet.length
+        const productCombination = {
+            id: length + 1,
+            request_name: requestOn[request],
+            item_name: request === 1 ? hardwareOptions[items] : request === 2 ? accessoriesOptions[items] : request === 3 ? stationaryOptions[items] : request === 4 && otherOptions[items],
+            request,
+            items,
+            quantity
+        }
         if (request !== 0 && items !== 0 && quantity !== '') {
             this.setState((prevState) => ({
                 productSet: [...prevState.productSet, productCombination],
@@ -42,11 +60,44 @@ class AssetComponent extends Component{
         }
     }
 
+    handleFilter = (e) => {
+        const {value} = e.target
+        this.setState({
+            filterText: value
+        }, () => {
+            console.log(this.state.filterText)
+        })
+    }
+
     render(){
         let tableSet = null
-        console.log(this.props)
+        const columns = [
+            {
+                name: 'No',
+                selector: 'id',
+                sortable: true,
+            },
+            {
+                name: 'Request On',
+                selector: 'request_name',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Item Name',
+                selector: 'items',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Quantity',
+                selector: 'quantity',
+                sortable: true,
+                right: true,
+            }
+        ];
         const {option} = this.props.match.params
-        const {request, items, quantity, productSet, submitProduct} = this.state
+        const {request, items, quantity, productSet, submitProduct, filterText} = this.state
         const accessoriesData = Object.keys(accessoriesOptions).map((items, index) => {
             return(
                 <option key={index} value={items}>{accessoriesOptions[items]}</option>
@@ -67,20 +118,11 @@ class AssetComponent extends Component{
                 <option key={index} value={items}>{otherOptions[items]}</option>
             )
         })
-        tableSet = productSet.map((item, index) => {
-            const optionName = item.request === '1' ? hardwareOptions : item.request === '2' ? accessoriesOptions : item.request === '3' ? stationaryOptions : item.request === '4' && otherOptions
-            return(
-                <tr key={index}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{requestOn[item.request]}</td>
-                    <td>{optionName[item.items]}</td>
-                    <td>{item.quantity}</td>
-                </tr>
-            )
-        })
+        const filteredData = productSet.filter((item) => item.items.includes(filterText))
+
         return(
-            <div className={'ui-asset-component m-auto justify-content-between'} style={{gridTemplateColumns: submitProduct ? '54% 45%' : '100%'}}>
-                <div className={'bg-white p-3 mt-4 rounded shadow'}>
+            <div className={'ui-asset-component m-auto justify-content-between'}>
+                <div className={'bg-white p-3 rounded shadow'}>
                     <nav className="navbar text-center mb-3 p-2 rounded">
                         <p className="text-dark f-weight-500 f-20px m-0" href="#">Add Product</p>
                     </nav>
@@ -111,25 +153,26 @@ class AssetComponent extends Component{
                         <button type="submit" onClick={this.handleSubmit} className="ui-btn">Add Product</button>
                     </form>
                 </div>
-                {submitProduct && <div className={'bg-white p-3 mt-4 rounded shadow'}>
+                <div className={'bg-white p-3 rounded shadow'}>
                     <nav className="navbar text-center mb-3 p-2 rounded">
                         <p className="text-dark f-weight-500 f-20px m-0">Submit Product</p>
                     </nav>
-                    <table className="table table-bordered table-dark">
-                        <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Request On</th>
-                            <th scope="col">Particular</th>
-                            <th scope="col">Quantity</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {tableSet}
-                        </tbody>
-                    </table>
-                    <button type="submit" onClick={this.handleSubmit} className="ui-btn">Submit</button>
-                </div>}
+                    <DataTable
+                        striped={true}
+                        noHeader={true}
+                        subHeader={true}
+                        responsive={true}
+                        columns={columns}
+                        pagination={true}
+                        theme={'solarized'}
+                        highlightOnHover={true}
+                        className={'ui-react-table'}
+                        data={filterText !== '' ? filteredData : productSet}
+                        actions={<button className={'btn btn-primary'}>Action</button>}
+                        subHeaderComponent={productSet.length > 0 && <FilterOption handleFilter={this.handleFilter}/>}
+                    />
+                    {submitProduct && <button type="submit" onClick={this.handleSubmit} className="ui-btn">Submit</button>}
+                </div>
             </div>
         )
     }

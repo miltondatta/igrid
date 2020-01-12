@@ -57,6 +57,10 @@ const AsyncDeliveryRequest = Loadable({
     loader: () => import('../containers/DeliveryRequest'),
     loading: Loading,
 });
+const AsyncSupportHistory= Loadable({
+    loader: () => import('../containers/SupportHistory'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
 
@@ -105,6 +109,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
+                                    <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/branch-requesition' component={AsyncBranchRequesition}/>

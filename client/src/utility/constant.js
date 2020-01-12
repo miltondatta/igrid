@@ -12,6 +12,20 @@ export const apiUrl = () => {
 export const sidenav = [
     {
         id: 1,
+        name: 'Homepage',
+        icon: 'fas fa-home',
+        link: '/',
+        subCat: false,
+    },
+    {
+        id: 2,
+        name: 'Support History',
+        icon: 'fas fa-ticket-alt',
+        subCat: false,
+        link: '/support-hisotry'
+    },
+    {
+        id: 3,
         name: 'Material Requisition',
         icon: 'fas fa-keyboard',
         subCat: true,
@@ -43,7 +57,7 @@ export const sidenav = [
         ]
     },
     {
-        id: 2,
+        id: 4,
         name: 'Requisition History',
         icon: 'fas fa-history',
         subCat: true,
@@ -90,6 +104,114 @@ export const sidenav = [
                 link: '',
                 icon: "fas fa-water"
             },
+        ]
+    },
+    {
+        id: 5,
+        name: 'Inventory',
+        icon: 'fas fa-warehouse',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Stock',
+                link: '/request-history',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Delivery Report',
+                link: '/branch-requesition',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Delivery Receive',
+                link: '/delivery-request',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Lost Assets Information',
+                link: '',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Buffer Stock Management',
+                link: '',
+                icon: ""
+            },
+            {
+                id: 6,
+                name: 'SIM Management',
+                link: '',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'TAB Management',
+                link: '',
+                icon: ""
+            },
+            {
+                id: 8,
+                name: 'Feedback',
+                link: '',
+                icon: ""
+            }
+        ]
+    },
+    {
+        id: 6,
+        name: 'Report',
+        icon: 'fas fa-history',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Delivery Report',
+                link: '/request-history',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Stock Report',
+                link: '/branch-requesition',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Tab Summary Report',
+                link: '/delivery-request',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Monthly Stock',
+                link: '',
+                icon: ""
+            }
+        ]
+    },
+    {
+        id: 7,
+        name: 'User List',
+        icon: 'fas fa-list-alt',
+        subCat: false,
+    },
+    {
+        id: 8,
+        name: 'Complaint Group',
+        icon: 'fas fa-object-group',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Patch',
+                link: '/request-history',
+                icon: ""
+            }
         ]
     },
 ]

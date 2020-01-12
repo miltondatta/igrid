@@ -29,6 +29,33 @@ a:hover{text-decoration: none}
 .f-20px{font-size: 20px;}
 .f-22px{font-size: 22px;}
 
+.text-blue{color: #1c45ef}
+.text-project{color: #0DDBB9}
+
+.bg-red{background-color: #dc3545}
+.bg-pink{background-color: #e04a58}
+.bg-blue{background-color: #1c45ef}
+.bg-orange{background-color: #fdbc00}
+.bg-project{background-color: #0DDBB9}
+.bg-purple{background-color: #7639ea}
+.bg-glass{background-color: #ffffff9e}
+.bg-gray-pink{background-color: #de6f7e}
+
+.bg-purple-red{background: linear-gradient(to right, #ff5d6c, #ef2f40, #ff2a63)}
+.bg-purple-orange{background: linear-gradient(to right, #ffdf37, #ffc41b, #ffc507)}
+.bg-purple-primary{background: linear-gradient(to right, #479fff, #2486ef, #009eff)}
+.bg-purple-gradient{background: linear-gradient(to right, #9158ff, #7639ea, #6312ff)}
+
+.border-right-red{border-right: 2px solid #dc3545}
+.border-right-orange{border-right: 2px solid #fdbc00}
+.border-right-purple{border-right: 2px solid #7639ea}
+.border-right-primary{border-right: 2px solid #007bff}
+
+::-webkit-scrollbar-track{ border-radius: 10px; background-color: #bbb}
+::-webkit-scrollbar-thumb { background: #777; border-radius: 10px;}
+::-webkit-scrollbar {width: 8px;}
+
+
 .f-weight-500{font-weight: 500}
 
 .ui-container{display: grid}
@@ -62,30 +89,5 @@ a:hover{text-decoration: none}
 .ui-asset-component{
    display: grid;
    grid-gap: 10px;
+   grid-template-columns: 54% 45%;
 }
-
-.text-blue{color: #1c45ef}
-.text-project{color: #0DDBB9}
-
-.bg-red{background-color: #dc3545}
-.bg-pink{background-color: #e04a58}
-.bg-blue{background-color: #1c45ef}
-.bg-orange{background-color: #fdbc00}
-.bg-project{background-color: #0DDBB9}
-.bg-purple{background-color: #7639ea}
-.bg-glass{background-color: #ffffff9e}
-.bg-gray-pink{background-color: #de6f7e}
-
-.bg-purple-red{background: linear-gradient(to right, #ff5d6c, #ef2f40, #ff2a63)}
-.bg-purple-orange{background: linear-gradient(to right, #ffdf37, #ffc41b, #ffc507)}
-.bg-purple-primary{background: linear-gradient(to right, #479fff, #2486ef, #009eff)}
-.bg-purple-gradient{background: linear-gradient(to right, #9158ff, #7639ea, #6312ff)}
-
-.border-right-red{border-right: 2px solid #dc3545}
-.border-right-orange{border-right: 2px solid #fdbc00}
-.border-right-purple{border-right: 2px solid #7639ea}
-.border-right-primary{border-right: 2px solid #007bff}
-
-::-webkit-scrollbar-track{ border-radius: 10px; background-color: #bbb}
-::-webkit-scrollbar-thumb { background: #777; border-radius: 10px;}
-::-webkit-scrollbar {width: 8px;}

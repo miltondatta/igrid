@@ -18,7 +18,7 @@ const FilterOption = (props) => {
     )
 }
 
-class BranchRequesitionComponent extends Component {
+class SupportHistoryComponent extends Component {
 
     constructor(props){
         super(props)
@@ -40,30 +40,36 @@ class BranchRequesitionComponent extends Component {
         const {filterText} = this.state
         const columns = [
             {
-                name: 'Sl',
+                name: 'Date',
                 selector: 'id',
                 sortable: true,
             },
             {
-                name: 'Branch Name',
-                selector: 'title',
+                name: 'Complaint ID',
+                selector: 'complaint_ID',
                 sortable: true,
                 right: true,
             },
             {
-                name: 'Branch ID.',
+                name: 'Com. Raised By',
                 selector: 'branch_id',
                 sortable: true,
                 right: true,
             },
             {
-                name: 'Wireless Router',
+                name: 'Assigned To',
                 selector: 'wirelessRouter',
                 sortable: true,
                 right: true,
             },
             {
-                name: 'Action',
+                name: 'Eng. Mobile',
+                selector: 'engMobile',
+                sortable: true,
+                right: true,
+            },
+            {
+                name: 'Status',
                 cell: () => <button className={'ui-btn'} onClick={(e) => {console.log(e.target.name, e.target.value)}}>Approve</button>,
                 ignoreRowClick: true,
                 allowOverflow: true,
@@ -72,29 +78,35 @@ class BranchRequesitionComponent extends Component {
         ];
         const data = [
             {
-                id: 1,
+                id: '18-12-2019',
+                complaint_ID: '125',
+                branch_id: 'Branch Manager',
                 title: 'Conan the Barbarian',
-                branch_id: '1982',
-                wirelessRouter: '10',
+                wirelessRouter: 'Divisional IT',
+                engMobile: '0123456789',
             },
             {
-                id: 2,
+                id: '18-12-2019',
+                complaint_ID: '105',
+                branch_id: 'Branch Manager',
                 title: 'Learn React',
-                branch_id: '2007',
-                wirelessRouter: '15',
+                wirelessRouter: 'Divisional IT',
+                engMobile: '0123456789',
             },
             {
-                id: 3,
-                title: 'Happy New Year',
-                branch_id: '2020',
-                wirelessRouter: '5',
+                id: '18-12-2019',
+                complaint_ID: '115',
+                branch_id: 'Branch Manager',
+                title: 'Conan the Barbarian',
+                wirelessRouter: 'Divisional IT',
+                engMobile: '0123456789',
             },
         ];
         const filteredData = data.filter((item) => item.title.includes(filterText))
         return (
             <div className={'bg-white p-3 rounded shadow'}>
                 <nav className="navbar text-center mb-3 p-2 rounded">
-                    <p className="text-dark f-weight-500 f-20px m-0">Branch Requisition</p>
+                    <p className="text-dark f-weight-500 f-20px m-0">Support History List   (Last One Year)</p>
                 </nav>
                 <DataTable
                     striped={true}
@@ -116,4 +128,4 @@ class BranchRequesitionComponent extends Component {
     }
 }
 
-export default BranchRequesitionComponent;
+export default SupportHistoryComponent;
