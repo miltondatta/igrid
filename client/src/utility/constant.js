@@ -161,9 +161,15 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 1,
+                id: 9,
                 name: 'Asset Registration',
                 link: '/stock-reg',
+                icon: ""
+            },
+            {
+                id: 10,
+                name: 'Asset List',
+                link: '/asset-list',
                 icon: ""
             },
         ]

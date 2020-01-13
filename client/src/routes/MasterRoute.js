@@ -65,6 +65,10 @@ const AsyncAssetReg= Loadable({
     loader: () => import('../containers/AssetReg'),
     loading: Loading,
 });
+const AsyncAssetList = Loadable({
+    loader: () => import('../containers/AssetList'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
 
@@ -110,6 +114,7 @@ class MasterRoute extends Component{
                                     <Route exact path='Ho' component={AsyncSupportHistory}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/asset/:option' component={AsyncAsset}/>
+                                    <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
