@@ -159,7 +159,13 @@ export const sidenav = [
                 name: 'Feedback',
                 link: '',
                 icon: ""
-            }
+            },
+            {
+                id: 1,
+                name: 'Asset Registration',
+                link: '/stock-reg',
+                icon: ""
+            },
         ]
     },
     {

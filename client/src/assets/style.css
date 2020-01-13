@@ -57,6 +57,8 @@ a:hover{text-decoration: none}
 
 .f-weight-500{font-weight: 500}
 
+.cursor-pointer{cursor: pointer}
+
 .ui-container{display: grid}
 
 .ui-grid-70{grid-template-columns: 70px auto;}

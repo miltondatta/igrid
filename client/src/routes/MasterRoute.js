@@ -61,6 +61,10 @@ const AsyncSupportHistory= Loadable({
     loader: () => import('../containers/SupportHistory'),
     loading: Loading,
 });
+const AsyncAssetReg= Loadable({
+    loader: () => import('../containers/AssetReg'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
 
@@ -96,7 +100,6 @@ class MasterRoute extends Component{
             } else {
                 return (
                     <div className={`ui-container h-100`}>
-                        {/*<Sidenav sideNav={sideNav} handleSideNav={this.handleSideNav} />*/}
                         <div>
                             <Topnav/>
                             <div className='ui-body-container'>
@@ -104,12 +107,13 @@ class MasterRoute extends Component{
                                     <Route exact path='/mis' component={AsyncMIS}/>
                                     <Route exact path='/home' component={AsyncHomeLand}/>
                                     <Route exact path='/profile' component={AsyncProile}/>
+                                    <Route exact path='Ho' component={AsyncSupportHistory}/>
+                                    <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/asset/:option' component={AsyncAsset}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
-                                    <Route exact path='Ho' component={AsyncSupportHistory}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/branch-requesition' component={AsyncBranchRequesition}/>
