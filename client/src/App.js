@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import jwt from 'jsonwebtoken'
 import MasterRoute from './routes/MasterRoute';
+import ReactDataTable from "./module/data-table-react/ReactDataTable";
 
 class App extends Component{
   componentDidMount = () => {

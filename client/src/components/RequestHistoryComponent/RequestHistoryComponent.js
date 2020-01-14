@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import DataTable,  { createTheme } from 'react-data-table-component';
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 createTheme('solarized', {
     table: {
@@ -71,23 +72,75 @@ class RequestHistoryComponent extends Component {
         ];
         const data = [
                 {
-                    id: 1,
-                    title: 'Conan the Barbarian',
-                    year: '1982',
-                    author: 'Rakib Uddin',
-                },
-                {
                     id: 2,
                     title: 'Learn React',
                     year: '2007',
                     author: 'Mahabub Hossen',
+                    author_id: 16103005
                 },
                 {
                     id: 3,
                     title: 'Happy New Year',
                     year: '2020',
                     author: 'Russell',
+                    author_id: 16103056
                 },
+                {
+                    id: 1,
+                    title: 'Conan the Barbarian',
+                    year: '1982',
+                    author: 'Rakib Uddin',
+                    author_id: 16103030
+                },
+            {
+                id: 4,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
+            {
+                id: 5,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
+            {
+                id: 6,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
+            {
+                id: 7,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
+            {
+                id: 10,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
+            {
+                id: 8,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
+            {
+                id: 9,
+                title: 'Conan the Barbarian',
+                year: '1982',
+                author: 'Rakib Uddin',
+                author_id: 16103030
+            },
             ];
         const filteredData = data.filter((item) => item.title.includes(filterText))
         return (
@@ -95,20 +148,10 @@ class RequestHistoryComponent extends Component {
                 <nav className="navbar text-center mb-3 p-2 rounded">
                     <p className="text-dark f-weight-500 f-20px m-0" >Request History</p>
                 </nav>
-                <DataTable
-                    striped={true}
-                    noHeader={true}
-                    highlightOnHover={true}
-                    responsive={true}
-                    columns={columns}
-                    data={filterText !== '' ? filteredData : data}
-                    subHeader={true}
-                    actions={<button className={'btn btn-primary'}>Action</button>}
-                    subHeaderComponent={<FilterOption handleFilter={this.handleFilter}/>}
-                    pagination={true}
-                    progressPending={data.length === 0}
-                    className={'ui-react-table'}
-                    theme={'solarized'}
+                <ReactDataTable
+                    searchable
+                    pagination
+                    tableData={data}
                 />
             </div>
         );

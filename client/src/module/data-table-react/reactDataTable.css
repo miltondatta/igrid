@@ -1,0 +1,32 @@
+.reactDataTable th{
+    font-size: 14px;
+}
+
+.reactDataTable td,
+.reactDataTable th{
+    padding: 11px 5px;
+}
+
+table tbody tr:nth-child(even){
+    background: #eafffc;
+}
+
+table thead tr{
+    background: #baf4eb;
+}
+
+table tbody tr:hover{
+    background: #eee;
+}
+
+.reactDataTable .page-link{
+    color: #12b79e;
+}
+
+.reactDataTable .page-item.active .page-link{
+    background: #12b79e;
+}
+
+.reactDataTable .page-item.active .page-link{
+    border-color: #12b79e
+}
