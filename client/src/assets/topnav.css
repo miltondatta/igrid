@@ -105,7 +105,7 @@
 }
 
 .ui-hover-option:hover{
-    border-bottom: 2px solid #0DDBB9;
+    border-bottom: 2px solid #17a2b8;
 }
 
 .ui-hover-option:hover p{
@@ -113,7 +113,7 @@
 }
 
 .ui-hover-option:hover i{
-    color: #0DDBB9 !important;
+    color: #17a2b8 !important;
 }
 
 @keyframes user-dropdown {

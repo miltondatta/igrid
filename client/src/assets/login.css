@@ -33,7 +33,7 @@
     border: none;
     outline: none;
     padding: 5px 0;
-    border-bottom: 1px solid #1c45ef;
+    border-bottom: 1px solid #17a2b8;
 }
 
 .ui-user .ui-user-container .ui-login .ui-signin{
@@ -44,7 +44,7 @@
     padding: 7px 20px;
     border-radius: 5px;
     box-shadow: 0 1px 5px #666;
-    background-color: #0DDBB9;
+    background-color: #17a2b8;
 }
 
 .ui-user .ui-user-container .ui-logo img{

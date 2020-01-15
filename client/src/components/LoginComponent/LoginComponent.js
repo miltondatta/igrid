@@ -78,7 +78,7 @@ class LoginComponent extends Component {
 
                         <div className='d-flex justify-content-between align-items-center mt-4'>
                             <button className='ui-signin' onClick={this.submitLogin}>SIGN IN</button>
-                            <a href='/' className='text-blue'>Forgot Password?</a>
+                            <a href='/' className='text-project'>Forgot Password?</a>
                         </div>
 
                     </div>

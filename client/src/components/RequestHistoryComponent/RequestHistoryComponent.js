@@ -150,6 +150,7 @@ class RequestHistoryComponent extends Component {
                 </nav>
                 <ReactDataTable
                     searchable
+                    exportable
                     pagination
                     tableData={data}
                 />

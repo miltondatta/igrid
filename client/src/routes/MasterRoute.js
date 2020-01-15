@@ -69,6 +69,18 @@ const AsyncAssetList = Loadable({
     loader: () => import('../containers/AssetList'),
     loading: Loading,
 });
+const AsyncAssetDispose = Loadable({
+    loader: () => import('../containers/AssetDispose'),
+    loading: Loading,
+});
+const AsyncAssetSale = Loadable({
+    loader: () => import('../containers/AssetSale'),
+    loading: Loading,
+});
+const AsyncAssetReEvaluation = Loadable({
+    loader: () => import('../containers/AssetReEvaluation'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
 
@@ -114,13 +126,16 @@ class MasterRoute extends Component{
                                     <Route exact path='Ho' component={AsyncSupportHistory}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/asset/:option' component={AsyncAsset}/>
+                                    <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
+                                    <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
+                                    <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/branch-requesition' component={AsyncBranchRequesition}/>
                                 </Switch>
                             </div>

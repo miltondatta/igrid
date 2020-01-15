@@ -23,6 +23,7 @@ a:hover{text-decoration: none}
 .w-90{width: 89%;}
 .w-76{width: 76%}
 .w-80{width: 80%;}
+.w-86{width: 86%;}
 
 .f-16px{font-size: 16px;}
 .f-14px{font-size: 14px;}
@@ -30,13 +31,13 @@ a:hover{text-decoration: none}
 .f-22px{font-size: 22px;}
 
 .text-blue{color: #1c45ef}
-.text-project{color: #0DDBB9}
+.text-project{color: #17a2b8}
 
 .bg-red{background-color: #dc3545}
 .bg-pink{background-color: #e04a58}
 .bg-blue{background-color: #1c45ef}
 .bg-orange{background-color: #fdbc00}
-.bg-project{background-color: #0DDBB9}
+.bg-project{background-color: #17a2b8}
 .bg-purple{background-color: #7639ea}
 .bg-glass{background-color: #ffffff9e}
 .bg-gray-pink{background-color: #de6f7e}
@@ -76,7 +77,7 @@ a:hover{text-decoration: none}
    padding: 7px 20px;
    border-radius: 5px;
    box-shadow: 0 1px 5px #666;
-   background-color: #0DDBB9;
+   background-color: #17a2b8;
 }
 
 .ui-user-avatar{
