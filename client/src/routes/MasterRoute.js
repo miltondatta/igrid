@@ -8,7 +8,6 @@ const AsyncHome = Loadable({
     loader: () => import('../containers/Home'),
     loading: Loading,
   });
-
 const AsyncMIS = Loadable({
     loader: () => import('../containers/MIS'),
     loading: Loading,
@@ -81,6 +80,14 @@ const AsyncAssetReEvaluation = Loadable({
     loader: () => import('../containers/AssetReEvaluation'),
     loading: Loading,
 });
+const AsyncAssetTransfer = Loadable({
+    loader: () => import('../containers/AssetTransfer'),
+    loading: Loading,
+});
+const AsyncRepairMaintenence= Loadable({
+    loader: () => import('../containers/RepairMaintenence'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
 
@@ -132,7 +139,9 @@ class MasterRoute extends Component{
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
+                                    <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
+                                    <Route exact path='/asset-repair' component={AsyncRepairMaintenence}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>

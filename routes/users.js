@@ -18,7 +18,6 @@ let storage = multer.diskStorage({
 })
 let upload = multer({ storage: storage }).single('file')
 
-
 // Get All Users
 router.get('/users', (req,res,next) => {
   Users.findAll({attributes: ['id', 'image', 'address', 'pin', 'firstName', 'lastName', 'userType', 'email', 'userStatus', 'phone_number', 'is_verified']})

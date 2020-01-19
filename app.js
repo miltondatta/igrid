@@ -5,8 +5,20 @@ const helmet = require('helmet')
 const logger = require('morgan')
 const db = require('./config/db')
 const express = require('express')
-const UserRouter = require('./routes/users')
 const cookieParser = require('cookie-parser')
+const UserRouter = require('./routes/users')
+const ModelRouter = require('./routes/model')
+const BrandRouter = require('./routes/brands')
+const ProductRouter = require('./routes/product')
+const VendorsRouter = require('./routes/vendors')
+const ProjectRouter = require('./routes/project')
+const ChallanRouter = require('./routes/challans')
+const ConditionsRouter = require('./routes/conditions')
+const AssetTypesRouter = require('./routes/assetTypes')
+const AssetHistoryRouter = require('./routes/assetHistory')
+const AssetCategoryRouter = require('./routes/assetCategory')
+const DepreciatinRouter = require('./routes/depreciationMethods')
+const AssetSubCategoryRouter = require('./routes/assetSubCategory')
 
 
 // Database Connection
@@ -35,6 +47,18 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Route Defination
 app.use('/api/v1', UserRouter)
+app.use('/api/v1', ModelRouter)
+app.use('/api/v1', BrandRouter)
+app.use('/api/v1', ProductRouter)
+app.use('/api/v1', VendorsRouter)
+app.use('/api/v1', ChallanRouter)
+app.use('/api/v1', ProjectRouter)
+app.use('/api/v1', AssetTypesRouter)
+app.use('/api/v1', ConditionsRouter)
+app.use('/api/v1', DepreciatinRouter)
+app.use('/api/v1', AssetHistoryRouter)
+app.use('/api/v1', AssetCategoryRouter)
+app.use('/api/v1', AssetSubCategoryRouter)
 
 
 module.exports = app;
