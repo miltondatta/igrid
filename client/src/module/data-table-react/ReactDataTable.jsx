@@ -1,5 +1,7 @@
+import Axios from 'axios'
 import './reactDataTable.css'
 import React, {Component} from 'react';
+import {apiUrl} from "../../utility/constant";
 
 class ReactDataTable extends Component {
 
@@ -7,12 +9,12 @@ class ReactDataTable extends Component {
         super(props)
         this.state = {
             dataCount: 0,
-            displayRow: 5,
+            displayRow: 10,
             sortColumn: '',
             dataPassed: 0,
             filterByTitle: '',
             actualData: props.tableData ? props.tableData : [],
-            tableData: props.tableData ? props.tableData.slice(0 , 5) : []
+            tableData: props.tableData ? props.tableData.slice(0 , 10) : []
         }
     }
 
@@ -94,11 +96,26 @@ class ReactDataTable extends Component {
         }
     }
 
+    deleteItem = (id) => {
+        console.log(id)
+        const {del} = this.props
+        const data = {id}
+        Axios.delete(apiUrl() + del + '/delete', {data})
+            .then(resData => {
+                console.log(resData)
+                window.location.reload()
+            })
+            .catch(res => {
+                console.log(res)
+            })
+    }
+
     render() {
-        const {searchable, exportable, pagination} = this.props
+        const {searchable, exportable, pagination, edit, del} = this.props
         const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
-        console.log(tableData)
-        let filteredData = tableData.filter(item => (item.title.toLowerCase().includes(filterByTitle.toLowerCase())))
+        let title = Object.keys(tableData[0])[1]
+        console.log(title)
+        let filteredData = tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <th onClick={(e) => this.sortColumn(e, item)} scope="col" key={index} className={'text-capitalize'}>
@@ -110,6 +127,12 @@ class ReactDataTable extends Component {
                 {Object.keys(filteredData[0]).map((items, key) => (
                     <td key={key + 20}>{item[items]}</td>
                 ))}
+                {edit && <td className={'text-warning'}>
+                    <p className="text-warning" onClick={() => {this.props.updateEdit(item.id)}}>Edit</p>
+                </td>}
+                {del && <td className={'text-danger'}>
+                    <p className="text-danger" onClick={() => {this.deleteItem(item.id)}}>Delete</p>
+                </td>}
             </tr>
         ))
 
@@ -119,9 +142,9 @@ class ReactDataTable extends Component {
                     <div className="col-md-6 justify-content-between row">
                         <div className="col-md-2">
                             <select name={'displayRow'} value={displayRow} className="form-control px-1 mb-3" style={{width: '100%'}} onChange={this.handleChange}>
-                                <option value={2}>2</option>
-                                <option value={5}>5</option>
                                 <option value={10}>10</option>
+                                <option value={50}>50</option>
+                                <option value={100}>100</option>
                             </select>
                         </div>
                         {exportable && <div className="col-md-10">
@@ -130,7 +153,7 @@ class ReactDataTable extends Component {
                     </div>
                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
                         <div className="input-group" style={{width: 280}}>
-                            <input name={'filterByTitle'} onChange={this.handleChange} className="form-control" placeholder={'Search By Title'} />
+                            <input name={'filterByTitle'} onChange={this.handleChange} className="form-control" placeholder={`Search By ${title.split('_').join(' ')}`} />
                             <div className="input-group-append">
                                 <div className="input-group-text"><i className="fas fa-search"></i></div>
                             </div>
@@ -141,6 +164,8 @@ class ReactDataTable extends Component {
                     <thead>
                         <tr>
                             {table_headers}
+                            {edit && <th>Edit</th>}
+                            {del && <th>Delete</th>}
                         </tr>
                     </thead>
                     <tbody>
