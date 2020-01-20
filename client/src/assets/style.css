@@ -204,6 +204,50 @@ a:hover{text-decoration: none}
    transition: 1.7s cubic-bezier(.7,0,.3,1);
 }
 
+.ui-checkbox{
+   position: relative;
+}
+
+.ui-checkbox input[type='checkbox']::before{
+   position: absolute;
+   content: '';
+   z-index: 2;
+   width: 20px;
+   height: 20px;
+   background: #ddd;
+   border-radius: 2px;
+   top: -3px;
+   box-shadow: inset 0 0 5px #454545;
+   border: 1px solid #767676;
+}
+
+.ui-checkbox input[type='checkbox']:hover::before{
+   background: #aaa;
+}
+
+.ui-checkbox input[type='checkbox']:checked::before{
+   border: none;
+   background: #17a2b8;
+   box-shadow: 0 0 2px #17a2b8;
+}
+
+.ui-checkbox input[type='checkbox']:checked::after{
+   position: absolute;
+   left: 6px;
+   top: -1px;
+   content: '';
+   z-index: 5;
+   width: 8px;
+   height: 14px;
+   border: solid white;
+   border-width: 0 3px 3px 0;
+   transform: rotate(45deg);
+}
+
+.ui-checkbox label{
+   margin-left: 15px;
+}
+
 @keyframes uiSliderModal {
    0%{
       transform: scale(0);

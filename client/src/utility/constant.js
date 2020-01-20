@@ -256,6 +256,20 @@ export const sidenav = [
             }
         ]
     },
+    {
+        id: 9,
+        name: 'Admin',
+        icon: 'fas fa-object-group',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Create Project',
+                link: '/create-project',
+                icon: ""
+            }
+        ]
+    },
 ]
 
 export const requestOn = {

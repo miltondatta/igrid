@@ -88,9 +88,16 @@ const AsyncRepairMaintenence= Loadable({
     loader: () => import('../containers/RepairMaintenence'),
     loading: Loading,
 });
+const AsyncAdminInputs = Loadable({
+    loader: () => import('../containers/AdminInputs'),
+    loading: Loading,
+});
+const AsyncCreateProject = Loadable({
+    loader: () => import('../containers/Projects'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
-
     render(){
         const {pathname} = this.props.location
         if(pathname === '/login') {
@@ -137,8 +144,10 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
+                                    <Route exact path='/admin-inputs' component={AsyncAdminInputs}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
+                                    <Route exact path='/create-project' component={AsyncCreateProject}/>
                                     <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/asset-repair' component={AsyncRepairMaintenence}/>

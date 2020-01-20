@@ -5,7 +5,7 @@ const route = express.Router()
 
 // Read
 route.get('/projects', (req,res,next) => {
-    Project.findAll()
+    Project.findAll({attributes: ['id', 'project_name', 'project_code', 'description']})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -28,13 +28,21 @@ route.put('/projects/update/:id', (req,res,next) => {
 
 // Create
 route.post('/projects/entry', (req,res,next) => {
-    Project.create(req.body)
+    const {project_code} = req.body
+    Project.findAll({where: {project_code}})
         .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            if(resData.length === 0) {
+                Project.create(req.body)
+                    .then(resData => {
+                        res.status(200).json(resData)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.status(404).json({message: 'Something went wrong', err})
+                    })
+            } else {
+                res.status(200).json({message: 'Project Code Exist'})
+            }
         })
 })
 
