@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import AdminInputContainer from "../../layouts/AdminInputContainer/AdminInputContainer";
 
-class ProjectComponent extends Component {
+class AssetSubCategoryComponent extends Component {
     render() {
         return (
             <AdminInputContainer
-                formType = 'PROJECT'
-                getApi = 'projects'
+                formType = 'ASSETSUBCATEGORY'
+                getApi = 'asset-sub-category'
             />
         );
     }
 }
 
-export default ProjectComponent;
+export default AssetSubCategoryComponent;

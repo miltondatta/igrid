@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      sub_category_name:{
+        type: Sequelize.STRING
+      },
       category_id:{
         type: Sequelize.INTEGER,
         references: {
@@ -17,9 +20,6 @@ module.exports = {
         },
       },
       sub_category_code:{
-        type: Sequelize.STRING
-      },
-      sub_category_name:{
         type: Sequelize.STRING
       },
       description:{

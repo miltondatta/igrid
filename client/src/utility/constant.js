@@ -264,10 +264,64 @@ export const sidenav = [
         categories: [
             {
                 id: 1,
-                name: 'Create Project',
-                link: '/create-project',
+                name: 'Project',
+                link: '/project',
                 icon: ""
-            }
+            },
+            {
+                id: 2,
+                name: 'Vendor',
+                link: '/vendor',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Models',
+                link: '/model',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Brands',
+                link: '/brand',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Asset Category',
+                link: '/asset-category',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Asset Sub Category',
+                link: '/asset-sub-category',
+                icon: ""
+            },
+            {
+                id: 6,
+                name: 'Product',
+                link: '/product',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'Depreciation Methods',
+                link: '/depreciation-methods',
+                icon: ""
+            },
+            {
+                id: 8,
+                name: 'Asset Types',
+                link: '/asset-types',
+                icon: ""
+            },
+            {
+                id: 9,
+                name: 'Conditions',
+                link: '/conditions',
+                icon: ""
+            },
         ]
     },
 ]

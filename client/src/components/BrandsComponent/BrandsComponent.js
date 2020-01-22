@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import AdminInputContainer from "../../layouts/AdminInputContainer/AdminInputContainer";
 
-class ProjectComponent extends Component {
+class BrandsComponent extends Component {
     render() {
         return (
             <AdminInputContainer
-                formType = 'PROJECT'
-                getApi = 'projects'
+                formType = 'BRANDS'
+                getApi = 'brands'
             />
         );
     }
 }
 
-export default ProjectComponent;
+export default BrandsComponent;

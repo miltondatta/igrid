@@ -5,7 +5,7 @@ const route = express.Router()
 
 // Read
 route.get('/vendors', (req,res,next) => {
-    Vendors.findAll()
+    Vendors.findAll({attributes: ['id', 'vendor_name', 'enlisted', 'description', 'file_name']})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -16,14 +16,19 @@ route.get('/vendors', (req,res,next) => {
 
 // Create
 route.post('/vendors/entry', (req,res,next) => {
-    Vendors.create(req.body)
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
-        })
+    const {vendor_name,file_name,description,enlisted} = req.body
+    if (vendor_name === '' || file_name === '' || description === '') {
+        res.status(200).json({message: 'All fields required!'})
+    } else {
+        Vendors.create(req.body)
+            .then(resData => {
+                res.status(200).json(resData)
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(404).json({message: 'Something went wrong', err})
+            })
+    }
 })
 
 // Update

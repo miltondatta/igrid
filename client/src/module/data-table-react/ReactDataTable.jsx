@@ -118,20 +118,25 @@ class ReactDataTable extends Component {
         let filteredData = tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
-            <th onClick={(e) => this.sortColumn(e, item)} scope="col" key={index} className={'text-capitalize'}>
-                {sortColumn === item ? <i className="fas fa-angle-up text-dark"></i> : <i className="fas fa-angle-down text-dark"></i>} {item}
-            </th>
+            <>
+                {item !== 'id' && <th onClick={(e) => this.sortColumn(e, item)} scope="col" key={index} className={'text-capitalize'}>
+                    {sortColumn === item ? <i className="fas fa-angle-up text-dark"></i> : <i className="fas fa-angle-down text-dark"></i>} {item}
+                </th>}
+            </>
         ))
         let table_body = filteredData.length > 0 && filteredData.map((item, index) => (
             <tr key={index + 10}>
+                <td>{index + 1}</td>
                 {Object.keys(filteredData[0]).map((items, key) => (
-                    <td key={key + 20}>{item[items]}</td>
+                    <>
+                    {items !== 'id' && <td key={key + 20}>{items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}</td>}
+                    </>
                 ))}
                 {edit && <td className={'text-warning'}>
-                    <p className="text-warning" onClick={() => {this.props.updateEdit(item.id)}}>Edit</p>
+                    <p className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id)}}>Edit</p>
                 </td>}
                 {del && <td className={'text-danger'}>
-                    <p className="text-danger" onClick={() => {this.deleteItem(item.id)}}>Delete</p>
+                    <p className="cursor-pointer text-danger" onClick={() => {this.deleteItem(item.id)}}>Delete</p>
                 </td>}
             </tr>
         ))
@@ -153,7 +158,7 @@ class ReactDataTable extends Component {
                     </div>
                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
                         <div className="input-group" style={{width: 280}}>
-                            <input name={'filterByTitle'} onChange={this.handleChange} className="form-control" placeholder={`Search By ${title.split('_').join(' ')}`} />
+                            <input name={'filterByTitle'} onChange={this.handleChange} className="form-control" placeholder={`Search by ${title.split('_').join(' ')}`} />
                             <div className="input-group-append">
                                 <div className="input-group-text"><i className="fas fa-search"></i></div>
                             </div>
@@ -163,6 +168,9 @@ class ReactDataTable extends Component {
                 {tableData.length > 0 ? <table id={'__table_react'} className={'table table table-bordered'}>
                     <thead>
                         <tr>
+                            <th scope="col" className={'text-capitalize'}>
+                                No
+                            </th>
                             {table_headers}
                             {edit && <th>Edit</th>}
                             {del && <th>Delete</th>}
