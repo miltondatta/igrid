@@ -7,6 +7,7 @@ const Users = require('../models/user')
 const saltRounds = 10
 const router = express.Router();
 
+
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/images')
@@ -107,17 +108,11 @@ router.put('/users/disable/:id', (req,res,next) => {
 // Update Users
 router.put('/users/update/:id', (req,res,next) => {
   const {firstName, lastName, phone_number, email, pin, address} = req.body
-    let image
+
     upload(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json(err)
-        } else if (err) {
-            return res.status(500).json(err)
-        }
-        res.send(req.file)
-        image = req.file
+        console.log(req.body, req.file, 113)
     })
-    Users.findAll({where: {email: email}})
+  Users.findAll({where: {email: email}})
        .then(data => {
          if(data.length > 1){res.status(200).json({message: 'Email Taken'})}
          else {
@@ -127,7 +122,6 @@ router.put('/users/update/:id', (req,res,next) => {
             phone_number,
             email,
             pin,
-            image,
             address
             }, {where: {id: req.params.id}})
                 .then(data => {
@@ -143,17 +137,16 @@ router.put('/users/update/:id', (req,res,next) => {
 // Update Image
 router.put('/users/image/:id', (req,res,next) => {
     upload(req, res, function (err) {
-        console.log(req.file, 146)
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
             return res.status(500).json(err)
         }
+        console.log(req.file.filename, 150)
         Users.findAll({where: {id: req.params.id}})
             .then(data => {
-                if (data.length > 1) {
-                    res.status(200).json({message: 'Email Taken'})
-                } else {
+                if(data.length > 1){res.status(200).json({message: 'Email Taken'})}
+                else {
                     Users.update({
                         image: req.file.filename
                     }, {where: {id: req.params.id}})
@@ -165,7 +158,7 @@ router.put('/users/image/:id', (req,res,next) => {
                         })
                 }
             })
-    });
+    })
 })
 
 // Update Password

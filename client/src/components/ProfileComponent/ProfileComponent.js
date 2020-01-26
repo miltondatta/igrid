@@ -35,7 +35,8 @@ class ProfileComponent extends Component{
             email,
             pin,
             phone_number,
-            address
+            address,
+            data
         }
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         Axios.put(apiUrl() + 'users/update/'+id, payload)
@@ -43,11 +44,11 @@ class ProfileComponent extends Component{
                 console.log(resData)
             })
             .catch(err => {console.log(err)})
-        Axios.put(apiUrl() + 'users/image/'+id, data)
-            .then(resData => {
-                console.log(resData)
-            })
-            .catch(err => {console.log(err)})
+        // Axios.put(apiUrl() + 'users/image/'+id, data)
+        //     .then(resData => {
+        //         console.log(resData)
+        //     })
+        //     .catch(err => {console.log(err)})
     }
 
     render(){
