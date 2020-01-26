@@ -12,10 +12,9 @@ const BrandRouter = require('./routes/brands')
 const ProductRouter = require('./routes/product')
 const VendorsRouter = require('./routes/vendors')
 const ProjectRouter = require('./routes/project')
-const ChallanRouter = require('./routes/challans')
+const AssetEntryRouter = require('./routes/assetEntry')
 const ConditionsRouter = require('./routes/conditions')
 const AssetTypesRouter = require('./routes/assetTypes')
-const AssetHistoryRouter = require('./routes/assetHistory')
 const AssetCategoryRouter = require('./routes/assetCategory')
 const DepreciatinRouter = require('./routes/depreciationMethods')
 const AssetSubCategoryRouter = require('./routes/assetSubCategory')
@@ -36,13 +35,13 @@ const app = express();
 
 
 // Middleware
-app.use(cors())
-app.use(helmet())
-app.use(logger('dev'))
-app.use(express.json())
-app.use(cookieParser())
-app.use(express.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(cors());
+app.use(helmet());
+app.use(express.json());
+app.use(cookieParser());
+app.use(logger('dev'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Route Defination
@@ -51,12 +50,11 @@ app.use('/api/v1', ModelRouter)
 app.use('/api/v1', BrandRouter)
 app.use('/api/v1', ProductRouter)
 app.use('/api/v1', VendorsRouter)
-app.use('/api/v1', ChallanRouter)
 app.use('/api/v1', ProjectRouter)
+app.use('/api/v1', AssetEntryRouter)
 app.use('/api/v1', AssetTypesRouter)
 app.use('/api/v1', ConditionsRouter)
 app.use('/api/v1', DepreciatinRouter)
-app.use('/api/v1', AssetHistoryRouter)
 app.use('/api/v1', AssetCategoryRouter)
 app.use('/api/v1', AssetSubCategoryRouter)
 

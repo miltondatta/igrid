@@ -1,5 +1,5 @@
-const devBaseUrl = 'http://192.168.1.94:5000/api/v1/'
-const prodBaseUrl = 'http://192.168.1.94:5000/api/v1/'
+const devBaseUrl = 'http://localhost:5000/api/v1/'
+const prodBaseUrl = 'http://localhost:5000/api/v1/'
 
 export const apiUrl = () => {
     if(process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -264,10 +264,64 @@ export const sidenav = [
         categories: [
             {
                 id: 1,
-                name: 'Create Project',
-                link: '/create-project',
+                name: 'Project',
+                link: '/project',
                 icon: ""
-            }
+            },
+            {
+                id: 2,
+                name: 'Vendor',
+                link: '/vendor',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Models',
+                link: '/model',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Brands',
+                link: '/brand',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Asset Category',
+                link: '/asset-category',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Asset Sub Category',
+                link: '/asset-sub-category',
+                icon: ""
+            },
+            {
+                id: 6,
+                name: 'Product',
+                link: '/product',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'Depreciation Methods',
+                link: '/depreciation-methods',
+                icon: ""
+            },
+            {
+                id: 8,
+                name: 'Asset Types',
+                link: '/asset-types',
+                icon: ""
+            },
+            {
+                id: 9,
+                name: 'Conditions',
+                link: '/conditions',
+                icon: ""
+            },
         ]
     },
 ]

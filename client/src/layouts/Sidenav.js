@@ -61,7 +61,7 @@ class Sidenav extends Component {
             <div className='h-100 ui-sidenav'>
                 <div className='ui-user-details' style={{justifyContent: sideNav && 'center'}}>
                     {!sideNav && <div>
-                    <img className={'ui-user-avatar'} src={'http://localhost:5000/' + image} alt={'user'} />{userName}
+                    <img className={'ui-user-avatar'} src={'http://localhost:5000/images/' + image} alt={'user'} />{userName}
                     </div>}
                     <i onClick={this.props.handleSideNav} className="fas fa-bars"></i>
                 </div>

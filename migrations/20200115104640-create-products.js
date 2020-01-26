@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      product_name:{
+        type: Sequelize.STRING
+      },
       category_id:{
         type: Sequelize.INTEGER,
         references: {
@@ -36,9 +39,6 @@ module.exports = {
           model: 'Models',
           key: 'id'
         },
-      },
-      product_name:{
-        type: Sequelize.STRING
       },
       product_code:{
         type: Sequelize.STRING

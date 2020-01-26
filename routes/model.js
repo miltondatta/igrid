@@ -5,7 +5,7 @@ const route = express.Router()
 
 // Read
 route.get('/models', (req,res,next) => {
-    Models.findAll()
+    Models.findAll({attributes: ['id', 'model']})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -17,26 +17,34 @@ route.get('/models', (req,res,next) => {
 // Update
 route.put('/models/update/:id', (req,res,next) => {
     const {model} = req.body
-    Models.update({model}, {where: {id: req.params.id}})
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            res.status(404).json({message: 'Something went wrong'})
-        })
-
+    if (model === '') {
+        res.status(200).json({message: 'All fields required!'})
+    } else {
+        Models.update({model}, {where: {id: req.params.id}})
+            .then(resData => {
+                res.status(200).json(resData)
+            })
+            .catch(err => {
+                res.status(404).json({message: 'Something went wrong'})
+            })
+    }
 })
 
 // Create
 route.post('/models/entry', (req,res,next) => {
-    Models.create(req.body)
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
-        })
+    const {model} = res.body
+    if (model === '') {
+        res.status(200).json({message: 'All fields required!'})
+    } else {
+        Models.create(req.body)
+            .then(resData => {
+                res.status(200).json(resData)
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(404).json({message: 'Something went wrong', err})
+            })
+    }
 })
 
 // Delete

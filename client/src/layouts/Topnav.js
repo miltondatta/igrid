@@ -87,7 +87,7 @@ class Topnav extends Component{
                         </div>
                         <div className={'text-black ui-user-nav d-flex align-items-center'}>
                             <span onClick={this.handleUserOptions}>{userName}</span>
-                            <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/' + image} alt={'user'} />
+                            <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/images/' + image} alt={'user'} />
                              <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
                             {showUserOption && <div className={'ui-user-dropdown'}>
                                 <p> <Link to={'/profile'}>Profile</Link> </p>
@@ -111,7 +111,7 @@ class Topnav extends Component{
                             </div>
                             <div className={'text-black ui-user-nav d-flex align-items-center'}>
                                 <span onClick={this.handleUserOptions}>{userName}</span>
-                                <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/' + image} alt={'user'} />
+                                <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/images/' + image} alt={'user'} />
                                 <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
                                 {showUserOption && <div className={'ui-user-dropdown'}>
                                     <p> <Link to={'/profile'}>Profile</Link> </p>
