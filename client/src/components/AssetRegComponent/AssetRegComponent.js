@@ -1,22 +1,78 @@
-import QRCode from 'qrcode.react'
 import React, {Component} from 'react';
+import VendorOptions from "../../utility/component/vendorOptions";
+import ProjectOptions from "../../utility/component/projectOptions";
+import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
+import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
+import AssetTypeOptions from "../../utility/component/assetTypeOptions";
+import DepreciationOptions from "../../utility/component/depreciationMethodOptions";
 
 class AssetRegComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            genQr: false
+            challan_no: '',
+            challan_name: '',
+            challan_description: '',
+            purchase_order_no: '',
+            purchase_order_date: '',
+            vendor_id: '',
+            quantity: '',
+            received_by: '',
+            added_by: '',
+            attachment: '',
+            challanComments: '',
+            challan_id: '',
+            project_id: '',
+            asset_category: '',
+            asset_sub_category: '',
+            product_serial: '',
+            cost_of_purchase: '',
+            installation_cost: '',
+            carrying_cost: '',
+            other_cost: '',
+            asset_type: '',
+            depreciation_method: '',
+            rate: '',
+            effective_date: '',
+            book_value: '',
+            salvage_value: '',
+            useful_life: '',
+            last_effective_date: '',
+            warranty: '',
+            last_warranty_date: '',
+            condition: '',
+            assetComments: '',
+            barcode: '',
+            assign_to: '',
+            asset_quantity: 1,
+            prodArr: []
         }
     }
 
+    componentDidMount() {
+        let prodArr = Array.from(Array(this.state.asset_quantity).keys())
+        this.setState({
+            prodArr,
+        })
+    }
+
     handleChange = (e) => {
-        const {name, value} = e.target
-        if(name === 'genQr'){
+        const {name, value, checked, files} = e.target
+        if(name === 'barcode'){
             this.setState({
-                genQr: !this.state.genQr
-            }, () => {
-                console.log(this.state.genQr)
+                barcode: checked
             })
+        } else if (name === 'attachment') {
+            this.setState({attachment: files[0]})
+        } else if (name === 'asset_quantity') {
+            console.log(value)
+            if (parseInt(value, 10) > 0) {
+                let prodArr = Array.from(Array(parseInt(value, 10)).keys())
+                this.setState({
+                    prodArr,
+                    asset_quantity: value
+                })
+            }
         } else {
             this.setState({
                 [name]: value
@@ -24,508 +80,381 @@ class AssetRegComponent extends Component {
         }
     }
 
+    addProduct = () => {
+        const {asset_quantity} = this.state
+        let prodSerialHolder = []
+        let dataArray = []
+        let stateHolder = this.state
+        for(let i = 1; i <= asset_quantity; i++) {
+            prodSerialHolder.push(stateHolder['product_serial_'+i])
+            delete stateHolder['product_serial_'+i]
+            delete stateHolder['prodArr']
+            delete stateHolder['asset_quantity']
+        }
+        prodSerialHolder.forEach(item => {
+            let x = {...stateHolder, product_serial: item}
+            dataArray.push(x)
+        })
+        console.log(dataArray)
+        console.log(stateHolder)
+    }
+
     render() {
-        const {genQr} = this.state
-        let x = {1: 'hello'}
+        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, quantity,
+            received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr,
+            cost_of_purchase, installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value,
+            salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, assetComments, barcode, assign_to, asset_quantity} = this.state
+
+        const prodSer = asset_quantity && prodArr.map((item, index) => {
+            return(
+                <div className={'row p-2 align-items-center'} key={'index'}>
+                    <div className={'col-5 pr-2'}>Product Serial No {item + 1}</div>
+                    <div className={'col-7 pl-2'}>
+                        <input placeholder={`Product Serial No ${item + 1}`} onChange={this.handleChange} name={`product_serial_${item + 1}`}  className={'form-control w-100'}/>
+                    </div>
+                </div>
+            )
+        })
         return (
             <div>
-                <div className={'row'}>
-                    <div className="col-md-4 px-3">
-                        <div className="bg-white rounded p-2">
-                            <nav className="navbar text-center mb-2 pl-2 rounded">
-                                <p className="text-dark f-weight-500 f-20px m-0" href="#">Search Product</p>
-                            </nav>
+                <div className="bg-white rounded p-2">
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p className="text-dark f-weight-500 f-20px m-0">Challan Entry</p>
+                    </nav>
+                    <div className="row">
+                        <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>Asset Category</div>
+                                <div className={'col-5 pr-2'}>Challan No</div>
                                 <div className={'col-7 pl-2'}>
-                                    <select className={'form-control w-100'}>
-                                        <option>Electronics</option>
-                                        <option>Auto Mobile</option>
-                                        <option>Furnitures</option>
+                                    <input onChange={this.handleChange} name={'challan_no'}  value={challan_no} placeholder='Challan No' className='form-control' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Challan Name</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input value={challan_name}  onChange={this.handleChange} name={'challan_name'} placeholder='Challan Name' className='form-control' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Vendor</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={'form-control w-100'} value={vendor_id} onChange={this.handleChange} name={'vendor_id'}>
+                                        <option>--Select Vendor--</option>
+                                        <VendorOptions />
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>Asset Sub-Category</div>
+                                <div className={'col-5 pr-2'}>Purchase Order No</div>
                                 <div className={'col-7 pl-2'}>
-                                    <select className={'form-control w-100'}>
-                                        <option>Laptop</option>
-                                        <option>Fan</option>
-                                        <option>Printer</option>
-                                    </select>
+                                    <input value={purchase_order_no} onChange={this.handleChange} name={'purchase_order_no'} placeholder='Purchase Order No' className='form-control' />
                                 </div>
                             </div>
+                        </div>
+                        <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>Asset Name</div>
+                                <div className={'col-5 pr-2'}>Purchase Order Date</div>
                                 <div className={'col-7 pl-2'}>
-                                    <select className={'form-control w-100'}>
-                                        <option>Asus</option>
-                                        <option>HP</option>
-                                        <option>Dell</option>
-                                    </select>
+                                    <input placeholder='Challan Name' onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'datetime-local'} className='form-control' />
                                 </div>
                             </div>
+                        </div>
+                        <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>Order</div>
+                                <div className={'col-5 pr-2'}>Quantity</div>
                                 <div className={'col-7 pl-2'}>
-                                    <select className={'form-control w-100'}>
-                                        <option>Id</option>
-                                        <option>Name</option>
-                                    </select>
+                                    <input placeholder='Quantity' value={quantity} onChange={this.handleChange} name={'quantity'} type={'number'} className='form-control' />
                                 </div>
                             </div>
+                        </div>
+                        <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>
-                                </div>
+                                <div className={'col-5 pr-2'}>Received By</div>
                                 <div className={'col-7 pl-2'}>
-                                    <button className="btn px-4 btn-outline-info">Search</button>
+                                    <input placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className='form-control' />
                                 </div>
                             </div>
-                            <div className={'bg-light w-100 p-2'}>
-                                <nav className="navbar text-center m-0 p-0 rounded">
-                                    <p className="text-dark f-weight-500 f-20px m-0" href="#">Product List</p>
-                                </nav>
-                                <ul className="list-group mt-2">
-                                    <li className="cursor-pointer text-info list-group-item">ASUS - 101 G3</li>
-                                    <li className="cursor-pointer text-info list-group-item">Dell Inspiron 2004</li>
-                                    <li className="cursor-pointer text-info list-group-item">HP Pavilion x360</li>
-                                    <li className="cursor-pointer text-info list-group-item">Dell Venue 11 Pro (7139)
-                                    </li>
-                                    <li className="cursor-pointer text-info list-group-item">Mony count Machine</li>
-                                </ul>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Added By</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input placeholder='Added By' value={added_by} onChange={this.handleChange} name={'added_by'} type={'text'} className='form-control' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Attachment</div>
+                                <div className={'col-7 pl-2'}>
+                                    <div className="custom-file">
+                                        <input type="file" onChange={this.handleChange} name={'attachment'} className="custom-file-input" id="attachment" />
+                                        <label className="custom-file-label" htmlFor="attachment">Choose
+                                            file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Challan Description</div>
+                                <div className={'col-7 pl-2'}>
+                                <textarea
+                                    id={'enCh1'}
+                                    className={'form-control'}
+                                    value={challan_description}
+                                    placeholder={'Description'}
+                                    onChange={this.handleChange} name={'challan_description'}
+                                     />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Comments</div>
+                                    <div className={'col-7 pl-2'}>
+                                        <textarea
+                                            id={'enCh1'}
+                                            value={challanComments}
+                                            onChange={this.handleChange} name={'challanComments'}
+                                            placeholder={'Comments'}
+                                            className={'form-control'}
+                                             />
+                                    </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-8 pl-1 pr-3">
-                        <div className="bg-white rounded p-2">
-                            <nav className="navbar text-center mb-2 pl-2 rounded">
-                                <p className="text-dark f-weight-500 f-20px m-0">Stock Registration</p>
-                            </nav>
-                            <div className="row">
-                                <div className="col-md-6 pr-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Asset Id</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Asset Id'} className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Asset Name</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Asset Name'} className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Description</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <textarea placeholder={'Description'} className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Asset Category</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Asset Category'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Asset Sub-category</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Asset Sub-category'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Date of Purchase</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="date" placeholder={'Date of Purchase'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Date of Registration</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="date" placeholder={'Date of Registration'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Is Capitalized Asset</div>
-                                        <div className={'col-7 pl-2 row text-center'}>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Cost of Purchase</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Cost of Purchase'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Installation Cost</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Installation Cost'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Carrying Cost</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Carrying Cost'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Other Cost</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Other Cost'} className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Is AMC</div>
-                                        <div className={'col-7 pl-2 row text-center'}>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Asset Type</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option>Deprecated Asset</option>
-                                                <option>Appareciated Asset</option>
-                                                <option>Impairment Fixed Asset</option>
-                                                <option>Floating Fixed Asset</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Depreciation Method</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option>Straight-line</option>
-                                                <option>Accelerated</option>
-                                                <option>Sum-of-Year</option>
-                                                <option>Double-Declining-Balance</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Rate</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Rate'} className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Effective Date</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="date" placeholder={'Date of Purchase'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Current Book Value</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Current Book Value'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Salvage Value</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Salvage Value'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Useful Life</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Useful Life'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Upload Image</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <div className="custom-file">
-                                                <input type="file" className="custom-file-input" id="customFileLang"
-                                                       lang="es"/>
-                                                <label className="custom-file-label" htmlFor="customFileLang">Choose
-                                                    File</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Is Maintenance Available</div>
-                                        <div className={'col-7 pl-2 row text-center'}>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2 font-weight-bold'}>Number of Assets</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Number of Assets'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
+                </div>
+                <div className="bg-white rounded p-2 mt-3">
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p className="text-dark f-weight-500 f-20px m-0">Asset Entry</p>
+                    </nav>
+                    <div className="row">
+                        <div className="col-md-6 pr-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Project</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={'form-control w-100'} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                        <option>--Select Project--</option>
+                                        <ProjectOptions />
+                                    </select>
                                 </div>
-                                <div className="col-md-6 pr-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Is Maintenance Available</div>
-                                        <div className={'col-7 pl-2 row text-center'}>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Project</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option>Asset Management Implementation/500K</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Product Serial No.</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Product Serial No.'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2 font-weight-bold'}>Purchase Information</div>
-                                        <div className={'col-7 pl-2'}></div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Supplier/Vendor</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option>ABC Supplier</option>
-                                                <option>Flora Telecom Limited</option>
-                                                <option>Apsis Solutions Limited</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Product Order No.</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Product Order No.'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Purchase Order Date</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="date" placeholder={'Purchase Order Date'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Warranty/Guarantee</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Warranty/Guarantee'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Value of Insurance</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Value of Insurance'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Value of Premium</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="text" placeholder={'Value of Premium'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Name of Insurance Company</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option>Progoti Insurance Company Ltd</option>
-                                                <option>Padma Insurance Company Ltd</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Expire Date of Insurance</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input type="date" placeholder={'Expire Date of Insurance'}
-                                                   className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Condition</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option>New</option>
-                                                <option>Good</option>
-                                                <option>Fair</option>
-                                                <option>Poor</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Comments</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <textarea placeholder={'Comments'} className={'form-control w-100'}/>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>GL Expense</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={'form-control w-100'}>
-                                                <option value="1">CASH BALANCES</option>
-                                                <option value="2">BALANCES WITH B BANK AND ITS AGENT BANKS</option>
-                                                <option value="3">BALANCES WITH OTHER BANKS AND FIS</option>
-                                                <option value="4">MONEY AT CALL AND SHORT NOTICE</option>
-                                                <option value="5">INVESTMENTS</option>
-                                                <option value="6">LOANS &amp; ADVANCES</option>
-                                                <option value="7">PROPERTY PLANT &amp; EQUIPMENT</option>
-                                                <option value="8">INTANGIBLE ASSET</option>
-                                                <option value="9">INTEREST RECEIVABLES - LOANS &amp; ADVANCES</option>
-                                                <option value="10">INTEREST RECEIVABLES-BILLS PURCHASED &amp; DISCOUNTED
-                                                </option>
-                                                <option value="11">OTHER ASSETS</option>
-                                                <option value="12">NON BANKING ASSET</option>
-                                                <option value="13">BORROWINGS FROM BANGLADESH BANK</option>
-                                                <option value="14">BORROWING FROM OTHER BANK AND NBFIS</option>
-                                                <option value="15">MONEY MARKET BORROWINGS</option>
-                                                <option value="16">BILLS PAYABLES</option>
-                                                <option value="17">OTHER DEPOSITS</option>
-                                                <option value="18">PROVISION FOR LOANS AND ADVANCES</option>
-                                                <option value="19">PROVISION FOR OTHERS</option>
-                                                <option value="20">INTEREST PAYABLE ON DEPOSITS</option>
-                                                <option value="21">INTEREST SUSPENSE</option>
-                                                <option value="22">OTHER LIABILITIES</option>
-                                                <option value="23">PAID UP CAPITAL</option>
-                                                <option value="24">SHARE PREMIUM</option>
-                                                <option value="25">PREFERRENCE SHARE</option>
-                                                <option value="26">STATUTORY RESERVE</option>
-                                                <option value="27">OTHER RESERVE</option>
-                                                <option value="28">RETAINED EARNINGS</option>
-                                                <option value="29">INTEREST INCOME ON LOANS AND ADVANCES</option>
-                                                <option value="30">INT INC ON BALANCES WITH OTHER BANKS AND FIS</option>
-                                                <option value="31">FTP INCOME</option>
-                                                <option value="32">INTEREST EXPENSES ON DEPOSITS</option>
-                                                <option value="33">INTEREST EXPENSE ON BORROWINGS</option>
-                                                <option value="34">FTP EXPENSE</option>
-                                                <option value="35">INCOME ON INVESTMENTS</option>
-                                                <option value="36">LOSS AGAINST INVESTMENT INCOME</option>
-                                                <option value="37">COMMISSION INCOME</option>
-                                                <option value="38">EXPENSE AGAINST COMMISSION INCOME</option>
-                                                <option value="39">NET EXCHANGE GAIN</option>
-                                                <option value="40">FEES INCOME FROM LOANS</option>
-                                                <option value="41">EXPENSE AGAINST FEES INCOME FROM LOANS</option>
-                                                <option value="42">FEES INCOME FROM DEPOSITS</option>
-                                                <option value="43">EXPENSE AGAINST FEES INCOME FROM DEPOSITS</option>
-                                                <option value="44">FEES INCOME FROM OTHERS</option>
-                                                <option value="45">EXPENSE AGAINST FEES INCOME FROM OTHERS</option>
-                                                <option value="46">OTHER OPERATING INCOME</option>
-                                                <option value="47">STAFF SALARIES AND ALLOWANCES</option>
-                                                <option value="48">OTHER OPERATING EXPENSES</option>
-                                                <option value="49">DEPRECIATION &amp; AMORTIZATION</option>
-                                                <option value="50">PROVISION EXPENSE FOR LOANS AND ADVANCES</option>
-                                                <option value="51">OTHER PROVISION</option>
-                                                <option value="52">INCOME TAX PROVISION</option>
-                                                <option value="53">CONTINGENT ASSETS</option>
-                                                <option value="54">CONTINGENT LIABILITIES</option>
-                                                <option value="55">SYSTEM ACCOUNTS</option>
-                                                <option value="56"></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Include in Audits</div>
-                                        <div className={'col-7 pl-2 row text-center'}>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    Yes
-                                                </label>
-                                            </div>
-                                            <div className="form-check col-md-6 px-2 text-center">
-                                                <input className="form-check-input" type="radio" name="exampleRadios"
-                                                       id="exampleRadios2" value="option2"/>
-                                                <label className="form-check-label" htmlFor="exampleRadios2">
-                                                    No
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Attachment</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <div className="custom-file">
-                                                <input type="file" className="custom-file-input" id="customFileLang"
-                                                       lang="es"/>
-                                                <label className="custom-file-label" htmlFor="customFileLang">Choose
-                                                    File</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Generate Barcode</div>
-                                        <div className={'col-7 pl-2 text-center'}>
-                                            <input className="form-check-input" type="checkbox" name={'genQr'} onChange={this.handleChange} value={genQr} id="defaultCheck1" />
-                                            {genQr && <QRCode value={JSON.stringify(x)} />}
-                                        </div>
-                                    </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Asset Category</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={'form-control w-100'} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
+                                        <option>--Asset Category--</option>
+                                        <AssetCategoryOptions />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Asset Sub-category</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={'form-control w-100'} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
+                                        <option>--Asset Sub Category--</option>
+                                        <AssetSubCategoryOptions />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Cost of Purchase</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={cost_of_purchase}
+                                           onChange={this.handleChange} name={'cost_of_purchase'}
+                                           placeholder={'Cost of Purchase'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Installation Cost</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={installation_cost}
+                                           onChange={this.handleChange} name={'installation_cost'}
+                                           placeholder={'Installation Cost'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Carrying Cost</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={carrying_cost}
+                                           onChange={this.handleChange} name={'carrying_cost'}
+                                           placeholder={'Carrying Cost'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Other Cost</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type={'number'}
+                                           value={other_cost}
+                                           onChange={this.handleChange} name={'other_cost'}
+                                           placeholder={'Other Cost'}
+                                           className={'form-control'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Asset Type</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={'form-control w-100'} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
+                                        <option>--Asset Type--</option>
+                                        <AssetTypeOptions />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Depreciation Method</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={'form-control w-100'} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
+                                        <option>--Select Depreciation Method--</option>
+                                        <DepreciationOptions />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Rate</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={rate}
+                                           onChange={this.handleChange} name={'rate'}
+                                           placeholder={'Rate'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <nav className="navbar text-center mt-2 pl-2 rounded">
+                                <p className="text-dark f-weight-500 m-0">Quantity</p>
+                            </nav>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Asset Quantity</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type='number' className={'form-control'} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
+                                </div>
+                            </div>
+
+                            {prodSer}
+
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>
+                                    <button onClick={this.addProduct} className="btn btn-outline-info">Add Product</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 pr-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Effective Date</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="datetime-local"
+                                           value={effective_date}
+                                           onChange={this.handleChange} name={'effective_date'}
+                                           placeholder={'Effective Date'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Book Value</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={book_value}
+                                           onChange={this.handleChange} name={'book_value'}
+                                           placeholder={'Book Value'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Salvage Value</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={salvage_value}
+                                           onChange={this.handleChange} name={'salvage_value'}
+                                           placeholder={'Salvage Value'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Useful Life</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="text"
+                                           value={useful_life}
+                                           onChange={this.handleChange} name={'useful_life'}
+                                           placeholder={'Useful Life'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Last Effective Date</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="datetime-local"
+                                           value={last_effective_date}
+                                           onChange={this.handleChange} name={'last_effective_date'}
+                                           placeholder={'Effective Date'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Warranty</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="text"
+                                           value={warranty}
+                                           onChange={this.handleChange} name={'warranty'}
+                                           placeholder={'Warranty'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Last Warranty Date</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="datetime-local"
+                                           value={last_warranty_date}
+                                           onChange={this.handleChange} name={'last_warranty_date'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Condition</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="number"
+                                           value={condition}
+                                           onChange={this.handleChange} name={'condition'}
+                                           placeholder={'Condition'}
+                                           className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Comments</div>
+                                <div className={'col-7 pl-2'}>
+                                    <textarea placeholder={'Comments'}
+                                              onChange={this.handleChange} name={'assetComments'}
+                                              value={assetComments}
+                                              className={'form-control w-100'}/>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Barcode</div>
+                                <div className={'col-7 pl-2 ui-checkbox'}>
+                                    <input type="checkbox"
+                                           checked={barcode}
+                                    />
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Assigned To</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input type="text"
+                                           value={assign_to}
+                                           onChange={this.handleChange} name={'assign_to'}
+                                           placeholder={'Assigned To'}
+                                           className={'form-control w-100'}/>
                                 </div>
                             </div>
                         </div>

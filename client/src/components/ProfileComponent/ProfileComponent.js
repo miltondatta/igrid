@@ -35,7 +35,7 @@ class ProfileComponent extends Component{
             email,
             pin,
             phone_number,
-            address,
+            address
         }
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         Axios.put(apiUrl() + 'users/update/'+id, payload)

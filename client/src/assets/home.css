@@ -35,13 +35,13 @@
 
 .ui-homecomponent .ui-cards::before{
     content: '';
-    width: 365px;
-    height: 133px;
+    width: 565px;
+    height: 333px;
     position: absolute;
     background: #ffffff3b;
     transform: rotate(25deg);
-    left: -87px;
-    bottom: -40px;
+    left: -187px;
+    bottom: -230px;
     z-index: 0;
 }
 
