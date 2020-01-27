@@ -6,6 +6,7 @@ import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
 import BrandIdOptions from "../../utility/component/brandIdOptions";
 import ModelIdOptions from "../../utility/component/modelIdOptions";
+import FlashMessage from "../../module/flash-message/FlashMessage";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -15,7 +16,7 @@ class AdminInputContainer extends Component {
             model: '',
             brand: '',
             file_name: '',
-            category_id: 1,
+            category_id: '',
             description: '',
             vendor_name: '',
             project_name: '',
@@ -28,11 +29,11 @@ class AdminInputContainer extends Component {
             depreciation_code: '',
             method_name: '',
             product_code: '',
-            sub_category_id: 1,
+            sub_category_id: '',
             sub_category_name: '',
             sub_category_code: '',
             editId: null,
-            errorDict: {},
+            errorDict: null,
             error: false,
             enlisted: false,
             isLoading: false,
@@ -41,6 +42,9 @@ class AdminInputContainer extends Component {
     
     handleSubmit = () => {
         const {getApi} = this.props
+        if (Object.values(this.validate()).includes(false)) {
+            return
+        }
         Axios.post(apiUrl() + getApi + '/entry', this.getApiData())
             .then(res => {
                 console.log(res)
@@ -125,6 +129,9 @@ class AdminInputContainer extends Component {
     updateData = () => {
         const {getApi} = this.props
         const {editId} = this.state
+        if (Object.values(this.validate()).includes(false)) {
+            return
+        }
         Axios.put(apiUrl() + getApi + '/update/' + editId, this.getApiData())
             .then(resData => {
                 console.log(resData)
@@ -146,7 +153,8 @@ class AdminInputContainer extends Component {
     }
 
     handleChange = (e) => {
-        const {name, value, checked} = e.target
+        const {name, value, checked, files} = e.target
+        console.log(files, name, value)
         if(name === 'project_code'){
             if (isNaN(value)){
                 return
@@ -162,6 +170,10 @@ class AdminInputContainer extends Component {
             this.setState({
                 [name]: checked
             })
+        } else if (name === 'file_name') {
+            this.setState({
+                [name]: files[0],
+            })
         } else {
             this.setState({
                 [name]: value
@@ -169,19 +181,20 @@ class AdminInputContainer extends Component {
                 this.validate()
             })
         }
+
     }
 
     componentDidMount = () => {
         this.getData()
-        this.validate()
     }
 
     renderForm = () => {
         const {formType} = this.props
-        const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand,
+        const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand,file_name_tag,
             category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code,
             brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type} = this.state
 
+        console.log(errorDict)
         switch (formType){
             case 'VENDOR':
                 return(
@@ -199,7 +212,7 @@ class AdminInputContainer extends Component {
                                             name={'vendor_name'}
                                             value={vendor_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.vendor_name) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.vendor_name) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -208,14 +221,12 @@ class AdminInputContainer extends Component {
                                     <div className="col-md-3">
                                         File Name
                                     </div>
-                                    <div className="col-md-9">
-                                        <input
-                                            placeholder='File Name'
-                                            type={'text'}
-                                            name={'file_name'}
-                                            value={file_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.file_name) && 'border border-danger'}`} />
+                                    <div className="col-md-9 was-validated">
+                                        <div className="custom-file">
+                                            <input type="file" onChange={this.handleChange} name={'file_name'} className="custom-file-input" id="validatedCustomFile"
+                                                   required />
+                                                <label className="custom-file-label" htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file...'}</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +243,7 @@ class AdminInputContainer extends Component {
                                             id={'enCh1'}
                                             name={'description'}
                                             value={description}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.description) && 'border border-danger'}`}
+                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`}
                                             onChange={this.handleChange} />
                                     </div>
                                 </div>
@@ -256,8 +267,8 @@ class AdminInputContainer extends Component {
                             </div>
                         </div>
                         <div className="d-flex justify-content-end px-2 w-100">
-                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Vendor</button> : <>
-                                <button className="btn btn-outline-info mt-3 mr-2" disabled={Object.values(errorDict).includes(false)} onClick={this.updateData}>Update Projects</button>
+                            {editId === null ? <button className="btn btn-outline-info mt-3" onClick={this.handleSubmit}>Submit Vendor</button> : <>
+                                <button className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -288,7 +299,7 @@ class AdminInputContainer extends Component {
                                             name={'project_name'}
                                             value={project_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.project_name) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.project_name) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +315,7 @@ class AdminInputContainer extends Component {
                                             name={'project_code'}
                                             value={project_code}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.project_code) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.project_code) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -321,13 +332,13 @@ class AdminInputContainer extends Component {
                                             name={'description'}
                                             value={description}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.description) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
+                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -352,7 +363,7 @@ class AdminInputContainer extends Component {
                                         Category
                                     </div>
                                     <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`form-control ${(errorDict !== {} && !errorDict.category_id) && 'border border-danger'}`}>
+                                        <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
                                             <AssetCategoryOptions />
                                         </select>
@@ -365,7 +376,7 @@ class AdminInputContainer extends Component {
                                         Sub Category
                                     </div>
                                     <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'sub_category_id'} value={sub_category_id} onChange={this.handleChange} className={`form-control ${(errorDict !== {} && !errorDict.sub_category_id) && 'border border-danger'}`}>
+                                        <select name={'sub_category_id'} value={sub_category_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
                                             <AssetSubCategoryOptions assetId={category_id} />
                                         </select>
@@ -385,7 +396,7 @@ class AdminInputContainer extends Component {
                                             name={'product_name'}
                                             value={product_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.product_name) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.product_name) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -400,7 +411,7 @@ class AdminInputContainer extends Component {
                                             name={'product_code'}
                                             value={product_code}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.product_code) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.product_code) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -412,7 +423,7 @@ class AdminInputContainer extends Component {
                                         Brand
                                     </div>
                                     <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'brand_id'} value={brand_id} onChange={this.handleChange} className={`form-control ${(errorDict !== {} && !errorDict.brand_id) && 'border border-danger'}`}>
+                                        <select name={'brand_id'} value={brand_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.brand_id) && 'is-invalid'}`}>
                                             <option>--Select Brand--</option>
                                             <BrandIdOptions />
                                         </select>
@@ -425,7 +436,7 @@ class AdminInputContainer extends Component {
                                         Model
                                     </div>
                                     <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`form-control ${(errorDict !== {} && !errorDict.model_id) && 'border border-danger'}`}>
+                                        <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.model_id) && 'is-invalid'}`}>
                                             <option>--Select Model--</option>
                                             <ModelIdOptions />
                                         </select>
@@ -434,8 +445,8 @@ class AdminInputContainer extends Component {
                             </div>
                         </div>
                         <div className="d-flex justify-content-end">
-                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Products</button> : <>
-                                <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Products</button>
+                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Products</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Products</button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -466,13 +477,13 @@ class AdminInputContainer extends Component {
                                             name={'model'}
                                             value={model}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.model) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.model) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Model</button>
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Model</button>
                                     <button className="btn btn-outline-danger" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -501,13 +512,13 @@ class AdminInputContainer extends Component {
                                             name={'brand'}
                                             value={brand}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.brand) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.brand) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Brand</button>
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Brand</button>
                                     <button className="btn btn-outline-danger" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -536,13 +547,13 @@ class AdminInputContainer extends Component {
                                             name={'condition_type'}
                                             value={condition_type}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.condition_type) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.condition_type) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
                                     <button className="btn btn-outline-danger" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -571,7 +582,7 @@ class AdminInputContainer extends Component {
                                             name={'method_name'}
                                             value={method_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.method_name) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.method_name) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
@@ -587,7 +598,7 @@ class AdminInputContainer extends Component {
                                             name={'depreciation_code'}
                                             value={depreciation_code}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.depreciation_code) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.depreciation_code) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -604,13 +615,13 @@ class AdminInputContainer extends Component {
                                             name={'description'}
                                             value={description}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.description) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Method</button>
+                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Method</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -641,7 +652,7 @@ class AdminInputContainer extends Component {
                                             name={'type_name'}
                                             value={type_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.type_name) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.type_name) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
@@ -657,7 +668,7 @@ class AdminInputContainer extends Component {
                                             name={'asset_code'}
                                             value={asset_code}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.asset_code) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.asset_code) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -674,13 +685,13 @@ class AdminInputContainer extends Component {
                                             name={'description'}
                                             value={description}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.description) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Asset Type</button>
+                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Asset Type</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -711,7 +722,7 @@ class AdminInputContainer extends Component {
                                             name={'category_name'}
                                             value={category_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.category_name) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.category_name) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
@@ -727,7 +738,7 @@ class AdminInputContainer extends Component {
                                             name={'category_code'}
                                             value={category_code}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.category_code) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.category_code) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -744,13 +755,13 @@ class AdminInputContainer extends Component {
                                             name={'description'}
                                             value={description}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.description) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
-                                    <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Category</button>
+                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Category</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -775,7 +786,7 @@ class AdminInputContainer extends Component {
                                         Category
                                     </div>
                                     <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`form-control ${(errorDict !== {} && !errorDict.category_id) && 'border border-danger'}`}>
+                                        <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
                                             <AssetCategoryOptions assetId={category_id}/>
                                         </select>
@@ -794,7 +805,7 @@ class AdminInputContainer extends Component {
                                             name={'sub_category_name'}
                                             value={sub_category_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.sub_category_name) && 'border border-danger'}`}  />
+                                            className={`form-control ${(errorDict && !errorDict.sub_category_name) && 'is-invalid'}`}  />
                                     </div>
                                 </div>
                             </div>
@@ -812,7 +823,7 @@ class AdminInputContainer extends Component {
                                             name={'sub_category_code'}
                                             value={sub_category_code}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.sub_category_code) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
@@ -827,14 +838,14 @@ class AdminInputContainer extends Component {
                                             name={'description'}
                                             value={description}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict !== {} && !errorDict.description) && 'border border-danger'}`} />
+                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="d-flex justify-content-end">
-                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                                <button disabled={Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Sub Category</button>
+                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Sub Category</button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -870,7 +881,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "DEPMETHOD":
                 errorDict = {
                     depreciation_code: depreciation_code !== '',
@@ -880,7 +891,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "ASSETTYPES":
                 errorDict = {
                     asset_code: asset_code !== '',
@@ -890,7 +901,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "PRODUCTS":
                 errorDict = {
                     brand_id: brand_id !== '',
@@ -903,7 +914,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "VENDOR":
                 errorDict = {
                     file_name: file_name !== '',
@@ -913,7 +924,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "MODELS":
                 errorDict = {
                     model: model !== '',
@@ -921,7 +932,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "CONDITIONS":
                 errorDict = {
                     condition_type: condition_type !== '',
@@ -929,7 +940,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "BRANDS":
                 errorDict = {
                     brand: brand !== '',
@@ -937,7 +948,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "ASSETCATEGORY":
                 errorDict = {
                     description: description !== '',
@@ -947,7 +958,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             case "ASSETSUBCATEGORY":
                 errorDict = {
                     description: description !== '',
@@ -958,7 +969,7 @@ class AdminInputContainer extends Component {
                 this.setState({
                     errorDict
                 })
-                break;
+                return errorDict
             default:
                 return null
         }
@@ -971,7 +982,12 @@ class AdminInputContainer extends Component {
             type_name, asset_code, condition_type} = this.state
         switch (formType){
             case "VENDOR":
-                return ({vendor_name,file_name,description,enlisted})
+                let data = new FormData()
+                data.append('file', file_name)
+                data.append('vendor_name', vendor_name)
+                data.append('description', description)
+                data.append('enlisted', enlisted)
+                return data
             case "PROJECT":
                 return({
                     project_name,

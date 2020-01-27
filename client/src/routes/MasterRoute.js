@@ -88,10 +88,6 @@ const AsyncRepairMaintenence= Loadable({
     loader: () => import('../containers/RepairMaintenence'),
     loading: Loading,
 });
-const AsyncAdminInputs = Loadable({
-    loader: () => import('../containers/AdminInputs'),
-    loading: Loading,
-});
 const AsyncCreateProject = Loadable({
     loader: () => import('../containers/Projects'),
     loading: Loading,
@@ -186,7 +182,6 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-types' component={AsyncAssetTypes}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
-                                    <Route exact path='/admin-inputs' component={AsyncAdminInputs}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
                                     <Route exact path='/asset-category' component={AsyncAssetCategory}/>

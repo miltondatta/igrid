@@ -1,3 +1,4 @@
+const fs = require('fs');
 const multer = require('multer')
 const bcrypt = require('bcryptjs')
 const express = require('express')
@@ -15,7 +16,16 @@ let storage = multer.diskStorage({
         cb(null, Date.now() + '-' +file.originalname )
     }
 })
-let upload = multer({ storage: storage }).single('file')
+let upload =  multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
+            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
+
+        }
+        cb(null, true);
+    }
+}).single('file')
 
 // Get All Users
 router.get('/users', (req,res,next) => {
@@ -106,66 +116,43 @@ router.put('/users/disable/:id', (req,res,next) => {
 
 // Update Users
 router.put('/users/update/:id', (req,res,next) => {
-  const {firstName, lastName, phone_number, email, pin, address} = req.body
-    let image
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
             return res.status(500).json(err)
         }
-        res.send(req.file)
-        image = req.file
-    })
-    Users.findAll({where: {email: email}})
-       .then(data => {
-         if(data.length > 1){res.status(200).json({message: 'Email Taken'})}
-         else {
-          Users.update({
+        const {firstName, lastName, phone_number, email, pin, address} = req.body
+        let sendData = {
             firstName,
             lastName,
             phone_number,
             email,
             pin,
-            image,
-            address
-            }, {where: {id: req.params.id}})
-                .then(data => {
-                  res.json(data)
-                })
-                .catch(err => {
-                  res.json({message: err})
-                })
-         }
-       })
-})
-
-// Update Image
-router.put('/users/image/:id', (req,res,next) => {
-    upload(req, res, function (err) {
-        console.log(req.file, 146)
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json(err)
-        } else if (err) {
-            return res.status(500).json(err)
+            address,
+            image: req.file.filename
         }
-        Users.findAll({where: {id: req.params.id}})
+        Users.findAll({where: {email: sendData.email}})
             .then(data => {
                 if (data.length > 1) {
                     res.status(200).json({message: 'Email Taken'})
                 } else {
-                    Users.update({
-                        image: req.file.filename
-                    }, {where: {id: req.params.id}})
+                    if (fs.existsSync('public/images/' + data[0].dataValues.image)) {
+                        fs.unlink('public/images/' + data[0].dataValues.image, (err) => {
+                            if (err) throw err;
+                            console.log('successfully deleted /tmp/hello');
+                        });
+                    }
+                    Users.update({...sendData}, {where: {id: req.params.id}})
                         .then(data => {
                             res.json(data)
                         })
                         .catch(err => {
-                            res.json({message: err})
+                            res.status(404).json({message: 'Something went wrong'})
                         })
                 }
             })
-    });
+    })
 })
 
 // Update Password

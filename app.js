@@ -42,6 +42,8 @@ app.use(cookieParser());
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/asset')));
+app.use(express.static(path.join(__dirname, 'public/vendor')));
 
 
 // Route Defination

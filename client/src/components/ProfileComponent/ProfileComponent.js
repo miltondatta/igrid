@@ -26,24 +26,17 @@ class ProfileComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const {firstName, lastName, email, pin, phone_number, address, filename } = this.state
+        const {firstName, lastName, email, pin, number, address, filename } = this.state
         const data = new FormData()
         data.append('file', filename)
-        const payload = {
-            firstName,
-            lastName,
-            email,
-            pin,
-            phone_number,
-            address
-        }
+        data.append('firstName', firstName)
+        data.append('lastName', lastName)
+        data.append('email', email)
+        data.append('pin', pin)
+        data.append('number', number)
+        data.append('address', address)
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        Axios.put(apiUrl() + 'users/update/'+id, payload)
-            .then(resData => {
-                console.log(resData)
-            })
-            .catch(err => {console.log(err)})
-        Axios.put(apiUrl() + 'users/image/'+id, data)
+        Axios.put(apiUrl() + 'users/update/'+id, data)
             .then(resData => {
                 console.log(resData)
             })
@@ -74,7 +67,7 @@ class ProfileComponent extends Component{
                         </div>
                         <div className="form-group col-md-6">
                             <label htmlFor="inputPassword4">Official Phone Number</label>
-                            <input onChange={this.handleChange} name={'phonenumber'} type="text" className="form-control" id="inputPassword4" placeholder="Official Phone Number" />
+                            <input onChange={this.handleChange} name={'number'} type="text" className="form-control" id="inputPassword4" placeholder="Official Phone Number" />
                         </div>
                     </div>
                     <div className="form-group">

@@ -26,9 +26,6 @@ const Challan = db.define('Challan', {
             key: 'id'
         },
     },
-    quantity: {
-        type: Sequelize.INTEGER,
-    },
     received_by: {
         type: Sequelize.STRING,
     },
