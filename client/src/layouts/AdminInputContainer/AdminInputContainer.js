@@ -6,7 +6,6 @@ import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
 import BrandIdOptions from "../../utility/component/brandIdOptions";
 import ModelIdOptions from "../../utility/component/modelIdOptions";
-import FlashMessage from "../../module/flash-message/FlashMessage";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -122,6 +121,7 @@ class AdminInputContainer extends Component {
                         })
                     })
                 })
+                return null
             }
         })
     }

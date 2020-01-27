@@ -80,21 +80,21 @@ class HomeLand extends React.Component{
                             iGrid
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur est ipsa iste ratione velit. A architecto ex fugit odio possimus.</p>
-                        <img src={process.env.PUBLIC_URL + '/media/image/1.jpg'} />
+                        <img alt='mediaimg' src={process.env.PUBLIC_URL + '/media/image/1.jpg'} />
                     </div>
                     <div className={'ui-char-splitting'} data-active={currentOne === 1}>
                         <div className={'ui-char'} >
                             Penta
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur est ipsa iste ratione velit. A architecto ex fugit odio possimus.</p>
-                        <img src={process.env.PUBLIC_URL + '/media/image/2.jpg'} />
+                        <img alt='mediaimg' src={process.env.PUBLIC_URL + '/media/image/2.jpg'} />
                     </div>
                     <div className={'ui-char-splitting'} data-active={currentOne === 2}>
                         <div className={'ui-char'} >
                             Rakib
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur est ipsa iste ratione velit. A architecto ex fugit odio possimus.</p>
-                        <img src={process.env.PUBLIC_URL + '/media/image/3.jpg'} />
+                        <img alt='mediaimg' src={process.env.PUBLIC_URL + '/media/image/3.jpg'} />
                     </div>
                     <i className="fas fa-chevron-left" onClick={this.handleClickLeft}></i>
                     <i className="fas fa-chevron-right" onClick={this.handleClickRight}></i>

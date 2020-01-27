@@ -18,6 +18,13 @@ class ReactDataTable extends Component {
         }
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            actualData: nextProps.tableData ? nextProps.tableData : [],
+            tableData: nextProps.tableData ? nextProps.tableData.slice(0,10) : []
+        };
+    }
+
     sortColumn = (e, sortColumn) => {
         e.preventDefault()
         const {actualData, displayRow} = this.state
@@ -35,7 +42,7 @@ class ReactDataTable extends Component {
     }
 
     handleChange = (e) => {
-        const {actualData, displayRow} = this.state
+        const {actualData} = this.state
         const {name, value} = e.target
         if (name === 'displayRow') {
             this.setState({
@@ -111,11 +118,10 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del} = this.props
+        const {searchable, exportable, pagination, edit, del, details} = this.props
         const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
-        let title = Object.keys(tableData[0])[1]
-        console.log(title)
-        let filteredData = tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
+        let title = tableData.length > 0 && Object.keys(tableData[0])[1]
+        let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
@@ -137,6 +143,9 @@ class ReactDataTable extends Component {
                 </td>}
                 {del && <td className={'text-danger'}>
                     <p className="cursor-pointer text-danger" onClick={() => {this.deleteItem(item.id)}}>Delete</p>
+                </td>}
+                {details && <td className={'text-danger'}>
+                    <p className="cursor-pointer text-info" onClick={() => {this.props.assetList(item.id)}}>Details</p>
                 </td>}
             </tr>
         ))
@@ -174,6 +183,7 @@ class ReactDataTable extends Component {
                             {table_headers}
                             {edit && <th>Edit</th>}
                             {del && <th>Delete</th>}
+                            {details && <th>Details</th>}
                         </tr>
                     </thead>
                     <tbody>

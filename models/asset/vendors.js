@@ -1,5 +1,6 @@
 const db = require('../../config/db')
 const Sequelize = require('sequelize')
+const Challan = require('./challan')
 
 const Vendors = db.define('Vendors', {
     vendor_name:{
@@ -15,5 +16,7 @@ const Vendors = db.define('Vendors', {
         type: Sequelize.STRING
     },
 })
+
+Vendors.belongsTo(Challan)
 
 module.exports = Vendors

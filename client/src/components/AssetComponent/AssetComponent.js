@@ -70,7 +70,6 @@ class AssetComponent extends Component{
     }
 
     render(){
-        let tableSet = null
         const columns = [
             {
                 name: 'No',

@@ -189,7 +189,7 @@ class AssetRegComponent extends Component {
 
     validate = (forr) => {
         const {attachment, challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,
-            challanComments,project_id,asset_category,asset_sub_category,product_serial,cost_of_purchase,installation_cost,carrying_cost,
+            challanComments,project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost,
             other_cost,asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,last_effective_date,warranty,
             last_warranty_date,condition,comments,barcode} = this.state
         let errorDict = null
@@ -215,7 +215,6 @@ class AssetRegComponent extends Component {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
-                product_serial: typeof product_serial !== 'undefined' && product_serial !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
@@ -237,13 +236,14 @@ class AssetRegComponent extends Component {
             this.setState({
                 errorDictAsset: errorDict
             })
+            console.log(errorDict)
             return errorDict
         }
 
     }
 
     render() {
-        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id,
+        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment,
             received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict,
             salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity} = this.state
@@ -330,8 +330,7 @@ class AssetRegComponent extends Component {
                                 <div className={'col-7 pl-2'}>
                                     <div className="custom-file">
                                         <input type="file" onChange={this.handleChange} name={'attachment'} className="custom-file-input" id="attachment" />
-                                        <label className={`custom-file-label ${errorDict && !errorDict.attachment && 'is-invalid'}`} htmlFor="attachment">Choose
-                                            file</label>
+                                        <label className={`custom-file-label ${errorDict && !errorDict.attachment && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose file'}</label>
                                     </div>
                                 </div>
                             </div>
@@ -464,7 +463,7 @@ class AssetRegComponent extends Component {
                             <div className={'row p-2 align-items-center'}>
                                 <div className={'col-5 pr-2'}>Asset Quantity</div>
                                 <div className={'col-7 pl-2'}>
-                                    <input type='number' className={`form-control ${errorDictAsset && !errorDictAsset.asset_quantity && 'is-invalid'}`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
+                                    <input type='number' className={`form-control`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
                                 </div>
                             </div>
 

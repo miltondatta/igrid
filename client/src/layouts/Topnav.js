@@ -30,7 +30,6 @@ class Topnav extends Component{
     renderCategory = () => {
         const {currentHover} = this.state
         const {pathname} = this.props.location
-        let emptyArr = []
         const {userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         return(
             <>

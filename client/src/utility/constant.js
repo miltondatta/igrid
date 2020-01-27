@@ -115,7 +115,7 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'Stock',
-                link: '/request-history',
+                link: '/challan',
                 icon: ""
             },
             {

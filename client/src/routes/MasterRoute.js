@@ -128,6 +128,10 @@ const AsyncConditions = Loadable({
     loader: () => import('../containers/Conditions'),
     loading: Loading,
 });
+const AsyncChallan = Loadable({
+    loader: () => import('../containers/Challan'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -172,6 +176,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/vendor' component={AsyncVendor}/>
                                     <Route exact path='/home' component={AsyncHomeLand}/>
                                     <Route exact path='/profile' component={AsyncProile}/>
+                                    <Route exact path='/challan' component={AsyncChallan}/>
                                     <Route exact path='/product' component={AsyncProduct}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/asset/:option' component={AsyncAsset}/>
