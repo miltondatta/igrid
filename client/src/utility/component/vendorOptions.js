@@ -13,7 +13,7 @@ class VendorOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'vendors')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     brandData: resData.data
                 })

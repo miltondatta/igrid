@@ -70,7 +70,7 @@ route.delete('/products/delete', (req,res,next) => {
         }
     })
         .then(resData => {
-            console.log(resData)
+
             res.status(200).json({message: 'Products Has Been Deleted'})
         })
         .catch(err => {

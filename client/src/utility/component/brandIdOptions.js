@@ -13,7 +13,7 @@ class BrandIdOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'brands')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     brandData: resData.data
                 })

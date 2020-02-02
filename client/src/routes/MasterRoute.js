@@ -132,6 +132,10 @@ const AsyncChallan = Loadable({
     loader: () => import('../containers/Challan'),
     loading: Loading,
 });
+const AsyncUserLoginLog = Loadable({
+    loader: () => import('../containers/Logs/UserLoginLog'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -189,6 +193,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
+                                    <Route exact path='/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/asset-category' component={AsyncAssetCategory}/>
                                     <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
                                     <Route exact path='/depreciation-methods' component={AsyncDepMethod}/>

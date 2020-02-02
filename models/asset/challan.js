@@ -17,7 +17,7 @@ const Challan = db.define('Challan', {
         type: Sequelize.STRING
     },
     purchase_order_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     vendor_id:{
         type: Sequelize.INTEGER,

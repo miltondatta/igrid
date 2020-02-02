@@ -21,7 +21,7 @@ class AssetRegComponent extends Component {
             purchase_order_date: '',
             vendor_id: '',
             received_by: '',
-            added_by: '',
+            added_by: jwt.decode(localStorage.getItem('user')).data.id,
             attachment: '',
             challanComments: '',
             challan_id: '',
@@ -128,7 +128,7 @@ class AssetRegComponent extends Component {
         })
         Axios.post(apiUrl() + 'asset-entry/entry', dataArray)
             .then(resData => {
-                console.log(resData)
+
             })
             .catch(err => {console.log(err)})
     }
@@ -151,7 +151,7 @@ class AssetRegComponent extends Component {
         data.append('challanComments', challanComments)
         Axios.post(apiUrl() + 'asset-entry/challan/entry', data)
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     challan_id: resData.data
                 })
@@ -248,6 +248,7 @@ class AssetRegComponent extends Component {
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict,
             salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity} = this.state
 
+        const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         const prodSer = asset_quantity && prodArr.map((item, index) => {
             return(
                 <div className={'row p-2 align-items-center'} key={10 + index}>
@@ -260,7 +261,7 @@ class AssetRegComponent extends Component {
         })
         return (
             <div>
-                {challan_id === '' && <div className="bg-white rounded p-2">
+                {challan_id === '' && <div className="bg-white rounded p-2 shadow">
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p className="text-dark f-weight-500 f-20px m-0">Add Challan Info First</p>
                     </nav>
@@ -294,22 +295,6 @@ class AssetRegComponent extends Component {
                         </div>
                         <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>Purchase Order No</div>
-                                <div className={'col-7 pl-2'}>
-                                    <input value={purchase_order_no} onChange={this.handleChange} name={'purchase_order_no'} placeholder='Purchase Order No' className={`form-control ${errorDict && !errorDict.purchase_order_no && 'is-invalid'}`} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 px-2">
-                            <div className={'row p-2 align-items-center'}>
-                                <div className={'col-5 pr-2'}>Purchase Order Date</div>
-                                <div className={'col-7 pl-2'}>
-                                    <input placeholder='Challan Name' onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'datetime-local'} className={`form-control ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-4 px-2">
-                            <div className={'row p-2 align-items-center'}>
                                 <div className={'col-5 pr-2'}>Received By</div>
                                 <div className={'col-7 pl-2'}>
                                     <input placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`form-control ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
@@ -320,7 +305,7 @@ class AssetRegComponent extends Component {
                             <div className={'row p-2 align-items-center'}>
                                 <div className={'col-5 pr-2'}>Added By</div>
                                 <div className={'col-7 pl-2'}>
-                                    <input placeholder='Added By' value={added_by} onChange={this.handleChange} name={'added_by'} type={'text'} className={`form-control ${errorDict && !errorDict.added_by && 'is-invalid'}`} />
+                                    <input placeholder='Added By' value={userName} type={'text'} className={`form-control`} disabled={true} />
                                 </div>
                             </div>
                         </div>
@@ -334,6 +319,24 @@ class AssetRegComponent extends Component {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Purchase Order No</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input value={purchase_order_no} onChange={this.handleChange} name={'purchase_order_no'} placeholder='Purchase Order No' className={`form-control ${errorDict && !errorDict.purchase_order_no && 'is-invalid'}`} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Purchase Order Date</div>
+                                <div className={'col-7 pl-2'}>
+                                    <input placeholder='Challan Name' onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`form-control ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
                         </div>
                         <div className="col-md-4 px-2">
                             <div className={'row p-2 align-items-center'}>
@@ -374,7 +377,61 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-                {challan_id !== '' && <div className="bg-white rounded p-2 mt-3">
+                {challan_id !== '' && <div className="bg-white rounded p-2 shadow mt-3">
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p className="text-dark f-weight-500 f-20px m-0">Challan Info</p>
+                    </nav>
+                    <div className="row">
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Challan No: <span className={'f-weight-500'}>{challan_no}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Challan Name: <span className={'f-weight-500'}>{challan_name}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Challan Description: <span className={'f-weight-500'}>{challan_description}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Received By: <span className={'f-weight-500'}>{received_by}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Added By: <span className={'f-weight-500'}>{userName}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Vendor: <span className={'f-weight-500'}>{vendor_id}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Comments: <span className={'f-weight-500'}>{challanComments}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>Purchase Order No: <span className={'f-weight-500'}>{purchase_order_no}</span></div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 px-2">
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-12 pr-2'}>
+                                    Purchase Order Date: <span className={'f-weight-500'}>{purchase_order_date}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>}
+                {challan_id !== '' && <div className="bg-white rounded p-2 mt-3 shadow">
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p className="text-dark f-weight-500 f-20px m-0">Add Asset Info</p>
                     </nav>
@@ -481,7 +538,7 @@ class AssetRegComponent extends Component {
                             <div className={'row p-2 align-items-center'}>
                                 <div className={'col-5 pr-2'}>Effective Date</div>
                                 <div className={'col-7 pl-2'}>
-                                    <input type="datetime-local"
+                                    <input type="date"
                                            value={effective_date}
                                            onChange={this.handleChange} name={'effective_date'}
                                            placeholder={'Effective Date'}
@@ -521,7 +578,7 @@ class AssetRegComponent extends Component {
                             <div className={'row p-2 align-items-center'}>
                                 <div className={'col-5 pr-2'}>Last Effective Date</div>
                                 <div className={'col-7 pl-2'}>
-                                    <input type="datetime-local"
+                                    <input type="date"
                                            value={last_effective_date}
                                            onChange={this.handleChange} name={'last_effective_date'}
                                            placeholder={'Effective Date'}
@@ -541,7 +598,7 @@ class AssetRegComponent extends Component {
                             <div className={'row p-2 align-items-center'}>
                                 <div className={'col-5 pr-2'}>Last Warranty Date</div>
                                 <div className={'col-7 pl-2'}>
-                                    <input type="datetime-local"
+                                    <input type="date"
                                            value={last_warranty_date}
                                            onChange={this.handleChange} name={'last_warranty_date'}
                                            className={`form-control w-100 ${errorDictAsset && !errorDictAsset.last_warranty_date && 'is-invalid'}`}/>

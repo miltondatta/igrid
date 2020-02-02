@@ -55,7 +55,7 @@ route.delete('/conditions/delete', (req,res,next) => {
         }
     })
         .then(resData => {
-            console.log(resData)
+
             res.status(200).json({message: 'Conditions Has Been Deleted'})
         })
         .catch(err => {

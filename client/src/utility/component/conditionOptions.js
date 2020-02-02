@@ -13,7 +13,7 @@ class ConditionOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'conditions')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     assetCategory: resData.data
                 })

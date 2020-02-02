@@ -69,7 +69,7 @@ route.delete('/depreciation-methods/delete', (req,res,next) => {
         }
     })
         .then(resData => {
-            console.log(resData)
+
             res.status(200).json({message: 'DepreciationMethods Has Been Deleted'})
         })
         .catch(err => {

@@ -38,7 +38,7 @@ class PasswordResetComponent extends Component{
                         newPassword: '',
                         confirmPasswor: ''
                     })
-                    console.log(resData)
+
                 })
                 .catch(err => {console.log(err)})
         }

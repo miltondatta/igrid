@@ -55,7 +55,7 @@ route.delete('/models/delete', (req,res,next) => {
         }
     })
         .then(resData => {
-            console.log(resData)
+
             res.status(200).json({message: 'Models Has Been Deleted'})
         })
         .catch(err => {

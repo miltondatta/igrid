@@ -70,7 +70,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       effective_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       book_value:{
         type: Sequelize.DOUBLE
@@ -82,13 +82,13 @@ module.exports = {
         type: Sequelize.DOUBLE
       },
       last_effective_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       warranty:{
         type: Sequelize.STRING
       },
       last_warranty_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       condition:{
         type: Sequelize.INTEGER,

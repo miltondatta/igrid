@@ -13,7 +13,7 @@ class AssetTypeOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'asset-types')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     brandData: resData.data
                 })

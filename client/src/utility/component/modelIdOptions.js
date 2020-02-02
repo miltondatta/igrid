@@ -13,7 +13,7 @@ class ModelIdOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'models')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     brandData: resData.data
                 })

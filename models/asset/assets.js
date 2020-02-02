@@ -70,7 +70,7 @@ const Assets = db.define('Assets', {
         type: Sequelize.INTEGER
     },
     effective_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     book_value:{
         type: Sequelize.DOUBLE
@@ -82,13 +82,13 @@ const Assets = db.define('Assets', {
         type: Sequelize.DOUBLE
     },
     last_effective_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     warranty:{
         type: Sequelize.STRING
     },
     last_warranty_date:{
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     condition:{
         type: Sequelize.INTEGER,

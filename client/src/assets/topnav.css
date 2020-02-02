@@ -1,8 +1,9 @@
 .ui-topnav{
-    height: 80px;
+    height: 85px;
     position: relative;
-    background: white;
+    background: #ffffff9e;
     border: 1px solid #f2f2f2;
+    box-shadow: 0 2px 5px #aaa;
 }
 
 .ui-topnav .ui-user-nav{
@@ -86,7 +87,7 @@
     text-align: left;
     border-radius: 5px;
     box-shadow: 0 0 5px #aaa;
-    top: 61px;
+    top: 53px;
     -webkit-animation: option-dropdown .3s;
     -o-animation: option-dropdown .3s;
     animation: option-dropdown .3s;
@@ -105,15 +106,15 @@
 }
 
 .ui-hover-option:hover{
-    border-bottom: 2px solid #17a2b8;
+    border-bottom: 2px solid #ccf8ff;
 }
 
 .ui-hover-option:hover p{
-    color: #464dee !important;
+    color: white !important;
 }
 
 .ui-hover-option:hover i{
-    color: #17a2b8 !important;
+    color: #ccf8ff !important;
 }
 
 @keyframes user-dropdown {
@@ -128,9 +129,9 @@
 @keyframes option-dropdown {
     from{
         opacity: 0;
-        top: 45px;
+        top: 40px;
     } to{
         opacity: 1;
-        top: 60px;
+        top: 53px;
       }
 }

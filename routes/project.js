@@ -69,7 +69,7 @@ route.delete('/projects/delete', (req,res,next) => {
         }
     })
         .then(resData => {
-            console.log(resData)
+
             res.status(200).json({message: 'Project Has Been Deleted'})
         })
         .catch(err => {

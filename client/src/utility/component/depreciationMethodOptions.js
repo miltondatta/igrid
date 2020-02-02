@@ -13,7 +13,7 @@ class DepreciationOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'depreciation-methods')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     brandData: resData.data
                 })

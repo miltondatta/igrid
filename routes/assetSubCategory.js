@@ -70,7 +70,7 @@ route.delete('/asset-sub-category/delete', (req,res,next) => {
         }
     })
         .then(resData => {
-            console.log(resData)
+
             res.status(200).json({message: 'AssetSubCategory Has Been Deleted'})
         })
         .catch(err => {

@@ -109,7 +109,7 @@ class ReactDataTable extends Component {
         const data = {id}
         Axios.delete(apiUrl() + del + '/delete', {data})
             .then(resData => {
-                console.log(resData)
+
                 window.location.reload()
             })
             .catch(res => {
@@ -118,7 +118,7 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del, details} = this.props
+        const {searchable, exportable, pagination, edit, del, details, addName, add, track} = this.props
         const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -139,13 +139,19 @@ class ReactDataTable extends Component {
                     </>
                 ))}
                 {edit && <td className={'text-warning'}>
-                    <p className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id)}}>Edit</p>
+                    <p className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>Edit</p>
                 </td>}
                 {del && <td className={'text-danger'}>
                     <p className="cursor-pointer text-danger" onClick={() => {this.deleteItem(item.id)}}>Delete</p>
                 </td>}
+                {add && <td className={'text-danger'}>
+                    <p className="cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>
+                </td>}
                 {details && <td className={'text-danger'}>
                     <p className="cursor-pointer text-info" onClick={() => {this.props.assetList(item.id)}}>Details</p>
+                </td>}
+                {track && <td className={'text-danger'}>
+                    <p className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>Track</p>
                 </td>}
             </tr>
         ))
@@ -183,7 +189,9 @@ class ReactDataTable extends Component {
                             {table_headers}
                             {edit && <th>Edit</th>}
                             {del && <th>Delete</th>}
+                            {add && <th>Add</th>}
                             {details && <th>Details</th>}
+                            {track && <th>Track</th>}
                         </tr>
                     </thead>
                     <tbody>

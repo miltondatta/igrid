@@ -23,21 +23,26 @@ class LoginComponent extends Component {
 
     submitLogin = () => {
         const {email,password} = this.state
-        const payload = {
-            email,
-            password
-        }
-        Axios.post(apiUrl() + 'users/login',payload)
-             .then(resData => {
-                 if(resData){
-                    console.log(jwt.decode(resData.data.token))
-                    localStorage.setItem('user', resData.data.token)
-                    this.setState({
-                        redirect: true
+        Axios.get('https://ipapi.co/json/')
+            .then(res => {
+                console.log(res, 28)
+                const payload = {
+                    email,
+                    password,
+                    ip: res.data.ip
+                }
+                Axios.post(apiUrl() + 'users/login',payload)
+                    .then(resData => {
+                        if(resData){
+                            console.log(jwt.decode(resData.data.token))
+                            localStorage.setItem('user', resData.data.token)
+                            this.setState({
+                                redirect: true
+                            })
+                        }
                     })
-                 }
-             })
-             .catch(err => {console.log(err)})
+                    .catch(err => {console.log(err)})
+            })
     }
 
     renderRedirect = () => {

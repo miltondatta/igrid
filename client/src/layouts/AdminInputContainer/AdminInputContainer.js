@@ -134,7 +134,7 @@ class AdminInputContainer extends Component {
         }
         Axios.put(apiUrl() + getApi + '/update/' + editId, this.getApiData())
             .then(resData => {
-                console.log(resData)
+
                 if(resData.data.message){
                     this.setState({
                         error: true,

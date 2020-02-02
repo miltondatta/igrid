@@ -41,8 +41,12 @@
     background: #ffffff3b;
     transform: rotate(25deg);
     left: -187px;
-    bottom: -230px;
+    bottom: -500px;
     z-index: 0;
+}
+
+.ui-homecomponent .ui-cards:hover::before{
+    bottom: -230px;
 }
 
 .ui-homecomponent .ui-cards:hover{
@@ -50,8 +54,8 @@
     -moz-transform: translateY(-5px);
     -ms-transform: translateY(-5px);
     -o-transform: translateY(-5px);
-    transform: translateY(-5px);
-    box-shadow: 0 3px 2px #777;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 4px 4px #777;
 }
 
 .ui-homecomponent .ui-cards p{

@@ -2,8 +2,10 @@ const fs = require('fs');
 const multer = require('multer')
 const bcrypt = require('bcryptjs')
 const express = require('express')
+const db = require('../config/db');
 const jwt = require('jsonwebtoken')
 const Users = require('../models/user')
+const UserLoginLogs = require('../models/userloginlog')
 
 const saltRounds = 10
 const router = express.Router();
@@ -63,12 +65,16 @@ router.post('/users/register', (req,res,next) => {
         })
 })
 
-// LoginComponent Users
+// Login Users
 router.post('/users/login', (req,res,next) => {
+    // let user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    let user_ip = req.body.ip
+    let date = new Date().toLocaleDateString()
+    let time = new Date().toLocaleTimeString()
+
   const userData = req.body
   const userEmail = userData.email
   const userPass = userData.password.toString()
-  console.log(userEmail, 51)
   Users.findAll({where: {email: userEmail}})
        .then(data => {
          if(data.length === 0){res.status(400).json({message: "User Doesn't Exist"})}
@@ -78,7 +84,7 @@ router.post('/users/login', (req,res,next) => {
           bcrypt.compare(userPass, passFromDB, function(err, resData) {
               if(err){console.log(err)}
               else{
-                console.log(resData)
+
                 if(resData){
                   const id = data[0].dataValues.id
                   const userName = data[0].dataValues.firstName + " " + data[0].dataValues.lastName
@@ -93,6 +99,10 @@ router.post('/users/login', (req,res,next) => {
                     exp: Math.floor(Date.now() / 1000) + (60 * 60),
                     data: payload
                   }, 'secret');
+
+
+                  const userLogs = {user_ip, user_id: data[0].dataValues.id, time, date}
+                  UserLoginLogs.create(userLogs)
                   res.status(200).json({token: token})
                 } else {
                   res.status(400).json({message: "Password Didn't Match"})
@@ -192,6 +202,12 @@ router.put('/users/password-reset/:id', (req,res,next) => {
             }
         })}
        })
+})
+
+// User Login Logs
+router.get('/user-login-logs', async (req, res, next) => {
+    const [results, metadata] = await db.query('SELECT "UserLoginLogs"."user_ip","UserLoginLogs"."date","UserLoginLogs"."time","Users"."firstName","Users"."lastName" FROM "UserLoginLogs"  JOIN "Users" ON "UserLoginLogs"."user_id" = "Users"."id"')
+    res.status(200).json(results)
 })
 
 

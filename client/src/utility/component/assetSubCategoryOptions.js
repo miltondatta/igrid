@@ -12,7 +12,7 @@ class AssetSubCategoryOptions extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'asset-sub-category')
             .then(resData => {
-                console.log(resData)
+
                 this.setState({
                     assetSubCategory: resData.data
                 })

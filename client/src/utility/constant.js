@@ -324,6 +324,20 @@ export const sidenav = [
             },
         ]
     },
+    {
+        id: 10,
+        name: 'System Log',
+        icon: 'fas fa-object-group',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'User Login',
+                link: '/user-login-log',
+                icon: ""
+            }
+        ]
+    },
 ]
 
 export const requestOn = {

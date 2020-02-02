@@ -38,8 +38,8 @@ class Topnav extends Component{
                         <>
                         {(userType !== 1 && items.id === 1) ? null : items.subCat ? <div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
                             <div>
-                                <i className={`text-dark f-14px ${items.icon}`}></i>
-                                <p className={'text-dark f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
+                                <i className={`text-white f-14px ${items.icon}`}></i>
+                                <p className={'text-white f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
                                 {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
                                     {items.categories.map((subItems, key) => (
                                         <>
@@ -52,8 +52,8 @@ class Topnav extends Component{
                             </div>
                         </div> : <Link to={items.link} className={'h-100'}><div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
                             <div>
-                                <i className={`text-dark f-14px ${items.icon}`}></i>
-                                <p className={'text-dark f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
+                                <i className={`text-white f-14px ${items.icon}`}></i>
+                                <p className={'text-white f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
                                 {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
                                     {items.categories.map((subItems, key) => (
                                         <>
@@ -82,7 +82,7 @@ class Topnav extends Component{
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
                         <input placeholder='Search' className='ui-search' />
                         <div className={'text-center w-100'}>
-                            <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
+                                <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
                         </div>
                         <div className={'text-black ui-user-nav d-flex align-items-center'}>
                             <span onClick={this.handleUserOptions}>{userName}</span>
@@ -106,7 +106,9 @@ class Topnav extends Component{
                                 <input placeholder='Search' className='ui-search' />
                             </div>
                             <div className={'text-center w-100'}>
-                                <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
+                                <Link to={'/'}>
+                                    <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
+                                </Link>
                             </div>
                             <div className={'text-black ui-user-nav d-flex align-items-center'}>
                                 <span onClick={this.handleUserOptions}>{userName}</span>
@@ -120,7 +122,7 @@ class Topnav extends Component{
                             </div>
                         </div>
                     </div>
-                    <div className='bg-white h-75px w-100 d-flex justify-content-center align-items-center'>
+                    <div className='drop-shadow bg-project h-60px w-100 d-flex justify-content-center align-items-center'>
                         {this.renderCategory()}
                     </div>
                 </>

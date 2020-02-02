@@ -38,7 +38,7 @@ class ProfileComponent extends Component{
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         Axios.put(apiUrl() + 'users/update/'+id, data)
             .then(resData => {
-                console.log(resData)
+
             })
             .catch(err => {console.log(err)})
     }
