@@ -23,12 +23,13 @@ class LoginComponent extends Component {
 
     submitLogin = () => {
         const {email,password} = this.state
-        // Axios.get('https://ipapi.co/json/')
-        //     .then(res => {
-        //         console.log(res, 28)
+        Axios.get('https://ipapi.co/json/')
+            .then(res => {
+                console.log(res, 28)
                 const payload = {
                     email,
-                    password
+                    password,
+                    ip: res.ip
                 }
                 Axios.post(apiUrl() + 'users/login',payload)
                     .then(resData => {
@@ -41,7 +42,7 @@ class LoginComponent extends Component {
                         }
                     })
                     .catch(err => {console.log(err)})
-            // })
+            })
     }
 
     renderRedirect = () => {
