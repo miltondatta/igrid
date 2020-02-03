@@ -1,4 +1,4 @@
-const devBaseUrl = 'http://localhost:5000/api/v1/'
+const devBaseUrl = 'https://27d6a7a0.ngrok.io/api/v1/'
 const prodBaseUrl = 'http://localhost:5000/api/v1/'
 
 export const apiUrl = () => {

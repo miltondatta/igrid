@@ -10,7 +10,8 @@
     padding: 15px;
     border-radius: 10px;
     background: #ebfcff;
-    border: 2px solid #17a2b8;
+    box-shadow: 0 0 7px #777;
+    overflow-y: auto;
 }
 
 .ui_track .ui-details p {
@@ -21,5 +22,5 @@
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    border: 2px solid #17a2b8;
+    box-shadow: 0 0 7px #777;
 }

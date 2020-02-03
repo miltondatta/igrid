@@ -67,8 +67,10 @@ router.post('/users/register', (req,res,next) => {
 
 // Login Users
 router.post('/users/login', (req,res,next) => {
+    console.log(req.ip, 70)
     // let user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    let user_ip = req.body.ip
+    // let user_ip = req.body.ip
+    let user_ip = req.ip
     let date = new Date().toLocaleDateString()
     let time = new Date().toLocaleTimeString()
 

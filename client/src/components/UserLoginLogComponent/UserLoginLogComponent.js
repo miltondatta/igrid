@@ -49,14 +49,14 @@ class UserLoginLogComponent extends Component {
                     </nav>
                     <div className={'ui_track'}>
                     <div className={'ui-details'}>
-                        <p>Username: {data[0].firstName + ' ' + data[0].lastName}</p>
-                        <p>Country: {trackData.country}</p>
-                        <p>CountryCode: {trackData.countryCode}</p>
-                        <p>City: {trackData.city}</p>
-                        <p>RegionName: {trackData.regionName}</p>
-                        <p>Zip: {trackData.zip}</p>
-                        <p>Timezone: {trackData.timezone}</p>
-                        <p>IP: {data[0].user_ip}</p>
+                        <p> <strong className={'mr-2'}>Username:</strong>  {data[0].firstName + ' ' + data[0].lastName}</p>
+                        <p> <strong className={'mr-2'}>Country:</strong>  {trackData.country}</p>
+                        <p> <strong className={'mr-2'}>CountryCode:</strong>  {trackData.countryCode}</p>
+                        <p> <strong className={'mr-2'}>City:</strong>  {trackData.city}</p>
+                        <p> <strong className={'mr-2'}>RegionName:</strong>  {trackData.regionName}</p>
+                        <p> <strong className={'mr-2'}>Zip:</strong>  {trackData.zip}</p>
+                        <p> <strong className={'mr-2'}>Timezone:</strong>  {trackData.timezone}</p>
+                        <p> <strong className={'mr-2'}>IP:</strong>  {data[0].user_ip}</p>
                     </div>
 
                     <div className={'ui-map'}>
