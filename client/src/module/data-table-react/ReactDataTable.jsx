@@ -28,6 +28,7 @@ class ReactDataTable extends Component {
     sortColumn = (e, sortColumn) => {
         e.preventDefault()
         const {actualData, displayRow} = this.state
+        console.log(actualData.slice(0, displayRow).sort((a, b) => (a[sortColumn] < b[sortColumn]) ? 1 : -1))
         if (sortColumn === this.state.sortColumn) {
             this.setState({
                 sortColumn: '',

@@ -42,7 +42,7 @@ class LocationComponent extends Component {
                     <Map
                         google={this.props.google}
                         zoom={zoom}
-                        style={{width: '100%', height: '80vh'}}
+                        style={{width: '100%', height: '70vh'}}
                         initialCenter={{
                             lat: 23.6850,
                             lng: 90.3563

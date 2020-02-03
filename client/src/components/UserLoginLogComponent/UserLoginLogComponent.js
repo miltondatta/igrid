@@ -49,7 +49,7 @@ class UserLoginLogComponent extends Component {
                     </nav>
                     <div className={'ui_track'}>
                     <div className={'ui-details'}>
-                        <p> <strong className={'mr-2'}>Username:</strong>  {data[0].firstName + ' ' + data[0].lastName}</p>
+                        <p> <strong className={'mr-2'}>Username:</strong>  {data[0].name}</p>
                         <p> <strong className={'mr-2'}>Country:</strong>  {trackData.country}</p>
                         <p> <strong className={'mr-2'}>CountryCode:</strong>  {trackData.countryCode}</p>
                         <p> <strong className={'mr-2'}>City:</strong>  {trackData.city}</p>
