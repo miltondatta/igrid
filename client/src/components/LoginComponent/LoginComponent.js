@@ -29,7 +29,7 @@ class LoginComponent extends Component {
                 const payload = {
                     email,
                     password,
-                    ip: res.ip
+                    ip: res.data.ip
                 }
                 Axios.post(apiUrl() + 'users/login',payload)
                     .then(resData => {

@@ -136,6 +136,14 @@ const AsyncUserLoginLog = Loadable({
     loader: () => import('../containers/Logs/UserLoginLog'),
     loading: Loading,
 });
+const AsyncLocHierarchies = Loadable({
+    loader: () => import('../containers/LocHierarchies'),
+    loading: Loading,
+});
+const AsyncLocations = Loadable({
+    loader: () => import('../containers/Locations'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -192,10 +200,12 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
+                                    <Route exact path='/assign-locations' component={AsyncLocations}/>
                                     <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
                                     <Route exact path='/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/asset-category' component={AsyncAssetCategory}/>
                                     <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
+                                    <Route exact path='/loc_hierarchies' component={AsyncLocHierarchies}/>
                                     <Route exact path='/depreciation-methods' component={AsyncDepMethod}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>

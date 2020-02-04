@@ -7,6 +7,7 @@ class ReactDataTable extends Component {
 
     constructor(props)  {
         super(props)
+        this.subData = 0
         this.state = {
             dataCount: 0,
             displayRow: 10,
@@ -14,30 +15,37 @@ class ReactDataTable extends Component {
             dataPassed: 0,
             filterByTitle: '',
             actualData: props.tableData ? props.tableData : [],
-            tableData: props.tableData ? props.tableData.slice(0 , 10) : []
+            tableData: props.tableData.length > 0 ? props.tableData.slice(0 , 10) : []
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        return {
-            actualData: nextProps.tableData ? nextProps.tableData : [],
-            tableData: nextProps.tableData ? nextProps.tableData.slice(0,10) : []
-        };
+    static getDerivedStateFromProps(props, state) {
+        if (props.tableData.length !== state.tableData.length){
+            return {
+                actualData: props.tableData ? props.tableData : [],
+                tableData: props.tableData ? props.tableData.slice(0,10) : []
+            };
+        }
     }
 
     sortColumn = (e, sortColumn) => {
         e.preventDefault()
         const {actualData, displayRow} = this.state
-        console.log(actualData.slice(0, displayRow).sort((a, b) => (a[sortColumn] < b[sortColumn]) ? 1 : -1))
         if (sortColumn === this.state.sortColumn) {
+            let sortData = actualData.slice(0, actualData.length < 10 ? actualData.length : displayRow).sort((a, b) => (a[sortColumn] < b[sortColumn]) ? -1 : 1)
             this.setState({
                 sortColumn: '',
-                tableData: actualData.slice(0, displayRow).sort((a, b) => (a[sortColumn] < b[sortColumn]) ? 1 : -1)
+                tableData: sortData
+            }, () => {
+                console.log(this.state.tableData, 37)
             })
         } else{
             this.setState({
                 sortColumn: sortColumn,
-                tableData: actualData.slice(0, displayRow).sort((a, b) => (a[sortColumn] > b[sortColumn]) ? 1 : -1)
+                tableData: actualData.slice(0, actualData.length < 10 ? actualData.length : displayRow).sort((a, b) => (a[sortColumn] > b[sortColumn]) ? -1 : 1)
+            }, () => {
+
+                console.log(this.state.tableData)
             })
         }
     }
@@ -123,6 +131,8 @@ class ReactDataTable extends Component {
         const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
+
+        console.log(this.props.tableData, 132)
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>

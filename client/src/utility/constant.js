@@ -322,6 +322,18 @@ export const sidenav = [
                 link: '/conditions',
                 icon: ""
             },
+            {
+                id: 10,
+                name: 'Location Hierarchies',
+                link: '/loc_hierarchies',
+                icon: ""
+            },
+            {
+                id: 11,
+                name: 'Locations',
+                link: '/assign-locations',
+                icon: ""
+            },
         ]
     },
     {

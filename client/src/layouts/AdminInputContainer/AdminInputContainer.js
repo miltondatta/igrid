@@ -6,6 +6,8 @@ import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
 import BrandIdOptions from "../../utility/component/brandIdOptions";
 import ModelIdOptions from "../../utility/component/modelIdOptions";
+import LocationsOptions from "../../utility/component/locationOptions";
+import HierarchiesOptions from "../../utility/component/hierarchyOptions";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -14,6 +16,7 @@ class AdminInputContainer extends Component {
             allProjects: [],
             model: '',
             brand: '',
+            parent_id: 0,
             file_name: '',
             category_id: '',
             description: '',
@@ -31,6 +34,7 @@ class AdminInputContainer extends Component {
             sub_category_id: '',
             sub_category_name: '',
             sub_category_code: '',
+            hierarchy_name: '',
             editId: null,
             errorDict: null,
             error: false,
@@ -189,12 +193,11 @@ class AdminInputContainer extends Component {
     }
 
     renderForm = () => {
-        const {formType} = this.props
-        const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand,file_name_tag,
-            category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code,
-            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type} = this.state
+        const {formType, formData} = this.props
+        const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id,
+            category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code,
+            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy} = this.state
 
-        console.log(errorDict)
         switch (formType){
             case 'VENDOR':
                 return(
@@ -566,6 +569,41 @@ class AdminInputContainer extends Component {
                         </div>
                     </div>
                 )
+            case 'LOCHIERARCHY':
+                return(
+                    <div className={`rounded p-3 my-2`}>
+                        <div className="row px-2">
+                            <div className="col-md-8">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Hierarchy Name
+                                    </div>
+                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                        <input
+                                            placeholder='Hierarchy Name'
+                                            type={'text'}
+                                            name={'hierarchy_name'}
+                                            value={hierarchy_name}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.hierarchy_name) && 'is-invalid'}`}  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
+                                    <button className="btn btn-outline-danger" onClick={() => {
+                                        this.setState({
+                                            editId: null,
+                                            hierarchy_name: '',
+                                        }, () => {
+                                            this.validate()
+                                        })}}>Go Back</button>
+                                </>}
+                            </div>
+                        </div>
+                    </div>
+                )
             case 'DEPMETHOD':
                 return(
                     <div className={`rounded p-3 my-2`}>
@@ -860,6 +898,93 @@ class AdminInputContainer extends Component {
                         </div>
                     </div>
                 )
+            case 'LOCATIONS':
+                return(
+                    <div className={`rounded p-3 my-2`}>
+                        <div className="row px-2">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Location Name
+                                    </div>
+                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                        <input
+                                            placeholder='Location Name'
+                                            type={'text'}
+                                            name={'location_name'}
+                                            value={location_name}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.location_name) && 'is-invalid'}`} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Location Code
+                                    </div>
+                                    <div className="col-md-8">
+                                        <input
+                                            placeholder='Location Code'
+                                            type={'text'}
+                                            name={'location_code'}
+                                            value={location_code}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.location_code) && 'is-invalid'}`} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-3">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Parent
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
+                                            <option value={0}>--Select Parent--</option>
+                                            <LocationsOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Hierarchy
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
+                                            <option>--Select Hierarchy--</option>
+                                            <HierarchiesOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-3">
+                            <div className="d-flex justify-content-end">
+                            {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Locations</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Locations</button>
+                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        error: false,
+                                        location_name: '',
+                                        location_code: '',
+                                        parent_id: '',
+                                        hierarchy: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                            </>}
+
+                        </div>
+                        </div>
+                    </div>
+                )
             default:
                 return null
         }
@@ -870,7 +995,7 @@ class AdminInputContainer extends Component {
         const {formType} = this.props
         const {vendor_name, file_name, description, project_name, project_code, model, brand, category_code,category_name, sub_category_name,
             category_id, sub_category_code, sub_category_id, product_name, product_code, brand_id, model_id, depreciation_code, method_name,
-            type_name, asset_code, condition_type} = this.state
+            type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name} = this.state
         switch (formType){
             case "PROJECT":
                 errorDict = {
@@ -941,9 +1066,28 @@ class AdminInputContainer extends Component {
                     errorDict
                 })
                 return errorDict
+            case "LOCHIERARCHY":
+                errorDict = {
+                    hierarchy_name: hierarchy_name !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
             case "BRANDS":
                 errorDict = {
                     brand: brand !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
+            case "LOCATIONS":
+                errorDict = {
+                    hierarchy: hierarchy !== '',
+                    parent_id: parent_id !== '',
+                    location_code: location_code !== '',
+                    location_name: location_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -979,7 +1123,7 @@ class AdminInputContainer extends Component {
         const {formType} = this.props
         const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name,
             category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name,
-            type_name, asset_code, condition_type} = this.state
+            type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name} = this.state
         switch (formType){
             case "VENDOR":
                 let data = new FormData()
@@ -1017,10 +1161,14 @@ class AdminInputContainer extends Component {
                 })
             case "CONDITIONS":
                 return({condition_type})
+            case "LOCHIERARCHY":
+                return({hierarchy_name})
             case "BRANDS":
                 return({
                     brand
                 })
+            case "LOCATIONS":
+                return({hierarchy, parent_id, location_code, location_name})
             case "ASSETCATEGORY":
                 return({category_code,category_name,description})
             case "ASSETSUBCATEGORY":
