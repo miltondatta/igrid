@@ -334,6 +334,30 @@ export const sidenav = [
                 link: '/assign-locations',
                 icon: ""
             },
+            {
+                id: 12,
+                name: 'User Roles',
+                link: '/user-roles',
+                icon: ""
+            },
+            {
+                id: 13,
+                name: 'Status',
+                link: '/status',
+                icon: ""
+            },
+            {
+                id: 14,
+                name: 'Modules',
+                link: '/modules',
+                icon: ""
+            },
+            {
+                id: 15,
+                name: 'User Associate Role',
+                link: '/user-associate-role',
+                icon: ""
+            },
         ]
     },
     {

@@ -140,8 +140,20 @@ const AsyncLocHierarchies = Loadable({
     loader: () => import('../containers/LocHierarchies'),
     loading: Loading,
 });
+const AsyncUserRoles = Loadable({
+    loader: () => import('../containers/UserRoles'),
+    loading: Loading,
+});
 const AsyncLocations = Loadable({
     loader: () => import('../containers/Locations'),
+    loading: Loading,
+});
+const AsyncModules = Loadable({
+    loader: () => import('../containers/Modules'),
+    loading: Loading,
+});
+const AsyncUserAssociateRole = Loadable({
+    loader: () => import('../containers/UserAssociateRole'),
     loading: Loading,
 });
 
@@ -188,12 +200,14 @@ class MasterRoute extends Component{
                                     <Route exact path='/vendor' component={AsyncVendor}/>
                                     <Route exact path='/home' component={AsyncHomeLand}/>
                                     <Route exact path='/profile' component={AsyncProile}/>
+                                    <Route exact path='/modules' component={AsyncModules}/>
                                     <Route exact path='/challan' component={AsyncChallan}/>
                                     <Route exact path='/product' component={AsyncProduct}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/asset/:option' component={AsyncAsset}/>
                                     <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
+                                    <Route exact path='/user-roles' component={AsyncUserRoles}/>
                                     <Route exact path='/conditions' component={AsyncConditions}/>
                                     <Route exact path='/project' component={AsyncCreateProject}/>
                                     <Route exact path='/asset-types' component={AsyncAssetTypes}/>
@@ -215,6 +229,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-sub-category' component={AsyncAssetSubCategory}/>
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/branch-requesition' component={AsyncBranchRequesition}/>
+                                    <Route exact path='/user-associate-role' component={AsyncUserAssociateRole}/>
                                 </Switch>
                             </div>
                         </div>

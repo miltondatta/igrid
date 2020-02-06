@@ -24,6 +24,18 @@ class ProfileComponent extends Component{
         }
     }
 
+    componentDidMount() {
+        Axios.get(apiUrl() + 'users')
+            .then(resData => {
+                let data = resData.data[0]
+                Object.keys(data).forEach(item => {
+                    this.setState({
+                        [item]: data[item]
+                    })
+                })
+            })
+    }
+
     handleSubmit = (e) => {
         e.preventDefault()
         const {firstName, lastName, email, pin, number, address, filename } = this.state
@@ -44,6 +56,7 @@ class ProfileComponent extends Component{
     }
 
     render(){
+        const {firstName, lastName, phone_number, email, pin, address} = this.state
         return(
             <div className={'bg-white p-3 rounded shadow'}>
                 <nav className="navbar navbar-light mb-3 f-weight-500">
@@ -53,31 +66,31 @@ class ProfileComponent extends Component{
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label htmlFor="inputEmail4">First Name</label>
-                            <input onChange={this.handleChange} name={'firstName'} type="text" className="form-control" id="inputEmail4" placeholder="First Name" />
+                            <input onChange={this.handleChange} name={'firstName'} value={firstName} type="text" className="form-control" id="inputEmail4" placeholder="First Name" />
                         </div>
                         <div className="form-group col-md-6">
                             <label htmlFor="inputPassword4">Last Name</label>
-                            <input onChange={this.handleChange} name={'lastName'} type="text" className="form-control" id="inputPassword4" placeholder="Last Name" />
+                            <input onChange={this.handleChange} name={'lastName'} value={lastName} type="text" className="form-control" id="inputPassword4" placeholder="Last Name" />
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label htmlFor="inputEmail4">Official Email</label>
-                            <input onChange={this.handleChange} name={'email'} type="text" className="form-control" id="inputEmail4" placeholder="Official Email" />
+                            <input onChange={this.handleChange} name={'email'} value={email} type="text" className="form-control" id="inputEmail4" placeholder="Official Email" />
                         </div>
                         <div className="form-group col-md-6">
                             <label htmlFor="inputPassword4">Official Phone Number</label>
-                            <input onChange={this.handleChange} name={'number'} type="text" className="form-control" id="inputPassword4" placeholder="Official Phone Number" />
+                            <input onChange={this.handleChange} name={'phone_number'} value={phone_number} type="text" className="form-control" id="inputPassword4" placeholder="Official Phone Number" />
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputAddress">Address</label>
-                        <input onChange={this.handleChange} name={'address'} type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
+                        <input onChange={this.handleChange} name={'address'} value={address} type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label htmlFor="inputEmail4">Your PIN</label>
-                                <input type="text" className="form-control" id="inputEmail4" name='pin' onChange={this.handleChange} placeholder="PIN" />
+                                <input type="text" className="form-control" id="inputEmail4" name='pin' value={pin} onChange={this.handleChange} placeholder="PIN" />
                         </div>
                         <div className="form-group col-md-6">
                             <label htmlFor="customFile">Upload Image</label>

@@ -14,6 +14,15 @@ module.exports = {
       location_code: {
         type: Sequelize.STRING
       },
+      address: {
+        type: Sequelize.STRING
+      },
+      location_lat: {
+        type: Sequelize.DOUBLE
+      },
+      location_long: {
+        type: Sequelize.DOUBLE
+      },
       parent_id: {
         type: Sequelize.STRING
       },

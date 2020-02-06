@@ -3,7 +3,7 @@
    padding: 0;
    position: relative;
    box-sizing: border-box;
-   transition: all 0.3s cubic-bezier(1,-0.01, 0.5, 1);
+   transition: all 0.3s cubic-bezier(0.01, 0.14, 0.89, 0.9);
 }
 
 html,body, #root{
@@ -97,7 +97,7 @@ a:hover{text-decoration: none}
 .ui-asset-component{
    display: grid;
    grid-gap: 10px;
-   grid-template-columns: 54% 45%;
+   grid-template-columns: 48% 51%;
 }
 
 .ui-slider-modal{

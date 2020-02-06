@@ -6,32 +6,29 @@ const Users = db.define('Users', {
     firstName: {
       type: Sequelize.STRING
     },
-    userType: {
-      type: Sequelize.INTEGER
-    },
     lastName: {
-      type: Sequelize.STRING
-    },
-    userStatus: {
-      type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
     },
     email: {
-      type: Sequelize.STRING
+        type: Sequelize.STRING
     },
     password: {
-      type: Sequelize.STRING
+        type: Sequelize.STRING
     },
     pin: {
-      type: Sequelize.INTEGER
+        type: Sequelize.INTEGER
     },
     address: {
-      type: Sequelize.STRING
+        type: Sequelize.STRING
     },
     image: {
         defaultValue: 'default.png',
         type: Sequelize.STRING
     },
     phone_number: {
+        type: Sequelize.INTEGER
+    },
+    userType: {
       type: Sequelize.INTEGER
     },
     is_verified: {

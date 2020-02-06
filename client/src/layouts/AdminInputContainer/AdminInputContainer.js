@@ -8,6 +8,9 @@ import BrandIdOptions from "../../utility/component/brandIdOptions";
 import ModelIdOptions from "../../utility/component/modelIdOptions";
 import LocationsOptions from "../../utility/component/locationOptions";
 import HierarchiesOptions from "../../utility/component/hierarchyOptions";
+import ModuleOptions from "../../utility/component/moduleOptions";
+import UserRoleOptions from "../../utility/component/userRoleOptions";
+import UserOptions from "../../utility/component/userOptions";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -17,6 +20,7 @@ class AdminInputContainer extends Component {
             model: '',
             brand: '',
             parent_id: 0,
+            module_id: 0,
             file_name: '',
             category_id: '',
             description: '',
@@ -27,6 +31,7 @@ class AdminInputContainer extends Component {
             category_code: '',
             asset_code: '',
             type_name: '',
+            order_by: '',
             product_name: '',
             depreciation_code: '',
             method_name: '',
@@ -45,6 +50,7 @@ class AdminInputContainer extends Component {
     
     handleSubmit = () => {
         const {getApi} = this.props
+        console.log(getApi, 50)
         if (Object.values(this.validate()).includes(false)) {
             return
         }
@@ -158,7 +164,6 @@ class AdminInputContainer extends Component {
 
     handleChange = (e) => {
         const {name, value, checked, files} = e.target
-        console.log(files, name, value)
         if(name === 'project_code'){
             if (isNaN(value)){
                 return
@@ -193,10 +198,11 @@ class AdminInputContainer extends Component {
     }
 
     renderForm = () => {
-        const {formType, formData} = this.props
-        const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id,
-            category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code,
-            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy} = this.state
+        const {formType} = this.props
+        const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id, image_name,
+            category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code, order_by,
+            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name, module_id,
+            module_name, initial_link, user_id, location_id, role_id} = this.state
 
         switch (formType){
             case 'VENDOR':
@@ -985,6 +991,242 @@ class AdminInputContainer extends Component {
                         </div>
                     </div>
                 )
+            case 'USERROLES':
+                return(
+                    <div className={`rounded p-3 my-2`}>
+                        <div className="row px-2">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Role Name
+                                    </div>
+                                    <div className="col-md-8">
+                                        <input
+                                            placeholder='Role Name'
+                                            type={'text'}
+                                            name={'role_name'}
+                                            value={role_name}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.role_name) && 'is-invalid'}`} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Role Description
+                                    </div>
+                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                        <input
+                                            placeholder='Role Description'
+                                            type={'text'}
+                                            name={'role_desc'}
+                                            value={role_desc}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-3">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Module
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
+                                            <option>--Select Parent--</option>
+                                            <ModuleOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="d-flex justify-content-end">
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Role</button>
+                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                        this.setState({
+                                            editId: null,
+                                            error: false,
+                                            role_desc: '',
+                                            role_name: '',
+                                            module_id: ''
+                                        }, () => {
+                                            this.validate()
+                                        })}}>Go Back</button>
+                                </>}
+
+                            </div>
+                        </div>
+                    </div>
+                )
+            case 'MODULE':
+                return(
+                    <div className={`rounded p-3 my-2 shadow`}>
+                        <div className="row px-2">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Module Name
+                                    </div>
+                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                        <input
+                                            placeholder='Module Name'
+                                            type={'text'}
+                                            name={'module_name'}
+                                            value={module_name}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.module_name) && 'is-invalid'}`} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Image
+                                    </div>
+                                    <div className="col-md-8">
+                                        <div className="custom-file">
+                                            <input type="file" name={'file_name'} onChange={this.handleChange} className="custom-file-input" id="validatedCustomFile"
+                                                   required />
+                                                <label className="custom-file-label" htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-3">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Initial Link
+                                    </div>
+                                    <div className="col-md-8">
+                                        <input
+                                            placeholder='Initial Link'
+                                            type={'text'}
+                                            name={'initial_link'}
+                                            value={initial_link}
+                                            onChange={this.handleChange}
+                                            className={`form-control ${(errorDict && !errorDict.initial_link) && 'is-invalid'}`} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Order By
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'order_by'} value={order_by} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.order_by) && 'is-invalid'}`}>
+                                            <option>--Select Options--</option>
+                                            <option value={1}>Ascending</option>
+                                            <option value={2}>Descending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-2">
+                            <div className="d-flex justify-content-end">
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
+                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                        this.setState({
+                                            editId: null,
+                                            error: false,
+                                            order_by: '',
+                                            initial_link: '',
+                                            module_name: '',
+                                            image_name: ''
+                                        }, () => {
+                                            this.validate()
+                                        })}}>Go Back</button>
+                                </>}
+                            </div>
+                        </div>
+                    </div>
+                )
+            case 'USERASSOCIATE':
+                return(
+                    <div className={`rounded p-3 my-2 shadow`}>
+                        <div className="row px-2">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Users
+                                    </div>
+                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                        <select name={'user_id'} value={user_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.user_id) && 'is-invalid'}`}>
+                                            <option>--Select User--</option>
+                                            <UserOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Module
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
+                                            <option>--Select Module--</option>
+                                            <ModuleOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-3">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Location
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'location_id'} value={location_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                            <option>--Select Location--</option>
+                                            <LocationsOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Role
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
+                                            <option>--Select Role--</option>
+                                            <UserRoleOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 mt-2">
+                            <div className="d-flex justify-content-end">
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
+                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                        this.setState({
+                                            editId: null,
+                                            error: false,
+                                            user_id: '',
+                                            location_id: '',
+                                            role_id: '',
+                                            module_id: ''
+                                        }, () => {
+                                            this.validate()
+                                        })}}>Go Back</button>
+                                </>}
+                            </div>
+                        </div>
+                    </div>
+                )
             default:
                 return null
         }
@@ -993,10 +1235,21 @@ class AdminInputContainer extends Component {
     validate = () => {
         let errorDict = {}
         const {formType} = this.props
-        const {vendor_name, file_name, description, project_name, project_code, model, brand, category_code,category_name, sub_category_name,
-            category_id, sub_category_code, sub_category_id, product_name, product_code, brand_id, model_id, depreciation_code, method_name,
-            type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name} = this.state
+        const {vendor_name, file_name, description, project_name, project_code, model, brand, category_code,category_name, sub_category_name, order_by,
+            category_id, sub_category_code, sub_category_id, product_name, product_code, brand_id, model_id, depreciation_code, method_name,  module_name, initial_link,
+            type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id,
+            user_id, location_id, role_id} = this.state
         switch (formType){
+            case "USERROLES":
+                errorDict = {
+                    role_desc: role_desc !== '',
+                    role_name: role_name !== '',
+                    module_id: module_id !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
             case "PROJECT":
                 errorDict = {
                     description: description !== '',
@@ -1114,19 +1367,44 @@ class AdminInputContainer extends Component {
                     errorDict
                 })
                 return errorDict
+            case "MODULE":
+                errorDict = {
+                    module_name: module_name !== '',
+                    initial_link: initial_link !== '',
+                    order_by: order_by !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
+            case "USERASSOCIATE":
+                errorDict = {
+                    user_id: user_id !== '',
+                    location_id: location_id !== '',
+                    role_id: role_id !== '',
+                    module_id: module_id !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
             default:
                 return null
         }
     }
 
     getApiData = () => {
+        let data = null
         const {formType} = this.props
-        const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name,
-            category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name,
-            type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name} = this.state
+        const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name, order_by,
+            category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name, module_name, initial_link,
+            type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id, image_name,
+            user_id, location_id, role_id} = this.state
         switch (formType){
+            case "USERROLES":
+                return ({role_desc, role_name, module_id})
             case "VENDOR":
-                let data = new FormData()
+                data = new FormData()
                 data.append('file', file_name)
                 data.append('vendor_name', vendor_name)
                 data.append('description', description)
@@ -1171,39 +1449,51 @@ class AdminInputContainer extends Component {
                 return({hierarchy, parent_id, location_code, location_name})
             case "ASSETCATEGORY":
                 return({category_code,category_name,description})
+            case "USERASSOCIATE":
+                return({user_id, location_id, role_id, module_id})
             case "ASSETSUBCATEGORY":
                 return({sub_category_name,category_id, sub_category_code,description})
+            case "MODULE":
+                data = new FormData()
+                file_name && data.append('file', file_name);
+                !file_name && data.append('image_name', image_name);
+                data.append('module_name', module_name);
+                data.append('initial_link', initial_link);
+                data.append('order_by', order_by);
+                return data
             default:
                 return null
         }
     }
 
     render() {
-        const {getApi} = this.props
+        const {getApi, title} = this.props
         const {error, errorMessage, isLoading, allProjects, editId} = this.state
         return (
             <div className="px-2 my-2">
                 {error && <div className="alert alert-danger" role="alert">
                     {errorMessage}
                 </div>}
-                <div className={`bg-white rounded p-2 my-2 ${editId !== null && 'shadow'}`}>
+                <div className={`bg-white rounded p-2 my-2  `}>
                     {this.renderForm()}
                 </div>
-                <div className={'bg-white rounded p-2 my-2'}>
-                    <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0">Projects List</p>
-                    </nav>
-                    {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
-                        <ReactDataTable
-                            edit
-                            isLoading
-                            pagination
-                            searchable
-                            del={getApi}
-                            tableData={allProjects}
-                            updateEdit={this.updateEdit}
-                        />
-                    </> : <h4>Currently There are No Projects</h4>}
+                <div className={'p-2 my-2'}>
+                    <div className="rounded p-3 bg-white shadow">
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p className="text-dark f-weight-500 f-20px m-0">{title}</p>
+                        </nav>
+                        {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
+                            <ReactDataTable
+                                edit
+                                isLoading
+                                pagination
+                                searchable
+                                del={getApi}
+                                tableData={allProjects}
+                                updateEdit={this.updateEdit}
+                            />
+                        </> : <h4>Currently There are No {title}</h4>}
+                    </div>
                 </div>
             </div>
         );

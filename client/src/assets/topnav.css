@@ -77,6 +77,16 @@
     display: block;
 }
 
+.ui-navbtn p,
+.ui-navbtn i{
+    color: #dfdfdf
+}
+
+.ui-navbtn:hover p,
+.ui-navbtn:hover i{
+    color: #fff
+}
+
 .ui-navbtn .ui-subcategory{
     display: none;
     width: max-content;
@@ -88,6 +98,8 @@
     border-radius: 5px;
     box-shadow: 0 0 5px #aaa;
     top: 53px;
+    max-height: 250px;
+    overflow-y: auto;
     -webkit-animation: option-dropdown .3s;
     -o-animation: option-dropdown .3s;
     animation: option-dropdown .3s;
@@ -106,7 +118,7 @@
 }
 
 .ui-hover-option:hover{
-    border-bottom: 2px solid #ccf8ff;
+    border-bottom: 2px solid #fff;
 }
 
 .ui-hover-option:hover p{
@@ -114,7 +126,7 @@
 }
 
 .ui-hover-option:hover i{
-    color: #ccf8ff !important;
+    color: #fff !important;
 }
 
 @keyframes user-dropdown {

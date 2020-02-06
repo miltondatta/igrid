@@ -72,7 +72,6 @@ route.put('/vendors/update/:id', (req,res,next) => {
 
         Vendors.findAll({where: {id: req.params.id}})
             .then(data => {
-                console.log(data[0].dataValues.file_name, 75)
                 if (fs.existsSync('public/vendor/' + data[0].dataValues.file_name)) {
                     fs.unlink('public/vendor/' + data[0].dataValues.file_name, (err) => {
                         if (err) throw err;
