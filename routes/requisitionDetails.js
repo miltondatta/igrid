@@ -1,17 +1,22 @@
+const db = require('../config/db')
 const express = require('express')
 const RequisitionDetails = require('../models/requisitiondetails')
 
 const route = express.Router()
 
 // Read
-route.get('/requisition-details', (req,res,next) => {
-    RequisitionDetails.findAll({attributes: ['id', 'requisition_id', 'asset_category', 'asset_sub_category', 'quantity']})
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            res.status(404).json({message: 'Something Went Wrong', err})
-        })
+route.get('/requisition-details', async (req,res,next) => {
+    const [results, metadata] = await db.query(`
+        SELECT "RequisitionDetails"."id", "Asset_categories"."category_name", "Asset_sub_categories"."sub_category_name", "RequisitionDetails"."quantity"
+            FROM "RequisitionDetails"
+                 Join "Asset_categories" ON "RequisitionDetails"."asset_category" = "Asset_categories"."id"
+                 Join "Asset_sub_categories" ON "RequisitionDetails"."asset_sub_category" = "Asset_sub_categories"."id"`)
+
+        if (results.length > 0) {
+            res.status(200).json(results)
+        } else {
+            res.status(200).json({message: "No Data Found"})
+        }
 })
 
 // Update
@@ -32,7 +37,6 @@ route.put('/requisition-details/update/:id', (req,res,next) => {
 
 // Create
 route.post('/requisition-details/entry', (req,res,next) => {
-    const {requisition_id, asset_category, asset_sub_category, quantity} = req.body
         let response = []
         req.body.forEach(item => {
             if(item.requisition_id === '' || item.asset_category === '' || item.asset_sub_category === '' || item.quantity === '') {

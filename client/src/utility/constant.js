@@ -53,7 +53,7 @@ export const sidenav = [
                 name: 'Others',
                 link: '/asset/4',
                 icon: "fab fa-ethereum"
-            },
+            }
         ]
     },
     {
@@ -356,6 +356,12 @@ export const sidenav = [
                 id: 15,
                 name: 'User Associate Role',
                 link: '/user-associate-role',
+                icon: ""
+            },
+            {
+                id: 15,
+                name: 'Register User',
+                link: '/register-user',
                 icon: ""
             },
         ]

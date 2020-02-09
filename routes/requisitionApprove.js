@@ -47,7 +47,7 @@ route.post('/requisition-details/entry', (req,res,next) => {
 })
 
 // Delete
-route.delete('/requisition-details/delete', (req,res,next) => {
+route.delete('/requisition-details/delete', (req,res,next) =>   {
     RequisitionDetails.destroy({
         where: {
             id: req.body.id

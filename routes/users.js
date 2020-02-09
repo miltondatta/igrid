@@ -1,10 +1,11 @@
-const fs = require('fs');
+const fs = require('fs')
 const multer = require('multer')
 const bcrypt = require('bcryptjs')
 const express = require('express')
 const db = require('../config/db');
 const jwt = require('jsonwebtoken')
 const Users = require('../models/user')
+const nodeMailer = require('nodemailer')
 const UserLoginLogs = require('../models/userloginlog')
 
 const saltRounds = 10
@@ -49,9 +50,32 @@ router.post('/users/register', (req,res,next) => {
               bcrypt.hash(userPass.toString(), saltRounds, (err, hash) => {
                 if (err) {console.log(err,28)}
                 else{
-                  const hasedPass = {...userData, password: hash}
+                  const hasedPass = {...userData, userType: 2, password: hash}
                   Users.create(hasedPass)
                        .then(data => {
+                           let transporter = nodeMailer.createTransport({
+                               host: 'smtp.gmail.com',
+                               port: 465,
+                               secure: true,
+                               auth: {
+                                   // should be replaced with real sender's account
+                                   user: 'dummydumbdd77@gmail.com',
+                                   pass: 'Dymmy@77'
+                               }
+                           });
+                           let mailOptions = {
+                               // should be replaced with real recipient's account
+                               from: '"iGrid" <dummydumbdd77@gmail.com>',
+                               to: userEmail,
+                               subject: 'Test Mail',
+                               html: "<h2 style='color: #17a2b8'>Your account is ready. Please contact the admin</h2>"
+                           };
+                           transporter.sendMail(mailOptions, (error, info) => {
+                               if (error) {
+                                   return console.log(error);
+                               }
+                               console.log('Message %s sent: %s', info.messageId, info.response);
+                           });
                           res.status(200).json({"message": "User Created Successfully"})
                         })
                         .catch(err => {console.log(err,35)})
@@ -208,6 +232,5 @@ router.get('/user-login-logs', async (req, res, next) => {
     const [results, metadata] = await db.query(`SELECT CONCAT("Users"."firstName", ' ' ,"Users"."lastName") as name, "Users"."email", "UserLoginLogs"."user_ip","UserLoginLogs"."date","UserLoginLogs"."time" FROM "UserLoginLogs"  JOIN "Users" ON "UserLoginLogs"."user_id" = "Users"."id"`)
     res.status(200).json(results)
 })
-
 
 module.exports = router

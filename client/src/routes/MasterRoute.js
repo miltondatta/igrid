@@ -156,6 +156,10 @@ const AsyncUserAssociateRole = Loadable({
     loader: () => import('../containers/UserAssociateRole'),
     loading: Loading,
 });
+const AsyncRegisterUser = Loadable({
+    loader: () => import('../containers/RegisterUser'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -214,6 +218,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
+                                    <Route exact path='/register-user' component={AsyncRegisterUser}/>
                                     <Route exact path='/assign-locations' component={AsyncLocations}/>
                                     <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
                                     <Route exact path='/user-login-log' component={AsyncUserLoginLog}/>

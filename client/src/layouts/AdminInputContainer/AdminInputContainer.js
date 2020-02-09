@@ -17,9 +17,11 @@ class AdminInputContainer extends Component {
         super(props)
         this.state = {
             allProjects: [],
+            locationHolder: [],
             model: '',
             brand: '',
             parent_id: 0,
+            location_id: 0,
             module_id: 0,
             file_name: '',
             category_id: '',
@@ -73,7 +75,13 @@ class AdminInputContainer extends Component {
                         project_name: '',
                         project_code: '',
                         category_name: '',
+                        user_id: '',
                         category_code: '',
+                        location_id: '',
+                        parent_location_id: '',
+                        role_id: '',
+                        module_id: '',
+                        locationHolder: [],
                         sub_category_name: '',
                         sub_category_code: '',
                         enlisted: false
@@ -163,7 +171,7 @@ class AdminInputContainer extends Component {
     }
 
     handleChange = (e) => {
-        const {name, value, checked, files} = e.target
+        const {name, value, checked, files, location_id} = e.target
         if(name === 'project_code'){
             if (isNaN(value)){
                 return
@@ -183,6 +191,14 @@ class AdminInputContainer extends Component {
             this.setState({
                 [name]: files[0],
             })
+        } else if(name === 'location_id'){
+            this.setState({
+                [name]: value
+            }, () => {
+                console.log(value, 192)
+                this.validate()
+                this.locationApi(value)
+            })
         } else {
             this.setState({
                 [name]: value
@@ -190,11 +206,21 @@ class AdminInputContainer extends Component {
                 this.validate()
             })
         }
-
     }
 
     componentDidMount = () => {
         this.getData()
+    }
+
+    locationApi = (id) => {
+        Axios.get(apiUrl() + 'locations/' + id)
+            .then(resData => {
+                if(resData.data.length > 0) {
+                    this.setState({
+                        locationHolder: [resData.data, ...this.state.locationHolder]
+                    })
+                }
+            })
     }
 
     renderForm = () => {
@@ -202,7 +228,7 @@ class AdminInputContainer extends Component {
         const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id, image_name,
             category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code, order_by,
             brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name, module_id,
-            module_name, initial_link, user_id, location_id, role_id} = this.state
+            module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id} = this.state
 
         switch (formType){
             case 'VENDOR':
@@ -1149,6 +1175,21 @@ class AdminInputContainer extends Component {
                     </div>
                 )
             case 'USERASSOCIATE':
+                let subLocation = locationHolder.length > 0 && locationHolder.map((item, index) => (
+                    <div className="col-md-6 mb-3">
+                        <div className="row">
+                            <div className="col-md-4">
+                                Sub Location
+                            </div>
+                            <div className="col-md-8">
+                                <select name={'location_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                    <option>--Select Location--</option>
+                                    <LocationsOptions selectedId={item[index].parent_id} />
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                ))
                 return(
                     <div className={`rounded p-3 my-2 shadow`}>
                         <div className="row px-2">
@@ -1180,19 +1221,20 @@ class AdminInputContainer extends Component {
                             </div>
                         </div>
                         <div className="row px-2 mt-3">
-                            <div className="col-md-6">
+                            <div className="col-md-6 mb-3">
                                 <div className="row">
                                     <div className="col-md-4">
                                         Location
                                     </div>
                                     <div className="col-md-8">
-                                        <select name={'location_id'} value={location_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                        <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
                                             <option>--Select Location--</option>
-                                            <LocationsOptions />
+                                            <LocationsOptions selectedId={location_id} />
                                         </select>
                                     </div>
                                 </div>
                             </div>
+                            {subLocation}
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">
@@ -1468,7 +1510,7 @@ class AdminInputContainer extends Component {
 
     render() {
         const {getApi, title} = this.props
-        const {error, errorMessage, isLoading, allProjects, editId} = this.state
+        const {error, errorMessage, isLoading, allProjects} = this.state
         return (
             <div className="px-2 my-2">
                 {error && <div className="alert alert-danger" role="alert">

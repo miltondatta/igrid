@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import AdminInputContainer from "../../layouts/AdminInputContainer/AdminInputContainer";
 
-class UserAssociateRoleComponent extends Component {
+class   UserAssociateRoleComponent extends Component {
     render() {
         return (
             <AdminInputContainer

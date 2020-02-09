@@ -14,6 +14,17 @@ route.get('/locations', (req,res,next) => {
         })
 })
 
+// Read Specific Location
+route.get('/locations/:id', (req,res,next) => {
+    Locations.findAll({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy'], where: {parent_id: req.params.id}})
+        .then(resData => {
+            res.status(200).json(resData)
+        })
+        .catch(err => {
+            res.status(404).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Update
 route.put('/locations/update/:id', (req,res,next) => {
     const {location_name,parent_id,location_code,hierarchy} = req.body

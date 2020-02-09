@@ -11,9 +11,10 @@ class LocationsOptions extends Component {
     }
 
     componentDidMount() {
-        Axios.get(apiUrl() + 'locations')
+        const {selectedId} = this.props
+        Axios.get(apiUrl() + 'locations/' + selectedId)
             .then(resData => {
-
+                console.log(resData.data, 17)
                 this.setState({
                     data: resData.data
                 })
@@ -22,6 +23,7 @@ class LocationsOptions extends Component {
 
     render() {
         const {data} = this.state
+        console.log(data, 32)
         const Options = data.length > 0 && data.map((item, index) => (
             <option key={index} value={item.id}>{item.location_name}</option>
         ))
