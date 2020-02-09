@@ -19,6 +19,24 @@ route.get('/requisition-details', async (req,res,next) => {
         }
 })
 
+// Read
+route.get('/requisition-details/details/:id', async (req,res,next) => {
+    const [results, metadata] = await db.query(`
+        SELECT "RequisitionDetails"."id", Concat("Users"."firstName", ' ', "Users"."lastName") as userName, "Asset_categories"."category_name", "Asset_sub_categories"."sub_category_name", "RequisitionDetails"."quantity", "RequisitionMasters"."email", "RequisitionMasters"."mobile"
+        FROM "RequisitionDetails"
+                 Join "RequisitionMasters" ON "RequisitionDetails"."requisition_id" = "RequisitionMasters"."id"
+                 Join "Users" ON "RequisitionMasters"."request_by" = "Users"."id"
+                 Join "Asset_categories" ON "RequisitionDetails"."asset_category" = "Asset_categories"."id"
+                 Join "Asset_sub_categories" ON "RequisitionDetails"."asset_sub_category" = "Asset_sub_categories"."id"
+                    WHERE "RequisitionDetails"."id" = ${req.params.id}`)
+
+        if (results.length > 0) {
+            res.status(200).json(results)
+        } else {
+            res.status(200).json({message: "No Data Found"})
+        }
+})
+
 // Update
 route.put('/requisition-details/update/:id', (req,res,next) => {
     const {requisition_id, asset_category, asset_sub_category, quantity} = req.body
