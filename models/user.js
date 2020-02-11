@@ -1,5 +1,5 @@
-const db = require('../config/db')
-const Sequelize = require('sequelize')
+const db = require('../config/db');
+const Sequelize = require('sequelize');
 
 
 const Users = db.define('Users', {
@@ -34,7 +34,7 @@ const Users = db.define('Users', {
     is_verified: {
       type: Sequelize.BOOLEAN
     }
-  })
+  });
 
 
-  module.exports = Users
+  module.exports = Users;
