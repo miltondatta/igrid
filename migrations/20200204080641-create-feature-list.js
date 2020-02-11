@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('FeatureList', {
+    return queryInterface.createTable('feature_list', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,7 +14,7 @@ module.exports = {
       module_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Modules',
+          model: 'modules',
           key: 'id'
         }
       },
@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('FeatureList');
+    return queryInterface.dropTable('feature_list');
   }
 };

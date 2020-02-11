@@ -3,7 +3,7 @@ const Vendors = require('./vendors')
 const db = require('../../config/db')
 const Sequelize = require('sequelize')
 
-const Challan = db.define('Challan', {
+const Challan = db.define('challans', {
     challan_no:{
         type: Sequelize.STRING
     },

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserAssociateRoles', {
+    return queryInterface.createTable('user_associate_roles', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,28 +11,28 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Users',
+          model: 'users',
           key: 'id'
         }
       },
       module_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Modules',
+          model: 'modules',
           key: 'id'
         }
       },
       location_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Locations',
+          model: 'locations',
           key: 'id'
         }
       },
       role_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'UserRoles',
+          model: 'user_roles',
           key: 'id'
         }
       },
@@ -47,6 +47,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserAssociateRole');
+    return queryInterface.dropTable('user_associate_roles ');
   }
 };

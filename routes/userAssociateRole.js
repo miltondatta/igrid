@@ -7,11 +7,11 @@ const route = express.Router()
 // Read
 route.get('/user-associate-roles', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT "UserAssociateRoles"."id",CONCAT("Users"."firstName", ' ', "Users"."lastName") as user_name, "Modules"."module_name", "Locations"."location_name", "UserRoles"."role_name" FROM "UserAssociateRoles"
-        JOIN "Users" ON "Users"."id" = "UserAssociateRoles"."user_id"
-        JOIN "Modules" ON "Modules"."id" = "UserAssociateRoles"."module_id"
-        JOIN "Locations" ON "Locations"."id" = "UserAssociateRoles"."location_id"
-        JOIN "UserRoles" ON "UserRoles"."id" = "UserAssociateRoles"."role_id"
+        SELECT user_associate_roles.id,CONCAT(users."firstName", ' ', users."lastName") as user_name, modules.module_name, locations.location_name, user_roles.role_name FROM user_associate_roles
+        JOIN users ON users.id = user_associate_roles.user_id
+        JOIN modules ON modules.id = user_associate_roles.module_id
+        JOIN locations ON locations.id = user_associate_roles.location_id
+        JOIN user_roles ON user_roles.id = user_associate_roles.role_id
     `)
     res.status(200).json(results)
 })

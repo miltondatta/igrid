@@ -5,7 +5,7 @@ const RequisitionMaster = require('./requisitionmaster')
 const AssetSubCategory = require('./asset/assetSubCategory')
 
 
-const RequisitionDetails = db.define('RequisitionDetails', {
+const RequisitionDetails = db.define('requisition_details', {
   requisition_id: {
     type: Sequelize.INTEGER,
     references:{

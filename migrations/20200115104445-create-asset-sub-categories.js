@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Asset_sub_categories', {
+    return queryInterface.createTable('asset_sub_categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,7 +15,7 @@ module.exports = {
       category_id:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Asset_categories',
+          model: 'asset_categories',
           key: 'id'
         },
       },

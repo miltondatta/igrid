@@ -5,7 +5,7 @@ const AssetCategory = require('./assetCategory')
 const AssetSubCategory = require('./assetSubCategory')
 const Brands = require('./brands')
 
-const Products = db.define('Products', {
+const Products = db.define('products', {
     category_id:{
         type: Sequelize.INTEGER,
         references: {

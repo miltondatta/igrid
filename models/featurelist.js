@@ -3,7 +3,7 @@ const Sequelize = require('sequelize')
 const Modules = require('./modules')
 
 
-const FeatureList = db.define('FeatureList', {
+const FeatureList = db.define('feature_list', {
   feature_name: {
     type: Sequelize.INTEGER
   },

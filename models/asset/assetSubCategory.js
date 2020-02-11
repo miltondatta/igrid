@@ -2,7 +2,7 @@ const db = require('../../config/db')
 const Sequelize = require('sequelize')
 const AssetCategory = require('./assetCategory')
 
-const AssetSubCategory = db.define('Asset_sub_categories', {
+const AssetSubCategory = db.define('asset_sub_categories', {
     category_id:{
         type: Sequelize.INTEGER,
         references: {

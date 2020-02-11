@@ -1,7 +1,7 @@
 const db = require('../../config/db')
 const Sequelize = require('sequelize')
 
-const DepreciationMethods = db.define('Depreciation_methods', {
+const DepreciationMethods = db.define('depreciation_methods', {
   method_name:{
     type: Sequelize.STRING
   },

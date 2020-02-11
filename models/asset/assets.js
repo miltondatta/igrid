@@ -8,7 +8,7 @@ const AssetCategory = require('./assetCategory')
 const AssetSubCategory = require('./assetSubCategory')
 const DepreciationMethods = require('./depreciation_methods')
 
-const Assets = db.define('Assets', {
+const Assets = db.define('assets', {
     challan_id:{
         type: Sequelize.INTEGER,
         references: {

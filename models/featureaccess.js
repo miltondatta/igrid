@@ -4,7 +4,7 @@ const FeatureList = require('./featurelist')
 const UserRoles = require('./userroles')
 
 
-const FeatureAccess = db.define('FeatureAccess', {
+const FeatureAccess = db.define('feature_accesses', {
   feature_id: {
     type: Sequelize.INTEGER,
     references:{

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Location_hierarchies', {
+    return queryInterface.createTable('location_hierarchies', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -22,6 +22,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Location_hierarchies');
+    return queryInterface.dropTable('location_hierarchies');
   }
 };

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('RequisitionDetails', {
+    return queryInterface.createTable('requisition_details', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,21 +11,21 @@ module.exports = {
       requisition_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'RequisitionMasters',
+          model: 'requisition_masters',
           key: 'id'
         }
       },
       asset_category: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Asset_categories',
+          model: 'asset_categories',
           key: 'id'
         }
       },
       asset_sub_category: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Asset_sub_categories',
+          model: 'asset_sub_categories',
           key: 'id'
         }
       },
@@ -43,6 +43,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('RequisitionDetails');
+    return queryInterface.dropTable('requisition_details');
   }
 };

@@ -7,10 +7,10 @@ const route = express.Router()
 // Read
 route.get('/requisition-details', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT "RequisitionDetails"."id", Concat("Users"."firstName", ' ', "Users"."lastName") as requestBy, "RequisitionDetails"."requisition_id"
-            FROM "RequisitionDetails"
-                Join "RequisitionMasters" ON "RequisitionDetails"."requisition_id" = "RequisitionMasters"."id"
-                Join "Users" ON "RequisitionMasters"."request_by" = "Users"."id"`)
+        SELECT DISTINCT ON(requisition_details.requisition_id) requisition_details.id, Concat(users."firstName", ' ', users."lastName") as requestBy, requisition_details.requisition_id
+            FROM requisition_details
+                 Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
+                 Join users ON requisition_masters.request_by = users.id`)
 
 
         if (results.length > 0) {
@@ -23,13 +23,13 @@ route.get('/requisition-details', async (req,res,next) => {
 // Read
 route.get('/requisition-details/details/:id', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT "RequisitionDetails"."id", Concat("Users"."firstName", ' ', "Users"."lastName") as userName, "Asset_categories"."category_name", "Asset_sub_categories"."sub_category_name", "RequisitionDetails"."quantity", "RequisitionMasters"."email", "RequisitionMasters"."mobile"
-        FROM "RequisitionDetails"
-                 Join "RequisitionMasters" ON "RequisitionDetails"."requisition_id" = "RequisitionMasters"."id"
-                 Join "Users" ON "RequisitionMasters"."request_by" = "Users"."id"
-                 Join "Asset_categories" ON "RequisitionDetails"."asset_category" = "Asset_categories"."id"
-                 Join "Asset_sub_categories" ON "RequisitionDetails"."asset_sub_category" = "Asset_sub_categories"."id"
-                    WHERE "RequisitionDetails"."id" = ${req.params.id}`)
+        SELECT requisition_details.id, Concat(users."firstName", ' ', users."lastName") as userName, asset_categories.category_name, asset_sub_categories.sub_category_name, requisition_details.quantity, requisition_masters.email, requisition_masters.mobile
+        FROM requisition_details
+                 Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
+                 Join users ON requisition_masters.request_by = users.id
+                 Join asset_categories ON requisition_details.asset_category = asset_categories.id
+                 Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
+                    WHERE requisition_details.id = ${req.params.id}`)
 
         if (results.length > 0) {
             res.status(200).json(results)

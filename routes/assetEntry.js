@@ -27,13 +27,13 @@ let upload = multer({
 }).single('file')
 
 
-// Read Challans
+// Read challans
 route.get('/asset-entry/challan', async (req,res,next) => {
-    const [results, metadata] = await db.query('SELECT "Challans"."id","Challans"."challan_no","Challans"."challan_name","Challans"."received_by","Challans"."added_by","Vendors"."vendor_name" FROM "Challans"  JOIN "Vendors" ON "Challans"."vendor_id" = "Vendors"."id"')
+    const [results, metadata] = await db.query('SELECT challans.id,challans.challan_no,challans.challan_name,challans.received_by,challans.added_by,vendors.vendor_name FROM challans JOIN vendors ON challans.vendor_id = vendors.id')
     res.status(200).json(results)
 })
 
-// Read Specific Challans
+// Read Specific challans
 route.get('/asset-entry/specific-challan/:id', (req,res,next) => {
     Challan.findAll({attributes: {exclude: ['createdAt','updatedAt']}})
         .then(resData => {
@@ -45,20 +45,20 @@ route.get('/asset-entry/specific-challan/:id', (req,res,next) => {
         })
 })
 
-// Read Assets Of Challans
+// Read Assets Of challans
 route.get('/asset-entry/assets/:id', async (req,res,next) => {
     console.log(req.params.id , 38)
     const [results, metadata] = await db.query(`
-            SELECT "Assets"."id","Assets"."product_serial","Challans"."challan_name", "Depreciation_methods"."method_name","Conditions"."condition_type","Asset_types"."type_name","Asset_categories"."category_name","Asset_sub_categories"."sub_category_name","Projects"."project_name" From "Assets"
-            JOIN "Challans" ON "Assets"."challan_id" = "Challans"."id"
-            JOIN "Projects" ON "Assets"."project_id" = "Projects"."id"
-            JOIN "Asset_categories" ON "Assets"."asset_category" = "Asset_categories"."id"
-            JOIN "Asset_sub_categories" ON "Assets"."asset_sub_category" = "Asset_sub_categories"."id"
-            JOIN "Asset_types" ON "Assets"."asset_type" = "Asset_types"."id"
-            JOIN "Conditions" ON "Assets"."condition" = "Conditions"."id"
-            JOIN "Depreciation_methods" ON "Assets"."depreciation_method" = "Depreciation_methods"."id"
-            WHERE "Assets"."challan_id" = ${req.params.id}  
-            ORDER BY "Asset_categories"."category_name"
+            SELECT assets.id,assets.product_serial,challans.challan_name, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name,asset_sub_categories.sub_category_name,projects.project_name From assets
+            JOIN challans ON assets.challan_id = challans.id
+            JOIN projects ON assets.project_id = projects.id
+            JOIN asset_categories ON assets.asset_category = asset_categories.id
+            JOIN asset_sub_categories ON assets.asset_sub_category = asset_sub_categories.id
+            JOIN asset_types ON assets.asset_type = asset_types.id
+            JOIN conditions ON assets.condition = conditions.id
+            JOIN depreciation_methods ON assets.depreciation_method = depreciation_methods.id
+            WHERE assets.challan_id = ${req.params.id}  
+            ORDER BY asset_categories.category_name
         `)
     res.status(200).json(results)
 })

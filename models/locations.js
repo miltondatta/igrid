@@ -3,7 +3,7 @@ const Sequelize = require('sequelize')
 const Location_hierarchies = require('./location_hierarchies')
 
 
-const Locations = db.define('Locations', {
+const Locations = db.define('locations', {
   location_name: {
     type: Sequelize.STRING
   },
