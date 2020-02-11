@@ -7,10 +7,11 @@ const route = express.Router()
 // Read
 route.get('/requisition-details', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT "RequisitionDetails"."id", "Asset_categories"."category_name", "Asset_sub_categories"."sub_category_name", "RequisitionDetails"."quantity"
+        SELECT "RequisitionDetails"."id", Concat("Users"."firstName", ' ', "Users"."lastName") as requestBy, "RequisitionDetails"."requisition_id"
             FROM "RequisitionDetails"
-                 Join "Asset_categories" ON "RequisitionDetails"."asset_category" = "Asset_categories"."id"
-                 Join "Asset_sub_categories" ON "RequisitionDetails"."asset_sub_category" = "Asset_sub_categories"."id"`)
+                Join "RequisitionMasters" ON "RequisitionDetails"."requisition_id" = "RequisitionMasters"."id"
+                Join "Users" ON "RequisitionMasters"."request_by" = "Users"."id"`)
+
 
         if (results.length > 0) {
             res.status(200).json(results)
