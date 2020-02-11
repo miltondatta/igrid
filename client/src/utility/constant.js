@@ -64,7 +64,7 @@ export const sidenav = [
         categories: [
             {
                 id: 1,
-                name: 'Requisition Form',
+                name: 'Requisition List',
                 link: '/request-history',
                 icon: "fas fa-satellite"
             },

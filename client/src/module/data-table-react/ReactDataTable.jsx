@@ -23,29 +23,24 @@ class ReactDataTable extends Component {
         if (props.tableData.length !== state.tableData.length){
             return {
                 actualData: props.tableData ? props.tableData : [],
-                tableData: props.tableData ? props.tableData.slice(0,10) : []
+                tableData: state.tableData ? state.tableData.slice(state.dataCount, state.dataCount + state.displayRow) : []
             };
         }
     }
 
     sortColumn = (e, sortColumn) => {
         e.preventDefault()
-        const {actualData, displayRow} = this.state
+        const {tableData, displayRow} = this.state
         if (sortColumn === this.state.sortColumn) {
-            let sortData = actualData.slice(0, actualData.length < 10 ? actualData.length : displayRow).sort((a, b) => (a[sortColumn] < b[sortColumn]) ? -1 : 1)
+            let sortData = tableData.sort((a, b) => (a[sortColumn] < b[sortColumn]) ? -1 : 1)
             this.setState({
                 sortColumn: '',
                 tableData: sortData
-            }, () => {
-                console.log(this.state.tableData, 37)
             })
         } else{
             this.setState({
                 sortColumn: sortColumn,
-                tableData: actualData.slice(0, actualData.length < 10 ? actualData.length : displayRow).sort((a, b) => (a[sortColumn] > b[sortColumn]) ? -1 : 1)
-            }, () => {
-
-                console.log(this.state.tableData)
+                tableData: tableData.sort((a, b) => (a[sortColumn] > b[sortColumn]) ? -1 : 1)
             })
         }
     }
@@ -53,7 +48,7 @@ class ReactDataTable extends Component {
     handleChange = (e) => {
         const {actualData} = this.state
         const {name, value} = e.target
-        if (name === 'displayRow') {
+            if (name === 'displayRow') {
             this.setState({
                 [name]: parseInt(value, 10),
                 tableData: actualData.slice(0, value),
@@ -68,27 +63,28 @@ class ReactDataTable extends Component {
 
     handleInc = () => {
         const {dataCount, actualData, tableData, displayRow} = this.state
-        if (dataCount < actualData.length - (displayRow + 1)) {
+        if (dataCount < actualData.length - (displayRow)) {
             this.setState((prevState) => ({
-                dataCount: prevState.dataCount + tableData.length
+                dataCount: prevState.dataCount + tableData.length,
+                increment: prevState.dataCount + tableData.length
             }), () => {
                 this.setState({
                     tableData: actualData.slice(this.state.dataCount, this.state.dataCount + displayRow)
                 })
-                })
+            })
         }
     }
 
     handleDec = () => {
-        const {dataCount, actualData, tableData, displayRow} = this.state
+        const {dataCount, actualData, tableData, displayRow, increment} = this.state
         if (dataCount > 0) {
             this.setState((prevState) => ({
-                dataCount: prevState.dataCount - tableData.length
+                dataCount: prevState.dataCount - increment
             }), () => {
                 this.setState({
                     tableData: actualData.slice(this.state.dataCount, this.state.dataCount + displayRow)
                 })
-                })
+            })
         }
     }
 
@@ -113,7 +109,6 @@ class ReactDataTable extends Component {
     }
 
     deleteItem = (id) => {
-        console.log(id)
         const {del} = this.props
         const data = {id}
         Axios.delete(apiUrl() + del + '/delete', {data})
@@ -132,7 +127,7 @@ class ReactDataTable extends Component {
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 
-        console.log(this.props.tableData, 132)
+        console.log(filteredData, tableData)
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
@@ -173,6 +168,7 @@ class ReactDataTable extends Component {
                     {tableData.length > 0 && <> <div className="col-md-6 justify-content-between row">
                         <div className="col-md-3">
                             <select name={'displayRow'} value={displayRow} className="form-control px-1 mb-3" style={{width: '100%'}} onChange={this.handleChange}>
+                                <option value={5}>5</option>
                                 <option value={10}>10</option>
                                 <option value={50}>50</option>
                                 <option value={100}>100</option>
