@@ -23,14 +23,14 @@ class ReactDataTable extends Component {
         if (props.tableData.length !== state.tableData.length){
             return {
                 actualData: props.tableData ? props.tableData : [],
-                tableData: state.tableData ? state.tableData.slice(state.dataCount, state.dataCount + state.displayRow) : []
+                tableData: props.tableData ? props.tableData.slice(state.dataCount, state.dataCount + state.displayRow) : []
             };
         }
     }
 
     sortColumn = (e, sortColumn) => {
         e.preventDefault()
-        const {tableData, displayRow} = this.state
+        const {tableData} = this.state
         if (sortColumn === this.state.sortColumn) {
             let sortData = tableData.sort((a, b) => (a[sortColumn] < b[sortColumn]) ? -1 : 1)
             this.setState({
@@ -63,6 +63,7 @@ class ReactDataTable extends Component {
 
     handleInc = () => {
         const {dataCount, actualData, tableData, displayRow} = this.state
+        console.log(dataCount)
         if (dataCount < actualData.length - (displayRow)) {
             this.setState((prevState) => ({
                 dataCount: prevState.dataCount + tableData.length,
@@ -126,8 +127,6 @@ class ReactDataTable extends Component {
         const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
-
-        console.log(filteredData, tableData)
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>

@@ -976,12 +976,11 @@ class AdminInputContainer extends Component {
                                     <div className="col-md-8">
                                         <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
                                             <option value={0}>--Select Parent--</option>
-                                            <LocationsOptions />
+                                            <LocationsOptions selectedId={parent_id} />
                                         </select>
                                     </div>
                                 </div>
                             </div>
-
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('FeatureAccesses', {
+    return queryInterface.createTable('feature_accesses', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,14 +11,14 @@ module.exports = {
       feature_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'FeatureList',
+          model: 'feature_list',
           key: 'id'
         }
       },
       role_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'UserRoles',
+          model: 'user_roles',
           key: 'id'
         }
       },
@@ -33,6 +33,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('FeatureAccesses');
+    return queryInterface.dropTable('feature_accesses');
   }
 };

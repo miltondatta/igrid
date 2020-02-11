@@ -1,7 +1,7 @@
 const db = require('../../config/db')
 const Sequelize = require('sequelize')
 
-const AssetType = db.define('Asset_types', {
+const AssetType = db.define('asset_types', {
   type_name:{
     type: Sequelize.STRING
   },

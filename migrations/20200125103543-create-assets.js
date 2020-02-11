@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Assets', {
+    return queryInterface.createTable('assets', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,28 +12,28 @@ module.exports = {
       challan_id:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Challans',
+          model: 'challans',
           key: 'id'
         },
       },
       project_id:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Projects',
+          model: 'projects',
           key: 'id'
         },
       },
       asset_category:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Asset_categories',
+          model: 'asset_categories',
           key: 'id'
         },
       },
       asset_sub_category:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Asset_sub_categories',
+          model: 'asset_sub_categories',
           key: 'id'
         },
       },
@@ -55,14 +55,14 @@ module.exports = {
       asset_type:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Asset_types',
+          model: 'asset_types',
           key: 'id'
         },
       },
       depreciation_method:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Depreciation_methods',
+          model: 'depreciation_methods',
           key: 'id'
         },
       },
@@ -93,7 +93,7 @@ module.exports = {
       condition:{
         type: Sequelize.INTEGER,
         references: {
-          model: 'Conditions',
+          model: 'conditions',
           key: 'id'
         },
       },
@@ -117,6 +117,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Assets');
+    return queryInterface.dropTable('assets');
   }
 };

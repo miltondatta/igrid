@@ -8,7 +8,7 @@ const Users = require('./user')
 const Status = require('./status')
 
 
-const RequisitionApproves = db.define('RequisitionApproves', {
+const RequisitionApproves = db.define('requisition_approves', {
   requisition_id: {
     type: Sequelize.INTEGER,
     references:{

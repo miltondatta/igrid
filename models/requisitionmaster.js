@@ -5,7 +5,7 @@ const UserRoles = require('./userroles')
 const UserAssociateRole = require('./userassociaterole')
 
 
-const RequisitionMaster = db.define('RequisitionMasters', {
+const RequisitionMaster = db.define('requisition_masters', {
   requisition_no: {
     type: Sequelize.STRING
   },

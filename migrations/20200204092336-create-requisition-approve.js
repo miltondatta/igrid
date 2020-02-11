@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('RequisitionApproves', {
+    return queryInterface.createTable('requisition_approves', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,42 +11,42 @@ module.exports = {
       requisition_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'RequisitionMasters',
+          model: 'requisition_masters',
           key: 'id'
         }
       },
       requisition_details_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'RequisitionDetails',
+          model: 'requisition_details',
           key: 'id'
         }
       },
       role_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'UserRoles',
+          model: 'user_roles',
           key: 'id'
         }
       },
       location_id: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Locations',
+          model: 'locations',
           key: 'id'
         }
       },
       delivery_to: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Users',
+          model: 'users',
           key: 'id'
         }
       },
       status: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'Status',
+          model: 'status',
           key: 'id'
         }
       },
@@ -64,6 +64,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('RequisitionApprove');
+    return queryInterface.dropTable('requisition_approves');
   }
 };

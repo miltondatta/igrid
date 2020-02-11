@@ -108,8 +108,7 @@ router.post('/users/login', (req,res,next) => {
               if(err){console.log(err)}
               else{
                 if(resData){
-                    const [results, metadata] = await db.query(`SELECT "UserAssociateRoles"."id" as location_id, "UserRoles"."id" as role_id FROM "UserAssociateRoles" JOIN "UserRoles" ON "UserRoles"."id" = "UserAssociateRoles"."role_id" WHERE "UserAssociateRoles"."user_id" = ${data[0].dataValues.id}`)
-                    console.log(results, 89)
+                    let payload = {}
                     const id = data[0].dataValues.id
                     const userName = data[0].dataValues.firstName + " " + data[0].dataValues.lastName
                     const email = data[0].dataValues.email
@@ -118,9 +117,16 @@ router.post('/users/login', (req,res,next) => {
                     const pin = data[0].dataValues.pin
                     const address = data[0].dataValues.address
                     const image = data[0].dataValues.image
-                    const location_id = results[0].location_id
-                    const role_id = results[0].role_id
-                    const payload = {id, userName, email, phone_number, pin, address, image, userType, location_id, role_id}
+
+                    if (data[0].dataValues.userType !== 0) {
+                        const [results, metadata] = await db.query(`SELECT user_associate_roles.id as location_id, user_roles.id as role_id FROM user_associate_roles JOIN user_roles ON user_roles.id = user_associate_roles.role_id WHERE user_associate_roles.user_id = ${data[0].dataValues.id}`)
+                        const location_id = results[0].location_id
+                        const role_id = results[0].role_id
+                        payload = {id, userName, email, phone_number, pin, address, image, userType, location_id, role_id}
+                    } else {
+                        payload = {id, userName, email, phone_number, pin, address, image, userType}
+                    }
+
                     const token = jwt.sign({
                       exp: Math.floor(Date.now() / 1000) + (60 * 60),
                       data: payload
@@ -229,7 +235,7 @@ router.put('/users/password-reset/:id', (req,res,next) => {
 
 // User Login Logs
 router.get('/user-login-logs', async (req, res, next) => {
-    const [results, metadata] = await db.query(`SELECT CONCAT(Users."firstName", ' ' ,Users."lastName") as name, Users."email", "UserLoginLogs"."user_ip","UserLoginLogs"."date","UserLoginLogs"."time" FROM "UserLoginLogs"  JOIN Users ON "UserLoginLogs"."user_id" = Users."id"`)
+    const [results, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ' ,users."lastName") as name, users.email, user_login_logs.user_ip,user_login_logs.date,user_login_logs.time FROM user_login_logs  JOIN users ON user_login_logs.user_id = users."id"`)
     res.status(200).json(results)
 })
 

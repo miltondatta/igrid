@@ -6,7 +6,7 @@ const Locations = require('./locations')
 const UserRoles = require('./userroles')
 
 
-const UserAssociateRoles = db.define('UserAssociateRoles', {
+const UserAssociateRoles = db.define('user_associate_roles', {
   user_id: {
     type: Sequelize.INTEGER,
     references:{
