@@ -191,3 +191,6 @@ fabric.properties
 
 ##Exclude database configuration
 config/config.json
+
+##Exclude Public Vendor File
+public/vendor
