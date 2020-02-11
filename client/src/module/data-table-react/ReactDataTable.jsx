@@ -170,18 +170,18 @@ class ReactDataTable extends Component {
         return (
             <div className={'reactDataTable'}>
                 <div className="row">
-                    <div className="col-md-6 justify-content-between row">
-                        <div className="col-md-2">
+                    {tableData.length > 0 && <> <div className="col-md-6 justify-content-between row">
+                        <div className="col-md-3">
                             <select name={'displayRow'} value={displayRow} className="form-control px-1 mb-3" style={{width: '100%'}} onChange={this.handleChange}>
                                 <option value={10}>10</option>
                                 <option value={50}>50</option>
                                 <option value={100}>100</option>
                             </select>
                         </div>
-                        {exportable && <div className="col-md-10">
+                        {exportable && <div className="col-md-9">
                             <button onClick={this.exportExcel} className="btn btn-outline-secondary">Export Excel</button>
                         </div>}
-                    </div>
+                    </div></>}
                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
                         <div className="input-group" style={{width: 280}}>
                             <input name={'filterByTitle'} onChange={this.handleChange} className="form-control" placeholder={`Search by ${title.split('_').join(' ')}`} />
@@ -210,9 +210,9 @@ class ReactDataTable extends Component {
                     </tbody>
                 </table> : <h3>No Data Available</h3>}
                 <div className={'row'}>
-                    <div className="col-md-5 mt-1">
+                    {tableData.length > 0 && <div className="col-md-5 mt-1">
                         <p>Showing {dataCount + 1} to {dataCount + tableData.length} of {actualData.length} entries</p>
-                    </div>
+                    </div>}
                     <div className={' col-md-7 align-items-center'}>
                         {pagination && <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-end">

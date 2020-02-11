@@ -1,10 +1,11 @@
-const fs = require('fs');
+const fs = require('fs')
 const multer = require('multer')
 const bcrypt = require('bcryptjs')
 const express = require('express')
 const db = require('../config/db');
 const jwt = require('jsonwebtoken')
 const Users = require('../models/user')
+const nodeMailer = require('nodemailer')
 const UserLoginLogs = require('../models/userloginlog')
 
 const saltRounds = 10
@@ -31,7 +32,7 @@ let upload =  multer({
 
 // Get All Users
 router.get('/users', (req,res,next) => {
-  Users.findAll({attributes: ['id', 'image', 'address', 'pin', 'firstName', 'lastName', 'userType', 'email', 'userStatus', 'phone_number', 'is_verified']})
+  Users.findAll({attributes: ['id', 'image', 'address', 'pin', 'firstName', 'lastName', 'userType', 'email', 'phone_number', 'is_verified']})
       .then(data => {res.send(data)})
       .catch(err => {console.log(err); res.status(404).send(err)})
 })
@@ -39,7 +40,6 @@ router.get('/users', (req,res,next) => {
 // Create User
 router.post('/users/register', (req,res,next) => {
   const userData = req.body
-    console.log(userData,20)
   const userEmail = userData.email
   const userPass = userData.password
   Users.findAll({where: {email: userEmail}})
@@ -50,9 +50,32 @@ router.post('/users/register', (req,res,next) => {
               bcrypt.hash(userPass.toString(), saltRounds, (err, hash) => {
                 if (err) {console.log(err,28)}
                 else{
-                  const hasedPass = {...userData, password: hash}
+                  const hasedPass = {...userData, userType: 2, password: hash}
                   Users.create(hasedPass)
                        .then(data => {
+                           let transporter = nodeMailer.createTransport({
+                               host: 'smtp.gmail.com',
+                               port: 465,
+                               secure: true,
+                               auth: {
+                                   // should be replaced with real sender's account
+                                   user: 'dummydumbdd77@gmail.com',
+                                   pass: 'Dymmy@77'
+                               }
+                           });
+                           let mailOptions = {
+                               // should be replaced with real recipient's account
+                               from: '"iGrid" <dummydumbdd77@gmail.com>',
+                               to: userEmail,
+                               subject: 'Test Mail',
+                               html: "<h2 style='color: #17a2b8'>Your account is ready. Please contact the admin</h2>"
+                           };
+                           transporter.sendMail(mailOptions, (error, info) => {
+                               if (error) {
+                                   return console.log(error);
+                               }
+                               console.log('Message %s sent: %s', info.messageId, info.response);
+                           });
                           res.status(200).json({"message": "User Created Successfully"})
                         })
                         .catch(err => {console.log(err,35)})
@@ -67,10 +90,9 @@ router.post('/users/register', (req,res,next) => {
 
 // Login Users
 router.post('/users/login', (req,res,next) => {
-    console.log(req.ip, 70)
     // let user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    let user_ip = req.body.ip
     // let user_ip = req.ip
+    let user_ip = req.body.ip
     let date = new Date().toLocaleDateString()
     let time = new Date().toLocaleTimeString()
 
@@ -82,30 +104,30 @@ router.post('/users/login', (req,res,next) => {
          if(data.length === 0){res.status(400).json({message: "User Doesn't Exist"})}
          else{
           const passFromDB = data[0].dataValues.password.toString()
-          console.log(typeof passFromDB)
-          bcrypt.compare(userPass, passFromDB, function(err, resData) {
+          bcrypt.compare(userPass, passFromDB, async function(err, resData) {
               if(err){console.log(err)}
               else{
-
                 if(resData){
-                  const id = data[0].dataValues.id
-                  const userName = data[0].dataValues.firstName + " " + data[0].dataValues.lastName
-                  const email = data[0].dataValues.email
-                  const userType = data[0].dataValues.userType
-                  const phone_number = data[0].dataValues.phone_number
-                  const pin = data[0].dataValues.pin
-                  const address = data[0].dataValues.address
-                  const image = data[0].dataValues.image
-                  const payload = {id, userName, email, phone_number, pin, address, image, userType}
-                  const token = jwt.sign({
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                    data: payload
-                  }, 'secret');
-
-
-                  const userLogs = {user_ip, user_id: data[0].dataValues.id, time, date}
-                  UserLoginLogs.create(userLogs)
-                  res.status(200).json({token: token})
+                    const [results, metadata] = await db.query(`SELECT "UserAssociateRoles"."id" as location_id, "UserRoles"."id" as role_id FROM "UserAssociateRoles" JOIN "UserRoles" ON "UserRoles"."id" = "UserAssociateRoles"."role_id" WHERE "UserAssociateRoles"."user_id" = ${data[0].dataValues.id}`)
+                    console.log(results, 89)
+                    const id = data[0].dataValues.id
+                    const userName = data[0].dataValues.firstName + " " + data[0].dataValues.lastName
+                    const email = data[0].dataValues.email
+                    const userType = data[0].dataValues.userType
+                    const phone_number = data[0].dataValues.phone_number;
+                    const pin = data[0].dataValues.pin
+                    const address = data[0].dataValues.address
+                    const image = data[0].dataValues.image
+                    const location_id = results[0].location_id
+                    const role_id = results[0].role_id
+                    const payload = {id, userName, email, phone_number, pin, address, image, userType, location_id, role_id}
+                    const token = jwt.sign({
+                      exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                      data: payload
+                    }, 'secret');
+                    const userLogs = {user_ip, user_id: data[0].dataValues.id, time, date}
+                    UserLoginLogs.create(userLogs)
+                    res.status(200).json({token: token})
                 } else {
                   res.status(400).json({message: "Password Didn't Match"})
                 }
@@ -142,14 +164,14 @@ router.put('/users/update/:id', (req,res,next) => {
             email,
             pin,
             address,
-            image: req.file.filename
+            image: req.file.filename ? req.file.filename : 'default.png'
         }
         Users.findAll({where: {email: sendData.email}})
             .then(data => {
                 if (data.length > 1) {
                     res.status(200).json({message: 'Email Taken'})
                 } else {
-                    if (fs.existsSync('public/images/' + data[0].dataValues.image)) {
+                    if (fs.existsSync('public/images/' + data[0].dataValues.image && req.file.filename)) {
                         fs.unlink('public/images/' + data[0].dataValues.image, (err) => {
                             if (err) throw err;
                             console.log('successfully deleted /tmp/hello');
@@ -169,7 +191,6 @@ router.put('/users/update/:id', (req,res,next) => {
 
 // Update Password
 router.put('/users/password-reset/:id', (req,res,next) => {
-    console.log(req.body, 175)
   const {oldPassword, newPassword,confirmPassword} = req.body
   Users.findAll({where: {id: req.params.id}})
        .then(data => {
@@ -211,6 +232,5 @@ router.get('/user-login-logs', async (req, res, next) => {
     const [results, metadata] = await db.query(`SELECT CONCAT(Users."firstName", ' ' ,Users."lastName") as name, Users."email", "UserLoginLogs"."user_ip","UserLoginLogs"."date","UserLoginLogs"."time" FROM "UserLoginLogs"  JOIN Users ON "UserLoginLogs"."user_id" = Users."id"`)
     res.status(200).json(results)
 })
-
 
 module.exports = router

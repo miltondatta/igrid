@@ -8,6 +8,8 @@ class App extends Component{
       const {exp} = jwt.decode(localStorage.getItem('user'))
       if (exp < (Date.now().valueOf() / 1000)) {
         localStorage.removeItem('user')
+        alert('Session Expired!!')
+        window.location.reload()
       }
     }
   }

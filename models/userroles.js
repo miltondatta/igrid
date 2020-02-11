@@ -3,7 +3,7 @@ const Modules = require('./modules')
 const Sequelize = require('sequelize')
 
 
-const Modules = db.define('User_Roles', {
+const UserRoles = db.define('UserRoles', {
   role_name: {
     type: Sequelize.STRING
   },
@@ -20,4 +20,4 @@ const Modules = db.define('User_Roles', {
 })
 
 
-module.exports = Modules
+module.exports = UserRoles

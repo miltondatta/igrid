@@ -1,29 +1,36 @@
 'use strict';
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Asset_sub_categories', {
+    return queryInterface.createTable('RequisitionDetails', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      category_id:{
+      requisition_id: {
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'RequisitionMasters',
+          key: 'id'
+        }
+      },
+      asset_category: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Asset_categories',
           key: 'id'
-        },
+        }
       },
-      sub_category_code:{
-        type: Sequelize.STRING
+      asset_sub_category: {
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'Asset_sub_categories',
+          key: 'id'
+        }
       },
-      sub_category_name:{
-        type: Sequelize.STRING
-      },
-      description:{
-        type: Sequelize.STRING
+      quantity: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +43,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('asset_sub_categories');
+    return queryInterface.dropTable('RequisitionDetails');
   }
 };

@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import {apiUrl} from "../../utility/constant";
 
 class LoginComponent extends Component {
+
     constructor(props){
         super(props)
         this.state = {
@@ -12,6 +13,14 @@ class LoginComponent extends Component {
             password: '',
             redirect: false
         }
+    }
+
+    componentDidMount() {
+        window.addEventListener('keydown', (event) => {
+            if(event.isComposing || event.keyCode === 13) {
+                this.submitLogin()
+            }
+        })
     }
 
     handleChange = (e) => {

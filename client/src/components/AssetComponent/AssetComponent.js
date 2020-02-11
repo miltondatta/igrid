@@ -1,21 +1,12 @@
+import './assetComponent.css'
+import Axios from "axios";
+import jwt from "jsonwebtoken";
 import React, {Component} from 'react'
-import {
-    accessoriesOptions,
-    hardwareOptions,
-    otherOptions,
-    requestOn,
-    stationaryOptions
-} from "../../utility/constant";
 import {withRouter} from 'react-router-dom'
-import DataTable from "react-data-table-component";
-
-const FilterOption = (props) => {
-    return(
-        <div>
-            <input onChange={props.handleFilter} className={'rounded p-2 border'} placeholder={'Filter By Title'} />
-        </div>
-    )
-}
+import {apiUrl} from "../../utility/constant";
+import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
+import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class AssetComponent extends Component{
     constructor(props){
@@ -23,10 +14,16 @@ class AssetComponent extends Component{
         this.state={
             items: 0,
             quantity: '',
+            reqMaster: '',
             productSet: [],
             filterText: '',
+            asset_category: '',
             submitProduct: false,
+            asset_sub_category: '',
             request: this.props.match.params.option ? this.props.match.params.option : 0,
+            email: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.email : '',
+            userName: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.userName : '',
+            mobile: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.phone_number : '',
         }
     }
 
@@ -37,19 +34,20 @@ class AssetComponent extends Component{
         })
     }
 
+    componentDidMount() {
+    }
+
     handleSubmit = (e) => {
         e.preventDefault()
-        const {request, items, quantity, productSet} = this.state
+        const {asset_category, asset_sub_category, quantity, productSet} = this.state
         const length = productSet.length
         const productCombination = {
             id: length + 1,
-            request_name: requestOn[request],
-            item_name: request === 1 ? hardwareOptions[items] : request === 2 ? accessoriesOptions[items] : request === 3 ? stationaryOptions[items] : request === 4 && otherOptions[items],
-            request,
-            items,
+            request_name: asset_category,
+            item_name: asset_sub_category,
             quantity
         }
-        if (request !== 0 && items !== 0 && quantity !== '') {
+        if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             this.setState((prevState) => ({
                 productSet: [...prevState.productSet, productCombination],
                 submitProduct: true,
@@ -58,6 +56,29 @@ class AssetComponent extends Component{
                 items: 0,
             }))
         }
+    }
+
+    sendRequisition = (e) => {
+        e.preventDefault()
+        const {reqMaster, productSet} = this.state
+        const data = []
+
+        productSet.forEach(item => {
+            data.push({
+                requisition_id: reqMaster.id,
+                asset_category: item.request_name,
+                asset_sub_category: item.item_name,
+                quantity: item.quantity,
+            })
+        })
+
+        Axios.post(apiUrl() + 'requisition-details/entry', data)
+            .then(resData => {
+                if(resData){
+                    console.log(resData)
+                }
+            })
+            .catch(err => {console.log(err)})
     }
 
     handleFilter = (e) => {
@@ -69,109 +90,103 @@ class AssetComponent extends Component{
         })
     }
 
+    handleReqMaster = (e) => {
+        e.preventDefault()
+        const {mobile, email} = this.state
+        const {location_id, role_id, id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        const payload = {
+            mobile,
+            email,
+            location_id,
+            role_id,
+            request_by: id
+        }
+        Axios.post(apiUrl() + 'requisition-master/entry', payload)
+            .then(resData => {
+                if(resData){
+                    this.setState({
+                        reqMaster: resData.data[0]
+                    })
+                }
+            })
+            .catch(err => {console.log(err)})
+    }
+
     render(){
-        const columns = [
-            {
-                name: 'No',
-                selector: 'id',
-                sortable: true,
-            },
-            {
-                name: 'Request On',
-                selector: 'request_name',
-                sortable: true,
-                right: true,
-            },
-            {
-                name: 'Item Name',
-                selector: 'items',
-                sortable: true,
-                right: true,
-            },
-            {
-                name: 'Quantity',
-                selector: 'quantity',
-                sortable: true,
-                right: true,
-            }
-        ];
-        const {option} = this.props.match.params
-        const {request, items, quantity, productSet, submitProduct, filterText} = this.state
-        const accessoriesData = Object.keys(accessoriesOptions).map((items, index) => {
-            return(
-                <option key={index} value={items}>{accessoriesOptions[items]}</option>
-            )
-        })
-        const stationaryData = Object.keys(stationaryOptions).map((items, index) => {
-            return(
-                <option key={index} value={items}>{stationaryOptions[items]}</option>
-            )
-        })
-        const hardwareData = Object.keys(hardwareOptions).map((items, index) => {
-            return(
-                <option key={index} value={items}>{hardwareOptions[items]}</option>
-            )
-        })
-        const otherData = Object.keys(otherOptions).map((items, index) => {
-            return(
-                <option key={index} value={items}>{otherOptions[items]}</option>
-            )
-        })
-        const filteredData = productSet.filter((item) => item.items.includes(filterText))
+        const {asset_category, mobile, email, quantity, reqMaster, userName, asset_sub_category, productSet} = this.state
 
         return(
             <div className={'ui-asset-component m-auto justify-content-between'}>
-                <div className={'bg-white p-3 rounded shadow'}>
+                {!reqMaster ? <div className={'bg-white p-3 rounded shadow'}>
                     <nav className="navbar text-center mb-3 p-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0" href="#">Add Product</p>
+                        <p className="text-dark f-weight-500 f-20px m-0">Your Information</p>
                     </nav>
                     <form>
                         <div className="form-row">
                             <div className="form-group col-md-6">
-                                <label htmlFor="requeston">Request On</label>
-                                <select onChange={this.handleChange} className="form-control" id="requeston" value={request} name={'request'}>
-                                    <option value={0}>--Select--</option>
-                                    <option value={1}>Hardware</option>
-                                    <option value={2}>Accessories</option>
-                                    <option value={3}>Stationary</option>
-                                    <option value={4}>Others</option>
-                                </select>
+                                <label htmlFor="email">Email</label>
+                                <input onChange={this.handleChange} value={email} type="email" className="form-control" name={'email'} id="email" placeholder="Email" />
                             </div>
                             <div className="form-group col-md-6">
-                                <label htmlFor="itemname">Item Name</label>
-                                <select onChange={this.handleChange} className="form-control" id="itemname" value={items} name={'items'}>
-                                    <option value={0}>--Select Items--</option>
-                                    {request === '1' ? hardwareData : request === '2' ? accessoriesData : request === '3' ? stationaryData : request === '4' ? otherData : ''}
-                                </select>
+                                <label htmlFor="mobile">Phone</label>
+                                <input onChange={this.handleChange} value={mobile} type="text" className="form-control" name={'mobile'} id="mobile" placeholder="Phone Number" />
                             </div>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="inputAddress">Quantity</label>
-                            <input onChange={this.handleChange} value={quantity} type="number" className="form-control" name={'quantity'} id="inputAddress" placeholder="Quantity" />
-                        </div>
-                        <button type="submit" onClick={this.handleSubmit} className="ui-btn">Add Product</button>
+                        <button type="submit" onClick={this.handleReqMaster} className="ui-btn">Add Info</button>
                     </form>
-                </div>
-                <div className={'bg-white p-3 rounded shadow'}>
+                </div> : <div className={'bg-white p-3 rounded shadow'}>
+                    <nav className="navbar text-center p-2 rounded">
+                        <p className="text-dark f-weight-500 f-20px m-0" href="#">Your Information</p>
+                    </nav>
+                    <div className={'row px-3'}>
+                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Your Name</div>
+                        <div className="col-md-9 mt-3 pl-2 f-18px">{userName}</div>
+                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Your Email</div>
+                        <div className="col-md-9 mt-3 pl-2 f-18px">{reqMaster.email}</div>
+                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Phone Number</div>
+                        <div className="col-md-9 mt-3 pl-2 f-18px">{reqMaster.mobile}</div>
+                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Request Date</div>
+                        <div className="col-md-9 mt-3 pl-2 f-18px">{reqMaster.request_date}</div>
+                    </div>
+                </div>}
+                <div className={'bg-white p-3 rounded shadow ui-req-dataTable'}>
                     <nav className="navbar text-center mb-3 p-2 rounded">
                         <p className="text-dark f-weight-500 f-20px m-0">Submit Product</p>
                     </nav>
-                    <DataTable
-                        striped={true}
-                        noHeader={true}
-                        subHeader={true}
-                        responsive={true}
-                        columns={columns}
-                        pagination={true}
-                        theme={'solarized'}
-                        highlightOnHover={true}
-                        className={'ui-react-table'}
-                        data={filterText !== '' ? filteredData : productSet}
-                        actions={<button className={'btn btn-primary'}>Action</button>}
-                        subHeaderComponent={productSet.length > 0 && <FilterOption handleFilter={this.handleFilter}/>}
+                    <ReactDataTable
+                        tableData={productSet}
                     />
-                    {submitProduct && <button type="submit" onClick={this.handleSubmit} className="ui-btn">Submit</button>}
+                    {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="ui-btn">Submit</button>}
                 </div>
+                {reqMaster &&
+                    <div className={'bg-white p-3 rounded shadow'}>
+                        <nav className="navbar text-center mb-3 p-2 rounded">
+                            <p className="text-dark f-weight-500 f-20px m-0">Add Products</p>
+                        </nav>
+                        <form className={'p-2'}>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="requeston">Request On</label>
+                                    <select onChange={this.handleChange} className="form-control" id="requeston" value={asset_category} name={'asset_category'}>
+                                        <option value={0}>--Select--</option>
+                                        <AssetCategoryOptions />
+                                    </select>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="itemname">Item Name</label>
+                                    <select onChange={this.handleChange} className="form-control" id="itemname" name={'asset_sub_category'} value={asset_sub_category}>
+                                        <option value={0}>--Select Items--</option>
+                                        <AssetSubCategoryOptions assetId={asset_category} />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="inputAddress">Quantity</label>
+                                <input onChange={this.handleChange} value={quantity} type="number" className="form-control" name={'quantity'} id="inputAddress" placeholder="Quantity" />
+                            </div>
+                            <button type="submit" onClick={this.handleSubmit} className="ui-btn">Add Product</button>
+                        </form>
+                    </div>}
             </div>
         )
     }
