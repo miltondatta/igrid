@@ -1,64 +1,48 @@
-// const DocumentCategory = require('../../models');
+const {Op} = require("sequelize");
+const DocumentCategory = require('../../models/document_category');
+const {capitalize, upperToCapitalize} = require('../../utility/custom');
 
 exports.index = async (req, res) => {
-    /*try {
+    try {
         const data = await DocumentCategory.findAll(
             {
                 attributes: ["id", "category_name"],
                 order: [['id', 'DESC']]
             }
         );
-
-        if (!data) return res.status(400).json({msg: 'Something else!'});
+        if (!data) return res.status(400).json({msg: 'Something else! Please try again!'});
 
         return res.status(200).json(data);
-    } catch (err) {
-        console.error(err.message);
-        return res.status(500).json({msg: 'Server Error!'});
-    }*/
-};
-
-/*
-
-exports.checkIata = async (req, res) => {
-    try {
-        const iata = req.query.iata;
-        if (!iata) return res.status(400).json({msg: 'Iata not found!'});
-
-        const airline = await Airline.findOne({where: {iata}});
-        if (airline) return res.status(400).json({msg: 'This iata code is already exist!'});
-
-        return res.json({'success': true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
     }
 };
 
-
 exports.store = async (req, res) => {
     try {
-        const {name, iata, icao, callsign, country, active} = req.body;
-        const max = await Airline.max('id');
-
-        const newAirline = {
-            id: max + 1,
-            name: name,
-            iata: iata.toUpperCase(),
-            icao: icao.toUpperCase(),
-            callsign: callsign.toUpperCase(),
-            country: country,
-            active: active,
-            createdAt: moment()
+        const {category_name} = req.body;
+        const newDocumentCategory = {
+            category_name: category_name
         };
 
-        const airline = await Airline.findOne({where: {iata}});
-        if (airline) return res.status(400).json({msg: 'This airline is already exist!'});
+        const document_category = await DocumentCategory.findAll({
+            where: {
+                [Op.or]: [
+                    {category_name: category_name},
+                    {category_name: category_name.toLowerCase()},
+                    {category_name: category_name.toUpperCase()},
+                    {category_name: capitalize(category_name)},
+                    {category_name: upperToCapitalize(category_name)}
+                ]
+            }
+        });
+        if (document_category.length > 0) return res.status(400).json({msg: 'This Document Category is already exist!'});
 
-        const status = await Airline.create(newAirline);
+        const status = await DocumentCategory.create(newDocumentCategory);
         if (!status) return res.status(400).json({msg: 'Please try again with full information!'});
 
-        return res.status(200).json({msg: 'New Airline Information saved successfully.'});
+        return res.status(200).json({msg: 'New Document Category saved successfully.'});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
@@ -69,10 +53,10 @@ exports.edit = async (req, res) => {
     try {
         const id = req.params.id;
 
-        const airline = await Airline.findOne({where: {id}});
-        if (!airline) return res.status(400).json({msg: 'Airline information didn\'t found!'});
+        const document_category = await DocumentCategory.findOne({where: {id}});
+        if (!document_category) return res.status(400).json({msg: 'Document Category didn\'t found!'});
 
-        return res.status(200).json(airline);
+        return res.status(200).json(document_category);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
@@ -81,26 +65,21 @@ exports.edit = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const {id, name, iata, icao, callsign, country, active} = req.body;
+        const {id, category_name} = req.body;
 
-        const updateAirline = {
+        const updateDocumentCategory = {
             id: id,
-            name: name,
-            iata: iata.toUpperCase(),
-            icao: icao.toUpperCase(),
-            callsign: callsign.toUpperCase(),
-            country: country,
-            active: active,
-            updatedAt: moment(),
+            category_name: category_name,
+            updatedAt: new Date().toLocaleTimeString()
         };
 
-        const status = await Airline.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This airline didn\'t found!'});
+        const status = await DocumentCategory.findOne({where: {id}});
+        if (!status) return res.status(400).json({msg: 'This Document Category didn\'t found!'});
 
-        const airline = await Airline.update(updateAirline, {where: {id}});
-        if (!airline) return res.status(400).json({msg: 'Please try again with full information!'});
+        const document_category = await DocumentCategory.update(updateDocumentCategory, {where: {id}});
+        if (!document_category) return res.status(400).json({msg: 'Please try again with full information!'});
 
-        return res.status(200).json({msg: 'Airline Information updated successfully.'});
+        return res.status(200).json({msg: 'Document Category Information updated successfully.'});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
@@ -111,12 +90,15 @@ exports.delete = async (req, res) => {
     try {
         const {id} = req.body;
 
-        const status = await Airline.destroy({where: {id}});
-        if (!status) return res.status(400).json({msg: 'Please try again!'});
+        const status = await DocumentCategory.findOne({where: {id}});
+        if (!status) return res.status(400).json({msg: 'This Document Category didn\'t found!'});
 
-        return res.status(200).json({msg: 'One Airline deleted successfully!'});
+        const document_category = await DocumentCategory.destroy({where: {id}});
+        if (!document_category) return res.status(400).json({msg: 'Please try again!'});
+
+        return res.status(200).json({msg: 'One Document Category deleted successfully!'});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
     }
-};*/
+};

@@ -14,7 +14,7 @@ router.get('/all', documentCategoryController.index);
     @desc           Save New Document Category Data
     @access         Private
  */
-// router.post('/store', documentCategoryController.store);
+router.post('/store', documentCategoryController.store);
 
 /*
     @route          get api/document/category/edit/:id
@@ -22,7 +22,7 @@ router.get('/all', documentCategoryController.index);
     @access         Private
  */
 
-// router.get('/edit/:id', documentCategoryController.edit);
+router.get('/edit/:id', documentCategoryController.edit);
 
 /*
     @route          POST api/document/category/update/
@@ -30,13 +30,13 @@ router.get('/all', documentCategoryController.index);
     @access         Private
  */
 
-// router.post('/update', documentCategoryController.update);
+router.post('/update', documentCategoryController.update);
 
 /*
     @route          POST api/document/category/delete/
     @desc           Delete Document Category
     @access         Private
  */
-// router.post('/delete', documentCategoryController.delete);
+router.post('/delete', documentCategoryController.delete);
 
 module.exports = router;

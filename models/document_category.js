@@ -1,10 +1,8 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const document_category = sequelize.define('document_category', {
-    category_name: DataTypes.STRING
-  }, {});
-  document_category.associate = function(models) {
-    // associations can be defined here
-  };
-  return document_category;
-};
+const db = require('../config/db');
+const Sequelize = require('sequelize');
+
+const document_category = db.define('document_category', {
+    category_name: Sequelize.STRING
+});
+
+module.exports = document_category;
