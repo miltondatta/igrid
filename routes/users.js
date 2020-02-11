@@ -108,8 +108,8 @@ router.post('/users/login', (req,res,next) => {
               if(err){console.log(err)}
               else{
                 if(resData){
-                    const [results, metadata] = await db.query(`SELECT "UserAssociateRoles"."id" as location_id, "UserRoles"."id" as role_id FROM "UserAssociateRoles" JOIN "UserRoles" ON "UserRoles"."id" = "UserAssociateRoles"."role_id" WHERE "UserAssociateRoles"."user_id" = ${data[0].dataValues.id}`)
-                    console.log(results, 89)
+                    // const [results, metadata] = await db.query(`SELECT "UserAssociateRoles"."id" as location_id, "UserRoles"."id" as role_id FROM "UserAssociateRoles" JOIN "UserRoles" ON "UserRoles"."id" = "UserAssociateRoles"."role_id" WHERE "UserAssociateRoles"."user_id" = ${data[0].dataValues.id}`)
+                    // console.log(results, 89)
                     const id = data[0].dataValues.id
                     const userName = data[0].dataValues.firstName + " " + data[0].dataValues.lastName
                     const email = data[0].dataValues.email
@@ -118,9 +118,12 @@ router.post('/users/login', (req,res,next) => {
                     const pin = data[0].dataValues.pin
                     const address = data[0].dataValues.address
                     const image = data[0].dataValues.image
-                    const location_id = results[0].location_id
-                    const role_id = results[0].role_id
-                    const payload = {id, userName, email, phone_number, pin, address, image, userType, location_id, role_id}
+                    // const location_id = results[0].location_id
+                    // const role_id = results[0].role_id
+                    const payload = {id, userName, email, phone_number, pin, address, image, userType,
+                        // location_id,
+                        // role_id
+                    }
                     const token = jwt.sign({
                       exp: Math.floor(Date.now() / 1000) + (60 * 60),
                       data: payload
