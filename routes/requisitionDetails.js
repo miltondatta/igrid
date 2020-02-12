@@ -12,7 +12,7 @@ route.get('/requisition-details', async (req,res,next) => {
                  Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
                  Join users ON requisition_masters.request_by = users.id`)
 
-
+        console.log(results, 15)
         if (results.length > 0) {
             res.status(200).json(results)
         } else {
@@ -23,13 +23,13 @@ route.get('/requisition-details', async (req,res,next) => {
 // Read
 route.get('/requisition-details/details/:id', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT requisition_details.id, Concat(users."firstName", ' ', users."lastName") as userName, asset_categories.category_name, asset_sub_categories.sub_category_name, requisition_details.quantity, requisition_masters.email, requisition_masters.mobile
+        SELECT requisition_details.id, asset_categories.category_name, asset_sub_categories.sub_category_name, requisition_details.quantity
         FROM requisition_details
                  Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
                  Join users ON requisition_masters.request_by = users.id
                  Join asset_categories ON requisition_details.asset_category = asset_categories.id
                  Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
-                    WHERE requisition_details.id = ${req.params.id}`)
+                    WHERE requisition_details.requisition_id = ${req.params.id}`)
 
         if (results.length > 0) {
             res.status(200).json(results)

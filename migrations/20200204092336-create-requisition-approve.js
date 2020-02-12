@@ -46,7 +46,7 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER,
         references:{
-          model: 'status',
+          model: 'statuses',
           key: 'id'
         }
       },

@@ -10,6 +10,7 @@ route.get('/status', (req,res,next) => {
             res.status(200).json(resData)
         })
         .catch(err => {
+            console.log(err)
             res.status(404).json({message: 'Something Went Wrong', err})
         })
 })

@@ -123,7 +123,7 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del, details, addName, add, track} = this.props
+        const {searchable, exportable, pagination, edit, del, details, approve, addName, add, track} = this.props
         const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -140,7 +140,11 @@ class ReactDataTable extends Component {
                 <td>{index + 1}</td>
                 {Object.keys(filteredData[0]).map((items, key) => (
                     <>
-                    {items !== 'id' && <td key={key + 20}>{items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}</td>}
+                    {items !== 'id' &&
+                        <td key={key + 20}>
+                            {items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}
+                        </td>
+                    }
                     </>
                 ))}
                 {edit && <td className={'text-warning'}>
@@ -153,7 +157,10 @@ class ReactDataTable extends Component {
                     <p className="cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>
                 </td>}
                 {details && <td className={'text-danger'}>
-                    <p className="cursor-pointer text-info" onClick={() => {this.props.assetList(item.id)}}>Details</p>
+                    <p className="cursor-pointer text-info" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>Details</p>
+                </td>}
+                {approve && <td className={'text-danger'}>
+                    <p className="cursor-pointer text-danger">Approve</p>
                 </td>}
                 {track && <td className={'text-danger'}>
                     <p className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>Track</p>
@@ -197,6 +204,7 @@ class ReactDataTable extends Component {
                             {del && <th>Delete</th>}
                             {add && <th>Add</th>}
                             {details && <th>Details</th>}
+                            {approve && <th>Approve</th>}
                             {track && <th>Track</th>}
                         </tr>
                     </thead>
