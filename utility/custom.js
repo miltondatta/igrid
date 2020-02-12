@@ -1,15 +1,17 @@
 const capitalize = (input) => {
     if (typeof input !== 'string') return '';
-    return input.charAt(0).toUpperCase() + input.slice(1);
-};
 
-const upperToCapitalize = (input) => {
-    if (typeof input !== 'string') return '';
-    const s = input.toLowerCase();
-    return s.charAt(0).toUpperCase() + s.slice(1);
+    const len = input.split(" ");
+    let result = '';
+
+    for (let i = 0; i < len.length; i++) {
+        const text = len[i].charAt(0).toUpperCase() + len[i].slice(1).toLowerCase();
+        const seperator = (i+1 === len.length) ? '': ' ';
+        result += text + seperator;
+    }
+    return result;
 };
 
 module.exports = {
-    capitalize,
-    upperToCapitalize
+    capitalize
 };

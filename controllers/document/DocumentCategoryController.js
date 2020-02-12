@@ -1,6 +1,6 @@
 const {Op} = require("sequelize");
 const DocumentCategory = require('../../models/document_category');
-const {capitalize, upperToCapitalize} = require('../../utility/custom');
+const {capitalize} = require('../../utility/custom');
 
 exports.index = async (req, res) => {
     try {
@@ -32,8 +32,7 @@ exports.store = async (req, res) => {
                     {category_name: category_name},
                     {category_name: category_name.toLowerCase()},
                     {category_name: category_name.toUpperCase()},
-                    {category_name: capitalize(category_name)},
-                    {category_name: upperToCapitalize(category_name)}
+                    {category_name: capitalize(category_name)}
                 ]
             }
         });
@@ -68,9 +67,7 @@ exports.update = async (req, res) => {
         const {id, category_name} = req.body;
 
         const updateDocumentCategory = {
-            id: id,
-            category_name: category_name,
-            updatedAt: new Date().toLocaleTimeString()
+            category_name: category_name
         };
 
         const status = await DocumentCategory.findOne({where: {id}});
