@@ -1,18 +1,16 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const document_list = sequelize.define('document_list', {
-    category_id: DataTypes.INTEGER,
-    sub_category_id: DataTypes.INTEGER,
-    title: DataTypes.STRING,
-    circular_no: DataTypes.STRING,
-    description: DataTypes.STRING,
-    file_name: DataTypes.STRING,
-    document_date: DataTypes.DATE,
-    display_notice: DataTypes.BOOLEAN,
-    status: DataTypes.BOOLEAN
-  }, {});
-  document_list.associate = function(models) {
-    // associations can be defined here
-  };
-  return document_list;
-};
+const db = require('../config/db');
+const Sequelize = require('sequelize');
+
+const document_list = db.define('document_list', {
+    category_id: Sequelize.INTEGER,
+    sub_category_id: Sequelize.INTEGER,
+    title: Sequelize.STRING,
+    circular_no: Sequelize.STRING,
+    description: Sequelize.STRING,
+    file_name: Sequelize.STRING,
+    document_date: Sequelize.DATE,
+    display_notice: Sequelize.BOOLEAN,
+    status: Sequelize.BOOLEAN
+});
+
+module.exports = document_list;

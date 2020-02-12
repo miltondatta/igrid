@@ -27,6 +27,8 @@ const RequisitionMasterRouter = require('./routes/requisitionmaster');
 const RequisitionDetailsRouter = require('./routes/requisitionDetails');
 const LocationHierarchiesRouter = require('./routes/loc_hierarchies');
 const DocumentCategory = require('./routes/document/document_category');
+const DocumentSubCategory = require('./routes/document/document_sub_category');
+const DocumentList = require('./routes/document/document_list');
 
 
 // Database Connection
@@ -79,6 +81,8 @@ app.use('/api/v1', UserAssociateRoleRouter);
 app.use('/api/v1', RequisitionMasterRouter);
 app.use('/api/v1', LocationHierarchiesRouter);
 app.use('/api/document/category', DocumentCategory);
+app.use('/api/document/sub/category', DocumentSubCategory);
+app.use('/api/document/list', DocumentList);
 
 
 module.exports = app;
