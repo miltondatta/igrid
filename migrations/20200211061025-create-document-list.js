@@ -9,10 +9,18 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             category_id: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'document_categories',
+                    key: 'id'
+                }
             },
             sub_category_id: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'document_sub_categories',
+                    key: 'id'
+                }
             },
             content_type: {
                 type: Sequelize.INTEGER

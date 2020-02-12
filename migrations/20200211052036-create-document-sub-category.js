@@ -9,7 +9,11 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             category_id: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
+                references: {
+                    model: 'document_categories',
+                    key: 'id'
+                }
             },
             sub_category_name: {
                 type: Sequelize.STRING(127)
