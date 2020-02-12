@@ -1,12 +1,33 @@
 const {Op} = require("sequelize");
 const DocumentList = require('../../models/document_list');
 const {capitalize} = require('../../utility/custom');
+const multer = require('multer');
+const fs = require('fs');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/document')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
+            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
+        }
+        cb(null, true);
+    }
+}).single('file_name');
 
 exports.index = async (req, res) => {
     try {
         const data = await DocumentList.findAll(
             {
-                attributes: ["id", "category_id", "sub_category_id", "title", "circular_no", "description", "file_name", "document_date",
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
                     "display_notice", "status"],
                 order: [['id', 'DESC']]
             }
@@ -20,39 +41,60 @@ exports.index = async (req, res) => {
     }
 };
 
-exports.store = async (req, res) => {
+exports.store = (req, res) => {
     try {
-        const {category_id, sub_category_id, title, circular_no, description, file_name, document_date, display_notice, status} = req.body;
-        const newDocumentList = {
-            category_id: category_id,
-            sub_category_id: sub_category_id,
-            title: title,
-            circular_no: circular_no,
-            description: description,
-            file_name: file_name,
-            document_date: document_date,
-            display_notice: display_notice,
-            status: status
-        };
+        let file_name = '';
+        upload(req, res, (err) => {
+            if (err instanceof multer.MulterError) {
+                return res.status(500).json(err);
+            } else if (err) {
+                return res.status(500).json(err);
+            }
 
-        const document_list = await DocumentList.findAll({
-            where: {
+            file_name = req.file.originalname;
+            const {category_id, sub_category_id, content_type, title, circular_no, description, document_date, display_notice, status} = req.body;
+
+            const newDocumentList = {
                 category_id: category_id,
                 sub_category_id: sub_category_id,
-                [Op.or]: [
-                    {title: title},
-                    {title: title.toLowerCase()},
-                    {title: title.toUpperCase()},
-                    {title: capitalize(title)}
-                ]
-            }
+                content_type: content_type,
+                title: title,
+                circular_no: circular_no,
+                description: description,
+                file_name: file_name,
+                document_date: document_date,
+                display_notice: display_notice,
+                status: status
+            };
+
+            DocumentList.findAll({
+                where: {
+                    category_id: category_id,
+                    sub_category_id: sub_category_id,
+                    [Op.or]: [
+                        {title: title},
+                        {title: title.toLowerCase()},
+                        {title: title.toUpperCase()},
+                        {title: capitalize(title)}
+                    ]
+                }
+            }).then(resData => {
+                if (resData.length > 0) {
+                    return res.status(400).json({msg: 'This Document List is already exist!'});
+                }
+
+                DocumentList.create(newDocumentList).then(resCreate => {
+                    if (!resCreate) return res.status(400).json({msg: 'Please try again with full information!'});
+                    return res.status(200).json({msg: 'New Document List saved successfully.'});
+                }).catch(err => {
+                    console.error(err.message);
+                    return res.status(500).json({msg: 'Server Error!'});
+                });
+            }).catch(err => {
+                console.error(err.message);
+                return res.status(500).json({msg: 'Server Error!'});
+            });
         });
-        if (document_list.length > 0) return res.status(400).json({msg: 'This Document List is already exist!'});
-
-        const create_status = await DocumentList.create(newDocumentList);
-        if (!create_status) return res.status(400).json({msg: 'Please try again with full information!'});
-
-        return res.status(200).json({msg: 'New Document List saved successfully.'});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
@@ -73,29 +115,54 @@ exports.edit = async (req, res) => {
     }
 };
 
-exports.update = async (req, res) => {
+exports.update = (req, res) => {
     try {
-        const {id, category_id, sub_category_id, title, circular_no, description, file_name, document_date, display_notice, status} = req.body;
+        let file_name = '';
+        upload(req, res, (err) => {
+            if (err instanceof multer.MulterError) {
+                return res.status(500).json(err);
+            } else if (err) {
+                return res.status(500).json(err);
+            }
 
-        const updateDocumentList = {
-            category_id,
-            sub_category_id,
-            title,
-            circular_no,
-            description,
-            file_name,
-            document_date,
-            display_notice,
-            status
-        };
+            file_name = req.file.originalname;
+            const {id, category_id, sub_category_id, content_type, title, circular_no, description, document_date, display_notice, status} = req.body;
 
-        const update_status = await DocumentList.findOne({where: {id}});
-        if (!update_status) return res.status(400).json({msg: 'This Document List didn\'t found!'});
+            const updateDocumentList = {
+                category_id,
+                sub_category_id,
+                content_type,
+                title,
+                circular_no,
+                description,
+                file_name,
+                document_date,
+                display_notice,
+                status
+            };
 
-        const document_list = await DocumentList.update(updateDocumentList, {where: {id}});
-        if (!document_list) return res.status(400).json({msg: 'Please try again with full information!'});
+            DocumentList.findOne({where: {id}}).then(resData => {
+                if (fs.existsSync('public/document/' + resData.file_name) && (file_name != resData.file_name)) {
+                    fs.unlink('public/document/' + resData.file_name, (err) => {
+                        if (err) throw err;
+                        console.log('successfully deleted /document/file_name');
+                    });
+                }
 
-        return res.status(200).json({msg: 'Document List Information updated successfully.'});
+                if (!resData) return res.status(400).json({msg: 'This Document List didn\'t found!'});
+
+                DocumentList.update(updateDocumentList, {where: {id}}).then(resUpdate => {
+                    if (!resUpdate) return res.status(400).json({msg: 'Please try again with full information!'});
+                    return res.status(200).json({msg: 'Document List Information updated successfully.'});
+                }).catch(err => {
+                    console.error(err.message);
+                    return res.status(500).json({msg: 'Server Error!'});
+                });
+            }).catch(err => {
+                console.error(err.message);
+                return res.status(500).json({msg: 'Server Error!'});
+            });
+        });
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});

@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const document_list = db.define('document_list', {
     category_id: Sequelize.INTEGER,
     sub_category_id: Sequelize.INTEGER,
+    content_type: Sequelize.INTEGER,
     title: Sequelize.STRING,
     circular_no: Sequelize.STRING,
     description: Sequelize.STRING,
