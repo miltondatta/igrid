@@ -70,40 +70,16 @@ export const sidenav = [
             },
             {
                 id: 2,
-                name: 'Branch Requisition',
-                link: '/branch-requesition',
-                icon: "far fa-keyboard"
-            },
-            {
-                id: 3,
                 name: 'Delivery Request',
                 link: '/delivery-request',
                 icon: "fab fa-500px"
             },
             {
-                id: 4,
-                name: 'Upazila Requisition',
-                link: '',
-                icon: "fab fa-ethereum"
-            },
-            {
-                id: 5,
-                name: 'Approval Log',
-                link: '',
-                icon: "fab fa-slack"
-            },
-            {
-                id: 6,
-                name: 'Region Request',
-                link: '',
-                icon: "far fa-snowflake"
-            },
-            {
-                id: 7,
-                name: 'Region Requisitions',
-                link: '',
-                icon: "fas fa-water"
-            },
+                id: 3,
+                name: 'Approved Delivery',
+                link: '/approved-delivery',
+                icon: "far fa-keyboard"
+            }
         ]
     },
     {

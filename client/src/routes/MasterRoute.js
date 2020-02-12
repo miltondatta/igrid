@@ -233,8 +233,9 @@ class MasterRoute extends Component{
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/asset-sub-category' component={AsyncAssetSubCategory}/>
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
-                                    <Route exact path='/branch-requesition' component={AsyncBranchRequesition}/>
+                                    <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
                                     <Route exact path='/user-associate-role' component={AsyncUserAssociateRole}/>
+                                    <Route exact path='/requisition-delivery' component={AsyncRequisitionDelivery}/>
                                 </Switch>
                             </div>
                         </div>

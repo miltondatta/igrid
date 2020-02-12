@@ -1,11 +1,11 @@
 const express = require('express')
-const RequisitionDetails = require('../models/requisitionapprove')
+const RequisitionApproves = require('../models/requisitionapprove')
 
 const route = express.Router()
 
 // Read
-route.get('/requisition-details', (req,res,next) => {
-    RequisitionDetails.findAll({attributes: ['id', 'requisition_id']})
+route.get('/requisition-approve', (req,res,next) => {
+    RequisitionApproves.findAll({attributes: ['id', 'requisition_id']})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -15,12 +15,12 @@ route.get('/requisition-details', (req,res,next) => {
 })
 
 // Update
-route.put('/requisition-details/update/:id', (req,res,next) => {
+route.put('/requisition-approve/update/:id', (req,res,next) => {
     const {requisition_id} = req.body
     if(requisition_id !== '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
-        RequisitionDetails.update({requisition_id}, {where: {id: req.params.id}})
+        RequisitionApproves.update({requisition_id}, {where: {id: req.params.id}})
             .then(resData => {
                 res.status(200).json(resData)
             })
@@ -31,24 +31,28 @@ route.put('/requisition-details/update/:id', (req,res,next) => {
 })
 
 // Create
-route.post('/requisition-details/entry', (req,res,next) => {
-    const {requisition_id} = req.body
-    if(requisition_id !== '') {
-        res.status(200).json({message: 'All fields required!'})
-    } else {
-        RequisitionDetails.create(req.body)
+route.post('/requisition-approve/entry', (req,res,next) => {
+    req.body.forEach(item => {
+        if(item.requisition_id === '' || item.role_id === '' || item.location_id === '' || item.delivery_to === '' ||
+            item.requisition_details_id === '' || item.update_quantity === '' || item.status === '') {
+            res.status(200).json({message: 'All fields required!'})
+            return null;
+        }
+    })
+    req.body.forEach(item => {
+        RequisitionApproves.create(item)
             .then(resData => {
                 res.status(200).json(resData)
             })
             .catch(err => {
                 res.status(404).json({message: 'Something went wrong', err})
             })
-    }
+    })
 })
 
 // Delete
-route.delete('/requisition-details/delete', (req,res,next) =>   {
-    RequisitionDetails.destroy({
+route.delete('/requisition-approve/delete', (req,res,next) =>   {
+    RequisitionApproves.destroy({
         where: {
             id: req.body.id
         }

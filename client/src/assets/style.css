@@ -254,6 +254,23 @@ a:hover{text-decoration: none}
    margin-left: 15px;
 }
 
+.ui-transparent-select{
+   background: transparent;
+   border: none;
+   width: 100%;
+   outline: none;
+   padding: 10px;
+   border-bottom: 1px solid #17a2b8;
+}
+.ui-transparent-input{
+   background: transparent;
+   border: none;
+   width: 80%;
+   outline: none;
+   padding: 10px;
+   border-bottom: 1px solid #17a2b8;
+}
+
 @keyframes uiSliderModal {
    0%{
       transform: scale(0);
