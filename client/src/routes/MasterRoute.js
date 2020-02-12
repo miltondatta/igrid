@@ -235,7 +235,6 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
                                     <Route exact path='/user-associate-role' component={AsyncUserAssociateRole}/>
-                                    <Route exact path='/requisition-delivery' component={AsyncRequisitionDelivery}/>
                                 </Switch>
                             </div>
                         </div>

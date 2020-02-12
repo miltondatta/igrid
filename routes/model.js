@@ -32,7 +32,7 @@ route.put('/models/update/:id', (req,res,next) => {
 
 // Create
 route.post('/models/entry', (req,res,next) => {
-    const {model} = res.body
+    const {model} = req.body
     if (model === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
@@ -40,7 +40,7 @@ route.post('/models/entry', (req,res,next) => {
             .then(resData => {
                 res.status(200).json(resData)
             })
-            .catch(err => {
+            .catch(err =>   {
                 console.log(err)
                 res.status(404).json({message: 'Something went wrong', err})
             })

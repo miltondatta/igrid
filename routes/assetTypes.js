@@ -4,7 +4,7 @@ const AssetType = require('../models/asset/asset_types')
 const route = express.Router()
 
 // Read
-route.get('/asset-types', (req,res,next) => {
+route.get('/assets-types', (req,res,next) => {
     AssetType.findAll({attributes: ['id', 'type_name', 'asset_code', 'description']})
         .then(resData => {
             res.status(200).json(resData)
@@ -15,7 +15,7 @@ route.get('/asset-types', (req,res,next) => {
 })
 
 // Update
-route.put('/asset-types/update/:id', (req,res,next) => {
+route.put('/assets-types/update/:id', (req,res,next) => {
     const {type_name,asset_code,description} = req.body
     if(type_name !== '' && asset_code !== '' && description !== '') {
         AssetType.findAll({where: {id: req.params.id}})
@@ -38,7 +38,7 @@ route.put('/asset-types/update/:id', (req,res,next) => {
 })
 
 // Create
-route.post('/asset-types/entry', (req,res,next) => {
+route.post('/assets-types/entry', (req,res,next) => {
     const {type_name,asset_code,description} = req.body
     if(type_name !== '' && asset_code !== '' && description !== '') {
         AssetType.findAll({where: {asset_code}})
@@ -62,7 +62,7 @@ route.post('/asset-types/entry', (req,res,next) => {
 })
 
 // Delete
-route.delete('/asset-types/delete', (req,res,next) => {
+route.delete('/assets-types/delete', (req,res,next) => {
     AssetType.destroy({
         where: {
             id: req.body.id

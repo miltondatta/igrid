@@ -1,32 +1,32 @@
-.reactDataTable th{
-    font-size: 14px;
-}
+/*.reactDataTable th{*/
+/*    font-size: 14px;*/
+/*}*/
 
-.reactDataTable td{
-    padding: 10px 5px;
-    vertical-align: middle;
-}
+/*.reactDataTable td{*/
+/*    padding: 10px 5px;*/
+/*    vertical-align: middle;*/
+/*}*/
 
-table tbody tr:nth-child(even){
-    background: #eafffc;
-}
+/*table tbody tr:nth-child(even){*/
+/*    background: #eafffc;*/
+/*}*/
 
-table thead tr{
-    background: #baf4eb;
-}
+/*table thead tr{*/
+/*    background: #baf4eb;*/
+/*}*/
 
-table tbody tr:hover{
-    background: #eee;
-}
+/*table tbody tr:hover{*/
+/*    background: #eee;*/
+/*}*/
 
-.reactDataTable .page-link{
-    color: #12b79e;
-}
+/*.reactDataTable .page-link{*/
+/*    color: #12b79e;*/
+/*}*/
 
-.reactDataTable .page-item.active .page-link{
-    background: #12b79e;
-}
+/*.reactDataTable .page-item.active .page-link{*/
+/*    background: #12b79e;*/
+/*}*/
 
-.reactDataTable .page-item.active .page-link{
-    border-color: #12b79e
-}
+/*.reactDataTable .page-item.active .page-link{*/
+/*    border-color: #12b79e*/
+/*}*/

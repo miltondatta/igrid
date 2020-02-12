@@ -7,7 +7,7 @@ class AssetTypesComponent extends Component {
             <div>
                 <AdminInputContainer
                     formType = 'ASSETTYPES'
-                    getApi = 'asset-types'
+                    getApi = 'assets-types'
                 />
             </div>
         );

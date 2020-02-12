@@ -14,6 +14,17 @@ route.get('/products', (req,res,next) => {
         })
 })
 
+// Read
+route.get('/products/specific/:id', (req,res,next) => {
+    Products.findAll({attributes: ['id','product_name', 'category_id','sub_category_id','product_code','brand_id','model_id'], where: {sub_category_id: req.params.id}})
+        .then(resData => {
+            res.status(200).json(resData)
+        })
+        .catch(err => {
+            res.status(404).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Update
 route.put('/products/update/:id', (req,res,next) => {
     const {category_id,sub_category_id,product_name,product_code,brand_id,model_id} = req.body

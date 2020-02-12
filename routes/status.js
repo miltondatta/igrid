@@ -1,11 +1,12 @@
 const express = require('express')
+const { Op } = require("sequelize");
 const Status = require('../models/status')
 
 const route = express.Router()
 
 // Read
 route.get('/status', (req,res,next) => {
-    Status.findAll({attributes: ['id', 'status_name']})
+    Status.findAll({attributes: ['id', 'status_name'], where: {id: {[Op.ne]: 3}}})
         .then(resData => {
             res.status(200).json(resData)
         })

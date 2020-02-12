@@ -53,7 +53,14 @@ const RequisitionApproves = db.define('requisition_approves', {
   },
   update_quantity: {
     type: Sequelize.INTEGER
-  }
+  },
+  update_by: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Users,
+      key: 'id'
+    }
+  },
 })
 
 

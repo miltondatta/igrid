@@ -193,8 +193,8 @@ class ReactDataTable extends Component {
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <table id={'__table_react'} className={'table table table-bordered'}>
-                    <thead>
+                {tableData.length > 0 ? <table id={'__table_react'} className={'table'}>
+                    <thead className={'thead-dark'}>
                         <tr>
                             <th scope="col" className={'text-capitalize'}>
                                 No

@@ -2,6 +2,7 @@ const db = require('../../config/db')
 const Sequelize = require('sequelize')
 const Challan = require('./challan')
 const Project = require('./project')
+const Products = require('./products')
 const Conditions = require('./conditions')
 const AssetType = require('./asset_types')
 const AssetCategory = require('./assetCategory')
@@ -20,6 +21,13 @@ const Assets = db.define('assets', {
         type: Sequelize.INTEGER,
         references: {
             model: Project,
+            key: 'id'
+        },
+    },
+    product_id:{
+        type: Sequelize.INTEGER,
+        references: {
+            model: Products,
             key: 'id'
         },
     },

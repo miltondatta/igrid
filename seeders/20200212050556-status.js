@@ -2,21 +2,23 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-      return queryInterface.bulkInsert('statuses', [{
-        status_name: 'Pending',
-        createdAt: new Date()
-      }, {
-        status_name: 'Approve',
-        createdAt: new Date()
+      return queryInterface.bulkInsert('statuses', [
+      {
+          status_name: 'Approve',
+          createdAt: new Date(),
+          updatedAt: new Date()
       },
       {
         status_name: 'Decline',
-        createdAt: new Date()
+          createdAt: new Date(),
+          updatedAt: new Date()
       },
-       {
-        status_name: 'Deliver',
-        createdAt: new Date()
-      }], {});
+      {
+        status_name: 'Delivered',
+          createdAt: new Date(),
+          updatedAt: new Date()
+      }
+      ], {});
   },
 
   down: (queryInterface, Sequelize) => {

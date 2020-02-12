@@ -53,6 +53,13 @@ module.exports = {
       update_quantity: {
         type: Sequelize.INTEGER
       },
+      update_by: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

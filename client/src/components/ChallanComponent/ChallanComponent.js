@@ -71,7 +71,7 @@ class ChallanComponent extends Component {
     }
 
     getChallanData = () => {
-        Axios.get(apiUrl() + 'asset-entry/challan')
+        Axios.get(apiUrl() + 'assets-entry/challan')
             .then(resData => {
                 this.setState({
                     challans: resData.data
@@ -81,7 +81,7 @@ class ChallanComponent extends Component {
 
     assetList = (id) => {
         console.log(id)
-        Axios.get(apiUrl() + 'asset-entry/assets/' + id)
+        Axios.get(apiUrl() + 'assets-entry/assets/' + id)
             .then(resData => {
                 this.setState({
                     assets: resData.data
@@ -90,7 +90,7 @@ class ChallanComponent extends Component {
     }
 
     updateEdit = (id, endpoint) => {
-        Axios.get(apiUrl() + 'asset-entry/' + endpoint + id)
+        Axios.get(apiUrl() + 'assets-entry/' + endpoint + id)
             .then(resData => {
                 let data = resData.data[0]
                 if (endpoint === 'specific-challan/') {
@@ -178,7 +178,7 @@ class ChallanComponent extends Component {
         const data = {project_id, asset_category, asset_sub_category, cost_of_purchase, installation_cost, carrying_cost,
             other_cost, asset_type, depreciation_method, rate, effective_date, book_value, salvage_value,
             useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode}
-        Axios.put(apiUrl() + 'asset-entry/asset/update/' + this.state.assetId, data)
+        Axios.put(apiUrl() + 'assets-entry/assets/update/' + this.state.assetId, data)
             .then(resData => {
                 console.log(resData, 124)
             })
@@ -187,7 +187,7 @@ class ChallanComponent extends Component {
     updateChallan = () => {
         const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = this.state
             const data = {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, comments: challanComments, added_by}
-            Axios.put(apiUrl() + 'asset-entry/challan-update/' + this.state.challan_id, data)
+            Axios.put(apiUrl() + 'assets-entry/challan-update/' + this.state.challan_id, data)
                 .then(resData => {
                     console.log(resData, 124)
                 })
@@ -198,7 +198,7 @@ class ChallanComponent extends Component {
             asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,last_effective_date,warranty,
             last_warranty_date,condition,comments,barcode} = this.state
         let errorDict = null
-        if (forr === 'asset') {
+        if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
@@ -276,7 +276,7 @@ class ChallanComponent extends Component {
             challans: [],
             assets: [],
         })
-        Axios.post(apiUrl() + 'asset-entry/entry', dataArray)
+        Axios.post(apiUrl() + 'assets-entry/entry', dataArray)
             .then(resData => {
                 this.getChallanData()
             })
@@ -427,7 +427,7 @@ class ChallanComponent extends Component {
                     </nav>
                     <div className="px-4">
                         {assets.length > 0 ? <ReactDataTable
-                            del={'asset-entry'}
+                            del={'assets-entry'}
                             edit={'specific-assets/'}
                             updateEdit={this.updateEdit}
                             pagination

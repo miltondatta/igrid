@@ -64,6 +64,7 @@ class RequestHistoryComponent extends Component {
         let keys = this.state.keys
         let obj = this.state.reqDetails
         const {location_id, role_id} = jwt.decode(localStorage.getItem('user')).data
+        const update_by = jwt.decode(localStorage.getItem('user')).data.id
         if(obj.length > 0) {
             obj.forEach(item => {
                 if(requisition_details_id === item.requisition_details_id) {
@@ -72,6 +73,7 @@ class RequestHistoryComponent extends Component {
                     keys.push(requisition_details_id)
                     obj.push({
                         role_id,
+                        update_by,
                         location_id,
                         requisition_id,
                         delivery_to: null,
@@ -84,6 +86,7 @@ class RequestHistoryComponent extends Component {
             keys.push(requisition_details_id)
             obj.push({
                 role_id,
+                update_by,
                 location_id,
                 requisition_id,
                 delivery_to: null,
