@@ -3,21 +3,21 @@ const router = express.Router();
 const documentCategoryController = require('../../controllers/document/DocumentCategoryController');
 
 /*
-    @route          GET api/document/category/all/
+    @route          GET api/v1/document/category/all/
     @desc           Get All Document Categories Data
     @access         Private
  */
 router.get('/all', documentCategoryController.index);
 
 /*
-    @route          POST api/document/category/store/
+    @route          POST api/v1/document/category/store/
     @desc           Save New Document Category Data
     @access         Private
  */
 router.post('/store', documentCategoryController.store);
 
 /*
-    @route          get api/document/category/edit/:id
+    @route          get api/v1/document/category/edit/:id
     @desc           Get Document Category By ID
     @access         Private
  */
@@ -25,7 +25,7 @@ router.post('/store', documentCategoryController.store);
 router.get('/edit/:id', documentCategoryController.edit);
 
 /*
-    @route          POST api/document/category/update/
+    @route          POST api/v1/document/category/update/
     @desc           Update Document Category Data
     @access         Private
  */
@@ -33,10 +33,10 @@ router.get('/edit/:id', documentCategoryController.edit);
 router.post('/update', documentCategoryController.update);
 
 /*
-    @route          POST api/document/category/delete/
+    @route          POST api/v1/document/category/delete/
     @desc           Delete Document Category
     @access         Private
  */
-router.post('/delete', documentCategoryController.delete);
+router.delete('/delete', documentCategoryController.delete);
 
 module.exports = router;

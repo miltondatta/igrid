@@ -1,4 +1,5 @@
 const {Op} = require("sequelize");
+const DocumentCategory = require('../../models/document_category');
 const DocumentSubCategory = require('../../models/document_sub_category');
 const {capitalize} = require('../../utility/custom');
 
@@ -7,10 +8,14 @@ exports.index = async (req, res) => {
         const data = await DocumentSubCategory.findAll(
             {
                 attributes: ["id", "category_id", "sub_category_name"],
+                include: [{
+                    model: DocumentCategory,
+                    attributes: ["category_name"]
+                }],
                 order: [['id', 'DESC']]
             }
         );
-        if (!data) return res.status(400).json({msg: 'Something else! Please try again!'});
+        if (!data.length) return res.status(400).json({msg: 'Something else! Please try again!', error: true});
 
         return res.status(200).json(data);
     } catch (err) {
@@ -38,12 +43,12 @@ exports.store = async (req, res) => {
                 ]
             }
         });
-        if (document_sub_category.length > 0) return res.status(400).json({msg: 'This Document Sub Category is already exist!'});
+        if (document_sub_category.length > 0) return res.status(400).json({msg: 'This Document Sub Category is already exist!', error: true});
 
         const status = await DocumentSubCategory.create(newDocumentSubCategory);
-        if (!status) return res.status(400).json({msg: 'Please try again with full information!'});
+        if (!status) return res.status(400).json({msg: 'Please try again with full information!', error: true});
 
-        return res.status(200).json({msg: 'New Document Sub Category saved successfully.'});
+        return res.status(200).json({msg: 'New Document Sub Category saved successfully.', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
@@ -55,7 +60,7 @@ exports.edit = async (req, res) => {
         const id = req.params.id;
 
         const document_sub_category = await DocumentSubCategory.findOne({where: {id}});
-        if (!document_sub_category) return res.status(400).json({msg: 'Document Sub Category didn\'t found!'});
+        if (!document_sub_category) return res.status(400).json({msg: 'Document Sub Category didn\'t found!', error: true});
 
         return res.status(200).json(document_sub_category);
     } catch (err) {
@@ -74,12 +79,12 @@ exports.update = async (req, res) => {
         };
 
         const status = await DocumentSubCategory.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Document Sub Category didn\'t found!'});
+        if (!status) return res.status(400).json({msg: 'This Document Sub Category didn\'t found!', error: true});
 
         const document_sub_category = await DocumentSubCategory.update(updateDocumentSubCategory, {where: {id}});
-        if (!document_sub_category) return res.status(400).json({msg: 'Please try again with full information!'});
+        if (!document_sub_category) return res.status(400).json({msg: 'Please try again with full information!', error: true});
 
-        return res.status(200).json({msg: 'Document Sub Category Information updated successfully.'});
+        return res.status(200).json({msg: 'Document Sub Category Information updated successfully.', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
@@ -91,12 +96,12 @@ exports.delete = async (req, res) => {
         const {id} = req.body;
 
         const status = await DocumentSubCategory.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Document Sub Category didn\'t found!'});
+        if (!status) return res.status(400).json({msg: 'This Document Sub Category didn\'t found!', error: true});
 
         const document_sub_category = await DocumentSubCategory.destroy({where: {id}});
-        if (!document_sub_category) return res.status(400).json({msg: 'Please try again!'});
+        if (!document_sub_category) return res.status(400).json({msg: 'Please try again!', error: true});
 
-        return res.status(200).json({msg: 'One Document Sub Category deleted successfully!'});
+        return res.status(200).json({msg: 'One Document Sub Category deleted successfully!', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
