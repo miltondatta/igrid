@@ -7,7 +7,7 @@ const route = express.Router()
 // Read
 route.get('/requisition-approve', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT requisition_approves.id, asset_categories.category_name, asset_sub_categories.sub_category_name,
+        SELECT requisition_approves.id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
                user_roles.role_name, locations.location_name,requisition_approves.update_quantity from requisition_approves
             JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
             JOIN asset_categories ON requisition_details.asset_category = asset_categories.id

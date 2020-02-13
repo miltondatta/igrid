@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ConditionOptions from "../../utility/component/conditionOptions";
+import ProductsOptions from "../../utility/component/productOptions";
 
 class AssetRegComponent extends Component {
     constructor(props){
@@ -16,6 +17,7 @@ class AssetRegComponent extends Component {
         this.state = {
             challan_no: '',
             challan_name: '',
+            product_id: '',
             challan_description: '',
             purchase_order_no: '',
             purchase_order_date: '',
@@ -91,7 +93,7 @@ class AssetRegComponent extends Component {
     }
 
     addProduct = () => {
-        if (Object.values(this.validate('asset')).includes(false)) {
+        if (Object.values(this.validate('assets')).includes(false)) {
             return
         }
         const {asset_quantity} = this.state
@@ -126,7 +128,7 @@ class AssetRegComponent extends Component {
             prodArr,
             asset_quantity: 1,
         })
-        Axios.post(apiUrl() + 'asset-entry/entry', dataArray)
+        Axios.post(apiUrl() + 'assets-entry/entry', dataArray)
             .then(resData => {
 
             })
@@ -149,7 +151,7 @@ class AssetRegComponent extends Component {
         data.append('received_by', received_by)
         data.append('added_by', added_by)
         data.append('challanComments', challanComments)
-        Axios.post(apiUrl() + 'asset-entry/challan/entry', data)
+        Axios.post(apiUrl() + 'assets-entry/challan/entry', data)
             .then(resData => {
 
                 this.setState({
@@ -210,7 +212,7 @@ class AssetRegComponent extends Component {
                 errorDict
             })
             return errorDict
-        } else if (forr === 'asset') {
+        } else if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
@@ -245,7 +247,7 @@ class AssetRegComponent extends Component {
     render() {
         const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment,
             received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,
-            installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict,
+            installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id,
             salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity} = this.state
 
         const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
@@ -461,6 +463,15 @@ class AssetRegComponent extends Component {
                                     <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
                                         <option>--Asset Sub Category--</option>
                                         <AssetSubCategoryOptions assetId={asset_category} />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className={'row p-2 align-items-center'}>
+                                <div className={'col-5 pr-2'}>Products</div>
+                                <div className={'col-7 pl-2'}>
+                                    <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
+                                        <option>--Product--</option>
+                                        <ProductsOptions subId={asset_sub_category} />
                                     </select>
                                 </div>
                             </div>
