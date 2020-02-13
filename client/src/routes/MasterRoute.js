@@ -160,6 +160,18 @@ const AsyncRegisterUser = Loadable({
     loader: () => import('../containers/RegisterUser'),
     loading: Loading,
 });
+const AsyncDocumentCategory = Loadable({
+    loader: () => import('../components/DocumentComponent/DocumentCategory'),
+    loading: Loading,
+});
+const AsyncDocumentSubCategory = Loadable({
+    loader: () => import('../components/DocumentComponent/DocumentSubCategory'),
+    loading: Loading,
+});
+const AsyncDocumentList = Loadable({
+    loader: () => import('../components/DocumentComponent/DocumentList'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -235,6 +247,9 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
                                     <Route exact path='/user-associate-role' component={AsyncUserAssociateRole}/>
+                                    <Route exact path='/document-category' component={AsyncDocumentCategory}/>
+                                    <Route exact path='/document-sub-category' component={AsyncDocumentSubCategory}/>
+                                    <Route exact path='/document-list' component={AsyncDocumentList}/>
                                 </Switch>
                             </div>
                         </div>
