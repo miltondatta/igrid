@@ -356,6 +356,32 @@ export const sidenav = [
             }
         ]
     },
+    {
+        id: 11,
+        name: 'Document Management',
+        icon: 'fas fa-object-group',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Document Category',
+                link: '/document-category',
+                icon: ""
+            },
+            {
+                id: 1,
+                name: 'Document Sub Category',
+                link: '/document-sub-category',
+                icon: ""
+            },
+            {
+                id: 1,
+                name: 'Document List',
+                link: '/document-list',
+                icon: ""
+            }
+        ]
+    },
 ]
 
 export const requestOn = {

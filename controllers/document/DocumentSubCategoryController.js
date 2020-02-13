@@ -102,3 +102,15 @@ exports.delete = async (req, res) => {
         return res.status(500).json({msg: 'Server Error!'});
     }
 };
+
+exports.subCategoryByCategoryId = async (req, res) => {
+    try {
+        const category_id = req.params.category_id;
+
+        const document_sub_category = await DocumentSubCategory.findAll({where: {category_id}});
+        return res.status(200).json(document_sub_category);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};

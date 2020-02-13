@@ -39,4 +39,12 @@ router.post('/update', documentSubCategoryController.update);
  */
 router.post('/delete', documentSubCategoryController.delete);
 
+/*
+    @route          get api/document/sub/category/by/category/:category_id
+    @desc           Get Document Sub Category By Category ID
+    @access         Private
+ */
+
+router.get('/by/category/:category_id', documentSubCategoryController.subCategoryByCategoryId);
+
 module.exports = router;
