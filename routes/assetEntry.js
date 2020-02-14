@@ -77,9 +77,10 @@ route.get('/assets-entry/specific-assets/:id', (req,res,next) => {
 // Read All Assets
 route.get('/assets-entry/sub-assets', async (req,res,next) => {
     const [data, metaData] = await db.query(`
-        SELECT CONCAT(assets.product_serial, '_' ,products.product_name) as products, assets.asset_sub_category from assets
+        SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products, assets.asset_sub_category , assets.asset_category from assets
             JOIN products ON assets.product_id = products.id
     `)
+    console.log(data, 83)
     if (data.length > 0) {
         res.status(200).json(data)
     } else {

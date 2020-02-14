@@ -21,8 +21,8 @@ class ProductsOptions extends Component {
 
     render() {
         const {data} = this.state
-        const {subId} = this.props
-        const filteredCategory = data.length > 0 && data.filter(item => item.sub_category_id === parseInt(subId, 10))
+        const {subId, catId} = this.props
+        const filteredCategory = data.length > 0 && data.filter(item => (item.sub_category_id === parseInt(subId, 10) && item.category_id === parseInt(catId, 10)))
 
         console.log(filteredCategory, subId, 30)
         const dataOptions = filteredCategory.length > 0 && filteredCategory.map((item, index) => (

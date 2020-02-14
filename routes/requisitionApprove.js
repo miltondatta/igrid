@@ -7,9 +7,11 @@ const route = express.Router()
 // Read
 route.get('/requisition-approve', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT requisition_approves.id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
-               user_roles.role_name, locations.location_name,requisition_approves.update_quantity from requisition_approves
+        SELECT requisition_approves.id, requisition_approves.requisition_id, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
+               requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
+               user_roles.role_name, locations.location_name,requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
             JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
+            JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id
             JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
             JOIN asset_sub_categories ON requisition_details.asset_category = asset_sub_categories.id
             JOIN user_roles ON requisition_approves.role_id = user_roles.id
@@ -46,16 +48,15 @@ route.post('/requisition-approve/entry', (req,res,next) => {
             item.requisition_details_id === '' || item.update_quantity === '' || item.status === '') {
             res.status(200).json({message: 'All fields required!'})
             return null;
+        } else {
+            RequisitionApproves.create(item)
+                .then(resData => {
+                    res.status(200).json(resData)
+                })
+                .catch(err => {
+                    res.status(404).json({message: 'Something went wrong', err})
+                })
         }
-    })
-    req.body.forEach(item => {
-        RequisitionApproves.create(item)
-            .then(resData => {
-                res.status(200).json(resData)
-            })
-            .catch(err => {
-                res.status(404).json({message: 'Something went wrong', err})
-            })
     })
 })
 

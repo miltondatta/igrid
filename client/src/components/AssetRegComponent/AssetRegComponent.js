@@ -471,7 +471,7 @@ class AssetRegComponent extends Component {
                                 <div className={'col-7 pl-2'}>
                                     <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
                                         <option>--Product--</option>
-                                        <ProductsOptions subId={asset_sub_category} />
+                                        <ProductsOptions catId={asset_category} subId={asset_sub_category} />
                                     </select>
                                 </div>
                             </div>
