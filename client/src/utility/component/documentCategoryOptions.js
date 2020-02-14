@@ -2,7 +2,7 @@ import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../constant";
 
-class documentCategoryOptions extends Component {
+class DocumentCategoryOptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +11,7 @@ class documentCategoryOptions extends Component {
     }
 
     componentDidMount() {
-        Axios.get(apiUrl() + '/api/document/category/all')
+        Axios.get(apiUrl() + 'document/category/all')
             .then(resData => {
                 this.setState({
                     documentCategory: resData.data
@@ -33,4 +33,4 @@ class documentCategoryOptions extends Component {
     }
 }
 
-export default documentCategoryOptions;
+export default DocumentCategoryOptions;

@@ -1,9 +1,7 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
-import documentCategoryOptions from "../../utility/component/documentCategoryOptions";
-import documentSubCategoryOptions from "../../utility/component/documentSubCategoryOptions";
+import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
 
 class DocumentInputContainer extends Component {
     constructor(props) {
@@ -26,7 +24,10 @@ class DocumentInputContainer extends Component {
             errorDict: null,
             error: false,
             errorMessage: '',
+            success: false,
+            successMessage: '',
             isLoading: false,
+            documentSubCategory: []
         };
 
         this.content_types = ['Notice', 'Circular'];
@@ -34,46 +35,44 @@ class DocumentInputContainer extends Component {
 
     handleSubmit = () => {
         const {getApi} = this.props;
-
-        console.log(getApi, 50);
         if (Object.values(this.validate()).includes(false)) {
             return
         }
         Axios.post(apiUrl() + getApi + '/store', this.getApiData())
             .then(res => {
-                console.log(res);
-                if (res.data.message) {
-                    this.setState({
-                        error: true,
-                        errorMessage: res.data.message
-                    })
-                } else {
-                    this.setState({
-                        category_id: '',
-                        category_name: '',
-                        sub_category_id: '',
-                        sub_category_name: '',
-                        content_type: 0,
-                        title: '',
-                        circular_no: '',
-                        description: '',
-                        file_name: '',
-                        document_date: '',
-                        error: false,
-                        enlisted: false
-                    }, () => {
-                        this.validate()
-                    })
-                }
+                const {success, msg} = res.data;
+                this.setState({
+                    category_id: '',
+                    category_name: '',
+                    sub_category_id: '',
+                    sub_category_name: '',
+                    content_type: 0,
+                    title: '',
+                    circular_no: '',
+                    description: '',
+                    file_name: '',
+                    document_date: '',
+                    error: false,
+                    success: success,
+                    successMessage: success && msg
+                })
             })
-            .then(res => {
+            .then(() => {
                 this.setState({
                     allProjects: []
                 });
                 this.getData()
             })
             .catch(err => {
-                console.log(err)
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        success: false,
+                        error: error,
+                        errorMessage: error && msg
+                    })
+                }
+                console.log(err.response);
             })
     };
 
@@ -120,27 +119,62 @@ class DocumentInputContainer extends Component {
     };
 
     updateData = () => {
+        console.log(this.getApiData());
         const {getApi} = this.props;
-        const {editId} = this.state;
         if (Object.values(this.validate()).includes(false)) {
             return
         }
         Axios.post(apiUrl() + getApi + '/update', this.getApiData())
             .then(resData => {
-                if (resData.data.message) {
-                    this.setState({
-                        error: true,
-                        errorMessage: resData.data.message
-                    })
-                } else {
-                    this.setState({
-                        error: false,
-                        allProjects: []
-                    })
-                }
+                const {success, msg} = resData.data;
+                this.setState({
+                    allProjects: [],
+                    error: false,
+                    success: success,
+                    successMessage: success && msg
+                });
             })
             .then(res => {
                 this.getData()
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        success: false,
+                        error: error,
+                        errorMessage: error && msg
+                    })
+                }
+                console.log(err.response);
+            })
+    };
+
+    deleteItem = (id) => {
+        const {getApi} = this.props;
+        const data = {id};
+        Axios.delete(apiUrl() + getApi + '/delete', {data})
+            .then(resData => {
+                const {success, msg} = resData.data;
+                this.setState({
+                    allProjects: [],
+                    error: false,
+                    success: success,
+                    successMessage: success && msg
+                }, () => {
+                    this.getData()
+                });
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        success: false,
+                        error: error,
+                        errorMessage: error && msg
+                    })
+                }
+                console.log(err.response);
             })
     };
 
@@ -152,25 +186,35 @@ class DocumentInputContainer extends Component {
                     [name]: files[0]
                 });
                 return;
+            case "category_id":
+                Axios.get(apiUrl() + 'document/sub/category/by/category/' + value)
+                    .then(resData => {
+                        this.setState({
+                            documentSubCategory: resData.data
+                        }, () => {
+                            this.setState({
+                                category_id: value
+                            });
+                        })
+                    });
+                return;
             default:
                 this.setState({
                     [name]: value
-                }, () => {
-                    this.validate();
                 });
                 return;
         }
     };
 
     componentDidMount = () => {
-        this.getData()
+        this.getData();
     };
 
     renderForm = () => {
         const {formType} = this.props;
         const {
             category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
-            document_date, display_notice, status, editId, errorDict
+            document_date, display_notice, status, editId, errorDict, documentSubCategory
         } = this.state;
 
         switch (formType) {
@@ -185,7 +229,7 @@ class DocumentInputContainer extends Component {
                                     </div>
                                     <div className="col-md-9">
                                         <input
-                                            placeholder='Document Category'
+                                            placeholder='Enter Document Category Name'
                                             type={'text'}
                                             name={'category_name'}
                                             value={category_name}
@@ -205,8 +249,8 @@ class DocumentInputContainer extends Component {
                                             this.setState({
                                                 editId: null,
                                                 category_name: '',
-                                            }, () => {
-                                                this.validate()
+                                                success: false,
+                                                error: false
                                             })
                                         }}>Go Back
                                         </button>
@@ -228,7 +272,7 @@ class DocumentInputContainer extends Component {
                                         <select name={'category_id'} value={category_id} onChange={this.handleChange}
                                                 className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
-                                            <documentCategoryOptions/>
+                                            <DocumentCategoryOptions/>
                                         </select>
                                     </div>
                                 </div>
@@ -259,9 +303,9 @@ class DocumentInputContainer extends Component {
                                         this.setState({
                                             editId: null,
                                             category_id: '',
-                                            sub_category_name: ''
-                                        }, () => {
-                                            this.validate()
+                                            sub_category_name: '',
+                                            success: false,
+                                            error: false
                                         })
                                     }}>Go Back
                                     </button>
@@ -269,21 +313,21 @@ class DocumentInputContainer extends Component {
                             </div>
                         </div>
                     </div>
-                )
+                );
             case 'DOCUMENTLIST':
                 return (
                     <div className={`rounded p-3 my-2`}>
-                        <div className="row px-2">
+                        <div className="row px-2 my-3">
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">
                                         Category
                                     </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                    <div className="col-md-8">
                                         <select name={'category_id'} value={category_id} onChange={this.handleChange}
                                                 className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
-                                            <documentCategoryOptions/>
+                                            <DocumentCategoryOptions/>
                                         </select>
                                     </div>
                                 </div>
@@ -293,18 +337,20 @@ class DocumentInputContainer extends Component {
                                     <div className="col-md-4">
                                         Sub Category
                                     </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                    <div className="col-md-8">
                                         <select name={'sub_category_id'} value={sub_category_id}
                                                 onChange={this.handleChange}
                                                 className={`form-control ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
-                                            <documentSubCategoryOptions category_id={category_id}/>
+                                            {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
+                                                <option key={index} value={item.id}>{item.sub_category_name}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row px-2 my-2">
+                        <div className="row px-2 my-3">
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">
@@ -340,7 +386,7 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row px-2">
+                        <div className="row px-2 my-3">
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">
@@ -372,7 +418,7 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row px-2">
+                        <div className="row px-2 my-3">
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">
@@ -406,7 +452,7 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row px-2">
+                        <div className="row px-2 my-3">
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">
@@ -442,9 +488,9 @@ class DocumentInputContainer extends Component {
                         </div>
                         <div className="d-flex justify-content-end">
                             {editId === null ? <button className="btn btn-outline-info mt-3"
-                                                       onClick={this.handleSubmit}>Submit Document List</button> : <>
+                                                       onClick={this.handleSubmit}>Submit</button> : <>
                                 <button className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>
-                                    Update Document List
+                                    Update
                                 </button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
@@ -459,9 +505,8 @@ class DocumentInputContainer extends Component {
                                         display_notice: false,
                                         status: true,
                                         editId: null,
-                                        error: false,
-                                    }, () => {
-                                        this.validate()
+                                        success: false,
+                                        error: false
                                     })
                                 }}>Go Back
                                 </button>
@@ -527,16 +572,18 @@ class DocumentInputContainer extends Component {
         const {formType} = this.props;
         const {
             category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
-            document_date, display_notice, status
+            document_date, display_notice, status, editId
         } = this.state;
 
         switch (formType) {
             case "DOCUMENTCATEGORY":
                 return ({
-                    category_name
+                    id: editId,
+                    category_name: category_name
                 });
             case "DOCUMENTSUBCATEGORY":
                 return ({
+                    id: editId,
                     category_id,
                     sub_category_name
                 });
@@ -558,14 +605,97 @@ class DocumentInputContainer extends Component {
         }
     };
 
+    tableBody = () => {
+        const {formType} = this.props;
+        const {allProjects} = this.state;
+        let table_body = '';
+
+        switch (formType) {
+            case "DOCUMENTCATEGORY":
+                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item.category_name}</td>
+                        <td className="d-flex justify-content-center">
+                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
+                                this.updateEdit(item.id)
+                            }}>Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={() => {
+                                this.deleteItem(item.id)
+                            }}>Delete
+                            </button>
+                        </td>
+                    </tr>
+                ));
+                return table_body;
+            case "DOCUMENTSUBCATEGORY":
+                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item.document_category.category_name}</td>
+                        <td>{item.sub_category_name}</td>
+                        <td className="d-flex justify-content-center">
+                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
+                                this.updateEdit(item.id)
+                            }}>Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={() => {
+                                this.deleteItem(item.id)
+                            }}>Delete
+                            </button>
+                        </td>
+                    </tr>
+                ));
+                return table_body;
+            case "DOCUMENTLIST":
+                /*table_body = allProjects.length > 0 && allProjects.map((item, index) => (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item.document_category.category_name}</td>
+                        <td>{item.sub_category_name}</td>
+                        <td className="d-flex justify-content-center">
+                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
+                                this.updateEdit(item.id)
+                            }}>Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={() => {
+                                this.deleteItem(item.id)
+                            }}>Delete
+                            </button>
+                        </td>
+                    </tr>
+                ));*/
+                return table_body;
+            default:
+                return;
+        }
+    };
+
     render() {
-        const {getApi, title} = this.props;
-        const {error, errorMessage, isLoading, allProjects} = this.state;
+        const {title, table_header} = this.props;
+        const {error, errorMessage, isLoading, allProjects, success, successMessage} = this.state;
+
         return (
             <div className="px-2 my-2">
-                {error && <div className="alert alert-danger" role="alert">
-                    {errorMessage}
-                </div>}
+                {error &&
+                <div className="row mb-3">
+                    <div className="col-md-12">
+                        <div className="alert alert-danger" role="alert">
+                            {errorMessage}
+                        </div>
+                    </div>
+                </div>
+                }
+                {success &&
+                <div className="row mb-3">
+                    <div className="col-md-12">
+                        <div className="alert alert-info" role="alert">
+                            {successMessage}
+                        </div>
+                    </div>
+                </div>
+                }
                 <div className={`bg-white rounded p-2 my-2  `}>
                     {this.renderForm()}
                 </div>
@@ -575,15 +705,16 @@ class DocumentInputContainer extends Component {
                             <p className="text-dark f-weight-500 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
-                            <ReactDataTable
-                                edit
-                                isLoading
-                                pagination
-                                searchable
-                                del={getApi}
-                                tableData={allProjects}
-                                updateEdit={this.updateEdit}
-                            />
+                            <table className="table table-bordered table-striped table-hover text-center">
+                                <thead>
+                                {table_header.map((item, index) => (
+                                    <th key={index}>{item}</th>
+                                ))}
+                                </thead>
+                                <tbody>
+                                {this.tableBody()}
+                                </tbody>
+                            </table>
                         </> : <h4>Currently There are No {title}</h4>}
                     </div>
                 </div>

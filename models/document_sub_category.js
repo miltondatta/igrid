@@ -13,4 +13,6 @@ const document_sub_category = db.define('document_sub_category', {
     sub_category_name: Sequelize.STRING
 });
 
+document_sub_category.belongsTo(document_category,{foreignKey: 'category_id'});
+
 module.exports = document_sub_category;

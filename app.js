@@ -82,9 +82,9 @@ app.use('/api/v1', RequisitionMasterRouter);
 app.use('/api/v1', RequisitionApproveRouter);
 app.use('/api/v1', RequisitionDetailsRouter);
 app.use('/api/v1', LocationHierarchiesRouter);
-app.use('/api/document/category', DocumentCategory);
-app.use('/api/document/sub/category', DocumentSubCategory);
-app.use('/api/document/list', DocumentList);
+app.use('/api/v1/document/category', DocumentCategory);
+app.use('/api/v1/document/sub/category', DocumentSubCategory);
+app.use('/api/v1/document/list', DocumentList);
 
 
 module.exports = app;
