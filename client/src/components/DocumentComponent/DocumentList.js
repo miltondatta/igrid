@@ -4,7 +4,7 @@ import DocumentInputContainer from "../../layouts/DocumentInputContainer/Documen
 class DocumentList extends Component {
     constructor(props) {
         super(props);
-        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Action'];
+        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Content Type', 'Title', 'Circular No', 'Description', 'Display Notice', 'Action'];
     }
 
     render() {

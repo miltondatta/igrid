@@ -2,6 +2,8 @@ import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 class DocumentInputContainer extends Component {
     constructor(props) {
@@ -179,7 +181,7 @@ class DocumentInputContainer extends Component {
     };
 
     handleChange = (e) => {
-        const {name, value, files} = e.target;
+        const {name, value, files, checked} = e.target;
         switch (name) {
             case "file_name":
                 this.setState({
@@ -197,6 +199,12 @@ class DocumentInputContainer extends Component {
                             });
                         })
                     });
+                return;
+            case "display_notice":
+            case "status":
+                this.setState({
+                    [name]: checked
+                });
                 return;
             default:
                 this.setState({
@@ -408,12 +416,13 @@ class DocumentInputContainer extends Component {
                                         Description
                                     </div>
                                     <div className="col-md-8">
-                                        <input
-                                            placeholder='Description'
-                                            name={'description'}
-                                            value={description}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`}/>
+                                        <CKEditor editor={ClassicEditor}
+                                                  onChange={(event, editor) => {
+                                                      this.setState({
+                                                          description: editor.getData()
+                                                      });
+                                                  }}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -459,13 +468,12 @@ class DocumentInputContainer extends Component {
                                         Display Notice
                                     </div>
                                     <div className="col-md-8">
-                                        <input
-                                            placeholder='Display Notice'
-                                            type="date"
-                                            name={'display_notice'}
-                                            value={display_notice}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.display_notice) && 'is-invalid'}`}/>
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" name="display_notice"
+                                                   className="custom-control-input" onChange={this.handleChange}
+                                                   checked={display_notice} id="switch1"/>
+                                            <label className="custom-control-label" htmlFor="switch1"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -475,13 +483,12 @@ class DocumentInputContainer extends Component {
                                         Status
                                     </div>
                                     <div className="col-md-8">
-                                        <input
-                                            placeholder='Status'
-                                            type="text"
-                                            name={'status'}
-                                            value={status}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.status) && 'is-invalid'}`}/>
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" name="status"
+                                                   className="custom-control-input" onChange={this.handleChange}
+                                                   checked={status} id="switch2"/>
+                                            <label className="custom-control-label" htmlFor="switch2"></label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -595,7 +602,7 @@ class DocumentInputContainer extends Component {
                 data.append('title', title);
                 data.append('circular_no', circular_no);
                 data.append('description', description);
-                data.append('file_name', file_name);
+                data.append('file', file_name);
                 data.append('document_date', document_date);
                 data.append('display_notice', display_notice);
                 data.append('status', status);
@@ -649,11 +656,22 @@ class DocumentInputContainer extends Component {
                 ));
                 return table_body;
             case "DOCUMENTLIST":
-                /*table_body = allProjects.length > 0 && allProjects.map((item, index) => (
+                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
                     <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{item.document_category.category_name}</td>
-                        <td>{item.sub_category_name}</td>
+                        <td>{item.document_sub_category.sub_category_name}</td>
+                        <td>
+                            <span
+                                className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
+                        </td>
+                        <td>{item.title}</td>
+                        <td>{item.circular_no}</td>
+                        <td>{item.description}</td>
+                        <td>
+                            <span
+                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'approved' : 'pending'}</span>
+                        </td>
                         <td className="d-flex justify-content-center">
                             <button className="btn btn-info btn-sm mr-2" onClick={() => {
                                 this.updateEdit(item.id)
@@ -665,7 +683,7 @@ class DocumentInputContainer extends Component {
                             </button>
                         </td>
                     </tr>
-                ));*/
+                ));
                 return table_body;
             default:
                 return;
