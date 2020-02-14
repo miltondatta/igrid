@@ -1,10 +1,7 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
-import DocumentSubCategoryOptions from "../../utility/component/documentSubCategoryOptions";
-import DocumentSubCategory from "../../components/DocumentComponent/DocumentSubCategory";
 
 class DocumentInputContainer extends Component {
     constructor(props) {
@@ -30,6 +27,7 @@ class DocumentInputContainer extends Component {
             success: false,
             successMessage: '',
             isLoading: false,
+            documentSubCategory: []
         };
 
         this.content_types = ['Notice', 'Circular'];
@@ -188,6 +186,18 @@ class DocumentInputContainer extends Component {
                     [name]: files[0]
                 });
                 return;
+            case "category_id":
+                Axios.get(apiUrl() + 'document/sub/category/by/category/' + value)
+                    .then(resData => {
+                        this.setState({
+                            documentSubCategory: resData.data
+                        }, () => {
+                            this.setState({
+                                category_id: value
+                            });
+                        })
+                    });
+                return;
             default:
                 this.setState({
                     [name]: value
@@ -204,7 +214,7 @@ class DocumentInputContainer extends Component {
         const {formType} = this.props;
         const {
             category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
-            document_date, display_notice, status, editId, errorDict, success, successMessage, error, errorMessage
+            document_date, display_notice, status, editId, errorDict, documentSubCategory
         } = this.state;
 
         switch (formType) {
@@ -332,7 +342,9 @@ class DocumentInputContainer extends Component {
                                                 onChange={this.handleChange}
                                                 className={`form-control ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
                                             <option>--Select Category--</option>
-                                            <DocumentSubCategoryOptions category_id={category_id}/>
+                                            {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
+                                                <option key={index} value={item.id}>{item.sub_category_name}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>

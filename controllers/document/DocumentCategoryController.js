@@ -10,7 +10,6 @@ exports.index = async (req, res) => {
                 order: [['id', 'DESC']]
             }
         );
-        if (!data) return res.status(400).json({msg: 'Something else! Please try again!'});
 
         return res.status(200).json(data);
     } catch (err) {
@@ -59,7 +58,7 @@ exports.edit = async (req, res) => {
         const id = req.params.id;
 
         const document_category = await DocumentCategory.findOne({where: {id}});
-        if (!document_category) return res.status(400).json({msg: 'Document Category didn\'t found!'});
+        if (!document_category) return res.status(400).json({msg: 'Document Category didn\'t found!', error: true});
 
         return res.status(200).json(document_category);
     } catch (err) {

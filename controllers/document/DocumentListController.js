@@ -32,7 +32,6 @@ exports.index = async (req, res) => {
                 order: [['id', 'DESC']]
             }
         );
-        if (!data) return res.status(400).json({msg: 'Something else! Please try again!'});
 
         return res.status(200).json(data);
     } catch (err) {
@@ -80,12 +79,12 @@ exports.store = (req, res) => {
                 }
             }).then(resData => {
                 if (resData.length > 0) {
-                    return res.status(400).json({msg: 'This Document List is already exist!'});
+                    return res.status(400).json({msg: 'This Document List is already exist!', error: true});
                 }
 
                 DocumentList.create(newDocumentList).then(resCreate => {
-                    if (!resCreate) return res.status(400).json({msg: 'Please try again with full information!'});
-                    return res.status(200).json({msg: 'New Document List saved successfully.'});
+                    if (!resCreate) return res.status(400).json({msg: 'Please try again with full information!', error: true});
+                    return res.status(200).json({msg: 'New Document List saved successfully.', success: true});
                 }).catch(err => {
                     console.error(err.message);
                     return res.status(500).json({msg: 'Server Error!'});
@@ -106,7 +105,7 @@ exports.edit = async (req, res) => {
         const id = req.params.id;
 
         const document_list = await DocumentList.findOne({where: {id}});
-        if (!document_list) return res.status(400).json({msg: 'Document List didn\'t found!'});
+        if (!document_list) return res.status(400).json({msg: 'Document List didn\'t found!', error: true});
 
         return res.status(200).json(document_list);
     } catch (err) {
@@ -149,11 +148,11 @@ exports.update = (req, res) => {
                     });
                 }
 
-                if (!resData) return res.status(400).json({msg: 'This Document List didn\'t found!'});
+                if (!resData) return res.status(400).json({msg: 'This Document List didn\'t found!', error: true});
 
                 DocumentList.update(updateDocumentList, {where: {id}}).then(resUpdate => {
-                    if (!resUpdate) return res.status(400).json({msg: 'Please try again with full information!'});
-                    return res.status(200).json({msg: 'Document List Information updated successfully.'});
+                    if (!resUpdate) return res.status(400).json({msg: 'Please try again with full information!', error: true});
+                    return res.status(200).json({msg: 'Document List Information updated successfully.', success: true});
                 }).catch(err => {
                     console.error(err.message);
                     return res.status(500).json({msg: 'Server Error!'});
@@ -174,12 +173,12 @@ exports.delete = async (req, res) => {
         const {id} = req.body;
 
         const status = await DocumentList.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Document List didn\'t found!'});
+        if (!status) return res.status(400).json({msg: 'This Document List didn\'t found!', error: true});
 
         const document_list = await DocumentList.destroy({where: {id}});
-        if (!document_list) return res.status(400).json({msg: 'Please try again!'});
+        if (!document_list) return res.status(400).json({msg: 'Please try again!', error: true});
 
-        return res.status(200).json({msg: 'One Document List deleted successfully!'});
+        return res.status(200).json({msg: 'One Document List deleted successfully!', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});

@@ -15,7 +15,6 @@ exports.index = async (req, res) => {
                 order: [['id', 'DESC']]
             }
         );
-        if (!data.length) return res.status(400).json({msg: 'Something else! Please try again!', error: true});
 
         return res.status(200).json(data);
     } catch (err) {
