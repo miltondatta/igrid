@@ -1,5 +1,7 @@
 const db = require('../config/db')
 const express = require('express')
+const Assets = require('../models/asset/assets')
+const AssetHistory = require('../models/asset/asset_history')
 const RequisitionApproves = require('../models/requisitionapprove')
 
 const route = express.Router()
@@ -57,6 +59,38 @@ route.post('/requisition-approve/entry', (req,res,next) => {
                     res.status(404).json({message: 'Something went wrong', err})
                 })
         }
+    })
+})
+
+// Create
+route.post('/requisition-approve/delivery', (req,res,next) => {
+    req.body.delivery.forEach(item => {
+        if(item.requisition_id === '' || item.role_id === '' || item.location_id === '' || item.delivery_to === '' ||
+            item.requisition_details_id === '' || item.update_quantity === '' || item.status === '') {
+            res.status(200).json({message: 'All fields required!'})
+            return null;
+        } else {
+            RequisitionApproves.create(item)
+                .then(resData => {
+                    res.status(200).json(resData)
+                })
+                .catch(err => {
+                    res.status(404).json({message: 'Something went wrong', err})
+                })
+        }
+    })
+    req.body.products.forEach(item => {
+        Assets.update({assign_to: item.assignTo}, {where: {id: item.assetId}})
+            .then(resAssets => {
+                console.log(resAssets, 85)
+                AssetHistory.create({asset_id: item.assetId, assign_to: item.assignTo})
+                    .then(resHistory => {
+                        console.log(resHistory, 88)
+                    })
+            })
+            .catch(err => {
+                console.log('Something Went Wrong',err)
+            })
     })
 })
 
