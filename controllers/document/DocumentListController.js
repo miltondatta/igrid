@@ -1,6 +1,8 @@
 const {Op} = require("sequelize");
 const DocumentList = require('../../models/document_list');
-const {capitalize} = require('../../utility/custom');
+const DocumentCategory = require('../../models/document_category');
+const DocumentSubCategory = require('../../models/document_sub_category');
+const {capitalize, stripHtmlFromText} = require('../../utility/custom');
 const multer = require('multer');
 const fs = require('fs');
 
@@ -21,7 +23,7 @@ const upload = multer({
         }
         cb(null, true);
     }
-}).single('file_name');
+}).single('file');
 
 exports.index = async (req, res) => {
     try {
@@ -29,6 +31,14 @@ exports.index = async (req, res) => {
             {
                 attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
                     "display_notice", "status"],
+                include: [{
+                    model: DocumentCategory,
+                    attributes: ["category_name"]
+                }, {
+                    model: DocumentSubCategory,
+                    attributes: ["sub_category_name"]
+                }
+                ],
                 order: [['id', 'DESC']]
             }
         );
@@ -59,7 +69,7 @@ exports.store = (req, res) => {
                 content_type: content_type,
                 title: title,
                 circular_no: circular_no,
-                description: description,
+                description: stripHtmlFromText(description),
                 file_name: file_name,
                 document_date: document_date,
                 display_notice: display_notice,
@@ -83,7 +93,10 @@ exports.store = (req, res) => {
                 }
 
                 DocumentList.create(newDocumentList).then(resCreate => {
-                    if (!resCreate) return res.status(400).json({msg: 'Please try again with full information!', error: true});
+                    if (!resCreate) return res.status(400).json({
+                        msg: 'Please try again with full information!',
+                        error: true
+                    });
                     return res.status(200).json({msg: 'New Document List saved successfully.', success: true});
                 }).catch(err => {
                     console.error(err.message);
@@ -124,24 +137,25 @@ exports.update = (req, res) => {
                 return res.status(500).json(err);
             }
 
-            file_name = req.file.originalname;
             const {id, category_id, sub_category_id, content_type, title, circular_no, description, document_date, display_notice, status} = req.body;
 
-            const updateDocumentList = {
-                category_id,
-                sub_category_id,
-                content_type,
-                title,
-                circular_no,
-                description,
-                file_name,
-                document_date,
-                display_notice,
-                status
-            };
-
             DocumentList.findOne({where: {id}}).then(resData => {
-                if (fs.existsSync('public/document/' + resData.file_name) && (file_name != resData.file_name)) {
+                file_name = req.file ? req.file.originalname : resData.file_name;
+
+                const updateDocumentList = {
+                    category_id,
+                    sub_category_id,
+                    content_type,
+                    title,
+                    circular_no,
+                    description: stripHtmlFromText(description),
+                    file_name,
+                    document_date,
+                    display_notice,
+                    status
+                };
+
+                if (fs.existsSync('public/document/' + resData.file_name) && (file_name !== resData.file_name)) {
                     fs.unlink('public/document/' + resData.file_name, (err) => {
                         if (err) throw err;
                         console.log('successfully deleted /document/file_name');
@@ -151,8 +165,14 @@ exports.update = (req, res) => {
                 if (!resData) return res.status(400).json({msg: 'This Document List didn\'t found!', error: true});
 
                 DocumentList.update(updateDocumentList, {where: {id}}).then(resUpdate => {
-                    if (!resUpdate) return res.status(400).json({msg: 'Please try again with full information!', error: true});
-                    return res.status(200).json({msg: 'Document List Information updated successfully.', success: true});
+                    if (!resUpdate) return res.status(400).json({
+                        msg: 'Please try again with full information!',
+                        error: true
+                    });
+                    return res.status(200).json({
+                        msg: 'Document List Information updated successfully.',
+                        success: true
+                    });
                 }).catch(err => {
                     console.error(err.message);
                     return res.status(500).json({msg: 'Server Error!'});

@@ -4,6 +4,7 @@ import {apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import moment from "moment";
 
 class DocumentInputContainer extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class DocumentInputContainer extends Component {
             circular_no: '',
             description: '',
             file_name: '',
-            document_date: new Date(),
+            document_date: moment(),
             display_notice: false,
             status: true,
             editId: null,
@@ -108,11 +109,38 @@ class DocumentInputContainer extends Component {
                     editId: id
                 }, () => {
                     Object.keys(item).map(val => {
-                        this.setState({
+                        if (val === 'sub_category_id') {
+                            Axios.get(apiUrl() + 'document/sub/category/by/category/' + item['category_id'])
+                                .then(resData => {
+                                    this.setState({
+                                        documentSubCategory: resData.data
+                                    }, () => {
+                                        this.setState({
+                                            sub_category_id: item[val]
+                                        }, () => {
+                                            this.validate();
+                                        });
+                                    })
+                                });
+                        } else if(val === 'document_date') {
+                            this.setState({
+                                document_date: moment(item[val]).format('YYYY-MM-DD')
+                            }, () => {
+                                this.validate();
+                            });
+                        } else {
+                            this.setState({
+                                [val]: item[val]
+                            }, () => {
+                                this.validate();
+                            })
+                        }
+
+                        /*this.setState({
                             [val]: item[val]
                         }, () => {
                             this.validate()
-                        })
+                        })*/
                     })
                 });
                 return null
@@ -121,7 +149,6 @@ class DocumentInputContainer extends Component {
     };
 
     updateData = () => {
-        console.log(this.getApiData());
         const {getApi} = this.props;
         if (Object.values(this.validate()).includes(false)) {
             return
@@ -136,7 +163,7 @@ class DocumentInputContainer extends Component {
                     successMessage: success && msg
                 });
             })
-            .then(res => {
+            .then(() => {
                 this.getData()
             })
             .catch(err => {
@@ -370,9 +397,7 @@ class DocumentInputContainer extends Component {
                                                 className={`form-control ${(errorDict && !errorDict.content_type) && 'is-invalid'}`}>
                                             <option>--Select Content Type--</option>
                                             {this.content_types.map((value, index) => (
-                                                <option value={index + 1}
-                                                        selected={(index + 1 === content_type)}
-                                                        key={index}>{value}</option>
+                                                <option value={index + 1} key={index}>{value}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -417,6 +442,7 @@ class DocumentInputContainer extends Component {
                                     </div>
                                     <div className="col-md-8">
                                         <CKEditor editor={ClassicEditor}
+                                                  data={description}
                                                   onChange={(event, editor) => {
                                                       this.setState({
                                                           description: editor.getData()
@@ -596,6 +622,7 @@ class DocumentInputContainer extends Component {
                 });
             case "DOCUMENTLIST":
                 data = new FormData();
+                data.append('id', editId);
                 data.append('category_id', category_id);
                 data.append('sub_category_id', sub_category_id);
                 data.append('content_type', content_type);
@@ -725,9 +752,11 @@ class DocumentInputContainer extends Component {
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
                             <table className="table table-bordered table-striped table-hover text-center">
                                 <thead>
-                                {table_header.map((item, index) => (
-                                    <th key={index}>{item}</th>
-                                ))}
+                                <tr>
+                                    {table_header.map((item, index) => (
+                                        <th key={index}>{item}</th>
+                                    ))}
+                                </tr>
                                 </thead>
                                 <tbody>
                                 {this.tableBody()}
