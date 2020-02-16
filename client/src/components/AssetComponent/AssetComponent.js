@@ -15,7 +15,10 @@ class AssetComponent extends Component{
             items: 0,
             quantity: '',
             reqMaster: '',
+            arrayData: [],
             productSet: [],
+            assetCategory: [],
+            assetSubCategory: [],
             filterText: '',
             asset_category: '',
             submitProduct: false,
@@ -35,13 +38,34 @@ class AssetComponent extends Component{
     }
 
     componentDidMount() {
+        Axios.get(apiUrl() + 'asset-category')
+            .then(resData => {
+                this.setState({
+                    assetCategory: resData.data
+                })
+            })
+        Axios.get(apiUrl() + 'asset-sub-category')
+            .then(resData => {
+                this.setState({
+                    assetSubCategory: resData.data
+                })
+            })
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const {asset_category, asset_sub_category, quantity, productSet} = this.state
+        const {asset_category, asset_sub_category, quantity, arrayData, productSet, assetSubCategory, assetCategory} = this.state
         const length = productSet.length
+        const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
+        const subAssName = assetSubCategory.find(item => item.id === parseInt(asset_sub_category, 10)).sub_category_name
+        console.log(assName, 59)
         const productCombination = {
+            id: length + 1,
+            request_name: assName,
+            item_id: subAssName,
+            quantity
+        }
+        const productCombinationStore = {
             id: length + 1,
             request_name: asset_category,
             item_name: asset_sub_category,
@@ -49,7 +73,8 @@ class AssetComponent extends Component{
         }
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             this.setState((prevState) => ({
-                productSet: [...prevState.productSet, productCombination],
+                productSet: [...prevState.productSet, productCombinationStore],
+                arrayData: [...prevState.arrayData, productCombination],
                 submitProduct: true,
                 quantity: '',
                 request: 0,
@@ -113,7 +138,7 @@ class AssetComponent extends Component{
     }
 
     render(){
-        const {asset_category, mobile, email, quantity, reqMaster, userName, asset_sub_category, productSet} = this.state
+        const {asset_category, mobile, email, quantity, reqMaster, userName, asset_sub_category, productSet, arrayData} = this.state
 
         return(
             <div className={'ui-asset-component m-auto justify-content-between'}>
@@ -154,7 +179,7 @@ class AssetComponent extends Component{
                         <p className="text-dark f-weight-500 f-20px m-0">Submit Product</p>
                     </nav>
                     <ReactDataTable
-                        tableData={productSet}
+                        tableData={arrayData}
                     />
                     {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="ui-btn">Submit</button>}
                 </div>
