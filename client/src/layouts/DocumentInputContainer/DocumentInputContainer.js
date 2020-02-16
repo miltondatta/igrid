@@ -5,6 +5,8 @@ import DocumentCategoryOptions from "../../utility/component/documentCategoryOpt
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from "moment";
+import DatePicker from 'react-datepicker2';
+import {validateInput} from "../../utility/custom";
 
 class DocumentInputContainer extends Component {
     constructor(props) {
@@ -15,7 +17,7 @@ class DocumentInputContainer extends Component {
             category_name: '',
             sub_category_id: '',
             sub_category_name: '',
-            content_type: 0,
+            content_type: '',
             title: '',
             circular_no: '',
             description: '',
@@ -30,7 +32,10 @@ class DocumentInputContainer extends Component {
             success: false,
             successMessage: '',
             isLoading: false,
-            documentSubCategory: []
+            documentSubCategory: [],
+            deleteId: 0,
+            deleteModalTitle: '',
+            deleteContentName: ''
         };
 
         this.content_types = ['Notice', 'Circular'];
@@ -122,9 +127,9 @@ class DocumentInputContainer extends Component {
                                         });
                                     })
                                 });
-                        } else if(val === 'document_date') {
+                        } else if (val === 'document_date') {
                             this.setState({
-                                document_date: moment(item[val]).format('YYYY-MM-DD')
+                                document_date: moment(item[val])
                             }, () => {
                                 this.validate();
                             });
@@ -189,7 +194,10 @@ class DocumentInputContainer extends Component {
                     allProjects: [],
                     error: false,
                     success: success,
-                    successMessage: success && msg
+                    successMessage: success && msg,
+                    deleteId: 0,
+                    deleteContentName: '',
+                    deleteModalTitle: ''
                 }, () => {
                     this.getData()
                 });
@@ -232,6 +240,14 @@ class DocumentInputContainer extends Component {
                 this.setState({
                     [name]: checked
                 });
+                return;
+            case "circular_no":
+                let valid = validateInput(e);
+                if (valid || valid === '') {
+                    this.setState({
+                        [name]: valid
+                    });
+                }
                 return;
             default:
                 this.setState({
@@ -431,6 +447,7 @@ class DocumentInputContainer extends Component {
                                             name={'circular_no'}
                                             value={circular_no}
                                             onChange={this.handleChange}
+                                            data-number={'integer_only'}
                                             className={`form-control ${(errorDict && !errorDict.circular_no) && 'is-invalid'}`}/>
                                     </div>
                                 </div>
@@ -476,13 +493,12 @@ class DocumentInputContainer extends Component {
                                         Document Date
                                     </div>
                                     <div className="col-md-8">
-                                        <input
-                                            placeholder='Document Date'
-                                            type="date"
-                                            name={'document_date'}
-                                            value={document_date}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.document_date) && 'is-invalid'}`}/>
+                                        <DatePicker timePicker={false}
+                                                    name={'document_date'}
+                                                    className={`form-control ${(errorDict && !errorDict.document_date) && 'is-invalid'}`}
+                                                    inputFormat="DD/MM/YYYY"
+                                                    onChange={date => this.setState({document_date: date})}
+                                                    value={document_date}/>
                                     </div>
                                 </div>
                             </div>
@@ -534,7 +550,7 @@ class DocumentInputContainer extends Component {
                                         circular_no: '',
                                         description: '',
                                         file_name: '',
-                                        document_date: new Date(),
+                                        document_date: moment(),
                                         display_notice: false,
                                         status: true,
                                         editId: null,
@@ -655,8 +671,13 @@ class DocumentInputContainer extends Component {
                                 this.updateEdit(item.id)
                             }}>Edit
                             </button>
-                            <button className="btn btn-danger btn-sm" onClick={() => {
-                                this.deleteItem(item.id)
+                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
+                                    data-target="#rowDeleteModal" onClick={() => {
+                                this.setState({
+                                    deleteId: item.id,
+                                    deleteContentName: item.category_name,
+                                    deleteModalTitle: 'Delete Category'
+                                });
                             }}>Delete
                             </button>
                         </td>
@@ -674,8 +695,13 @@ class DocumentInputContainer extends Component {
                                 this.updateEdit(item.id)
                             }}>Edit
                             </button>
-                            <button className="btn btn-danger btn-sm" onClick={() => {
-                                this.deleteItem(item.id)
+                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
+                                    data-target="#rowDeleteModal" onClick={() => {
+                                this.setState({
+                                    deleteId: item.id,
+                                    deleteContentName: item.sub_category_name,
+                                    deleteModalTitle: 'Delete Sub Category'
+                                });
                             }}>Delete
                             </button>
                         </td>
@@ -694,7 +720,9 @@ class DocumentInputContainer extends Component {
                         </td>
                         <td>{item.title}</td>
                         <td>{item.circular_no}</td>
-                        <td>{item.description}</td>
+                        <td>
+                            <div dangerouslySetInnerHTML={{__html: item.description}}/>
+                        </td>
                         <td>
                             <span
                                 className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'approved' : 'pending'}</span>
@@ -704,8 +732,13 @@ class DocumentInputContainer extends Component {
                                 this.updateEdit(item.id)
                             }}>Edit
                             </button>
-                            <button className="btn btn-danger btn-sm" onClick={() => {
-                                this.deleteItem(item.id)
+                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
+                                    data-target="#rowDeleteModal" onClick={() => {
+                                this.setState({
+                                    deleteId: item.id,
+                                    deleteContentName: item.title,
+                                    deleteModalTitle: 'Delete Document List'
+                                });
                             }}>Delete
                             </button>
                         </td>
@@ -719,7 +752,7 @@ class DocumentInputContainer extends Component {
 
     render() {
         const {title, table_header} = this.props;
-        const {error, errorMessage, isLoading, allProjects, success, successMessage} = this.state;
+        const {error, errorMessage, isLoading, allProjects, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
 
         return (
             <div className="px-2 my-2">
@@ -762,7 +795,29 @@ class DocumentInputContainer extends Component {
                                 {this.tableBody()}
                                 </tbody>
                             </table>
-                        </> : <h4>Currently There are No {title}</h4>}
+                        </> : <h4>Currently There are No Content</h4>}
+                    </div>
+                </div>
+                <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
+                     aria-labelledby="rowDeleteModal" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">{deleteModalTitle}</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Are you sure you want to delete {deleteContentName}?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal"
+                                        onClick={() => this.deleteItem(deleteId)}>Delete Now
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -290,3 +290,11 @@ tbody{border: 1px solid #ddd}
       transform: scale(1);
    }
 }
+
+.selectToday {
+   display: none !important;
+}
+
+.tether-element {
+   transition: 0s !important;
+}
