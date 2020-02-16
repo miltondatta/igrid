@@ -204,3 +204,65 @@ exports.delete = async (req, res) => {
         return res.status(500).json({msg: 'Server Error!'});
     }
 };
+
+exports.documentActiveListData = async (req, res) => {
+    try {
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: {
+                    display_notice: true
+                },
+                order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListDataByNotice = async (req, res) => {
+    try {
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: {
+                    content_type: 1,
+                    display_notice: true
+                },
+                order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListDataByCircular = async (req, res) => {
+    try {
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: {
+                    content_type: 2,
+                    display_notice: true
+                },
+                order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};

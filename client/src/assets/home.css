@@ -5,7 +5,8 @@
 }
 
 .ui-home .ui-noticeboard{
-    height: 200px;
+    height: 300px;
+    overflow: hidden;
 }
 
 .ui-homecomponent{
@@ -74,4 +75,26 @@
     font-size: 45px;
     margin-top: 10px;
     align-items: center;
+}
+
+.ui-home .ui-noticeboard .noticeText {
+    animation: animate 8s linear infinite;
+    padding-left: 10px;
+}
+
+.ui-home .ui-noticeboard:hover .noticeText {
+    animation-play-state: paused;
+}
+
+@keyframes animate {
+    from {
+        transform: translateY(40%);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+.noticeDate {
+    font-size: 12px;
 }
