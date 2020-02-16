@@ -69,7 +69,7 @@ exports.store = (req, res) => {
                 content_type: content_type,
                 title: title,
                 circular_no: circular_no,
-                description: stripHtmlFromText(description),
+                description: description,
                 file_name: file_name,
                 document_date: document_date,
                 display_notice: display_notice,
@@ -148,7 +148,7 @@ exports.update = (req, res) => {
                     content_type,
                     title,
                     circular_no,
-                    description: stripHtmlFromText(description),
+                    description: description,
                     file_name,
                     document_date,
                     display_notice,
@@ -199,6 +199,68 @@ exports.delete = async (req, res) => {
         if (!document_list) return res.status(400).json({msg: 'Please try again!', error: true});
 
         return res.status(200).json({msg: 'One Document List deleted successfully!', success: true});
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentActiveListData = async (req, res) => {
+    try {
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: {
+                    display_notice: true
+                },
+                order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListDataByNotice = async (req, res) => {
+    try {
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: {
+                    content_type: 1,
+                    display_notice: true
+                },
+                order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListDataByCircular = async (req, res) => {
+    try {
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: {
+                    content_type: 2,
+                    display_notice: true
+                },
+                order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});

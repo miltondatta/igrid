@@ -39,4 +39,25 @@ router.post('/update', documentListController.update);
  */
 router.delete('/delete', documentListController.delete);
 
+/*
+    @route          GET api/v1/document/list/active
+    @desc           Get All Active Document List Data
+    @access         Private
+ */
+router.get('/active', documentListController.documentActiveListData);
+
+/*
+    @route          GET api/v1/document/list/by/notice
+    @desc           Get All Document List Data By Notice
+    @access         Private
+ */
+router.get('/by/notice', documentListController.documentListDataByNotice);
+
+/*
+    @route          GET api/v1/document/list/by/circular
+    @desc           Get All Document List Data By Circular
+    @access         Private
+ */
+router.get('/by/circular', documentListController.documentListDataByCircular);
+
 module.exports = router;
