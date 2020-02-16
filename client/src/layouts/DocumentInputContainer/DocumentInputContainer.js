@@ -140,12 +140,6 @@ class DocumentInputContainer extends Component {
                                 this.validate();
                             })
                         }
-
-                        /*this.setState({
-                            [val]: item[val]
-                        }, () => {
-                            this.validate()
-                        })*/
                     })
                 });
                 return null
@@ -221,6 +215,8 @@ class DocumentInputContainer extends Component {
             case "file_name":
                 this.setState({
                     [name]: files[0]
+                }, () => {
+                    this.validate();
                 });
                 return;
             case "category_id":
@@ -231,6 +227,8 @@ class DocumentInputContainer extends Component {
                         }, () => {
                             this.setState({
                                 category_id: value
+                            }, () => {
+                                this.validate();
                             });
                         })
                     });
@@ -239,6 +237,8 @@ class DocumentInputContainer extends Component {
             case "status":
                 this.setState({
                     [name]: checked
+                }, () => {
+                    this.validate();
                 });
                 return;
             case "circular_no":
@@ -246,12 +246,16 @@ class DocumentInputContainer extends Component {
                 if (valid || valid === '') {
                     this.setState({
                         [name]: valid
+                    }, () => {
+                        this.validate();
                     });
                 }
                 return;
             default:
                 this.setState({
                     [name]: value
+                }, () => {
+                    this.validate();
                 });
                 return;
         }
@@ -376,10 +380,13 @@ class DocumentInputContainer extends Component {
                                     </div>
                                     <div className="col-md-8">
                                         <select name={'category_id'} value={category_id} onChange={this.handleChange}
-                                                className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
+                                                className={`form-control`}>
                                             <option>--Select Category--</option>
                                             <DocumentCategoryOptions/>
                                         </select>
+                                        {errorDict && !errorDict.category_id &&
+                                        <span className="error">Category Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -391,12 +398,15 @@ class DocumentInputContainer extends Component {
                                     <div className="col-md-8">
                                         <select name={'sub_category_id'} value={sub_category_id}
                                                 onChange={this.handleChange}
-                                                className={`form-control ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
+                                                className={`form-control`}>
                                             <option>--Select Category--</option>
                                             {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
                                                 <option key={index} value={item.id}>{item.sub_category_name}</option>
                                             ))}
                                         </select>
+                                        {errorDict && !errorDict.sub_category_id &&
+                                        <span className="error">Sub Category Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -407,15 +417,18 @@ class DocumentInputContainer extends Component {
                                     <div className="col-md-4">
                                         Content Type
                                     </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                    <div className="col-md-8">
                                         <select name={'content_type'} value={content_type}
                                                 onChange={this.handleChange}
-                                                className={`form-control ${(errorDict && !errorDict.content_type) && 'is-invalid'}`}>
+                                                className={`form-control`}>
                                             <option>--Select Content Type--</option>
                                             {this.content_types.map((value, index) => (
                                                 <option value={index + 1} key={index}>{value}</option>
                                             ))}
                                         </select>
+                                        {errorDict && !errorDict.content_type &&
+                                        <span className="error">Content Type Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -430,7 +443,10 @@ class DocumentInputContainer extends Component {
                                             name={'title'}
                                             value={title}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.title) && 'is-invalid'}`}/>
+                                            className={`form-control`}/>
+                                        {errorDict && !errorDict.title &&
+                                        <span className="error">Title Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -448,7 +464,10 @@ class DocumentInputContainer extends Component {
                                             value={circular_no}
                                             onChange={this.handleChange}
                                             data-number={'integer_only'}
-                                            className={`form-control ${(errorDict && !errorDict.circular_no) && 'is-invalid'}`}/>
+                                            className={`form-control`}/>
+                                        {errorDict && !errorDict.circular_no &&
+                                        <span className="error">Circular No Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -463,9 +482,14 @@ class DocumentInputContainer extends Component {
                                                   onChange={(event, editor) => {
                                                       this.setState({
                                                           description: editor.getData()
+                                                      }, () => {
+                                                          this.validate();
                                                       });
                                                   }}
                                         />
+                                        {errorDict && !errorDict.description &&
+                                        <span className="error">Description Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -482,8 +506,11 @@ class DocumentInputContainer extends Component {
                                                    className="custom-file-input" id="validatedCustomFile"
                                                    required/>
                                             <label className="custom-file-label"
-                                                   htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file...'}</label>
+                                                   htmlFor="validatedCustomFile">{file_name ? file_name : 'Choose file...'}</label>
                                         </div>
+                                        {errorDict && !errorDict.file_name &&
+                                        <span className="error">File Name Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -499,6 +526,9 @@ class DocumentInputContainer extends Component {
                                                     inputFormat="DD/MM/YYYY"
                                                     onChange={date => this.setState({document_date: date})}
                                                     value={document_date}/>
+                                        {errorDict && !errorDict.document_date &&
+                                        <span className="error">Document Date Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -555,7 +585,8 @@ class DocumentInputContainer extends Component {
                                         status: true,
                                         editId: null,
                                         success: false,
-                                        error: false
+                                        error: false,
+                                        errorDict: null
                                     })
                                 }}>Go Back
                                 </button>
@@ -758,7 +789,7 @@ class DocumentInputContainer extends Component {
             <div className="px-2 my-2">
                 {error &&
                 <div className="row mb-3">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                         <div className="alert alert-danger" role="alert">
                             {errorMessage}
                         </div>
@@ -767,7 +798,7 @@ class DocumentInputContainer extends Component {
                 }
                 {success &&
                 <div className="row mb-3">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                         <div className="alert alert-info" role="alert">
                             {successMessage}
                         </div>
