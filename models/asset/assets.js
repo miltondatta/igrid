@@ -112,7 +112,7 @@ const Assets = db.define('assets', {
         type: Sequelize.BOOLEAN
     },
     assign_to:{
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
     },
 })
 

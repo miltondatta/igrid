@@ -8,6 +8,15 @@ const route = express.Router()
 
 // Read
 route.get('/requisition-approve', async (req,res,next) => {
+    let reqId = []
+    const [resultsMain, metadataMain] = await db.query(`
+        SELECT requisition_approves.id, requisition_approves.requisition_id from requisition_approves
+               JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id
+        WHERE requisition_approves.delivery_to IS NOT NULL
+    `)
+    resultsMain.length > 0 && resultsMain.forEach(item => {
+        reqId.push(item.requisition_id)
+    })
     const [results, metadata] = await db.query(`
         SELECT requisition_approves.id, requisition_approves.requisition_id, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
                requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
@@ -19,8 +28,9 @@ route.get('/requisition-approve', async (req,res,next) => {
             JOIN user_roles ON requisition_approves.role_id = user_roles.id
             JOIN locations ON requisition_approves.location_id = locations.id
         `)
+    let payLoad = results.filter(item => !reqId.includes(item.requisition_id))
     if (results.length > 0) {
-        res.status(200).json(results)
+        res.status(200).json(payLoad)
     } else {
         res.status(200).json({message: "No Data Found"})
     }
@@ -82,10 +92,8 @@ route.post('/requisition-approve/delivery', (req,res,next) => {
     req.body.products.forEach(item => {
         Assets.update({assign_to: item.assignTo}, {where: {id: item.assetId}})
             .then(resAssets => {
-                console.log(resAssets, 85)
                 AssetHistory.create({asset_id: item.assetId, assign_to: item.assignTo})
                     .then(resHistory => {
-                        console.log(resHistory, 88)
                     })
             })
             .catch(err => {
