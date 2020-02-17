@@ -5,6 +5,7 @@ const DocumentSubCategory = require('../../models/document_sub_category');
 const {capitalize} = require('../../utility/custom');
 const multer = require('multer');
 const fs = require('fs');
+const db = require('../../config/db');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -269,33 +270,42 @@ exports.documentListDataByCircular = async (req, res) => {
 
 exports.documentListSearch = async (req, res) => {
     try {
-        const {category_id, sub_category_id, content_type, title, circular_no, document_date} = req.body;
+        const {category_id, sub_category_id, content_type, title, circular_no, keyword} = req.body;
+        if (!category_id) return res.status(400).json({msg: 'Category Field is required!', error: true});
 
-        const searchDocumentList = {};
-        if (category_id) searchDocumentList.category_id = category_id;
-        if (sub_category_id) searchDocumentList.sub_category_id = sub_category_id;
-        if (content_type) searchDocumentList.content_type = content_type;
-        if (title) searchDocumentList.title = title;
-        if (circular_no) searchDocumentList.circular_no = circular_no;
-        if (document_date) searchDocumentList.document_date = document_date;
+        var queryText = '';
+        if (category_id) queryText = 'document_lists.category_id = ' + category_id;
+        if (sub_category_id) queryText += ' and document_lists.sub_category_id = ' + sub_category_id;
+        if (content_type) queryText += ' and document_lists.content_type = ' + content_type;
+        if (title) queryText += ' and document_lists.title = ' + "\'" + title + "\'";
+        if (circular_no) queryText += ' and document_lists.circular_no = ' + "\'" + circular_no + "\'";
 
-        const data = await DocumentList.findAll(
-            {
-                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
-                    "display_notice", "status"],
-                include: [{
-                    model: DocumentCategory,
-                    attributes: ["category_name"]
-                }, {
-                    model: DocumentSubCategory,
-                    attributes: ["sub_category_name"]
-                }
-                ],
-                where: searchDocumentList
-            }
-        );
+        keyword.forEach((value) => {
+            queryText += ' or document_lists.title ilike ' + "\'%" + value + "%\'";
+            queryText += ' or document_lists.description ilike ' + "\'%" + value + "%\'";
+        });
 
-        return res.status(200).json(data);
+        const data = await db.query(`SELECT document_lists.id,
+                                       document_lists.category_id,
+                                       document_lists.sub_category_id,
+                                       document_lists.content_type,
+                                       document_lists.title,
+                                       document_lists.circular_no,
+                                       document_lists.description,
+                                       document_lists.file_name,
+                                       document_lists.document_date,
+                                       document_lists.display_notice,
+                                       document_lists.status,
+                                       document_categories.id,
+                                       document_categories.category_name,
+                                       document_sub_categories.id,
+                                       document_sub_categories.sub_category_name
+                                FROM document_lists
+                                         JOIN document_categories ON document_lists.category_id = document_categories.id
+                                         JOIN document_sub_categories ON document_lists.sub_category_id = document_sub_categories.id
+                                where ${queryText}`);
+
+        return res.status(200).json({query: data});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
