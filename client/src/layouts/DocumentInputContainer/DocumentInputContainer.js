@@ -214,7 +214,7 @@ class DocumentInputContainer extends Component {
         switch (name) {
             case "file_name":
                 this.setState({
-                    [name]: files[0]
+                    file_name: files[0]
                 }, () => {
                     this.validate();
                 });
@@ -289,7 +289,10 @@ class DocumentInputContainer extends Component {
                                             name={'category_name'}
                                             value={category_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.category_name) && 'is-invalid'}`}/>
+                                            className={`form-control`}/>
+                                        {errorDict && !errorDict.category_name &&
+                                        <span className="error">Document Category Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -325,10 +328,13 @@ class DocumentInputContainer extends Component {
                                     </div>
                                     <div className="col-md-8">
                                         <select name={'category_id'} value={category_id} onChange={this.handleChange}
-                                                className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
+                                                className={`form-control`}>
                                             <option>--Select Category--</option>
                                             <DocumentCategoryOptions/>
                                         </select>
+                                        {errorDict && !errorDict.category_id &&
+                                        <span className="error">Category Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -344,7 +350,10 @@ class DocumentInputContainer extends Component {
                                             name={'sub_category_name'}
                                             value={sub_category_name}
                                             onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.sub_category_name) && 'is-invalid'}`}/>
+                                            className={`form-control`}/>
+                                        {errorDict && !errorDict.sub_category_name &&
+                                        <span className="error">Sub Category Name Field is required</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -483,7 +492,9 @@ class DocumentInputContainer extends Component {
                                                       this.setState({
                                                           description: editor.getData()
                                                       }, () => {
-                                                          this.validate();
+                                                          if (editor.getData()) {
+                                                              this.validate();
+                                                          }
                                                       });
                                                   }}
                                         />
@@ -503,10 +514,9 @@ class DocumentInputContainer extends Component {
                                     <div className="col-md-8">
                                         <div className="custom-file">
                                             <input type="file" onChange={this.handleChange} name={'file_name'}
-                                                   className="custom-file-input" id="validatedCustomFile"
-                                                   required/>
+                                                   className="custom-file-input" id="validatedCustomFile"/>
                                             <label className="custom-file-label"
-                                                   htmlFor="validatedCustomFile">{file_name ? file_name : 'Choose file...'}</label>
+                                                   htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name : file_name : 'Choose file...'}</label>
                                         </div>
                                         {errorDict && !errorDict.file_name &&
                                         <span className="error">File Name Field is required</span>
@@ -522,13 +532,10 @@ class DocumentInputContainer extends Component {
                                     <div className="col-md-8">
                                         <DatePicker timePicker={false}
                                                     name={'document_date'}
-                                                    className={`form-control ${(errorDict && !errorDict.document_date) && 'is-invalid'}`}
+                                                    className={`form-control`}
                                                     inputFormat="DD/MM/YYYY"
                                                     onChange={date => this.setState({document_date: date})}
                                                     value={document_date}/>
-                                        {errorDict && !errorDict.document_date &&
-                                        <span className="error">Document Date Field is required</span>
-                                        }
                                     </div>
                                 </div>
                             </div>
@@ -633,10 +640,7 @@ class DocumentInputContainer extends Component {
                     title: title !== '',
                     circular_no: circular_no !== '',
                     description: description !== '',
-                    file_name: file_name !== '',
-                    document_date: document_date !== '',
-                    display_notice: display_notice !== '',
-                    status: status !== ''
+                    file_name: file_name.name !== ''
                 };
                 this.setState({
                     errorDict

@@ -172,6 +172,10 @@ const AsyncDocumentList = Loadable({
     loader: () => import('../components/DocumentComponent/DocumentList'),
     loading: Loading,
 });
+const AsyncDocumentListSearch = Loadable({
+    loader: () => import('../components/DocumentComponent/DocumentListSearch'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -250,6 +254,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/document-category' component={AsyncDocumentCategory}/>
                                     <Route exact path='/document-sub-category' component={AsyncDocumentSubCategory}/>
                                     <Route exact path='/document-list' component={AsyncDocumentList}/>
+                                    <Route exact path='/document-list-search' component={AsyncDocumentListSearch}/>
                                 </Switch>
                             </div>
                         </div>
