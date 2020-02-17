@@ -212,26 +212,26 @@ export const sidenav = [
             }
         ]
     },
-    {
-        id: 7,
-        name: 'User List',
-        icon: 'fas fa-list-alt',
-        subCat: false,
-    },
-    {
-        id: 8,
-        name: 'Complaint Group',
-        icon: 'fas fa-object-group',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Patch',
-                link: '/request-history',
-                icon: ""
-            }
-        ]
-    },
+    // {
+    //     id: 7,
+    //     name: 'User List',
+    //     icon: 'fas fa-list-alt',
+    //     subCat: false,
+    // },
+    // {
+    //     id: 8,
+    //     name: 'Complaint Group',
+    //     icon: 'fas fa-object-group',
+    //     subCat: true,
+    //     categories: [
+    //         {
+    //             id: 1,
+    //             name: 'Patch',
+    //             link: '/request-history',
+    //             icon: ""
+    //         }
+    //     ]
+    // },
     {
         id: 9,
         name: 'Admin',
@@ -335,9 +335,15 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 15,
+                id: 16,
                 name: 'Register User',
                 link: '/register-user',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Approval Level',
+                link: '/approval-level',
                 icon: ""
             },
         ]
@@ -383,56 +389,3 @@ export const sidenav = [
         ]
     },
 ]
-
-export const requestOn = {
-    1:'Hardware',
-    2:'Accessories',
-    3:'Stationary',
-    4:'Others'
-}
-
-export const hardwareOptions = {
-    1: 'Android Tab',
-    2: 'Wireless Router',
-    3: 'Modem (GP)',
-    4: 'SIM (GP)',
-    5: 'System Unit  (PC)',
-    6: 'Monitor',
-    7: 'UPS',
-    8: 'Printer',
-    9: 'Laptop',
-    10: 'Smart Phone',
-    11: 'Generator',
-    12: 'Projector',
-    13: 'Scanner',
-    14: 'Printer Laser',
-    15: 'IPS',
-    16: 'AVR',
-    17: 'Bag for Tab',
-    18: 'Voltage Stabilizer',
-}
-
-export const stationaryOptions = {
-    1: 'Ribbon',
-    2: 'DVD RW',
-    3: 'Key Board',
-    4: 'Mouse',
-    5: 'Power Cable',
-    6: 'Printer Cable - Parallel',
-    7: 'Power Strip',
-    8: 'White Paper',
-    9: 'Roll Paper',
-    10:' Printer Cable - USB',
-    11: 'TAB Cover',
-}
-
-export const accessoriesOptions = {
-    1: 'Dust Blower',
-    2: 'USB Cable',
-    3: 'VGA Cable',
-    4: 'Ink Bottle'
-}
-
-export const otherOptions = {
-    1: 'Others',
-}

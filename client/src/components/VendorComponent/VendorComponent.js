@@ -8,6 +8,8 @@ class VendorComponent extends Component {
                 <AdminInputContainer
                     formType = 'VENDOR'
                     getApi = 'vendors'
+                    title = 'Vendor List'
+                    headTitle = 'Vendor Information'
                 />
             </>
         );
