@@ -56,10 +56,7 @@ class NoticeBoardComponent extends Component {
 
         return (
             <>
-                <div className="card ui-home mb-0 shadow">
-                    <div className="card-header bg-dark text-white">
-                        <i className="fas fa-thumbtack mr-2"></i> Notice Board
-                    </div>
+                <div>
                     <div className={'w-100 p-2 ui-noticeboard'}>
                         <div className="ui-notice">
                             <div className="noticeText">
