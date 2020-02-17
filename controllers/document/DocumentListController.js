@@ -280,10 +280,12 @@ exports.documentListSearch = async (req, res) => {
         if (title) queryText += ' and document_lists.title = ' + "\'" + title + "\'";
         if (circular_no) queryText += ' and document_lists.circular_no = ' + "\'" + circular_no + "\'";
 
-        keyword.forEach((value) => {
-            queryText += ' or document_lists.title ilike ' + "\'%" + value + "%\'";
-            queryText += ' or document_lists.description ilike ' + "\'%" + value + "%\'";
-        });
+        if (keyword.length > 0) {
+            keyword.forEach((value) => {
+                queryText += ' or document_lists.title ilike ' + "\'%" + value + "%\'";
+                queryText += ' or document_lists.description ilike ' + "\'%" + value + "%\'";
+            });
+        }
 
         const data = await db.query(`SELECT document_lists.id,
                                        document_lists.category_id,
