@@ -2,7 +2,7 @@ const {Op} = require("sequelize");
 const DocumentList = require('../../models/document_list');
 const DocumentCategory = require('../../models/document_category');
 const DocumentSubCategory = require('../../models/document_sub_category');
-const {capitalize, stripHtmlFromText} = require('../../utility/custom');
+const {capitalize} = require('../../utility/custom');
 const multer = require('multer');
 const fs = require('fs');
 
@@ -257,6 +257,41 @@ exports.documentListDataByCircular = async (req, res) => {
                     display_notice: true
                 },
                 order: [['id', 'DESC']]
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListSearch = async (req, res) => {
+    try {
+        const {category_id, sub_category_id, content_type, title, circular_no, document_date} = req.body;
+
+        const searchDocumentList = {};
+        if (category_id) searchDocumentList.category_id = category_id;
+        if (sub_category_id) searchDocumentList.sub_category_id = sub_category_id;
+        if (content_type) searchDocumentList.content_type = content_type;
+        if (title) searchDocumentList.title = title;
+        if (circular_no) searchDocumentList.circular_no = circular_no;
+        if (document_date) searchDocumentList.document_date = document_date;
+
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                include: [{
+                    model: DocumentCategory,
+                    attributes: ["category_name"]
+                }, {
+                    model: DocumentSubCategory,
+                    attributes: ["sub_category_name"]
+                }
+                ],
+                where: searchDocumentList
             }
         );
 
