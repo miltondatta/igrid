@@ -19,7 +19,7 @@ const HomeComponent = () => {
             </div>
             <div className="ui-hometop">
                 <div className={'ui-news'}>
-                    <p className={'f-19px f-weight-600 text-grey border-bottom-gray pb-3'}>Notice Board</p>
+                    <p className={'f-19px f-weight-600 text-grey border-bottom-gray pb-3 mb-0'}>Notice Board</p>
                     <NoticeBoardComponent />
                 </div>
                 <div className={'ui-home-options'}>

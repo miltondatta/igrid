@@ -57,7 +57,7 @@ class NoticeBoardComponent extends Component {
         return (
             <>
                 <div>
-                    <div className={'w-100 p-2 ui-noticeboard'}>
+                    <div className={'w-100 p-2 h-100 overflow-hidden ui-noticeboard'}>
                         <div className="ui-notice">
                             <div className="noticeText">
                                 {allNotice}
