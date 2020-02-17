@@ -26,6 +26,10 @@ a:hover{text-decoration: none}
 .w-80{width: 80%;}
 .w-86{width: 86%;}
 
+.h-215px{
+   height: 215px;
+}
+
 .f-16px{font-size: 16px;}
 .f-14px{font-size: 14px;}
 .f-18px{font-size: 18px;}

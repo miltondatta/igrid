@@ -18,6 +18,11 @@
     border: 1.2px solid #e3e3e3;
 }
 
+.ui-hometop .ui-news .ui-noticeboard{
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
+
 .ui-hometop .ui-home-options{
     display: grid;
     grid-gap: 15px;
@@ -84,43 +89,43 @@
 .ui-home{
     width: 80%;
     margin: auto;
-    position: absolute;
+    position: relative;
     transform: rotate(90deg);
-    right: -30%;
-    bottom: 20px;
+    top: -40%;
+    right: 10px;
 }
 
 .ui-home .ui-noticeboard{
-    height: 300px;
-    overflow: hidden;
+height: 300px;
+overflow: hidden;
 }
 
 .ui-card-left{
-    color: white;
-    display: flex;
-    font-size: 45px;
-    margin-top: 10px;
-    align-items: center;
+color: white;
+display: flex;
+font-size: 45px;
+margin-top: 10px;
+align-items: center;
 }
 
 .ui-noticeboard .noticeText {
-    animation: animate 8s linear infinite;
-    padding-left: 10px;
+animation: animate 8s linear infinite;
+padding-left: 10px;
 }
 
-.ui-noticeboard:hover .noticeText {
-    animation-play-state: paused;
+.ui-noticeboard div:nth-child(1):hover .noticeText {
+animation-play-state: paused;
 }
 
 @keyframes animate {
-    from {
-        transform: translateY(120%);
-    }
-    to {
-        transform: translateY(-100%);
-    }
+from {
+    transform: translateY(120%);
+}
+to {
+    transform: translateY(-100%);
+}
 }
 
 .noticeDate {
-    font-size: 12px;
+font-size: 12px;
 }

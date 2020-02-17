@@ -55,19 +55,17 @@ class NoticeBoardComponent extends Component {
         )) : <p>There is empty notice board</p>;
 
         return (
-            <>
-                <div>
-                    <div className={'w-100 p-2 h-100 overflow-hidden ui-noticeboard'}>
-                        <div className="ui-notice">
-                            <div className="noticeText">
-                                {allNotice}
-                            </div>
+            <div className={'ui-noticeboard'}>
+                <div className={'p-2 overflow-hidden h-215px'}>
+                    <div className="ui-notice">
+                        <div className="noticeText">
+                            {allNotice}
                         </div>
                     </div>
                 </div>
                 {allData.length > 0 &&
                 <div className="ui-home">
-                    <ul className="d-flex justify-content-start list-unstyled">
+                    <ul className="d-flex list-unstyled">
                         <li className={`btn ${noticeAndCircular ? 'btn-info' : 'btn-outline-info'} `}
                             onClick={() => this.setNoticeOption('all')}>All
                         </li>
@@ -80,7 +78,7 @@ class NoticeBoardComponent extends Component {
                     </ul>
                 </div>
                 }
-            </>
+            </div>
         );
     }
 }
