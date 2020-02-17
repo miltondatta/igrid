@@ -1,4 +1,5 @@
 import Axios from "axios";
+import './adminInputContainer.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
@@ -11,6 +12,7 @@ import HierarchiesOptions from "../../utility/component/hierarchyOptions";
 import ModuleOptions from "../../utility/component/moduleOptions";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
 import UserOptions from "../../utility/component/userOptions";
+import ApproveLevelOptions from "../../utility/component/approveLevelOptions";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -233,42 +235,26 @@ class AdminInputContainer extends Component {
         const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id, image_name,
             category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code, order_by,
             brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name, module_id,
-            module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id} = this.state
+            module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id, location_heirarchy_id} = this.state
 
         switch (formType){
             case 'VENDOR':
                 return(
                     <div className={`rounded p-3 my-2`}>
                         <div className="row px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-3">
-                                        Vendor Name
-                                    </div>
-                                    <div className="col-md-9">
-                                        <input
-                                            placeholder='Vendor Name'
-                                            type={'text'}
-                                            name={'vendor_name'}
-                                            value={vendor_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.vendor_name) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-3">
-                                        File Name
-                                    </div>
-                                    <div className="col-md-9 was-validated">
-                                        <div className="custom-file">
-                                            <input type="file" onChange={this.handleChange} name={'file_name'} className="custom-file-input" id="validatedCustomFile"
-                                                   required />
-                                                <label className="custom-file-label" htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file...'}</label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <input
+                                placeholder='Vendor Name'
+                                type={'text'}
+                                name={'vendor_name'}
+                                value={vendor_name}
+                                onChange={this.handleChange}
+                                className={`form-control ${(errorDict && !errorDict.vendor_name) && 'is-invalid'}`} />
+                        </div>
+                        <div className="was-validated">
+                            <div className="custom-file">
+                                <input type="file" onChange={this.handleChange} name={'file_name'} className="custom-file-input" id="validatedCustomFile"
+                                       required />
+                                    <label className="custom-file-label" htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file...'}</label>
                             </div>
                         </div>
                         <div className="row px-2 mt-3">
@@ -378,6 +364,68 @@ class AdminInputContainer extends Component {
                             </div>
                             <div className="col-md-6">
                                 {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
+                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                        this.setState({
+                                            editId: null,
+                                            project_name: '',
+                                            project_code: '',
+                                            description: '',
+                                        }, () => {
+                                            this.validate()
+                                        })}}>Go Back</button>
+                                </>}
+                            </div>
+                        </div>
+                    </div>
+                )
+            case 'USERAPPROVAL':
+                return(
+                    <div className={`rounded p-3`}>
+                        <div className="row px-2  mb-3">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Location Hirarchy
+                                    </div>
+                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
+                                        <select name={'location_heirarchy_id'} value={location_heirarchy_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_heirarchy_id) && 'is-invalid'}`}>
+                                            <option>--Select Location--</option>
+                                            <HierarchiesOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        User Role
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
+                                            <option>--Select User Role--</option>
+                                            <UserRoleOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row px-2 my-2">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        Parent
+                                    </div>
+                                    <div className="col-md-8">
+                                        <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
+                                            <option>--Select Parent--</option>
+                                            <ApproveLevelOptions />
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -1109,7 +1157,7 @@ class AdminInputContainer extends Component {
                 )
             case 'MODULE':
                 return(
-                    <div className={`rounded p-3 my-2 shadow`}>
+                    <div className={`rounded p-3 my-2 `}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1211,7 +1259,7 @@ class AdminInputContainer extends Component {
                     </div>
                 ))
                 return(
-                    <div className={`rounded p-3 my-2 shadow`}>
+                    <div className={`rounded p-3 my-2 `}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1300,7 +1348,7 @@ class AdminInputContainer extends Component {
         const {vendor_name, file_name, description, project_name, project_code, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name, product_code, brand_id, model_id, depreciation_code, method_name,  module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id,
-            user_id, location_id, role_id} = this.state
+            user_id, location_id, role_id, location_heirarchy_id} = this.state
         switch (formType){
             case "USERROLES":
                 errorDict = {
@@ -1317,6 +1365,16 @@ class AdminInputContainer extends Component {
                     description: description !== '',
                     project_name: project_name !== '',
                     project_code: project_code !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
+            case "USERAPPROVAL":
+                errorDict = {
+                    location_heirarchy_id: location_heirarchy_id !== '',
+                    role_id: role_id !== '',
+                    parent_id: parent_id !== '',
                 }
                 this.setState({
                     errorDict
@@ -1461,7 +1519,7 @@ class AdminInputContainer extends Component {
         const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name, module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id, image_name,
-            user_id, location_id, role_id} = this.state
+            user_id, location_id, role_id, location_heirarchy_id} = this.state
         switch (formType){
             case "USERROLES":
                 return ({role_desc, role_name, module_id})
@@ -1477,6 +1535,12 @@ class AdminInputContainer extends Component {
                     project_name,
                     project_code,
                     description
+                })
+            case "USERAPPROVAL":
+                return({
+                    location_heirarchy_id,
+                    role_id,
+                    parent_id
                 })
             case "DEPMETHOD":
                 return({
@@ -1529,20 +1593,23 @@ class AdminInputContainer extends Component {
     }
 
     render() {
-        const {getApi, title} = this.props
+        const {getApi, title, headTitle} = this.props
         const {error, errorMessage, isLoading, allProjects} = this.state
         return (
-            <div className="px-2 my-2">
+            <div className="px-2 my-2 ui-dataEntry">
                 {error && <div className="alert alert-danger" role="alert">
                     {errorMessage}
                 </div>}
                 <div className={`bg-white rounded p-2 my-2  `}>
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p className="text-blue f-weight-600 f-20px m-0">{headTitle}</p>
+                    </nav>
                     {this.renderForm()}
                 </div>
-                <div className={'p-2 my-2'}>
-                    <div className="rounded p-3 bg-white shadow">
+                <div className={'p-2'}>
+                    <div className="rounded p-3 bg-white">
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0">{title}</p>
+                            <p className="text-blue f-weight-600 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
                             <ReactDataTable
