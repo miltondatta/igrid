@@ -32,6 +32,20 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date()
         },
+        {
+          firstName: 'Shahadat',
+          lastName: 'Vai',
+          email: 'shahadat@user.com',
+          phone_number: '01534618623',
+          password: bcrypt.hashSync('123456', 10),
+          pin: '1234',
+          address: 'Dhaka',
+          image: 'default.png',
+          is_verified: false,
+          userType: 0,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
     ], {})
   },
 

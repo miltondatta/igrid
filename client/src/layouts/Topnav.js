@@ -72,7 +72,7 @@ class Topnav extends Component{
         )
     }
 
-    render(){
+    render() {
         const {home} = this.props
         const {showUserOption} = this.state
         const {userName, image} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
@@ -80,14 +80,17 @@ class Topnav extends Component{
             return (
                 <div className='ui-topnav w-100 px-4'>
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
-                        <input placeholder='Search' className='ui-search' />
-                        <div className={'text-center w-100'}>
-                                <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
+                        <div className={'w-100'}>
+                                <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'} />
+                                <span className={'text-white ui-nav-init-link ml-5 mr-2'}>Location Finder</span>
+                                <span className={'text-white ui-nav-init-link mx-2'}>Contact Us</span>
+                                <span className={'text-white ui-nav-init-link mx-2'}>About Us</span>
+                                <span className={'text-white ui-nav-init-link mx-2'}>Documentation</span>
                         </div>
-                        <div className={'text-black ui-user-nav d-flex align-items-center'}>
+                        <div className={'text-white ui-user-nav d-flex align-items-center'}>
+                            <i className="fas fa-bell"></i>
                             <span onClick={this.handleUserOptions}>{userName}</span>
-                            <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/images/' + image} alt={'user'} />
-                             <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
+                            <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions} src={'http://localhost:5000/images/' + image} alt={'user'} />
                             {showUserOption && <div className={'ui-user-dropdown'}>
                                 <p> <Link onClick={() => {
                                     this.setState((prevState) => ({

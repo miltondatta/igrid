@@ -195,8 +195,13 @@ class AdminInputContainer extends Component {
             this.setState({
                 [name]: value
             }, () => {
-                console.log(value, 192)
                 this.validate()
+                this.locationApi(value)
+            })
+        } else if(name === 'parent_id') {
+            this.setState({
+                [name]: value
+            }, () => {
                 this.locationApi(value)
             })
         } else {
@@ -931,6 +936,21 @@ class AdminInputContainer extends Component {
                     </div>
                 )
             case 'LOCATIONS':
+                let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) => (
+                    <div className="col-md-6 mb-3">
+                        <div className="row">
+                            <div className="col-md-4">
+                                Sub Location
+                            </div>
+                            <div className="col-md-8">
+                                <select name={'parent_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                    <option>--Select Location--</option>
+                                    <LocationsOptions selectedId={item[index].parent_id} />
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                ))
                 return(
                     <div className={`rounded p-3 my-2`}>
                         <div className="row px-2">
@@ -981,6 +1001,7 @@ class AdminInputContainer extends Component {
                                     </div>
                                 </div>
                             </div>
+                            {subLoc}
                             <div className="col-md-6">
                                 <div className="row">
                                     <div className="col-md-4">

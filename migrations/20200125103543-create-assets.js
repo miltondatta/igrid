@@ -23,6 +23,9 @@ module.exports = {
           key: 'id'
         },
       },
+      assign_to:{
+        type: Sequelize.INTEGER
+      },
       product_id:{
         type: Sequelize.INTEGER,
         references: {
@@ -109,9 +112,6 @@ module.exports = {
       },
       barcode:{
         type: Sequelize.BOOLEAN
-      },
-      assign_to:{
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

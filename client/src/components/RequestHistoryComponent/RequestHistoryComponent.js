@@ -1,10 +1,11 @@
 import Axios from 'axios'
+import jwt from "jsonwebtoken";
 import './RequestHistoryCom.css'
+import {Redirect} from 'react-router-dom'
 import React, {Component} from 'react';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import {apiUrl} from "../../utility/constant";
 import StatusOptions from "../../utility/component/statusOptions";
-import jwt from "jsonwebtoken";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class RequestHistoryComponent extends Component {
     constructor(props){
@@ -14,7 +15,8 @@ class RequestHistoryComponent extends Component {
             keys: [],
             reqDetails: [],
             detailedData: [],
-            showDetails: false
+            showDetails: false,
+            renderRidirect: false
         }
     }
 
@@ -52,7 +54,9 @@ class RequestHistoryComponent extends Component {
         const {reqDetails} = this.state
         Axios.post(apiUrl() + 'requisition-approve/entry', reqDetails)
             .then(res => {
-                console.log(res)
+                this.setState({
+                    renderRidirect: true
+                })
             })
             .catch(err => {
                 console.log(err)
@@ -105,7 +109,7 @@ class RequestHistoryComponent extends Component {
     }
 
     render() {
-        const {data, showDetails, detailedData, requisition_id} = this.state
+        const {data, showDetails, detailedData, requisition_id, renderRidirect} = this.state
         let tableData = detailedData.map((item, index) => {
             return(
                 <tr key={index + 10}>
@@ -138,6 +142,7 @@ class RequestHistoryComponent extends Component {
 
         return (
             <div className={'bg-white p-3 rounded shadow'}>
+                { renderRidirect && <Redirect to={'/delivery-request'} />}
                 {!showDetails ? <>
                 <nav className="navbar text-center mb-3 p-2 rounded">
                     <p className="text-dark f-weight-500 f-20px m-0" >Requisition History</p>
@@ -151,7 +156,7 @@ class RequestHistoryComponent extends Component {
                     /> : <h2>Loading...</h2>}
                 </> : <>
                     <nav className="navbar text-center mb-2 p-2 rounded cursor-pointer">
-                        <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-dark f-weight-500 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
+                        <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-dark f-weight-500 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i>     Go Back</p>
                     </nav>
                     <div className={'ui-req-history'}>
                         <table className="table">

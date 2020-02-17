@@ -131,7 +131,7 @@ class ReactDataTable extends Component {
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
                 {item !== 'id' && <th onClick={(e) => this.sortColumn(e, item)} scope="col" key={index} className={'text-capitalize'}>
-                    {sortColumn === item ? <i className="fas fa-angle-up text-dark"></i> : <i className="fas fa-angle-down text-dark"></i>} {item}
+                    {sortColumn === item ? <i className="fas fa-angle-up text-dark"></i> : <i className="fas fa-angle-down text-dark"></i>} {item.replace('_', " ")}
                 </th>}
             </>
         ))
@@ -157,7 +157,7 @@ class ReactDataTable extends Component {
                     <p className="cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>
                 </td>}
                 {details && <td className={'text-danger'}>
-                    <p className="cursor-pointer text-info" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>Details</p>
+                    <button className="cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>Details</button>
                 </td>}
                 {approve && <td className={'text-danger'}>
                     <p className="cursor-pointer text-danger">Approve</p>
