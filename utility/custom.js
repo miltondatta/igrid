@@ -12,11 +12,6 @@ const capitalize = (input) => {
     return result;
 };
 
-const stripHtmlFromText = (input) => {
-    return input.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") ;
-};
-
 module.exports = {
-    capitalize,
-    stripHtmlFromText
+    capitalize
 };

@@ -60,4 +60,11 @@ router.get('/by/notice', documentListController.documentListDataByNotice);
  */
 router.get('/by/circular', documentListController.documentListDataByCircular);
 
+/*
+    @route          GET api/v1/document/list/search
+    @desc           Search Document list data
+    @access         Private
+ */
+router.post('/search', documentListController.documentListSearch);
+
 module.exports = router;

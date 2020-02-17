@@ -63,7 +63,6 @@ class NoticeBoardComponent extends Component {
                         </div>
                     </div>
                 </div>
-                {allData.length > 0 &&
                 <div className="ui-home">
                     <ul className="d-flex list-unstyled">
                         <li className={`btn ${noticeAndCircular ? 'btn-info' : 'btn-outline-info'} `}
@@ -77,7 +76,6 @@ class NoticeBoardComponent extends Component {
                         </li>
                     </ul>
                 </div>
-                }
             </div>
         );
     }
