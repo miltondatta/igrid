@@ -68,10 +68,11 @@ class LoginComponent extends Component {
             <div className='ui-user-container'>
                 {this.renderRedirect()}
                     <div className='ui-login'>
-                        <h4 className='mb-3'>Login</h4>
+                        <h4 className='mb-3'>
+                            <img src={process.env.PUBLIC_URL + '/media/image/logo.png'} alt="Logo"/>
+                            <p className={'my-4 f-28px text-bold'}><b>Log In</b></p>
+                        </h4>
 
-                        <label htmlFor='email'>Email</label>
-                        <br />
                         <input 
                             type='text' 
                             id ='email' 
@@ -80,10 +81,10 @@ class LoginComponent extends Component {
                             name='email' 
                             placeholder='Please enter your email' />
                         <br />
-                        <label htmlFor='password'>Password</label>
                         <br />
                         <input 
-                            type='password' 
+                            type='password'
+                            className={'mb-2'}
                             id ='password' 
                             value={password} 
                             onChange={this.handleChange} 
@@ -91,13 +92,10 @@ class LoginComponent extends Component {
                             placeholder='Please enter your passsword' />
 
                         <div className='d-flex justify-content-between align-items-center mt-4'>
-                            <button className='ui-signin' onClick={this.submitLogin}>SIGN IN</button>
-                            <a href='/' className='text-project'>Forgot Password?</a>
+                            <button className='ui-signin' onClick={this.submitLogin}>Log In</button>
+                            <a href='/' className='text-project f-18px f-weight-500'>Forgot Password?</a>
                         </div>
 
-                    </div>
-                    <div className='bg-project d-flex justify-content-center align-items-center ui-logo'>
-                        <img alt='Logo' src={process.env.PUBLIC_URL + './media/image/logo_white.png'} />
                     </div>
                 </div>
         )

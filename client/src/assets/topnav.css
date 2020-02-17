@@ -1,21 +1,39 @@
 .ui-topnav{
-    height: 85px;
+    height: 60px;
     position: relative;
-    background: #ffffff9e;
-    border: 1px solid #f2f2f2;
-    box-shadow: 0 2px 5px #aaa;
+    background: #005da6;
 }
 
 .ui-topnav .ui-user-nav{
-    font-size: 16px;
+    font-size: 18px;
     text-align: right;
     position: relative;
     justify-self: end;
 }
 
 .ui-topnav .ui-user-nav i{
-    color: #aaa;
-    font-size: 18px;
+    color: #ebf2f5;
+    font-size: 25px;
+    margin-right: 20px;
+}
+
+.ui-topnav .ui-nav-init-link{
+    cursor: pointer;
+    padding: 5px 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.ui-topnav .ui-nav-init-link:hover{
+    background: #2885ce;
+}
+
+.ui-user-avatar{
+    margin-right: 5px;
+    border-radius: 50%;
+    width: 33px !important;
+    height: 33px !important;
 }
 
 .ui-topnav .ui-user-dropdown{
@@ -50,8 +68,7 @@
 }
 
 .ui-topnav img{
-    width: 90px;
-    height: 30px;
+    width: 110px;
 }
 
 .ui-topnav .ui-search{
@@ -70,8 +87,11 @@
 
 .ui-topnav .ui-topnav-container{
     display: grid;
-    grid-template-columns: 40% 20% 40%;
+    justify-content: space-between;
+    grid-template-columns: 70% 30%;
 }
+
+
 
 .ui-navbtn:hover .ui-subcategory{
     display: block;
