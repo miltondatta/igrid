@@ -117,11 +117,10 @@ class DocumentListSearch extends Component {
     downloadFile = (e, file_name) => {
         e.preventDefault();
 
-        Axios.get(e.target.href)
-            .then(res => {
-                const url = window.URL.createObjectURL(new Blob([res.data]));
+        Axios.get(apiUrl() + 'document/list/download/' + file_name)
+            .then(() => {
                 const link = document.createElement('a');
-                link.href = url;
+                link.href = apiUrl() + 'document/list/download/' + file_name;
                 link.setAttribute('download', file_name);
                 link.click();
 
@@ -266,7 +265,7 @@ class DocumentListSearch extends Component {
                     </div>
                     <div className={'p-2 my-2'}>
                         {fileError &&
-                        <div className="row ml-1">
+                        <div className="row">
                             <div className="col-md-4 alert alert-danger" role="alert">
                                 {fileErrorMessage}
                             </div>
@@ -302,7 +301,7 @@ class DocumentListSearch extends Component {
                                                     className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'approved' : 'pending'}</span>
                                             </td>
                                             <td>
-                                                <a href={apiUrl() + 'document/list/download/' + item.file_name}
+                                                <a href="/"
                                                    onClick={e => this.downloadFile(e, item.file_name)}>Download</a>
                                             </td>
                                         </tr>

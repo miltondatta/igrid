@@ -385,6 +385,12 @@ export const sidenav = [
                 name: 'Document List',
                 link: '/document-list',
                 icon: ""
+            },
+            {
+                id: 1,
+                name: 'Document Search',
+                link: '/document-list-search',
+                icon: ""
             }
         ]
     },
