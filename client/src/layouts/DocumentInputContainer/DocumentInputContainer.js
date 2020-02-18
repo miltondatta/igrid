@@ -758,7 +758,7 @@ class DocumentInputContainer extends Component {
                         </td>
                         <td>
                             <span
-                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'approved' : 'pending'}</span>
+                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'on' : 'off'}</span>
                         </td>
                         <td className="d-flex justify-content-center">
                             <button className="btn btn-info btn-sm mr-2" onClick={() => {
@@ -789,6 +789,7 @@ class DocumentInputContainer extends Component {
 
         return (
             <div className="px-2 my-2">
+                <h3 className="pb-3">{title}</h3>
                 {error &&
                 <div className="row mb-3">
                     <div className="col-md-6">

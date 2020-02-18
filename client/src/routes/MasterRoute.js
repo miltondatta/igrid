@@ -161,19 +161,19 @@ const AsyncRegisterUser = Loadable({
     loading: Loading,
 });
 const AsyncDocumentCategory = Loadable({
-    loader: () => import('../components/DocumentComponent/DocumentCategory'),
+    loader: () => import('../containers/DocCategory'),
     loading: Loading,
 });
 const AsyncDocumentSubCategory = Loadable({
-    loader: () => import('../components/DocumentComponent/DocumentSubCategory'),
+    loader: () => import('../containers/DocSubCategory'),
     loading: Loading,
 });
 const AsyncDocumentList = Loadable({
-    loader: () => import('../components/DocumentComponent/DocumentList'),
+    loader: () => import('../containers/DocList'),
     loading: Loading,
 });
 const AsyncDocumentListSearch = Loadable({
-    loader: () => import('../components/DocumentComponent/DocumentListSearch'),
+    loader: () => import('../containers/DocListSearch'),
     loading: Loading,
 });
 const AsyncApprovalLevel = Loadable({
@@ -256,10 +256,10 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
                                     <Route exact path='/user-associate-role' component={AsyncUserAssociateRole}/>
-                                    <Route exact path='/document-category' component={AsyncDocumentCategory}/>
-                                    <Route exact path='/document-sub-category' component={AsyncDocumentSubCategory}/>
-                                    <Route exact path='/document-list' component={AsyncDocumentList}/>
-                                    <Route exact path='/document-list-search' component={AsyncDocumentListSearch}/>
+                                    <Route exact path='/documents/document-category' component={AsyncDocumentCategory}/>
+                                    <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
+                                    <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
+                                    <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                                 </Switch>
                             </div>
                         </div>

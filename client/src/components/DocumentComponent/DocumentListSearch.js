@@ -29,7 +29,6 @@ class DocumentListSearch extends Component {
         this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Content Type', 'Title', 'Circular No', 'Description', 'Display Notice', 'File'];
     }
 
-
     handleChange = (e) => {
         const {name, value} = e.target;
         const {category_id} = this.state;
@@ -146,6 +145,7 @@ class DocumentListSearch extends Component {
         return (
             <>
                 <div className="px-2 my-2">
+                    <h3 className="pb-3">Document Search</h3>
                     <div className={`bg-white rounded p-2 my-2  `}>
                         <div className="rounded p-3 my-2">
                             <div className="row px-2 my-3">
@@ -273,6 +273,9 @@ class DocumentListSearch extends Component {
                         }
                         <div className="rounded p-3 bg-white shadow">
                             {isLoading ? <h2>Loading</h2> : searchData.length > 0 ? <>
+                                <nav className="navbar text-center mb-2 pl-2 rounded">
+                                    <p className="text-dark f-weight-500 f-20px m-0">Document Search</p>
+                                </nav>
                                 <table className="table table-bordered table-striped table-hover text-center">
                                     <thead>
                                     <tr>
@@ -308,7 +311,7 @@ class DocumentListSearch extends Component {
                                     ))}
                                     </tbody>
                                 </table>
-                            </> : <h4>Currently There are No Content</h4>}
+                            </> : <h5>Currently There are No Content</h5>}
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ class DocumentList extends Component {
                     formType = 'DOCUMENTLIST'
                     getApi = 'document/list'
                     table_header={this.table_header}
+                    title='Document List'
                 />
             </>
         );
