@@ -152,7 +152,7 @@
     z-index: 5;
     text-align: left;
     border-bottom-left-radius: 5px;
-    box-shadow: 0 18px 21px #e7e7e7;
+    box-shadow: 0 18px 27px -15px #e7e7e7;
     top: 37px;
     max-height: 250px;
     overflow-y: auto;

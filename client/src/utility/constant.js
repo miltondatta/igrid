@@ -11,23 +11,9 @@ export const apiUrl = () => {
 
 export const sidenav = [
     {
-        id: 1,
-        name: 'Homepage',
-        icon: 'fas fa-home',
-        link: '/',
-        subCat: false,
-    },
-    {
-        id: 2,
-        name: 'Support History',
-        icon: 'fas fa-ticket-alt',
-        subCat: false,
-        link: '/support-hisotry'
-    },
-    {
         id: 3,
         name: 'Material Requisition',
-        icon: 'fas fa-keyboard',
+        icon: 'icofont-file-document',
         subCat: true,
         categories: [
             {
@@ -58,7 +44,7 @@ export const sidenav = [
     },
     {
         id: 4,
-        name: 'Requisition History',
+        name: 'Requisition',
         icon: 'fas fa-history',
         subCat: true,
         categories: [
@@ -85,25 +71,19 @@ export const sidenav = [
     {
         id: 5,
         name: 'Inventory',
-        icon: 'fas fa-warehouse',
+        icon: 'fas fa-chart-pie',
         subCat: true,
         categories: [
+            {
+                id: 9,
+                name: 'Asset Registration',
+                link: '/stock-reg',
+                icon: ""
+            },
             {
                 id: 1,
                 name: 'Stock',
                 link: '/challan',
-                icon: ""
-            },
-            {
-                id: 2,
-                name: 'Delivery Report',
-                link: '/branch-requesition',
-                icon: ""
-            },
-            {
-                id: 3,
-                name: 'Delivery Receive',
-                link: '/delivery-request',
                 icon: ""
             },
             {
@@ -113,57 +93,9 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 5,
-                name: 'Buffer Stock Management',
-                link: '',
-                icon: ""
-            },
-            {
-                id: 6,
-                name: 'SIM Management',
-                link: '',
-                icon: ""
-            },
-            {
-                id: 7,
-                name: 'TAB Management',
-                link: '',
-                icon: ""
-            },
-            {
-                id: 8,
-                name: 'Feedback',
-                link: '',
-                icon: ""
-            },
-            {
-                id: 9,
-                name: 'Asset Registration',
-                link: '/stock-reg',
-                icon: ""
-            },
-            {
-                id: 10,
-                name: 'Asset List',
-                link: '/asset-list',
-                icon: ""
-            },
-            {
                 id: 11,
                 name: 'Asset Dispose',
                 link: '/asset-dispose',
-                icon: ""
-            },
-            {
-                id: 12,
-                name: 'Asset Sale',
-                link: '/asset-sale',
-                icon: ""
-            },
-            {
-                id: 13,
-                name: 'Asset Re-Evaluation',
-                link: '/asset-reevaluation',
                 icon: ""
             },
             {
@@ -183,7 +115,7 @@ export const sidenav = [
     {
         id: 6,
         name: 'Report',
-        icon: 'fas fa-history',
+        icon: 'icofont-chart-histogram',
         subCat: true,
         categories: [
             {
@@ -197,41 +129,9 @@ export const sidenav = [
                 name: 'Stock Report',
                 link: '/branch-requesition',
                 icon: ""
-            },
-            {
-                id: 3,
-                name: 'Tab Summary Report',
-                link: '/delivery-request',
-                icon: ""
-            },
-            {
-                id: 4,
-                name: 'Monthly Stock',
-                link: '',
-                icon: ""
             }
         ]
     },
-    // {
-    //     id: 7,
-    //     name: 'User List',
-    //     icon: 'fas fa-list-alt',
-    //     subCat: false,
-    // },
-    // {
-    //     id: 8,
-    //     name: 'Complaint Group',
-    //     icon: 'fas fa-object-group',
-    //     subCat: true,
-    //     categories: [
-    //         {
-    //             id: 1,
-    //             name: 'Patch',
-    //             link: '/request-history',
-    //             icon: ""
-    //         }
-    //     ]
-    // },
     {
         id: 9,
         name: 'Admin',
@@ -281,12 +181,6 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 7,
-                name: 'Depreciation Methods',
-                link: '/depreciation-methods',
-                icon: ""
-            },
-            {
                 id: 8,
                 name: 'Asset Types',
                 link: '/asset-types',
@@ -299,33 +193,9 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 10,
-                name: 'Location Hierarchies',
-                link: '/loc_hierarchies',
-                icon: ""
-            },
-            {
                 id: 11,
                 name: 'Locations',
                 link: '/assign-locations',
-                icon: ""
-            },
-            {
-                id: 12,
-                name: 'User Roles',
-                link: '/user-roles',
-                icon: ""
-            },
-            {
-                id: 13,
-                name: 'Status',
-                link: '/status',
-                icon: ""
-            },
-            {
-                id: 14,
-                name: 'Modules',
-                link: '/modules',
                 icon: ""
             },
             {
@@ -340,18 +210,12 @@ export const sidenav = [
                 link: '/register-user',
                 icon: ""
             },
-            {
-                id: 17,
-                name: 'Approval Level',
-                link: '/approval-level',
-                icon: ""
-            },
         ]
     },
     {
         id: 10,
-        name: 'System Log',
-        icon: 'fas fa-object-group',
+        name: 'Log',
+        icon: 'icofont-ui-note',
         subCat: true,
         categories: [
             {
@@ -360,6 +224,50 @@ export const sidenav = [
                 link: '/user-login-log',
                 icon: ""
             }
+        ]
+    },
+    {
+        id: 10,
+        name: 'Config',
+        icon: 'icofont-ui-settings',
+        subCat: true,
+        categories: [
+            {
+                id: 14,
+                name: 'Modules',
+                link: '/modules',
+                icon: ""
+            },
+            {
+                id: 12,
+                name: 'User Roles',
+                link: '/user-roles',
+                icon: ""
+            },
+            {
+                id: 10,
+                name: 'Location Hierarchies',
+                link: '/loc_hierarchies',
+                icon: ""
+            },
+            {
+                id: 13,
+                name: 'Status',
+                link: '/status',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Approval Level',
+                link: '/approval-level',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'Depreciation Methods',
+                link: '/depreciation-methods',
+                icon: ""
+            },
         ]
     },
     {

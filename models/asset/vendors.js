@@ -17,6 +17,6 @@ const Vendors = db.define('vendors', {
     },
 })
 
-Vendors.belongsTo(Challan)
+// Vendors.belongsTo(Challan)
 
 module.exports = Vendors
