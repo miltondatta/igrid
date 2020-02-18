@@ -6,7 +6,6 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
-import {validateInput} from "../../utility/custom";
 
 class DocumentInputContainer extends Component {
     constructor(props) {
@@ -241,7 +240,7 @@ class DocumentInputContainer extends Component {
                     this.validate();
                 });
                 return;
-            case "circular_no":
+            /*case "circular_no":
                 let valid = validateInput(e);
                 if (valid || valid === '') {
                     this.setState({
@@ -250,7 +249,7 @@ class DocumentInputContainer extends Component {
                         this.validate();
                     });
                 }
-                return;
+                return;*/
             default:
                 this.setState({
                     [name]: value
@@ -472,7 +471,6 @@ class DocumentInputContainer extends Component {
                                             name={'circular_no'}
                                             value={circular_no}
                                             onChange={this.handleChange}
-                                            data-number={'integer_only'}
                                             className={`form-control`}/>
                                         {errorDict && !errorDict.circular_no &&
                                         <span className="error">Circular No Field is required</span>
