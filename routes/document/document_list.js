@@ -61,10 +61,24 @@ router.get('/by/notice', documentListController.documentListDataByNotice);
 router.get('/by/circular', documentListController.documentListDataByCircular);
 
 /*
+    @route          GET api/v1/document/list/by/category/sub/category
+    @desc           Get All Document List Data By Category Sub Category
+    @access         Private
+ */
+router.post('/by/category/sub/category', documentListController.documentListDataByCategorySubCategory);
+
+/*
     @route          GET api/v1/document/list/search
     @desc           Search Document list data
     @access         Private
  */
 router.post('/search', documentListController.documentListSearch);
+
+/*
+    @route          GET api/v1/document/list/download/:file_name
+    @desc           Download Document List File
+    @access         Private
+ */
+router.get('/download/:file_name', documentListController.documentListFileDownload);
 
 module.exports = router;

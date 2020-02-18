@@ -268,6 +268,32 @@ exports.documentListDataByCircular = async (req, res) => {
     }
 };
 
+exports.documentListDataByCategorySubCategory = async (req, res) => {
+    try {
+        const {category_id, sub_category_id} = req.body;
+        if (!category_id) return res.status(400).json({msg: 'Category Field is required!', error: true});
+
+        let queryObj = {
+            category_id
+        };
+
+        if (sub_category_id) queryObj.sub_category_id = sub_category_id;
+
+        const data = await DocumentList.findAll(
+            {
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                    "display_notice", "status"],
+                where: queryObj
+            }
+        );
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
 exports.documentListSearch = async (req, res) => {
     try {
         const {category_id, sub_category_id, content_type, title, circular_no, keyword} = req.body;
@@ -307,7 +333,19 @@ exports.documentListSearch = async (req, res) => {
                                          JOIN document_sub_categories ON document_lists.sub_category_id = document_sub_categories.id
                                 where ${queryText}`);
 
-        return res.status(200).json({query: data});
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListFileDownload = async (req, res) => {
+    try {
+        let file_path = 'public/document/' + req.params.file_name;
+        if (!fs.existsSync(file_path)) return res.status(400).json({msg: `${req.params.file_name} File didn\'t found!`, error: true});
+
+        return res.download(file_path);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
