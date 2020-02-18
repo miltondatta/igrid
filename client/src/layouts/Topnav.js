@@ -39,13 +39,15 @@ class Topnav extends Component{
                         {(userType !== 1 && items.id === 1) ? null : items.subCat ? <div key={index + 20} className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
                             <div>
                                 <i className={`f-14px ${items.icon}`}></i>
-                                <p className={'f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
+                                <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'} key={index}>{items.name}</span>
                                 {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
                                     {items.categories.map((subItems, key) => (
                                         <>
-                                            <p key={key + 10} className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                <a key={subItems.id} href={subItems.link}> - {subItems.name}</a>
-                                            </p>
+                                            <a key={subItems.id} href={subItems.link}>
+                                                <p key={key + 10} className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                     {subItems.name}
+                                                </p>
+                                            </a>
                                         </>
                                     ))}
                                 </div>}
@@ -53,12 +55,12 @@ class Topnav extends Component{
                         </div> : <Link to={items.link} className={'h-100'}><div key={index + 20} className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`} onMouseOut={() => {this.setState({currentHover: ''})}} onMouseOver={() => {this.handleMouseOver(items.id)}}>
                             <div>
                                 <i className={`f-14px ${items.icon}`}></i>
-                                <p className={'f-14px f-weight-500 mb-0'} key={index}>{items.name}</p>
+                                <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'} key={index}>{items.name}</span>
                                 {items.subCat && <div className={`ui-subcategory`} style={{display: currentHover !== items.id && 'none'}}>
                                     {items.categories.map((subItems, key) => (
                                         <>
                                             <p key={key + 10} className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                <a key={subItems.id} href={subItems.link}> - {subItems.name}</a>
+                                                <a key={subItems.id} href={subItems.link}> {subItems.name}</a>
                                             </p>
                                         </>
                                     ))}
@@ -113,35 +115,36 @@ class Topnav extends Component{
                 <>
                     <div className='ui-topnav w-100 px-4'>
                         <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
-                            <div>
-                                <input placeholder='Search' className='ui-search' />
-                            </div>
-                            <div className={'text-center w-100'}>
+                            <div className={'w-100 h-100 align-items-center d-flex'}>
                                 <Link to={'/'}>
-                                    <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
+                                    <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'} />
                                 </Link>
+                                <div className={'ui-search-bar'}>
+                                    <input type="text" placeholder={'Search'}/>
+                                    <i className="icofont-search-1"></i>
+                                </div>
                             </div>
-                            <div className={'text-black ui-user-nav d-flex align-items-center'}>
+                            <div className={'text-white ui-user-nav d-flex align-items-center'}>
+                                <i className="fas fa-bell"></i>
                                 <span onClick={this.handleUserOptions}>{userName}</span>
-                                <img className={'ui-user-avatar ml-2'} onClick={this.handleUserOptions} src={'http://localhost:5000/images/' + image} alt={'user'} />
-                                <i onClick={this.handleUserOptions} className="ml-2 fas fa-caret-down"></i>
+                                <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions} src={'http://localhost:5000/images/' + image} alt={'user'} />
                                 {showUserOption && <div className={'ui-user-dropdown'}>
                                     <p> <Link onClick={() => {
-                                    this.setState((prevState) => ({
-                                        showUserOption: false
-                                    }))
-                                }}  to={'/profile'}>Profile</Link> </p>
+                                        this.setState((prevState) => ({
+                                            showUserOption: false
+                                        }))
+                                    }} to={'/profile'}>Profile</Link> </p>
                                     <p> <Link onClick={() => {
-                                    this.setState((prevState) => ({
-                                        showUserOption: false
-                                    }))
-                                }}  to={'/pass-reset'}>Update Password</Link> </p>
+                                        this.setState((prevState) => ({
+                                            showUserOption: false
+                                        }))
+                                    }} to={'/pass-reset'}>Update Password</Link> </p>
                                     <p> <a onClick={() => {localStorage.removeItem('user')}} href={'/'}>Logout</a> </p>
                                 </div>}
                             </div>
                         </div>
                     </div>
-                    <div className='drop-shadow bg-project h-60px w-100 d-flex justify-content-center align-items-center'>
+                    <div className='bg-project-primary h-50px w-100 d-flex justify-content-center align-items-center'>
                         {this.renderCategory()}
                     </div>
                 </>

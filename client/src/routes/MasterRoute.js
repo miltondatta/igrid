@@ -176,6 +176,10 @@ const AsyncDocumentListSearch = Loadable({
     loader: () => import('../components/DocumentComponent/DocumentListSearch'),
     loading: Loading,
 });
+const AsyncApprovalLevel = Loadable({
+    loader: () => import('../containers/ApprovalLevel'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -240,6 +244,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/asset-category' component={AsyncAssetCategory}/>
                                     <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
+                                    <Route exact path='/approval-level' component={AsyncApprovalLevel}/>
                                     <Route exact path='/loc_hierarchies' component={AsyncLocHierarchies}/>
                                     <Route exact path='/depreciation-methods' component={AsyncDepMethod}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
