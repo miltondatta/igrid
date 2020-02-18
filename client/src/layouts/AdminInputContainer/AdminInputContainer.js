@@ -240,78 +240,60 @@ class AdminInputContainer extends Component {
         switch (formType){
             case 'VENDOR':
                 return(
-                    <div className={`rounded p-3 my-2`}>
-                        <div className="row px-2">
+                    <div className={`rounded px-3 my-2 min-h-70vh`}>
+                        <div className="row px-1 mb-2">
                             <input
                                 placeholder='Vendor Name'
                                 type={'text'}
                                 name={'vendor_name'}
                                 value={vendor_name}
                                 onChange={this.handleChange}
-                                className={`form-control ${(errorDict && !errorDict.vendor_name) && 'is-invalid'}`} />
+                                className={`ui-custom-input ${(errorDict && !errorDict.vendor_name) && 'is-invalid'}`} />
                         </div>
-                        <div className="was-validated">
-                            <div className="custom-file">
-                                <input type="file" onChange={this.handleChange} name={'file_name'} className="custom-file-input" id="validatedCustomFile"
+                        <div className="row px-1 mb-2">
+                            <textarea
+                                placeholder={'Description'}
+                                id={'enCh1'}
+                                name={'description'}
+                                value={description}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
+                                onChange={this.handleChange} />
+                        </div>
+                        <div className="row px-1 mb-4">
+                            <div className="col-md-6 p-0 ui-custom-file">
+                                <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                    <label className="custom-file-label" htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file...'}</label>
+                                <label htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file'}</label>
+                            </div>
+                            <div className="col-md-6 p-0 d-flex justify-content-center align-items-center ui-custom-checkbox">
+                                <input
+                                    type={'checkbox'}
+                                    checked={enlisted}
+                                    id={'customCheckbox'}
+                                    name={'enlisted'}
+                                    value={vendor_name}
+                                    onChange={this.handleChange} />
+                                <label htmlFor="customCheckbox" className={'mb-0'}>Enlisted</label>
                             </div>
                         </div>
-                        <div className="row px-2 mt-3">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-3">
-                                        Description
-                                    </div>
-                                    <div className="col-md-9 ui-checkbox">
-                                        <textarea
-                                            placeholder={'Description'}
-                                            id={'enCh1'}
-                                            name={'description'}
-                                            value={description}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`}
-                                            onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6 d-flex">
-                                <div className="row w-100">
-                                    <div className="col-md-3 d-flex align-items-center">
-                                        Enlisted
-                                    </div>
-                                    <div className="col-md-9 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            type={'checkbox'}
-                                            checked={enlisted}
-                                            id={'enCh1'}
-                                            name={'enlisted'}
-                                            value={vendor_name}
-                                            onChange={this.handleChange} />
-                                        <label htmlFor="enCh1" className={'mb-0'}>Enlisted</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="d-flex justify-content-end px-2 w-100">
-                            {editId === null ? <button className="btn btn-outline-info mt-3" onClick={this.handleSubmit}>Submit Vendor</button> : <>
-                                <button className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
-                                <button className="btn btn-outline-danger mt-3" onClick={() => {
-                                    this.setState({
-                                        editId: null,
-                                        vendor_name: '',
-                                        file_name: '',
-                                        description: '',
-                                        enlisted: false,
-                                    }, () => {
-                                        this.validate()
-                                    })}}>Go Back</button>
-                            </>}
-                        </div>
+                        {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit Vendor</button> : <>
+                            <button className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
+                            <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                this.setState({
+                                    editId: null,
+                                    vendor_name: '',
+                                    file_name: '',
+                                    description: '',
+                                    enlisted: false,
+                                }, () => {
+                                    this.validate()
+                                })}}>Go Back</button>
+                        </>}
                     </div>
                 )
             case 'PROJECT':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -443,7 +425,7 @@ class AdminInputContainer extends Component {
                 )
             case 'PRODUCTS':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -551,7 +533,7 @@ class AdminInputContainer extends Component {
                 )
             case 'MODELS':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-8">
                                 <div className="row">
@@ -586,7 +568,7 @@ class AdminInputContainer extends Component {
                 )
             case 'BRANDS':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-8">
                                 <div className="row">
@@ -621,7 +603,7 @@ class AdminInputContainer extends Component {
                 )
             case 'CONDITIONS':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-8">
                                 <div className="row">
@@ -656,7 +638,7 @@ class AdminInputContainer extends Component {
                 )
             case 'LOCHIERARCHY':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-8">
                                 <div className="row">
@@ -691,7 +673,7 @@ class AdminInputContainer extends Component {
                 )
             case 'DEPMETHOD':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -761,7 +743,7 @@ class AdminInputContainer extends Component {
                 )
             case 'ASSETTYPES':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -831,7 +813,7 @@ class AdminInputContainer extends Component {
                 )
             case 'ASSETCATEGORY':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -901,7 +883,7 @@ class AdminInputContainer extends Component {
                 )
             case 'ASSETSUBCATEGORY':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1000,7 +982,7 @@ class AdminInputContainer extends Component {
                     </div>
                 ))
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1087,7 +1069,7 @@ class AdminInputContainer extends Component {
                 )
             case 'USERROLES':
                 return(
-                    <div className={`rounded p-3 my-2`}>
+                    <div className={`rounded px-3 my-2`}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1157,7 +1139,7 @@ class AdminInputContainer extends Component {
                 )
             case 'MODULE':
                 return(
-                    <div className={`rounded p-3 my-2 `}>
+                    <div className={`rounded px-3 my-2 `}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1259,7 +1241,7 @@ class AdminInputContainer extends Component {
                     </div>
                 ))
                 return(
-                    <div className={`rounded p-3 my-2 `}>
+                    <div className={`rounded px-3 my-2 `}>
                         <div className="row px-2">
                             <div className="col-md-6">
                                 <div className="row">
@@ -1600,16 +1582,16 @@ class AdminInputContainer extends Component {
                 {error && <div className="alert alert-danger" role="alert">
                     {errorMessage}
                 </div>}
-                <div className={`bg-white rounded p-2 my-2  `}>
+                <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p className="text-blue f-weight-600 f-20px m-0">{headTitle}</p>
+                        <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                     </nav>
                     {this.renderForm()}
                 </div>
-                <div className={'p-2'}>
-                    <div className="rounded p-3 bg-white">
+                <div className={'px-2'}>
+                    <div className="rounded p-2 bg-white min-h-80vh">
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-blue f-weight-600 f-20px m-0">{title}</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
                             <ReactDataTable
@@ -1621,7 +1603,7 @@ class AdminInputContainer extends Component {
                                 tableData={allProjects}
                                 updateEdit={this.updateEdit}
                             />
-                        </> : <h4>Currently There are No {title}</h4>}
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
                     </div>
                 </div>
             </div>

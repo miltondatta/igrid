@@ -235,7 +235,7 @@ export const sidenav = [
     {
         id: 9,
         name: 'Admin',
-        icon: 'fas fa-object-group',
+        icon: 'fas fa-user-shield',
         subCat: true,
         categories: [
             {
