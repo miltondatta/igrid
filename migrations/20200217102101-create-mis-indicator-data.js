@@ -18,6 +18,13 @@ module.exports = {
           key: 'id'
         }
       },
+      indicatordetails_id: {
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'mis_indicatordetails',
+          key: 'id'
+        }
+      },
       data_value: {
         type: Sequelize.DOUBLE
       },
