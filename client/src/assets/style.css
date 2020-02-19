@@ -30,6 +30,10 @@ a:hover{text-decoration: none}
    min-height: 70vh;
 }
 
+.mb-15p{
+   margin-bottom: 15%;
+}
+
 .w-90{width: 89%;}
 .w-76{width: 76%}
 .w-80{width: 80%;}

@@ -1167,7 +1167,6 @@ class AdminInputContainer extends Component {
     render() {
         const {getApi, title, headTitle} = this.props
         const {error, errorMessage, isLoading, allProjects} = this.state
-        console.log(allProjects, 1199)
         return (
             <>
                 {error && <div className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
