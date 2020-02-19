@@ -81,4 +81,11 @@ router.post('/search', documentListController.documentListSearch);
  */
 router.get('/download/:file_name', documentListController.documentListFileDownload);
 
+/*
+    @route          GET api/v1/document/list/details/:id
+    @desc           Download Document List Details By Id
+    @access         Private
+ */
+router.get('/details/:id', documentListController.documentListDetailsById);
+
 module.exports = router;

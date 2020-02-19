@@ -176,6 +176,10 @@ const AsyncDocumentListSearch = Loadable({
     loader: () => import('../containers/DocListSearch'),
     loading: Loading,
 });
+const AsyncDocumentListDetails = Loadable({
+    loader: () => import('../containers/DocListDetails'),
+    loading: Loading,
+});
 const AsyncApprovalLevel = Loadable({
     loader: () => import('../containers/ApprovalLevel'),
     loading: Loading,
@@ -260,6 +264,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
                                     <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
                                     <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
+                                    <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
                                 </Switch>
                             </div>
                         </div>
