@@ -4,8 +4,7 @@ import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import moment from "moment";
 import {apiBaseUrl} from '../../utility/constant';
-
-
+import {getFileExtension} from "../../utility/custom";
 moment.locale('en');
 
 class DocumentListDetails extends Component {
@@ -17,18 +16,12 @@ class DocumentListDetails extends Component {
             isLoading: false,
             fileError: '',
             fileErrorMessage: '',
-            url: ''
+            fileUrl: ''
         }
     }
 
     componentDidMount() {
         this.getData();
-
-        if (this.state.item) {
-            this.setState( {
-                url: apiBaseUrl + '1_mk1-6aYaf_Bes1E3Imhc0A (6).jpeg'
-            })
-        }
     }
 
     getData = () => {
@@ -39,8 +32,11 @@ class DocumentListDetails extends Component {
             Axios.get(apiUrl() + 'document/list/details/' + id)
                 .then(res => {
                     this.setState({
-                        item: res.data
-                    })
+                        item: res.data,
+                        fileUrl: apiBaseUrl + 'document/' + res.data.file_name
+                    }, () => {
+                        localStorage.setItem('fileUrl', this.state.fileUrl);
+                    });
                 })
                 .then(() => {
                     this.setState({
@@ -80,7 +76,9 @@ class DocumentListDetails extends Component {
     };
 
     render() {
-        const {item, fileError, fileErrorMessage} = this.state;
+        const {item, fileUrl, fileError, fileErrorMessage} = this.state;
+        const ext = item.file_name && getFileExtension(item.file_name);
+        let images = ['jpg', 'jpeg', 'png'];
 
         return (
             <>
@@ -177,15 +175,18 @@ class DocumentListDetails extends Component {
                         {item.file_name &&
                         <div className="row">
                             <div className="col-md-12">
-                                {/*<iframe*/}
-                                {/*    src={apiBaseUrl + item.file_name}*/}
-                                {/*    frameBorder="0" width="100%" height="700px">*/}
+                                {(ext === 'pdf') &&
+                                <div className="ui-docDetailsFile">
+                                    <canvas id="my_canvas"></canvas>
+                                    {/*<object width="100%" height="400" data={fileUrl} type="application/pdf">   </object>*/}
+                                </div>
+                                }
 
-                                {/*</iframe>*/}
-                               {/* <iframe
-                                    src={this.state.url}
-                                    width="600" width="100%" height="700px" frameBorder="0" sandbox="allow-scripts"></iframe>*/}
-
+                                {images.includes(ext) &&
+                                <div className="ui-docDetailsFile">
+                                    <img src={fileUrl} alt="" width="100%" height="100%"/>
+                                </div>
+                                }
                             </div>
                         </div>
                         }
