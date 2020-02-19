@@ -14,6 +14,7 @@ class DocumentCategory extends Component {
                     formType='DOCUMENTCATEGORY'
                     getApi='document/category'
                     table_header={this.table_header}
+                    title='Document Category'
                 />
             </>
         );

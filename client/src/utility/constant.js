@@ -270,36 +270,39 @@ export const sidenav = [
             },
         ]
     },
+]
+
+export const documentNav = [
     {
         id: 11,
-        name: 'Document Management',
-        icon: 'fas fa-object-group',
+        name: 'Advance Search',
+        link: '/documents/document-list-search',
+        icon: "fas fa-search"
+    },
+    {
+        id: 12,
+        name: 'Document',
+        icon: 'far fa-file',
         subCat: true,
         categories: [
             {
                 id: 1,
-                name: 'Document Category',
-                link: '/document-category',
+                name: 'Category',
+                link: '/documents/document-category',
                 icon: ""
             },
             {
                 id: 1,
-                name: 'Document Sub Category',
-                link: '/document-sub-category',
+                name: 'Sub Category',
+                link: '/documents/document-sub-category',
                 icon: ""
             },
             {
                 id: 1,
-                name: 'Document List',
-                link: '/document-list',
-                icon: ""
-            },
-            {
-                id: 1,
-                name: 'Document Search',
-                link: '/document-list-search',
+                name: 'New Document',
+                link: '/documents/document-list',
                 icon: ""
             }
         ]
-    },
+    }
 ]

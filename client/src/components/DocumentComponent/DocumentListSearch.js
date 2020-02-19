@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Axios from "axios";
 
 class DocumentListSearch extends Component {
@@ -26,9 +24,8 @@ class DocumentListSearch extends Component {
         };
 
         this.content_types = ['Notice', 'Circular'];
-        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Content Type', 'Title', 'Circular No', 'Description', 'Display Notice', 'File'];
+        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Title', 'Description', 'Circular No', 'Content Type', 'Display Notice', 'Status', 'File', 'Details'];
     }
-
 
     handleChange = (e) => {
         const {name, value} = e.target;
@@ -146,6 +143,7 @@ class DocumentListSearch extends Component {
         return (
             <>
                 <div className="px-2 my-2">
+                    <h3 className="pb-3">Document Search</h3>
                     <div className={`bg-white rounded p-2 my-2  `}>
                         <div className="rounded p-3 my-2">
                             <div className="row px-2 my-3">
@@ -190,23 +188,6 @@ class DocumentListSearch extends Component {
                                 <div className="col-md-6">
                                     <div className="row">
                                         <div className="col-md-4">
-                                            Content Type
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select name={'content_type'} value={content_type}
-                                                    onChange={this.handleChange}
-                                                    className={`form-control`}>
-                                                <option value="">--Select Content Type--</option>
-                                                {this.content_types.map((value, index) => (
-                                                    <option value={index + 1} key={index}>{value}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
                                             Title
                                         </div>
                                         <div className="col-md-8">
@@ -217,6 +198,23 @@ class DocumentListSearch extends Component {
                                                 {documentTitle.length > 0 && documentTitle.map((item, index) => (
                                                     <option key={index}
                                                             value={item.title}>{item.title}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            Content Type
+                                        </div>
+                                        <div className="col-md-8">
+                                            <select name={'content_type'} value={content_type}
+                                                    onChange={this.handleChange}
+                                                    className={`form-control`}>
+                                                <option value="">--Select Content Type--</option>
+                                                {this.content_types.map((value, index) => (
+                                                    <option value={index + 1} key={index}>{value}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -242,11 +240,11 @@ class DocumentListSearch extends Component {
                                 <div className="col-md-6">
                                     <div className="row">
                                         <div className="col-md-4">
-                                            Keyword Text (Comma Seperated Text)
+                                            Keyword (Multiple Keyword Separated by Comma)
                                         </div>
                                         <div className="col-md-8">
                                             <input
-                                                placeholder='Add Comma Seperated text'
+                                                placeholder='Add Comma Seperated keyword'
                                                 name={'keyword'}
                                                 value={keyword}
                                                 onChange={this.handleChange}
@@ -273,6 +271,9 @@ class DocumentListSearch extends Component {
                         }
                         <div className="rounded p-3 bg-white shadow">
                             {isLoading ? <h2>Loading</h2> : searchData.length > 0 ? <>
+                                <nav className="navbar text-center mb-2 pl-2 rounded">
+                                    <p className="text-dark f-weight-500 f-20px m-0">Document Search</p>
+                                </nav>
                                 <table className="table table-bordered table-striped table-hover text-center">
                                     <thead>
                                     <tr>
@@ -287,28 +288,45 @@ class DocumentListSearch extends Component {
                                             <td>{index + 1}</td>
                                             <td>{item.category_name}</td>
                                             <td>{item.sub_category_name}</td>
+                                            <td>{item.title}</td>
+                                            <td>
+                                                <div dangerouslySetInnerHTML={{__html: item.description}}/>
+                                            </td>
+                                            <td>{item.circular_no}</td>
                                             <td>
                                                 <span
                                                     className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
                                             </td>
-                                            <td>{item.title}</td>
-                                            <td>{item.circular_no}</td>
-                                            <td>
-                                                <div dangerouslySetInnerHTML={{__html: item.description}}/>
-                                            </td>
                                             <td>
                                                 <span
-                                                    className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'approved' : 'pending'}</span>
+                                                    className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'on' : 'off'}</span>
+                                            </td>
+                                            <td>
+                                                {item.status ?
+                                                    <>
+                                                        <span className="badge badge-success">
+                                                            <i className="far fa-check-circle"></i>
+                                                        </span>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <span className="badge badge-danger">
+                                                            <i className="far fa-times-circle"></i>
+                                                        </span>
+                                                    </>}
                                             </td>
                                             <td>
                                                 <a href="/"
                                                    onClick={e => this.downloadFile(e, item.file_name)}>Download</a>
                                             </td>
+                                            <td>
+                                                <a href="/" target="_blank">Details</a>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </table>
-                            </> : <h4>Currently There are No Content</h4>}
+                            </> : <h5>Currently There are No Content</h5>}
                         </div>
                     </div>
                 </div>

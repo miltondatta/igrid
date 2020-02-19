@@ -7,6 +7,24 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 
+ClassicEditor.defaultConfig = {
+    toolbar: {
+        items: [
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            'blockQuote',
+            'undo',
+            'redo'
+        ]
+    },
+    language: 'en'
+};
+
 class DocumentInputContainer extends Component {
     constructor(props) {
         super(props);
@@ -638,7 +656,7 @@ class DocumentInputContainer extends Component {
                     title: title !== '',
                     circular_no: circular_no !== '',
                     description: description !== '',
-                    file_name: file_name.name !== ''
+                    file_name: file_name.name ? file_name.name : file_name !== ''
                 };
                 this.setState({
                     errorDict
@@ -747,18 +765,32 @@ class DocumentInputContainer extends Component {
                         <td>{index + 1}</td>
                         <td>{item.document_category.category_name}</td>
                         <td>{item.document_sub_category.sub_category_name}</td>
+                        <td>{item.title}</td>
+                        <td>
+                            <div dangerouslySetInnerHTML={{__html: item.description}}/>
+                        </td>
+                        <td>{item.circular_no}</td>
                         <td>
                             <span
                                 className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
                         </td>
-                        <td>{item.title}</td>
-                        <td>{item.circular_no}</td>
-                        <td>
-                            <div dangerouslySetInnerHTML={{__html: item.description}}/>
-                        </td>
                         <td>
                             <span
-                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'approved' : 'pending'}</span>
+                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'on' : 'off'}</span>
+                        </td>
+                        <td>
+                            {item.status ?
+                                <>
+                                    <span className="badge badge-success">
+                                        <i className="far fa-check-circle"></i>
+                                    </span>
+                                </>
+                                :
+                                <>
+                                    <span className="badge badge-danger">
+                                        <i className="far fa-times-circle"></i>
+                                    </span>
+                                </>}
                         </td>
                         <td className="d-flex justify-content-center">
                             <button className="btn btn-info btn-sm mr-2" onClick={() => {
@@ -789,6 +821,7 @@ class DocumentInputContainer extends Component {
 
         return (
             <div className="px-2 my-2">
+                <h3 className="pb-3">{title}</h3>
                 {error &&
                 <div className="row mb-3">
                     <div className="col-md-6">
