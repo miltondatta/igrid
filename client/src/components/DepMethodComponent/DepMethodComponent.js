@@ -8,6 +8,8 @@ class DepMethodComponent extends Component {
                 <AdminInputContainer
                     formType = 'DEPMETHOD'
                     getApi = 'depreciation-methods'
+                    title = 'Depreciation Method List'
+                    headTitle = 'Depreciation Method Information'
                 />
             </>
         );

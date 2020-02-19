@@ -109,14 +109,19 @@ class AdminInputContainer extends Component {
         }, () => {
             Axios.get(apiUrl() + getApi)
                 .then(res => {
-                    this.setState({
-                        allProjects: res.data
-                    })
-                })
-                .then(res => {
-                    this.setState({
-                        isLoading: false
-                    })
+                    console.log(res.data.message, 112)
+                    if(res.data.message){
+                        this.setState({
+                            error: true,
+                            errorMessage: res.data.message,
+                            isLoading: false
+                        })
+                    } else {
+                        this.setState({
+                            allProjects: res.data,
+                            isLoading: false
+                        })
+                    }
                 })
                 .catch(err => {
                     console.log(err)
@@ -292,121 +297,69 @@ class AdminInputContainer extends Component {
                 )
             case 'PROJECT':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Project Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Project Name'
-                                            type={'text'}
-                                            name={'project_name'}
-                                            value={project_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.project_name) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Project Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Project Code'
-                                            type={'text'}
-                                            name={'project_code'}
-                                            value={project_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.project_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Project Name'
+                                type={'text'}
+                                name={'project_name'}
+                                value={project_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.project_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="px-2 my-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Description
-                                    </div>
-                                    <div className="col-md-8">
-                                        <textarea
-                                            placeholder='Description'
-                                            name={'description'}
-                                            value={description}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
-                                        this.setState({
-                                            editId: null,
-                                            project_name: '',
-                                            project_code: '',
-                                            description: '',
-                                        }, () => {
-                                            this.validate()
-                                        })}}>Go Back</button>
-                                </>}
-                            </div>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Project Code'
+                                type={'text'}
+                                name={'project_code'}
+                                value={project_code}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.project_code) && 'is-invalid'}`} />
                         </div>
-                    </div>
+                        <div className="px-1 mb-2">
+                            <textarea
+                                placeholder='Description'
+                                name={'description'}
+                                value={description}
+                                onChange={this.handleChange}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
+                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        project_name: '',
+                                        project_code: '',
+                                        description: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                        </>}
+                    </>
                 )
             case 'USERAPPROVAL':
                 return(
-                    <div className={`rounded p-3`}>
-                        <div className="px-2  mb-3">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Location Hirarchy
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'location_heirarchy_id'} value={location_heirarchy_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_heirarchy_id) && 'is-invalid'}`}>
-                                            <option>--Select Location--</option>
-                                            <HierarchiesOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        User Role
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
-                                            <option>--Select User Role--</option>
-                                            <UserRoleOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <select name={'location_heirarchy_id'} value={location_heirarchy_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_heirarchy_id) && 'is-invalid'}`}>
+                                <option>Select Location</option>
+                                <HierarchiesOptions />
+                            </select>
                         </div>
-                        <div className="px-2 my-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Parent
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
-                                            <option>--Select Parent--</option>
-                                            <ApproveLevelOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
+                        <div className="px-1 mb-2">
+                            <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
+                                <option>Select User Role</option>
+                                <UserRoleOptions />
+                            </select>
+                        </div>
+                        <div className="px-1 mb-2">
+                            <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
+                                <option>Select Parent</option>
+                                <ApproveLevelOptions />
+                            </select>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -418,103 +371,52 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'PRODUCTS':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Category
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
-                                            <option>--Select Category--</option>
-                                            <AssetCategoryOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Sub Category
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'sub_category_id'} value={sub_category_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
-                                            <option>--Select Category--</option>
-                                            <AssetSubCategoryOptions assetId={category_id} />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
+                                <option>Select Category</option>
+                                <AssetCategoryOptions />
+                            </select>
                         </div>
-                        <div className="px-2 my-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Product Name
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Product Name'
-                                            name={'product_name'}
-                                            value={product_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.product_name) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Product Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Product Code'
-                                            name={'product_code'}
-                                            value={product_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.product_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <select name={'sub_category_id'} value={sub_category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
+                                <option>Select Category</option>
+                                <AssetSubCategoryOptions assetId={category_id} />
+                            </select>
                         </div>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Brand
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'brand_id'} value={brand_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.brand_id) && 'is-invalid'}`}>
-                                            <option>--Select Brand--</option>
-                                            <BrandIdOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Model
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.model_id) && 'is-invalid'}`}>
-                                            <option>--Select Model--</option>
-                                            <ModelIdOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Product Name'
+                                name={'product_name'}
+                                value={product_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.product_name) && 'is-invalid'}`} />
                         </div>
-                        <div className="d-flex justify-content-end">
-                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Products</button> : <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Product Code'
+                                name={'product_code'}
+                                value={product_code}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.product_code) && 'is-invalid'}`} />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <select name={'brand_id'} value={brand_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.brand_id) && 'is-invalid'}`}>
+                                <option>Select Brand</option>
+                                <BrandIdOptions />
+                            </select>
+                        </div>
+                        <div className="px-1 mb-2">
+                            <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.model_id) && 'is-invalid'}`}>
+                                <option>Select Model</option>
+                                <ModelIdOptions />
+                            </select>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Products</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Products</button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
@@ -526,67 +428,46 @@ class AdminInputContainer extends Component {
                                     }, () => {
                                         this.validate()
                                     })}}>Go Back</button>
-                            </>}
-                        </div>
-                    </div>
+                        </>}
+                    </>
                 )
             case 'MODELS':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-8">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Models
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Models'
-                                            type={'text'}
-                                            name={'model'}
-                                            value={model}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.model) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
+                    <>
+                            <div className="px-1 mb-2">
+                                <input
+                                    placeholder='Models'
+                                    type={'text'}
+                                    name={'model'}
+                                    value={model}
+                                    onChange={this.handleChange}
+                                    className={`form-control ${(errorDict && !errorDict.model) && 'is-invalid'}`}  />
                             </div>
-                            <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Model</button>
-                                    <button className="btn btn-outline-danger" onClick={() => {
-                                        this.setState({
-                                            editId: null,
-                                            model: '',
-                                        }, () => {
-                                            this.validate()
-                                        })}}>Go Back</button>
-                                </>}
-                            </div>
-                        </div>
-                    </div>
+                            {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <div>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Model</button>
+                                <button className="btn btn-outline-danger" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        model: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                            </div>}
+                    </>
                 )
             case 'BRANDS':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-8">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Brand
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Brands'
-                                            type={'text'}
-                                            name={'brand'}
-                                            value={brand}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.brand) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Brands'
+                                type={'text'}
+                                name={'brand'}
+                                value={brand}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.brand) && 'is-invalid'}`}  />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Brand</button>
                                     <button className="btn btn-outline-danger" onClick={() => {
                                         this.setState({
@@ -596,32 +477,21 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'CONDITIONS':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-8">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Condition Type
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Condition Type'
-                                            type={'text'}
-                                            name={'condition_type'}
-                                            value={condition_type}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.condition_type) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Condition Type'
+                                type={'text'}
+                                name={'condition_type'}
+                                value={condition_type}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.condition_type) && 'is-invalid'}`}  />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
                                     <button className="btn btn-outline-danger" onClick={() => {
                                         this.setState({
@@ -631,32 +501,21 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'LOCHIERARCHY':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-8">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Hierarchy Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Hierarchy Name'
-                                            type={'text'}
-                                            name={'hierarchy_name'}
-                                            value={hierarchy_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.hierarchy_name) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Hierarchy Name'
+                                type={'text'}
+                                name={'hierarchy_name'}
+                                value={hierarchy_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.hierarchy_name) && 'is-invalid'}`}  />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
                                     <button className="btn btn-outline-danger" onClick={() => {
                                         this.setState({
@@ -666,65 +525,38 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'DEPMETHOD':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Method Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Method Name'
-                                            type={'text'}
-                                            name={'method_name'}
-                                            value={method_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.method_name) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Depreciation Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Depreciation Code'
-                                            type={'text'}
-                                            name={'depreciation_code'}
-                                            value={depreciation_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.depreciation_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Method Name'
+                                type={'text'}
+                                name={'method_name'}
+                                value={method_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.method_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="px-2 my-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Description
-                                    </div>
-                                    <div className="col-md-8">
-                                        <textarea
-                                            placeholder='Description'
-                                            name={'description'}
-                                            value={description}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Depreciation Code'
+                                type={'text'}
+                                name={'depreciation_code'}
+                                value={depreciation_code}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.depreciation_code) && 'is-invalid'}`} />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <textarea
+                                placeholder='Description'
+                                name={'description'}
+                                value={description}
+                                onChange={this.handleChange}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Method</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -736,135 +568,81 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'ASSETTYPES':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Type Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Type Name'
-                                            type={'text'}
-                                            name={'type_name'}
-                                            value={type_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.type_name) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Asset Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Asset Code'
-                                            type={'text'}
-                                            name={'asset_code'}
-                                            value={asset_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.asset_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Type Name'
+                                type={'text'}
+                                name={'type_name'}
+                                value={type_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.type_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="px-2 my-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Description
-                                    </div>
-                                    <div className="col-md-8">
-                                        <textarea
-                                            placeholder='Description'
-                                            name={'description'}
-                                            value={description}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Asset Type</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
-                                        this.setState({
-                                            editId: null,
-                                            asset_code: '',
-                                            type_name: '',
-                                            description: '',
-                                        }, () => {
-                                            this.validate()
-                                        })}}>Go Back</button>
-                                </>}
-                            </div>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Asset Code'
+                                type={'text'}
+                                name={'asset_code'}
+                                value={asset_code}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.asset_code) && 'is-invalid'}`} />
                         </div>
-                    </div>
+                        <div className="px-1 mb-2">
+                            <textarea
+                                placeholder='Description'
+                                name={'description'}
+                                value={description}
+                                onChange={this.handleChange}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Asset Type</button>
+                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        asset_code: '',
+                                        type_name: '',
+                                        description: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                            </>}
+                    </>
                 )
             case 'ASSETCATEGORY':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Category Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Category Name'
-                                            type={'text'}
-                                            name={'category_name'}
-                                            value={category_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.category_name) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Category Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Category Code'
-                                            type={'text'}
-                                            name={'category_code'}
-                                            value={category_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.category_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Category Name'
+                                type={'text'}
+                                name={'category_name'}
+                                value={category_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.category_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="px-2 my-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Description
-                                    </div>
-                                    <div className="col-md-8">
-                                        <textarea
-                                            placeholder='Description'
-                                            name={'description'}
-                                            value={description}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Category Code'
+                                type={'text'}
+                                name={'category_code'}
+                                value={category_code}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.category_code) && 'is-invalid'}`} />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <textarea
+                                placeholder='Description'
+                                name={'description'}
+                                value={description}
+                                onChange={this.handleChange}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Category</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -875,80 +653,45 @@ class AdminInputContainer extends Component {
                                         }, () => {
                                             this.validate()
                                         })}}>Go Back</button>
-                                </>}
-                            </div>
-                        </div>
-                    </div>
+                            </>}
+                    </>
                 )
             case 'ASSETSUBCATEGORY':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Category
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
-                                            <option>--Select Category--</option>
-                                            <AssetCategoryOptions assetId={category_id}/>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Sub Category Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Sub Category Name'
-                                            type={'text'}
-                                            name={'sub_category_name'}
-                                            value={sub_category_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.sub_category_name) && 'is-invalid'}`}  />
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
+                                <option>Select Category</option>
+                                <AssetCategoryOptions assetId={category_id}/>
+                            </select>
                         </div>
-                        <div className="px-2 mt-3">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Sub Category Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Sub Category Code'
-                                            type={'text'}
-                                            name={'sub_category_code'}
-                                            value={sub_category_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Description
-                                    </div>
-                                    <div className="col-md-8">
-                                        <textarea
-                                            placeholder='Description'
-                                            name={'description'}
-                                            value={description}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Sub Category Name'
+                                type={'text'}
+                                name={'sub_category_name'}
+                                value={sub_category_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.sub_category_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="d-flex justify-content-end">
-                            {editId === null ? <button className="btn btn-outline-info mt-3" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Sub Category Code'
+                                type={'text'}
+                                name={'sub_category_code'}
+                                value={sub_category_code}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <textarea
+                                placeholder='Description'
+                                name={'description'}
+                                value={description}
+                                onChange={this.handleChange}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Sub Category</button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
@@ -960,94 +703,52 @@ class AdminInputContainer extends Component {
                                     }, () => {
                                         this.validate()
                                     })}}>Go Back</button>
-                            </>}
-                        </div>
-                    </div>
+                        </>}
+                    </>
                 )
             case 'LOCATIONS':
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) => (
-                    <div className="col-md-6 mb-3">
-                        <div className="row">
-                            <div className="col-md-4">
-                                Sub Location
-                            </div>
-                            <div className="col-md-8">
-                                <select name={'parent_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                                    <option>--Select Location--</option>
-                                    <LocationsOptions selectedId={item[index].parent_id} />
-                                </select>
-                            </div>
-                        </div>
+                    <div className="px-1 mb-2">
+                        <select name={'parent_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                            <option>Select Sub Location</option>
+                            <LocationsOptions selectedId={item[index].parent_id} />
+                        </select>
                     </div>
                 ))
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Location Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Location Name'
-                                            type={'text'}
-                                            name={'location_name'}
-                                            value={location_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.location_name) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
+                    <>
+                            <div className="px-1 mb-2">
+                                <input
+                                    placeholder='Location Name'
+                                    type={'text'}
+                                    name={'location_name'}
+                                    value={location_name}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input ${(errorDict && !errorDict.location_name) && 'is-invalid'}`} />
                             </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Location Code
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Location Code'
-                                            type={'text'}
-                                            name={'location_code'}
-                                            value={location_code}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.location_code) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
+                            <div className="px-1 mb-2">
+                                <input
+                                    placeholder='Location Code'
+                                    type={'text'}
+                                    name={'location_code'}
+                                    value={location_code}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input ${(errorDict && !errorDict.location_code) && 'is-invalid'}`} />
                             </div>
-                        </div>
-                        <div className="px-2 mt-3">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Parent
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
-                                            <option value={0}>--Select Parent--</option>
-                                            <LocationsOptions selectedId={parent_id} />
-                                        </select>
-                                    </div>
-                                </div>
+                            <div className="px-1 mb-2">
+                                <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
+                                    <option value={0}>Select Parent</option>
+                                    <LocationsOptions selectedId={parent_id} />
+                                </select>
                             </div>
                             {subLoc}
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Hierarchy
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
-                                            <option>--Select Hierarchy--</option>
-                                            <HierarchiesOptions />
-                                        </select>
-                                    </div>
-                                </div>
+                            <div className="px-1 mb-2">
+                                <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
+                                    <option>Select Hierarchy</option>
+                                    <HierarchiesOptions />
+                                </select>
                             </div>
-                        </div>
-                        <div className="px-2 mt-3">
-                            <div className="d-flex justify-content-end">
-                            {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Locations</button> : <>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Locations</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Locations</button>
                                 <button className="btn btn-outline-danger mt-3" onClick={() => {
                                     this.setState({
@@ -1062,63 +763,37 @@ class AdminInputContainer extends Component {
                                     })}}>Go Back</button>
                             </>}
 
-                        </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'USERROLES':
                 return(
-                    <div className={`rounded px-3 my-2`}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Role Name
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Role Name'
-                                            type={'text'}
-                                            name={'role_name'}
-                                            value={role_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.role_name) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Role Description
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Role Description'
-                                            type={'text'}
-                                            name={'role_desc'}
-                                            value={role_desc}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Role Name'
+                                type={'text'}
+                                name={'role_name'}
+                                value={role_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.role_name) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-2 mt-3">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Module
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
-                                            <option>--Select Parent--</option>
-                                            <ModuleOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-end">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Role Description'
+                                type={'text'}
+                                name={'role_desc'}
+                                value={role_desc}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
+                        </div>
+
+                        <div className="px-1 mb-2">
+                            <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
+                                <option>Select Parent</option>
+                                <ModuleOptions />
+                            </select>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Role</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -1131,81 +806,42 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'MODULE':
                 return(
-                    <div className={`rounded px-3 my-2 `}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Module Name
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <input
-                                            placeholder='Module Name'
-                                            type={'text'}
-                                            name={'module_name'}
-                                            value={module_name}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.module_name) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Image
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="custom-file">
-                                            <input type="file" name={'file_name'} onChange={this.handleChange} className="custom-file-input" id="validatedCustomFile"
-                                                   required />
-                                                <label className="custom-file-label" htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Module Name'
+                                type={'text'}
+                                name={'module_name'}
+                                value={module_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.module_name) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-2 mt-3">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Initial Link
-                                    </div>
-                                    <div className="col-md-8">
-                                        <input
-                                            placeholder='Initial Link'
-                                            type={'text'}
-                                            name={'initial_link'}
-                                            value={initial_link}
-                                            onChange={this.handleChange}
-                                            className={`form-control ${(errorDict && !errorDict.initial_link) && 'is-invalid'}`} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Order By
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'order_by'} value={order_by} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.order_by) && 'is-invalid'}`}>
-                                            <option>--Select Options--</option>
-                                            <option value={1}>Ascending</option>
-                                            <option value={2}>Descending</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <input
+                                placeholder='Initial Link'
+                                type={'text'}
+                                name={'initial_link'}
+                                value={initial_link}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.initial_link) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-2 mt-2">
-                            <div className="d-flex justify-content-end">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
+                        <div className="px-1 mb-2">
+                            <select name={'order_by'} value={order_by} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.order_by) && 'is-invalid'}`}>
+                                <option>Select Options</option>
+                                <option value={1}>Ascending</option>
+                                <option value={2}>Descending</option>
+                            </select>
+                        </div>
+                        <div className="ui-custom-file w-50 px-1">
+                            <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
+                                   required />
+                            <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -1219,88 +855,45 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             case 'USERASSOCIATE':
                 let subLocation = locationHolder.length > 0 && locationHolder.map((item, index) => (
-                    <div className="col-md-6 mb-3">
-                        <div className="row">
-                            <div className="col-md-4">
-                                Sub Location
-                            </div>
-                            <div className="col-md-8">
-                                <select name={'location_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                                    <option>--Select Location--</option>
-                                    <LocationsOptions selectedId={item[index].parent_id} />
-                                </select>
-                            </div>
-                        </div>
+                    <div className="px-1 mb-2">
+                            <select name={'location_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                <option>Select Location</option>
+                                <LocationsOptions selectedId={item[index].parent_id} />
+                            </select>
                     </div>
                 ))
                 return(
-                    <div className={`rounded px-3 my-2 `}>
-                        <div className="px-2">
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Users
-                                    </div>
-                                    <div className="col-md-8 ui-checkbox d-flex align-items-center">
-                                        <select name={'user_id'} value={user_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.user_id) && 'is-invalid'}`}>
-                                            <option>--Select User--</option>
-                                            <UserOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Module
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
-                                            <option>--Select Module--</option>
-                                            <ModuleOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                    <>
+                        <div className="px-1 mb-2">
+                            <select name={'user_id'} value={user_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.user_id) && 'is-invalid'}`}>
+                                <option>Select User</option>
+                                <UserOptions />
+                            </select>
                         </div>
-                        <div className="px-2 mt-3">
-                            <div className="col-md-6 mb-3">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Location
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                                            <option>--Select Location--</option>
-                                            <LocationsOptions selectedId={location_id} />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            {subLocation}
-                            <div className="col-md-6">
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        Role
-                                    </div>
-                                    <div className="col-md-8">
-                                        <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
-                                            <option>--Select Role--</option>
-                                            <UserRoleOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
+                                <option>Select Module</option>
+                                <ModuleOptions />
+                            </select>
                         </div>
-                        <div className="row px-2 mt-2">
-                            <div className="d-flex justify-content-end">
-                                {editId === null ? <button className="btn btn-outline-info" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
+                        <div className="px-1 mb-2">
+                            <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                <option>Select Location</option>
+                                <LocationsOptions selectedId={location_id} />
+                            </select>
+                        </div>
+                        {subLocation}
+                        <div className="px-1 mb-2">
+                            <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
+                                <option>Select Role</option>
+                                <UserRoleOptions />
+                            </select>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
                                     <button className="btn btn-outline-danger mt-3" onClick={() => {
                                         this.setState({
@@ -1314,9 +907,7 @@ class AdminInputContainer extends Component {
                                             this.validate()
                                         })}}>Go Back</button>
                                 </>}
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 )
             default:
                 return null
@@ -1576,34 +1167,37 @@ class AdminInputContainer extends Component {
     render() {
         const {getApi, title, headTitle} = this.props
         const {error, errorMessage, isLoading, allProjects} = this.state
+        console.log(allProjects, 1199)
         return (
-            <div className="px-2 my-2 ui-dataEntry">
-                {error && <div className="alert alert-danger" role="alert">
-                    {errorMessage}
+            <>
+                {error && <div className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
+                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
                 </div>}
-                <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
-                    <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
-                    </nav>
-                    {this.renderForm()}
+                <div className="px-2 my-2 ui-dataEntry">
+                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
+                        </nav>
+                        {this.renderForm()}
+                    </div>
+                    <div className="rounded p-2 bg-white min-h-80vh">
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
+                        </nav>
+                        {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
+                            <ReactDataTable
+                                edit
+                                isLoading
+                                pagination
+                                searchable
+                                del={getApi}
+                                tableData={allProjects}
+                                updateEdit={this.updateEdit}
+                            />
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
+                    </div>
                 </div>
-                <div className="rounded p-2 bg-white min-h-80vh">
-                    <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
-                    </nav>
-                    {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
-                        <ReactDataTable
-                            edit
-                            isLoading
-                            pagination
-                            searchable
-                            del={getApi}
-                            tableData={allProjects}
-                            updateEdit={this.updateEdit}
-                        />
-                    </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
-                </div>
-            </div>
+            </>
         );
     }
 }

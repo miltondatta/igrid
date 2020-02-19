@@ -8,6 +8,8 @@ class LocHierarchiesComponent extends Component {
                 <AdminInputContainer
                     formType = 'LOCHIERARCHY'
                     getApi = 'locHierarchies'
+                    title = 'Location Hierarchy List'
+                    headTitle = 'Location Hierarchy Information'
                 />
             </div>
         );

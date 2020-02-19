@@ -7,6 +7,8 @@ class UserRolesComponent extends Component {
             <AdminInputContainer
                 formType = 'USERROLES'
                 getApi = 'user-roles'
+                title = 'User Role List'
+                headTitle = 'User Role Information'
             />
         );
     }

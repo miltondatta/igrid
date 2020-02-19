@@ -10,7 +10,7 @@ route.get('/user-roles', (req,res,next) => {
             res.status(200).json(resData)
         })
         .catch(err => {
-            res.status(404).json({message: 'Something Went Wrong', err})
+            res.status(200).json({message: 'Something Went Wrong', err})
         })
 })
 
@@ -27,7 +27,7 @@ route.put('/user-roles/update/:id', (req,res,next) => {
                         res.status(200).json(resData)
                     })
                     .catch(err => {
-                        res.status(404).json({message: 'Something went wrong'})
+                        res.status(200).json({message: 'Something went wrong'})
                     })
             })
     }
@@ -48,7 +48,7 @@ route.post('/user-roles/entry', (req,res,next) => {
                         })
                         .catch(err => {
                             console.log(err)
-                            res.status(404).json({message: 'Something went wrong', err})
+                            res.status(200).json({message: 'Something went wrong', err})
                         })
                 } else {
                     res.status(200).json({message: 'UserRoles Code Exist'})
@@ -69,7 +69,7 @@ route.delete('/user-roles/delete', (req,res,next) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            res.status(200).json({message: 'Something went wrong', err})
         })
 })
 

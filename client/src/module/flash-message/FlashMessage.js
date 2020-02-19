@@ -2,13 +2,11 @@ import React, {useState} from 'react'
 import './flash_message.css'
 
 const FlashMessage = (props) => {
-    const [state, setState] = useState({
-
-    })
+    const {errMsg} = props
     return(
         <div className={'ui-flash-message-container'}>
             <div className="ui-flesh-message">
-                <b>Something went wrong</b>
+                <b>{errMsg}</b>
             </div>
         </div>
     )

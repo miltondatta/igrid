@@ -8,6 +8,8 @@ class ProductComponent extends Component {
                 <AdminInputContainer
                     formType = 'PRODUCTS'
                     getApi = 'products'
+                    title = 'Product List'
+                    headTitle = 'Product Information'
                 />
             </>
         );

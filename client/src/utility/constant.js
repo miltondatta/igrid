@@ -251,12 +251,6 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 13,
-                name: 'Status',
-                link: '/status',
-                icon: ""
-            },
-            {
                 id: 17,
                 name: 'Approval Level',
                 link: '/approval-level',

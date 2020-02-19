@@ -48,7 +48,7 @@ route.put('/requisition-approve/update/:id', (req,res,next) => {
                 res.status(200).json(resData)
             })
             .catch(err => {
-                res.status(404).json({message: 'Something went wrong'})
+                res.status(200).json({message: 'Something went wrong'})
             })
     }
 })
@@ -66,7 +66,7 @@ route.post('/requisition-approve/entry', (req,res,next) => {
                     res.status(200).json(resData)
                 })
                 .catch(err => {
-                    res.status(404).json({message: 'Something went wrong', err})
+                    res.status(200).json({message: 'Something went wrong', err})
                 })
         }
     })
@@ -85,7 +85,7 @@ route.post('/requisition-approve/delivery', (req,res,next) => {
                     res.status(200).json(resData)
                 })
                 .catch(err => {
-                    res.status(404).json({message: 'Something went wrong', err})
+                    res.status(200).json({message: 'Something went wrong', err})
                 })
         }
     })
@@ -114,7 +114,7 @@ route.delete('/requisition-approve/delete', (req,res,next) =>   {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            res.status(200).json({message: 'Something went wrong', err})
         })
 })
 
