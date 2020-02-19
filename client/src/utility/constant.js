@@ -1,4 +1,5 @@
 import {devBaseUrl, prodBaseUrl} from "../config/private";
+export const apiBaseUrl =  'http://localhost:5000/';
 
 export const apiUrl = () => {
     if(process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

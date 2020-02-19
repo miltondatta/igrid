@@ -3,6 +3,9 @@ import {withRouter} from 'react-router-dom';
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import moment from "moment";
+import {apiBaseUrl} from '../../utility/constant';
+
+
 moment.locale('en');
 
 class DocumentListDetails extends Component {
@@ -13,12 +16,19 @@ class DocumentListDetails extends Component {
             item: [],
             isLoading: false,
             fileError: '',
-            fileErrorMessage: ''
+            fileErrorMessage: '',
+            url: ''
         }
     }
 
     componentDidMount() {
         this.getData();
+
+        if (this.state.item) {
+            this.setState( {
+                url: apiBaseUrl + '1_mk1-6aYaf_Bes1E3Imhc0A (6).jpeg'
+            })
+        }
     }
 
     getData = () => {
@@ -164,9 +174,21 @@ class DocumentListDetails extends Component {
                                 </ul>
                             </div>
                         </div>
-                        {/*<div className="row">
-                            <embed src={process.env.PUBLIC_URL + '/media/image/test.doc'} type={'application/msword'}/>
-                        </div>*/}
+                        {item.file_name &&
+                        <div className="row">
+                            <div className="col-md-12">
+                                {/*<iframe*/}
+                                {/*    src={apiBaseUrl + item.file_name}*/}
+                                {/*    frameBorder="0" width="100%" height="700px">*/}
+
+                                {/*</iframe>*/}
+                               {/* <iframe
+                                    src={this.state.url}
+                                    width="600" width="100%" height="700px" frameBorder="0" sandbox="allow-scripts"></iframe>*/}
+
+                            </div>
+                        </div>
+                        }
                     </div>
                 </div>
             </>
