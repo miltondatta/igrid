@@ -3,7 +3,6 @@ import {withRouter} from 'react-router-dom';
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import moment from "moment";
-
 moment.locale('en');
 
 class DocumentListDetails extends Component {
@@ -160,11 +159,14 @@ class DocumentListDetails extends Component {
                                 <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                     <li>
                                         <a href="/"
-                                           onClick={e => this.downloadFile(e, item.file_name)}>Download</a>
+                                           onClick={e => this.downloadFile(e, item.file_name)}>{item.file_name}</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        {/*<div className="row">
+                            <embed src={process.env.PUBLIC_URL + '/media/image/test.doc'} type={'application/msword'}/>
+                        </div>*/}
                     </div>
                 </div>
             </>
