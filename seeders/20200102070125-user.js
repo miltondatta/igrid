@@ -42,7 +42,7 @@ module.exports = {
           address: 'Dhaka',
           image: 'default.png',
           is_verified: false,
-          userType: 0,
+          userType: 2,
           createdAt: new Date(),
           updatedAt: new Date()
         },
