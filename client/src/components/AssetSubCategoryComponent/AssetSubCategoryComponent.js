@@ -7,6 +7,8 @@ class AssetSubCategoryComponent extends Component {
             <AdminInputContainer
                 formType = 'ASSETSUBCATEGORY'
                 getApi = 'asset-sub-category'
+                title = 'Asset Sub Category List'
+                headTitle = 'Asset Sub Category Information'
             />
         );
     }

@@ -31,15 +31,16 @@
 
 .ui-user .ui-user-container .ui-login input{
     width: 100%;
-    border: none;
+    border: none !important;
     outline: none;
-    padding: 10px 0;
-    border-bottom: 1px solid #aaa;
+    padding: 10px 0 !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #aaa !important;
 }
 
 
 .ui-user .ui-user-container .ui-login input:focus{
-    border-bottom: 1.5px solid  #0f5ea8;
+    border-bottom: 1.5px solid  #0f5ea8 !important;
 }
 
 .ui-user .ui-user-container .ui-login .ui-signin{

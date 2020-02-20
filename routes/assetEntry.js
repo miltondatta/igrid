@@ -119,7 +119,7 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
                 })
                 .catch(err => {
                     console.log(err)
-                    res.status(404).json({message: 'Something went wrong', err})
+                    res.status(200).json({message: 'Something went wrong', err})
                 })
         }
     })
@@ -141,7 +141,7 @@ route.post('/assets-entry/entry', (req,res,next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(404).json({message: 'Something went wrong', err})
+                res.status(200).json({message: 'Something went wrong', err})
             })
     })
 })
@@ -197,7 +197,7 @@ route.delete('/assets-entry/delete', (req,res,next) => {
     })
     .catch(err => {
         console.log(err)
-        res.status(404).json({message: 'Something went wrong', err})
+        res.status(200).json({message: 'Something went wrong', err})
     })
 })
 

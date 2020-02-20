@@ -320,7 +320,8 @@ class DocumentListSearch extends Component {
                                                    onClick={e => this.downloadFile(e, item.file_name)}>Download</a>
                                             </td>
                                             <td>
-                                                <a href="/" target="_blank">Details</a>
+                                                <a href={`/documents/document-list-search/notice/id/${item.id}`}
+                                                   target="_blank">Details</a>
                                             </td>
                                         </tr>
                                     ))}

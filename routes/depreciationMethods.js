@@ -10,7 +10,7 @@ route.get('/depreciation-methods', (req,res,next) => {
             res.status(200).json(resData)
         })
         .catch(err => {
-            res.status(404).json({message: 'Something Went Wrong', err})
+            res.status(200).json({message: 'Something Went Wrong', err})
         })
 })
 
@@ -26,7 +26,7 @@ route.put('/depreciation-methods/update/:id', (req,res,next) => {
                             res.status(200).json(resData)
                         })
                         .catch(err => {
-                            res.status(404).json({message: 'Something went wrong'})
+                            res.status(200).json({message: 'Something went wrong'})
                         })
                 } else {
                     res.status(200).json({message: 'Method Code Exist'})
@@ -50,7 +50,7 @@ route.post('/depreciation-methods/entry', (req,res,next) => {
                         })
                         .catch(err => {
                             console.log(err)
-                            res.status(404).json({message: 'Something went wrong', err})
+                            res.status(200).json({message: 'Something went wrong', err})
                         })
                 } else {
                     res.status(200).json({message: 'Method Code Exist'})
@@ -74,7 +74,7 @@ route.delete('/depreciation-methods/delete', (req,res,next) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            res.status(200).json({message: 'Something went wrong', err})
         })
 })
 

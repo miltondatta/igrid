@@ -342,9 +342,34 @@ exports.documentListSearch = async (req, res) => {
 exports.documentListFileDownload = async (req, res) => {
     try {
         let file_path = 'public/document/' + req.params.file_name;
-        if (!fs.existsSync(file_path)) return res.status(400).json({msg: `${req.params.file_name} File didn\'t found!`, error: true});
+        if (!fs.existsSync(file_path)) return res.status(400).json({
+            msg: `${req.params.file_name} File didn\'t found!`,
+            error: true
+        });
 
         return res.download(file_path);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListDetailsById = async (req, res) => {
+    try {
+        const document_list = await DocumentList.findOne({
+            where: {id: req.params.id},
+            include: [{
+                model: DocumentCategory,
+                attributes: ["category_name"]
+            }, {
+                model: DocumentSubCategory,
+                attributes: ["sub_category_name"]
+            }
+            ]
+        });
+        if (!document_list) return res.status(400).json({msg: 'Document List didn\'t found!', error: true});
+
+        return res.status(200).json(document_list);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});

@@ -7,6 +7,8 @@ class ModelsComponent extends Component {
             <AdminInputContainer
                 formType = 'MODELS'
                 getApi = 'models'
+                title = 'Model List'
+                headTitle = 'Model Information'
             />
         );
     }

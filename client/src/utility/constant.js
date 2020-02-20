@@ -1,5 +1,5 @@
-const devBaseUrl = 'http://localhost:5000/api/v1/'
-const prodBaseUrl = 'http://localhost:5000/api/v1/'
+import {devBaseUrl, prodBaseUrl} from "../config/private";
+export const apiBaseUrl =  'http://localhost:5000/';
 
 export const apiUrl = () => {
     if(process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -70,7 +70,7 @@ export const sidenav = [
     },
     {
         id: 5,
-        name: 'Inventory',
+        name: 'Asset',
         icon: 'fas fa-chart-pie',
         subCat: true,
         categories: [
@@ -248,12 +248,6 @@ export const sidenav = [
                 id: 10,
                 name: 'Location Hierarchies',
                 link: '/loc_hierarchies',
-                icon: ""
-            },
-            {
-                id: 13,
-                name: 'Status',
-                link: '/status',
                 icon: ""
             },
             {

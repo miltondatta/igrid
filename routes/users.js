@@ -45,7 +45,7 @@ router.post('/users/register', (req,res,next) => {
     Users.findAll({where: {email: userEmail}})
         .then(data => {
             if(data.length !== 0){
-                res.status(404).json({message: 'User already exist'})
+                res.status(200).json({message: 'User already exist'})
             } else {
                 bcrypt.hash(userPass.toString(), saltRounds, (err, hash) => {
                     if (err) {console.log(err,28)}
@@ -188,7 +188,7 @@ router.put('/users/update/:id', (req,res,next) => {
                             res.json(data)
                         })
                         .catch(err => {
-                            res.status(404).json({message: 'Something went wrong'})
+                            res.status(200).json({message: 'Something went wrong'})
                         })
                 }
             })

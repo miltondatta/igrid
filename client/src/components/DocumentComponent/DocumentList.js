@@ -15,6 +15,7 @@ class DocumentList extends Component {
                     getApi = 'document/list'
                     table_header={this.table_header}
                     title='Document List'
+                    headTitle = 'Document Information'
                 />
             </>
         );
