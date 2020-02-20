@@ -3,8 +3,10 @@ import {withRouter} from 'react-router-dom';
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import moment from "moment";
-
+import {apiBaseUrl} from '../../utility/constant';
+import {getFileExtension} from "../../utility/custom";
 moment.locale('en');
+
 
 class DocumentListDetails extends Component {
     constructor(props) {
@@ -14,7 +16,8 @@ class DocumentListDetails extends Component {
             item: [],
             isLoading: false,
             fileError: '',
-            fileErrorMessage: ''
+            fileErrorMessage: '',
+            fileUrl: ''
         }
     }
 
@@ -30,8 +33,11 @@ class DocumentListDetails extends Component {
             Axios.get(apiUrl() + 'document/list/details/' + id)
                 .then(res => {
                     this.setState({
-                        item: res.data
-                    })
+                        item: res.data,
+                        fileUrl: apiBaseUrl + 'document/' + res.data.file_name
+                    }, () => {
+                        localStorage.setItem('fileUrl', this.state.fileUrl);
+                    });
                 })
                 .then(() => {
                     this.setState({
@@ -71,7 +77,9 @@ class DocumentListDetails extends Component {
     };
 
     render() {
-        const {item, fileError, fileErrorMessage} = this.state;
+        const {item, fileUrl, fileError, fileErrorMessage} = this.state;
+        const ext = item.file_name && getFileExtension(item.file_name);
+        let images = ['jpg', 'jpeg', 'png'];
 
         return (
             <>
@@ -160,11 +168,34 @@ class DocumentListDetails extends Component {
                                 <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                     <li>
                                         <a href="/"
-                                           onClick={e => this.downloadFile(e, item.file_name)}>Download</a>
+                                           onClick={e => this.downloadFile(e, item.file_name)}>{item.file_name}</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        {item.file_name &&
+                        <div className="row">
+                            <div className="col-md-12">
+                                {(ext === 'pdf') &&
+                                <div className="ui-docDetailsFile">
+                                    {/*<canvas id="my_canvas"></canvas>*/}
+                                    <iframe id="inlineFrameExample"
+                                            title="Inline Frame Example"
+                                            width="100%"
+                                            height="100%"
+                                            src={process.env.PUBLIC_URL + '/media/image/test.pdf'}>
+                                    </iframe>
+                                </div>
+                                }
+
+                                {images.includes(ext) &&
+                                <div className="ui-docDetailsFile">
+                                    <img src={fileUrl} alt="" width="100%" height="100%"/>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
                     </div>
                 </div>
             </>

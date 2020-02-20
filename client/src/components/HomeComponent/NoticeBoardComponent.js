@@ -51,7 +51,7 @@ class NoticeBoardComponent extends Component {
         let allNotice = allData.length > 0 ? allData.map((item, index) => (
             <div key={index}>
                 <i className="fas fa-angle-right mr-1"></i>
-                <a href="/" className="mb-0" target="_blank">{item.title}</a>
+                <a href={`/documents/document-list-search/notice/id/${item.id}`} className="mb-0" target="_blank">{item.title}</a>
                 <p className="mb-2 noticeDate">{moment(item.document_date).format('dddd MM, YYYY hh:mm a')}</p>
             </div>
         )) : <p>There is empty notice board</p>;

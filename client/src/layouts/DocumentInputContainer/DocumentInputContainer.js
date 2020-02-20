@@ -459,7 +459,7 @@ class DocumentInputContainer extends Component {
                                         <input type="file" onChange={this.handleChange} name={'file_name'}
                                                className="custom-file-input" id="validatedCustomFile"/>
                                         <label
-                                            htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name : file_name : 'Choose File'}</label>
+                                            htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0,20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
                                     </div>
                                     {errorDict && !errorDict.file_name &&
                                     <span className="error">File Name Field is required</span>
@@ -719,7 +719,7 @@ class DocumentInputContainer extends Component {
                     {errorMessage} <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
                 </div>}
                 {success &&
-                <div className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center" role="alert">>
+                <div className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center" role="alert">
                     {successMessage} <i className="fas fa-times " onClick={() => {this.setState({success: false})}}></i>
                 </div>}
 
