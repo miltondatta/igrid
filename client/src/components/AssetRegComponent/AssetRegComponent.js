@@ -24,6 +24,7 @@ class AssetRegComponent extends Component {
             purchase_order_date: '',
             vendor_id: '',
             received_by: '',
+            receivedByFocus: false,
             added_by: jwt.decode(localStorage.getItem('user')).data.id,
             attachment: '',
             challanComments: '',
@@ -52,6 +53,7 @@ class AssetRegComponent extends Component {
             assign_to: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.id : '',
             asset_quantity: 1,
             prodArr: [],
+            receivedBy: [],
             errorDict: null,
             errorDictAsset: null,
         }
@@ -106,7 +108,16 @@ class AssetRegComponent extends Component {
         if (name.length >= 3) {
             Axios.post(apiUrl() + 'challan-receiver', data)
                 .then(res => {
-                    console.log(res)
+                    if (res.message) {
+                        this.setState({
+                            error: true,
+                            errorMsg: res.message
+                        })
+                    } else {
+                        this.setState({
+                            receivedBy: res.data
+                        })
+                    }
                 })
         }
     }
@@ -172,9 +183,10 @@ class AssetRegComponent extends Component {
         data.append('challanComments', challanComments)
         Axios.post(apiUrl() + 'assets-entry/challan/entry', data)
             .then(resData => {
-
+                console.log(resData, 186)
                 this.setState({
-                    challan_id: resData.data
+                    challan_id: resData.data.resId,
+                    vendor_id: resData.data.vendorName
                 })
             })
             .catch(err => {console.log(err)})
@@ -265,9 +277,9 @@ class AssetRegComponent extends Component {
 
     render() {
         const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment,
-            received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,
+            received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,receivedByFocus,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id,
-            salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity} = this.state
+            salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity, receivedBy} = this.state
 
         const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         const prodSer = asset_quantity && prodArr.map((item, index) => {
@@ -277,6 +289,10 @@ class AssetRegComponent extends Component {
                 </div>
             )
         })
+        console.log(receivedBy)
+        const receiverList = receivedBy.length > 0 && receivedBy.map((item, index) => (
+            <p key={index} onClick={() => {this.setState({received_by: item.received_by, receivedBy: []})}}>{item.received_by}</p>
+        ))
         return (
             <div>
                 {challan_id === '' && <div className=" p-2 ui-dataEntry">
@@ -297,10 +313,10 @@ class AssetRegComponent extends Component {
                             </select>
                         </div>
                         <div className={'mb-2 position-relative'}>
-                            <input placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`ui-custom-input ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
-                            <div className={'ui-received-by'}>
-
-                            </div>
+                            <input onFocus={() => {this.setState({receivedByFocus: true})}} onBlue={() => {this.setState({receivedByFocus: false})}} autoComplete={'off'} placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`ui-custom-input ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
+                            {(receivedBy.length > 0 && received_by.length >= 3 && receivedByFocus) && <div className={'ui-received-by'}>
+                                {receiverList}
+                            </div>}
                         </div>
                         <div className={'mb-2'}>
                             <input placeholder='Added By' value={userName} type={'text'} className={`ui-custom-input`} disabled={true} />
