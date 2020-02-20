@@ -17,7 +17,7 @@ class AssetRegComponent extends Component {
         super(props)
         this.state = {
             challan_no: '',
-            challan_name: '',
+            challan_date: '',
             product_id: '',
             challan_description: '',
             purchase_order_no: '',
@@ -25,6 +25,7 @@ class AssetRegComponent extends Component {
             vendor_id: '',
             received_by: '',
             receivedByFocus: false,
+            recDropFoc: false,
             added_by: jwt.decode(localStorage.getItem('user')).data.id,
             attachment: '',
             challanComments: '',
@@ -137,7 +138,7 @@ class AssetRegComponent extends Component {
             delete stateHolder['asset_quantity']
             delete stateHolder['dataStore']
             delete stateHolder['challan_no']
-            delete stateHolder['challan_name']
+            delete stateHolder['challan_date']
             delete stateHolder['challan_description']
             delete stateHolder['purchase_order_no']
             delete stateHolder['purchase_order_date']
@@ -169,11 +170,11 @@ class AssetRegComponent extends Component {
         if (Object.values(this.validate('challan')).includes(false)) {
             return
         }
-        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments, attachment}  = this.state
+        const {challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments, attachment}  = this.state
         const data = new FormData()
         data.append('file', attachment)
         data.append('challan_no', challan_no)
-        data.append('challan_name', challan_name)
+        data.append('challan_date', challan_date)
         data.append('challan_description', challan_description)
         data.append('purchase_order_no', purchase_order_no)
         data.append('purchase_order_date', purchase_order_date)
@@ -221,7 +222,7 @@ class AssetRegComponent extends Component {
     }
 
     validate = (forr) => {
-        const {attachment, challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,
+        const {attachment, challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,
             challanComments,project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost,
             other_cost,asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,last_effective_date,warranty,
             last_warranty_date,condition,comments,barcode} = this.state
@@ -230,7 +231,7 @@ class AssetRegComponent extends Component {
             errorDict = {
                 attachment: typeof attachment !== 'undefined' && attachment !== '',
                 challan_no: typeof challan_no !== 'undefined' && challan_no !== '',
-                challan_name: typeof challan_name !== 'undefined' && challan_name !== '',
+                challan_date: typeof challan_date !== 'undefined' && challan_date !== '',
                 challan_description: typeof challan_description !== 'undefined' && challan_description !== '',
                 purchase_order_no: typeof purchase_order_no !== 'undefined' && purchase_order_no !== '',
                 purchase_order_date: typeof purchase_order_date !== 'undefined' && purchase_order_date !== '',
@@ -276,9 +277,9 @@ class AssetRegComponent extends Component {
     }
 
     render() {
-        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment,
+        const {challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment,
             received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,receivedByFocus,
-            installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id,
+            installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id, recDropFoc,
             salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity, receivedBy} = this.state
 
         const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
@@ -304,7 +305,7 @@ class AssetRegComponent extends Component {
                             <input onChange={this.handleChange} name={'challan_no'}  value={challan_no} placeholder='Challan No' className={`ui-custom-input ${errorDict && !errorDict.challan_no && 'is-invalid'}`} />
                         </div>
                         <div className={'mb-2'}>
-                            <input value={challan_name}  onChange={this.handleChange} name={'challan_name'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_name && 'is-invalid'}`} />
+                            <input value={challan_date} type={'date'} onChange={this.handleChange} name={'challan_date'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_date && 'is-invalid'}`} />
                         </div>
                         <div className={'mb-2'}>
                             <select className={`ui-custom-input w-100 ${errorDict && !errorDict.vendor_id && 'is-invalid'}`} value={vendor_id} onChange={this.handleChange} name={'vendor_id'}>
@@ -313,8 +314,8 @@ class AssetRegComponent extends Component {
                             </select>
                         </div>
                         <div className={'mb-2 position-relative'}>
-                            <input onFocus={() => {this.setState({receivedByFocus: true})}} onBlue={() => {this.setState({receivedByFocus: false})}} autoComplete={'off'} placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`ui-custom-input ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
-                            {(receivedBy.length > 0 && received_by.length >= 3 && receivedByFocus) && <div className={'ui-received-by'}>
+                            <input onFocus={() => {this.setState({receivedByFocus: true})}} onBlur={() => {this.setState({receivedByFocus: false})}} autoComplete={'off'} placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`ui-custom-input ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
+                            {(receivedBy.length > 0 && received_by.length >= 3 && (receivedByFocus || recDropFoc)) && <div onMouseOver={() => {this.setState({recDropFoc: true})}} onMouseOut={() => {this.setState({recDropFoc: false})}} className={'ui-received-by'}>
                                 {receiverList}
                             </div>}
                         </div>
@@ -325,7 +326,7 @@ class AssetRegComponent extends Component {
                             <input value={purchase_order_no} onChange={this.handleChange} name={'purchase_order_no'} placeholder='Purchase Order No' className={`ui-custom-input ${errorDict && !errorDict.purchase_order_no && 'is-invalid'}`} />
                         </div>
                         <div className={'mb-2'}>
-                            <input placeholder='Challan Name' onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
+                            <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
                         </div>
                         <div className={'mb-2 w-50'}>
                             <div className="ui-custom-file">
@@ -333,7 +334,6 @@ class AssetRegComponent extends Component {
                                 <label htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
                             </div>
                         </div>
-
                         <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
                     </div>
                     <div className="min-h-80vh bg-white rounded p-3">
@@ -378,10 +378,10 @@ class AssetRegComponent extends Component {
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>
                             <div className={'col-4 pl-2 ui-text'}>
-                                Challan Name
+                                Challan Date
                             </div>
                             <div className={'col-8 pr-2'}>
-                                <span className={'ui-text mr-3'}>:</span> {challan_description}
+                                <span className={'ui-text mr-3'}>:</span> {challan_date}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>

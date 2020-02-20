@@ -10,8 +10,8 @@ module.exports = {
       challan_no:{
         type: Sequelize.STRING
       },
-      challan_name:{
-        type: Sequelize.STRING
+      challan_date:{
+        type: Sequelize.DATEONLY
       },
       challan_description:{
         type: Sequelize.STRING
