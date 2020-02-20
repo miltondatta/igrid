@@ -125,6 +125,22 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
     })
 })
 
+// Get Challan Receiver
+route.post('/challan-receiver', async (req,res,next) => {
+    let {receiverName} = req.body
+    if (receiverName.length >= 3) {
+        let [data, metaData] = await db.define(`
+        SELECT challans.received_by FROM challans 
+            WHERE challans.received_by = ${receiverName}
+        `)
+    }
+    if (data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
+})
+
 // Asset Entry
 route.post('/assets-entry/entry', (req,res,next) => {
     req.body.map(item => {

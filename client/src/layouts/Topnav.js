@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
 import {Link, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
-import {documentNav, sidenav} from "../utility/constant";
+import {documentNav, sidenav, systemAdmin} from "../utility/constant";
 
 class Topnav extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -30,16 +29,18 @@ class Topnav extends Component {
 
     renderCategory = () => {
         const moduleName = window.location.pathname.split('/').filter(value => value !== '')[0];
+        const {userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         let data = [];
         if (moduleName === 'documents') {
             data = documentNav;
+        } else if (moduleName === 'admin') {
+            data = systemAdmin
         } else {
             data = sidenav;
         }
 
         const {currentHover} = this.state
         const {pathname} = this.props.location
-        const {userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         return (
             <>
                 {data.map((items, index) => {
@@ -60,12 +61,12 @@ class Topnav extends Component {
                                                           style={{display: currentHover !== items.id && 'none'}}>
                                         {items.categories.map((subItems, key) => (
                                             <>
-                                                <a key={subItems.id} href={subItems.link}>
+                                                {userType !== 2 && subItems.id === 4 ? null : <a key={subItems.id} href={subItems.link}>
                                                     <p key={key + 10}
                                                        className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
                                                         {subItems.name}
                                                     </p>
-                                                </a>
+                                                </a> }
                                             </>
                                         ))}
                                     </div>}
@@ -106,21 +107,22 @@ class Topnav extends Component {
     render() {
         const {home} = this.props
         const {showUserOption} = this.state
-        const {userName, image} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        const {userName, image, userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         if (home) {
             return (
                 <div className='ui-topnav w-100 px-4'>
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
-                        <div className={'w-100'}>
+                        <div className={'w-100 h-100 align-items-center d-flex'}>
                             <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
-                            <span className={'text-white ui-nav-init-link ml-5 mr-2'}>Location Finder</span>
+                            <span className={'text-white ui-nav-init-link ml-5 mr-2'}>Site Map</span>
                             <span className={'text-white ui-nav-init-link mx-2'}>Contact Us</span>
                             <span className={'text-white ui-nav-init-link mx-2'}>About Us</span>
-                            <span className={'text-white ui-nav-init-link mx-2'}>Documentation</span>
+                            <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
                         </div>
                         <div className={'text-white ui-user-nav d-flex align-items-center'}>
                             <i className="fas fa-bell"></i>
-                            <span onClick={this.handleUserOptions}>{userName}</span>
+                            {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-2'}>System Admin</span></Link> :
+                                <span onClick={this.handleUserOptions}>{userName}</span>}
                             <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                  src={'http://localhost:5000/images/' + image} alt={'user'}/>
                             {showUserOption && <div className={'ui-user-dropdown'}>
@@ -158,7 +160,7 @@ class Topnav extends Component {
                             </div>
                             <div className={'text-white ui-user-nav d-flex align-items-center'}>
                                 <i className="fas fa-bell"></i>
-                                <span onClick={this.handleUserOptions}>{userName}</span>
+                                {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-2'}>System Admin</span></Link> : <span onClick={this.handleUserOptions}>{userName}</span>}
                                 <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                      src={'http://localhost:5000/images/' + image} alt={'user'}/>
                                 {showUserOption && <div className={'ui-user-dropdown'}>

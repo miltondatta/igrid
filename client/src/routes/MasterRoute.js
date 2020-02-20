@@ -223,43 +223,43 @@ class MasterRoute extends Component{
                             <div className='ui-body-container'>
                                 <Switch>
                                     <Route exact path='/mis' component={AsyncMIS}/>
-                                    <Route exact path='/model' component={AsyncModels}/>
-                                    <Route exact path='/brand' component={AsyncBrands}/>
-                                    <Route exact path='/vendor' component={AsyncVendor}/>
                                     <Route exact path='/home' component={AsyncHomeLand}/>
                                     <Route exact path='/profile' component={AsyncProile}/>
-                                    <Route exact path='/modules' component={AsyncModules}/>
+                                    <Route exact path='/admin/modules' component={AsyncModules}/>
                                     <Route exact path='/challan' component={AsyncChallan}/>
-                                    <Route exact path='/product' component={AsyncProduct}/>
+                                    <Route exact path='/admin/product' component={AsyncProduct}/>
+                                    <Route exact path='/admin/brand' component={AsyncBrands}/>
+                                    <Route exact path='/admin/model' component={AsyncModels}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
+                                    <Route exact path='/admin/vendor' component={AsyncVendor}/>
                                     <Route exact path='/asset/:option' component={AsyncAsset}/>
                                     <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
-                                    <Route exact path='/user-roles' component={AsyncUserRoles}/>
-                                    <Route exact path='/conditions' component={AsyncConditions}/>
-                                    <Route exact path='/project' component={AsyncCreateProject}/>
-                                    <Route exact path='/asset-types' component={AsyncAssetTypes}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
-                                    <Route exact path='/register-user' component={AsyncRegisterUser}/>
-                                    <Route exact path='/assign-locations' component={AsyncLocations}/>
-                                    <Route exact path='/asset-dispose' component={AsyncAssetDispose}/>
-                                    <Route exact path='/user-login-log' component={AsyncUserLoginLog}/>
-                                    <Route exact path='/asset-category' component={AsyncAssetCategory}/>
+                                    <Route exact path='/admin/user-roles' component={AsyncUserRoles}/>
+                                    <Route exact path='/admin/project' component={AsyncCreateProject}/>
+                                    <Route exact path='/admin/conditions' component={AsyncConditions}/>
+                                    <Route exact path='/admin/asset-types' component={AsyncAssetTypes}/>
                                     <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
-                                    <Route exact path='/approval-level' component={AsyncApprovalLevel}/>
-                                    <Route exact path='/loc_hierarchies' component={AsyncLocHierarchies}/>
-                                    <Route exact path='/depreciation-methods' component={AsyncDepMethod}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>
                                     <Route exact path='/asset-repair' component={AsyncRepairMaintenence}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
+                                    <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>
+                                    <Route exact path='/admin/assign-locations' component={AsyncLocations}/>
+                                    <Route exact path='/admin/asset-dispose' component={AsyncAssetDispose}/>
+                                    <Route exact path='/admin/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
-                                    <Route exact path='/asset-sub-category' component={AsyncAssetSubCategory}/>
+                                    <Route exact path='/admin/asset-category' component={AsyncAssetCategory}/>
+                                    <Route exact path='/admin/approval-level' component={AsyncApprovalLevel}/>
+                                    <Route exact path='/admin/loc_hierarchies' component={AsyncLocHierarchies}/>
+                                    <Route exact path='/admin/depreciation-methods' component={AsyncDepMethod}/>
+                                    <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
-                                    <Route exact path='/user-associate-role' component={AsyncUserAssociateRole}/>
+                                    <Route exact path='/admin/user-associate-role' component={AsyncUserAssociateRole}/>
                                     <Route exact path='/documents/document-category' component={AsyncDocumentCategory}/>
                                     <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
                                     <Route exact path='/documents/document-list' component={AsyncDocumentList}/>

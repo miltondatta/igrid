@@ -10,38 +10,6 @@ export const apiUrl = () => {
 
 export const sidenav = [
     {
-        id: 3,
-        name: 'Material Requisition',
-        icon: 'icofont-file-document',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Hardware',
-                link: '/asset/1',
-                icon: "fas fa-satellite"
-            },
-            {
-                id: 2,
-                name: 'Accessories',
-                link: '/asset/2',
-                icon: "far fa-keyboard"
-            },
-            {
-                id: 3,
-                name: 'Stationary',
-                link: '/asset/3',
-                icon: "fab fa-500px"
-            },
-            {
-                id: 4,
-                name: 'Others',
-                link: '/asset/4',
-                icon: "fab fa-ethereum"
-            }
-        ]
-    },
-    {
         id: 4,
         name: 'Requisition',
         icon: 'fas fa-history',
@@ -64,7 +32,13 @@ export const sidenav = [
                 name: 'Approved Delivery',
                 link: '/approved-delivery',
                 icon: "far fa-keyboard"
-            }
+            },
+            {
+                id: 4,
+                name: 'Material Requisition',
+                link: '/asset/1',
+                icon: "far fa-keyboard"
+            },
         ]
     },
     {
@@ -131,82 +105,123 @@ export const sidenav = [
             }
         ]
     },
+]
+
+export const systemAdmin = [
     {
         id: 9,
-        name: 'Admin',
+        name: 'Setting',
         icon: 'fas fa-user-shield',
         subCat: true,
         categories: [
             {
                 id: 1,
                 name: 'Project',
-                link: '/project',
+                link: '/admin/project',
                 icon: ""
             },
             {
                 id: 2,
                 name: 'Vendor',
-                link: '/vendor',
+                link: '/admin/vendor',
                 icon: ""
             },
             {
                 id: 3,
                 name: 'Models',
-                link: '/model',
+                link: '/admin/model',
                 icon: ""
             },
             {
                 id: 4,
                 name: 'Brands',
-                link: '/brand',
+                link: '/admin/brand',
                 icon: ""
             },
             {
                 id: 5,
                 name: 'Asset Category',
-                link: '/asset-category',
+                link: '/admin/asset-category',
                 icon: ""
             },
             {
                 id: 5,
                 name: 'Asset Sub Category',
-                link: '/asset-sub-category',
+                link: '/admin/asset-sub-category',
                 icon: ""
             },
             {
                 id: 6,
                 name: 'Product',
-                link: '/product',
+                link: '/admin/product',
                 icon: ""
             },
             {
                 id: 8,
                 name: 'Asset Types',
-                link: '/asset-types',
+                link: '/admin/asset-types',
                 icon: ""
             },
             {
                 id: 9,
                 name: 'Conditions',
-                link: '/conditions',
+                link: '/admin/conditions',
                 icon: ""
             },
             {
                 id: 11,
                 name: 'Locations',
-                link: '/assign-locations',
+                link: '/admin/assign-locations',
                 icon: ""
             },
             {
                 id: 15,
                 name: 'User Associate Role',
-                link: '/user-associate-role',
+                link: '/admin/user-associate-role',
                 icon: ""
             },
             {
                 id: 16,
                 name: 'Register User',
-                link: '/register-user',
+                link: '/admin/register-user',
+                icon: ""
+            },
+        ]
+    },
+    {
+        id: 10,
+        name: 'Configuration',
+        icon: 'icofont-ui-settings',
+        subCat: true,
+        categories: [
+            {
+                id: 14,
+                name: 'Modules',
+                link: '/admin/modules',
+                icon: ""
+            },
+            {
+                id: 12,
+                name: 'User Roles',
+                link: '/admin/user-roles',
+                icon: ""
+            },
+            {
+                id: 10,
+                name: 'Location Hierarchies',
+                link: '/admin/loc_hierarchies',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Approval Level',
+                link: '/admin/approval-level',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'Depreciation Methods',
+                link: '/admin/depreciation-methods',
                 icon: ""
             },
         ]
@@ -220,47 +235,9 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'User Login',
-                link: '/user-login-log',
+                link: '/admin/user-login-log',
                 icon: ""
             }
-        ]
-    },
-    {
-        id: 10,
-        name: 'Config',
-        icon: 'icofont-ui-settings',
-        subCat: true,
-        categories: [
-            {
-                id: 14,
-                name: 'Modules',
-                link: '/modules',
-                icon: ""
-            },
-            {
-                id: 12,
-                name: 'User Roles',
-                link: '/user-roles',
-                icon: ""
-            },
-            {
-                id: 10,
-                name: 'Location Hierarchies',
-                link: '/loc_hierarchies',
-                icon: ""
-            },
-            {
-                id: 17,
-                name: 'Approval Level',
-                link: '/approval-level',
-                icon: ""
-            },
-            {
-                id: 7,
-                name: 'Depreciation Methods',
-                link: '/depreciation-methods',
-                icon: ""
-            },
         ]
     },
 ]
