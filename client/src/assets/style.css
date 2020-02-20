@@ -479,3 +479,8 @@ label:focus,
    box-shadow: 4px 1px 20px #888;
    overflow-y: scroll;
 }
+
+.border-less-table, .border-less-table td, .border-less-table th {
+   border-collapse: unset;
+   border-top: none;
+}

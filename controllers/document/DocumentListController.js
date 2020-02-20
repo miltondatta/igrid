@@ -316,7 +316,7 @@ exports.documentListSearch = async (req, res) => {
             });
         }
 
-        const data = await db.query(`SELECT document_lists.id,
+        const data = await db.query(`SELECT document_lists.id as doc_id,
                                        document_lists.category_id,
                                        document_lists.sub_category_id,
                                        document_lists.content_type,
@@ -329,7 +329,7 @@ exports.documentListSearch = async (req, res) => {
                                        document_lists.status,
                                        document_categories.id,
                                        document_categories.category_name,
-                                       document_sub_categories.id,
+                                       document_sub_categories.id as cat_id,
                                        document_sub_categories.sub_category_name
                                 FROM document_lists
                                          JOIN document_categories ON document_lists.category_id = document_categories.id
