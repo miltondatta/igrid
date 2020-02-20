@@ -28,35 +28,8 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.min.js"></script>
 <script>
     Splitting();
-
-    function showPdf() {
-        pdfjsLib.getDocument(localStorage.getItem('fileUrl'))
-            .then(doc => {
-                for (i = 0; i < doc._pdfInfo.numPages; i++) {
-                    doc.getPage(i + 1).then(page => {
-                        var myCanvas = document.querySelector("#my_canvas");
-                        var context = myCanvas.getContext("2d");
-
-                        var viewport = page.getViewport(1);
-                        myCanvas.width = viewport.width;
-                        myCanvas.height = viewport.height;
-
-                        page.render({
-                            canvasContext: context,
-                            viewport: viewport
-                        }).then(() => {
-                            console.log('rendered');
-                        });
-                    });
-                }
-
-            });
-    }
-
-    showPdf();
 </script>
 </body>
 </html>

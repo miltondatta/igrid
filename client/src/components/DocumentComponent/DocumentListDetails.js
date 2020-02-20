@@ -7,6 +7,7 @@ import {apiBaseUrl} from '../../utility/constant';
 import {getFileExtension} from "../../utility/custom";
 moment.locale('en');
 
+
 class DocumentListDetails extends Component {
     constructor(props) {
         super(props);
@@ -177,8 +178,13 @@ class DocumentListDetails extends Component {
                             <div className="col-md-12">
                                 {(ext === 'pdf') &&
                                 <div className="ui-docDetailsFile">
-                                    <canvas id="my_canvas"></canvas>
-                                    {/*<object width="100%" height="400" data={fileUrl} type="application/pdf">   </object>*/}
+                                    {/*<canvas id="my_canvas"></canvas>*/}
+                                    <iframe id="inlineFrameExample"
+                                            title="Inline Frame Example"
+                                            width="100%"
+                                            height="100%"
+                                            src={process.env.PUBLIC_URL + '/media/image/test.pdf'}>
+                                    </iframe>
                                 </div>
                                 }
 
