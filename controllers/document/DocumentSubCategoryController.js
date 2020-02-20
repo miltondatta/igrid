@@ -103,7 +103,11 @@ exports.delete = async (req, res) => {
         return res.status(200).json({msg: 'One Document Sub Category deleted successfully!', success: true});
     } catch (err) {
         console.error(err.message);
-        return res.status(500).json({msg: 'Server Error!'});
+        return res.status(500).json({
+            msg: 'This Sub Category has document. So delete first document!',
+            error: true,
+            fullError: err
+        });
     }
 };
 

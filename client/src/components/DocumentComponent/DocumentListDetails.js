@@ -3,7 +3,6 @@ import {withRouter} from 'react-router-dom';
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import moment from "moment";
-import {apiBaseUrl} from '../../utility/constant';
 import {getFileExtension} from "../../utility/custom";
 moment.locale('en');
 
@@ -33,10 +32,22 @@ class DocumentListDetails extends Component {
             Axios.get(apiUrl() + 'document/list/details/' + id)
                 .then(res => {
                     this.setState({
-                        item: res.data,
-                        fileUrl: apiBaseUrl + 'document/' + res.data.file_name
+                        item: res.data
                     }, () => {
-                        localStorage.setItem('fileUrl', this.state.fileUrl);
+                        Axios(apiUrl() + `document/list/pdf/${res.data.file_name}`, {
+                            method: "GET",
+                            responseType: "blob"
+                        })
+                            .then(response => {
+                                const file = new Blob([response.data], {type: "application/pdf"});
+
+                                this.setState({
+                                    fileUrl: URL.createObjectURL(file)
+                                });
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
                     });
                 })
                 .then(() => {
@@ -178,12 +189,11 @@ class DocumentListDetails extends Component {
                             <div className="col-md-12">
                                 {(ext === 'pdf') &&
                                 <div className="ui-docDetailsFile">
-                                    {/*<canvas id="my_canvas"></canvas>*/}
                                     <iframe id="inlineFrameExample"
                                             title="Inline Frame Example"
                                             width="100%"
                                             height="100%"
-                                            src={process.env.PUBLIC_URL + '/media/image/test.pdf'}>
+                                            src={fileUrl}>
                                     </iframe>
                                 </div>
                                 }
