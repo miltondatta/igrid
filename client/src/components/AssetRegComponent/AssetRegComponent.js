@@ -1,3 +1,4 @@
+import './AssetReg.css'
 import React, {Component} from 'react';
 import VendorOptions from "../../utility/component/vendorOptions";
 import ProjectOptions from "../../utility/component/projectOptions";
@@ -85,10 +86,28 @@ class AssetRegComponent extends Component {
                     asset_quantity: value
                 })
             }
+        } else if(name === 'received_by') {
+            this.setState({
+                received_by: value
+            }, () => {
+                this.getReceiver(value)
+            })
         } else {
             this.setState({
                 [name]: value
             })
+        }
+    }
+
+    getReceiver = (name) => {
+        let data = {
+            receiverName: name
+        }
+        if (name.length >= 3) {
+            Axios.post(apiUrl() + 'challan-receiver', data)
+                .then(res => {
+                    console.log(res)
+                })
         }
     }
 
@@ -277,8 +296,11 @@ class AssetRegComponent extends Component {
                                 <VendorOptions />
                             </select>
                         </div>
-                        <div className={'mb-2'}>
+                        <div className={'mb-2 position-relative'}>
                             <input placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`ui-custom-input ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
+                            <div className={'ui-received-by'}>
+
+                            </div>
                         </div>
                         <div className={'mb-2'}>
                             <input placeholder='Added By' value={userName} type={'text'} className={`ui-custom-input`} disabled={true} />
@@ -334,7 +356,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Challan No
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {challan_description}
                             </div>
                         </div>
@@ -342,7 +364,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Challan Name
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {challan_description}
                             </div>
                         </div>
@@ -350,7 +372,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Challan Description
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {challan_description}
                             </div>
                         </div>
@@ -358,7 +380,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Received By
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {received_by}
                             </div>
                         </div>
@@ -366,7 +388,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Added By
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {userName}
                             </div>
                         </div>
@@ -374,7 +396,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Vendor
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {vendor_id}
                             </div>
                         </div>
@@ -382,7 +404,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Comments
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {challanComments}
                             </div>
                         </div>
@@ -390,7 +412,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Purchase Order No
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {purchase_order_no}
                             </div>
                         </div>
@@ -398,7 +420,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Purchase Order Date
                             </div>
-                            <div className={'col-4 pr-2'}>
+                            <div className={'col-8 pr-2'}>
                                 <span className={'ui-text mr-3'}>:</span> {purchase_order_date}
                             </div>
                         </div>
