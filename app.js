@@ -59,6 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/assets')));
 app.use(express.static(path.join(__dirname, 'public/vendor')));
 app.use(express.static(path.join(__dirname, 'public/modules')));
+app.use(express.static(path.join(__dirname, 'public/document')));
 
 
 // Route Defination

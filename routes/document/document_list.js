@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const documentListController = require('../../controllers/document/DocumentListController');
 
 /*
@@ -87,5 +88,15 @@ router.get('/download/:file_name', documentListController.documentListFileDownlo
     @access         Private
  */
 router.get('/details/:id', documentListController.documentListDetailsById);
+
+/*
+    @route          GET api/v1/document/list/pdf/:file_name
+    @desc           Serve Pdf file as Blob Data
+    @access         Private
+ */
+router.get("/pdf/:file_name", (req, res) => {
+    let file = fs.createReadStream("public/document/" + req.params.file_name);
+    return file.pipe(res);
+});
 
 module.exports = router;

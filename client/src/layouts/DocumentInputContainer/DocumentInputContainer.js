@@ -214,13 +214,15 @@ class DocumentInputContainer extends Component {
                 });
             })
             .catch(err => {
-                const {error, msg} = err.response.data;
-                if (msg) {
-                    this.setState({
-                        success: false,
-                        error: error,
-                        errorMessage: error && msg
-                    })
+                const {error, msg, fullError} = err.response.data;
+                if (fullError.name === 'SequelizeForeignKeyConstraintError') {
+                    if (msg) {
+                        this.setState({
+                            success: false,
+                            error: error,
+                            errorMessage: error && msg
+                        })
+                    }
                 }
                 console.log(err.response);
             })
@@ -303,23 +305,23 @@ class DocumentInputContainer extends Component {
                                 className={`ui-custom-input`}/>
                         </div>
                         {errorDict && !errorDict.category_name &&
-                            <span className="error">Document Category Field is required</span>
+                        <span className="error">Document Category Field is required</span>
                         }
                         {editId === null ? <button className="submit-btn"
-                                    onClick={this.handleSubmit}>Submit</button> : <>
-                                        <button className="btn btn-outline-info mr-2" onClick={this.updateData}>
-                                            Update
-                                        </button>
-                                        <button className="btn btn-outline-danger" onClick={() => {
-                                            this.setState({
-                                                editId: null,
-                                                category_name: '',
-                                                success: false,
-                                                error: false
-                                            })
-                                        }}>Go Back
-                                        </button>
-                                    </>}
+                                                   onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="btn btn-outline-info mr-2" onClick={this.updateData}>
+                                Update
+                            </button>
+                            <button className="btn btn-outline-danger" onClick={() => {
+                                this.setState({
+                                    editId: null,
+                                    category_name: '',
+                                    success: false,
+                                    error: false
+                                })
+                            }}>Go Back
+                            </button>
+                        </>}
                     </>
                 );
             case 'DOCUMENTSUBCATEGORY':
@@ -459,7 +461,7 @@ class DocumentInputContainer extends Component {
                                         <input type="file" onChange={this.handleChange} name={'file_name'}
                                                className="custom-file-input" id="validatedCustomFile"/>
                                         <label
-                                            htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0,20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                            htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
                                     </div>
                                     {errorDict && !errorDict.file_name &&
                                     <span className="error">File Name Field is required</span>
@@ -715,12 +717,20 @@ class DocumentInputContainer extends Component {
         return (
             <>
                 {error &&
-                <div className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center" role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
+                <div
+                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center"
+                    role="alert">
+                    {errorMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({error: false})
+                }}></i>
                 </div>}
                 {success &&
-                <div className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center" role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {this.setState({success: false})}}></i>
+                <div
+                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center"
+                    role="alert">
+                    {successMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: false})
+                }}></i>
                 </div>}
 
                 <div className="px-2 my-2 ui-dataEntry">
@@ -735,41 +745,44 @@ class DocumentInputContainer extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
-                                <table className="table table-bordered table-striped table-hover text-center">
-                                    <thead>
-                                    <tr>
-                                        {table_header.map((item, index) => (
-                                            <th key={index}>{item}</th>
-                                        ))}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {this.tableBody()}
-                                    </tbody>
-                                </table>
-                                <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
-                                     aria-labelledby="rowDeleteModal" aria-hidden="true">
-                                    <div className="modal-dialog modal-lg" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">{deleteModalTitle}</h5>
-                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div className="modal-body">
-                                                <p>Are you sure you want to delete {deleteContentName}?</p>
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                                        onClick={() => this.deleteItem(deleteId)}>Delete Now
-                                                </button>
-                                            </div>
+                            <table className="table table-bordered table-striped table-hover text-center">
+                                <thead>
+                                <tr>
+                                    {table_header.map((item, index) => (
+                                        <th key={index}>{item}</th>
+                                    ))}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.tableBody()}
+                                </tbody>
+                            </table>
+                            <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
+                                 aria-labelledby="rowDeleteModal" aria-hidden="true">
+                                <div className="modal-dialog modal-lg" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">{deleteModalTitle}</h5>
+                                            <button type="button" className="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <p>Are you sure you want to delete {deleteContentName}?</p>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary"
+                                                    data-dismiss="modal">Cancel
+                                            </button>
+                                            <button type="button" className="btn btn-primary" data-dismiss="modal"
+                                                    onClick={() => this.deleteItem(deleteId)}>Delete Now
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </> : <h4>Currently There are No Content</h4>}
+                            </div>
+                        </> : <h4>Currently There are No Content</h4>}
                     </div>
                 </div>
             </>
