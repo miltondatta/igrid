@@ -12,7 +12,7 @@ exports.index = async (req, res) => {
                     model: DocumentCategory,
                     attributes: ["category_name"]
                 }],
-                order: [['id', 'DESC']]
+                order: [['id', 'ASC']]
             }
         );
 

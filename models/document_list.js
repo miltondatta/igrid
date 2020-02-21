@@ -22,6 +22,7 @@ const document_list = db.define('document_list', {
     title: Sequelize.STRING,
     circular_no: Sequelize.STRING,
     description: Sequelize.STRING,
+    keyword: Sequelize.STRING,
     file_name: Sequelize.STRING,
     document_date: Sequelize.DATE,
     display_notice: Sequelize.BOOLEAN,

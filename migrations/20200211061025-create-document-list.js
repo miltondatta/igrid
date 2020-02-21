@@ -34,6 +34,9 @@ module.exports = {
             description: {
                 type: Sequelize.STRING(1024)
             },
+            keyword: {
+                type: Sequelize.STRING(1024)
+            },
             file_name: {
                 type: Sequelize.STRING(127)
             },

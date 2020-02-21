@@ -486,3 +486,17 @@ label:focus,
    border-collapse: unset;
    border-top: none;
 }
+
+.document-description-limit {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1;
+   -webkit-box-orient: vertical;
+   padding: 5px !important;
+   width: 150px;
+   border: none !important;
+   border-top: 1px solid #dee2e6;
+   border-bottom: 1px solid #dee2e6;
+   margin-top: 6px !important;
+}
