@@ -1,6 +1,4 @@
 import {devBaseUrl, prodBaseUrl} from "../config/private";
-import {Link} from "react-router-dom";
-import Slider from "react-slick";
 import React from "react";
 export const apiBaseUrl =  'http://localhost:5000/';
 

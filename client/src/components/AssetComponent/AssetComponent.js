@@ -31,7 +31,12 @@ class AssetComponent extends Component{
     }
 
     handleChange = (e) => {
-        const {name, value} = e.target
+        const {name, value, files} = e.target
+        if (name === 'upload_file') {
+            this.setState({
+                [name]: files[0]
+            })
+        }
         this.setState({
             [name]: value
         })
@@ -54,11 +59,10 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const {asset_category, asset_sub_category, quantity, arrayData, productSet, assetSubCategory, assetCategory} = this.state
+        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
         const length = productSet.length
         const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
         const subAssName = assetSubCategory.find(item => item.id === parseInt(asset_sub_category, 10)).sub_category_name
-        console.log(assName, 59)
         const productCombination = {
             id: length + 1,
             request_name: assName,
@@ -69,7 +73,7 @@ class AssetComponent extends Component{
             id: length + 1,
             request_name: asset_category,
             item_name: asset_sub_category,
-            quantity
+            quantity, brand, expected_date, model, upload_file, details, reason
         }
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             this.setState((prevState) => ({
@@ -86,24 +90,23 @@ class AssetComponent extends Component{
     sendRequisition = (e) => {
         e.preventDefault()
         const {reqMaster, productSet} = this.state
-        const data = []
+        let data = new FormData()
 
-        productSet.forEach(item => {
-            data.push({
-                requisition_id: reqMaster.id,
-                asset_category: item.request_name,
-                asset_sub_category: item.item_name,
-                quantity: item.quantity,
+        productSet.forEach((item, index) => {
+            delete item.id
+            Object.keys(item).forEach(itemData => {
+                data.append('data', item[itemData])
             })
+            console.log(data  , 101)
+            data.append('requisition_id', reqMaster.id)
+            Axios.post(apiUrl() + 'requisition-details/entry', data)
+                .then(resData => {
+                    if(resData){
+                        console.log(resData)
+                    }
+                })
+                .catch(err => {console.log(err)})
         })
-
-        Axios.post(apiUrl() + 'requisition-details/entry', data)
-            .then(resData => {
-                if(resData){
-                    console.log(resData)
-                }
-            })
-            .catch(err => {console.log(err)})
     }
 
     handleFilter = (e) => {
@@ -116,7 +119,7 @@ class AssetComponent extends Component{
     }
 
     render(){
-        const {asset_category, mobile, email, quantity, reqMaster, details, asset_sub_category, productSet, arrayData} = this.state
+        const {asset_category, brand, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
 
         return(
             <>
@@ -141,7 +144,23 @@ class AssetComponent extends Component{
                             <input onChange={this.handleChange} value={quantity} type="number" className="ui-custom-input" name={'quantity'} id="inputAddress" placeholder="Quantity" />
                         </div>
                         <div className="px-1 mb-2">
-                            <textarea onChange={this.handleChange} value={details} type="number" className="ui-custom-input " name={'details'} placeholder="Details" />
+                            <input onChange={this.handleChange} value={model} type="text" className="ui-custom-input" name={'model'} placeholder="Model" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <input onChange={this.handleChange} value={brand} type="text" className="ui-custom-input" name={'brand'} placeholder="Brand" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <input onChange={this.handleChange} value={reason} type="text" className="ui-custom-input" name={'reason'} placeholder="Reason" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <input onChange={this.handleChange} value={expected_date} type={'date'} className="form-control" name={'expected_date'} placeholder="Expected Date" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <textarea onChange={this.handleChange} value={details} type="text" className="ui-custom-input " name={'details'} placeholder="Details" />
+                        </div>
+                        <div className="ui-custom-file w-50 px-1">
+                            <input type="file" onChange={this.handleChange} name={'upload_file'} required />
+                            <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
                     </div>
