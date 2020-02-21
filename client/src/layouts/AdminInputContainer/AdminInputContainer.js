@@ -709,7 +709,7 @@ class AdminInputContainer extends Component {
             case 'LOCATIONS':
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) => (
                     <div className="px-1 mb-2">
-                        <select name={'parent_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                        <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
                             <option>Select Sub Location</option>
                             <LocationsOptions selectedId={item[index].parent_id} />
                         </select>
@@ -789,7 +789,7 @@ class AdminInputContainer extends Component {
 
                         <div className="px-1 mb-2">
                             <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
-                                <option>Select Parent</option>
+                                <option>Select Module</option>
                                 <ModuleOptions />
                             </select>
                         </div>
@@ -860,8 +860,8 @@ class AdminInputContainer extends Component {
             case 'USERASSOCIATE':
                 let subLocation = locationHolder.length > 0 && locationHolder.map((item, index) => (
                     <div className="px-1 mb-2">
-                            <select name={'location_id'} onChange={this.handleChange} className={`form-control ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                                <option>Select Location</option>
+                            <select name={'location_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                <option>Select Sub Location</option>
                                 <LocationsOptions selectedId={item[index].parent_id} />
                             </select>
                     </div>

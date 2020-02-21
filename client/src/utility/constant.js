@@ -1,4 +1,7 @@
 import {devBaseUrl, prodBaseUrl} from "../config/private";
+import {Link} from "react-router-dom";
+import Slider from "react-slick";
+import React from "react";
 export const apiBaseUrl =  'http://localhost:5000/';
 
 export const apiUrl = () => {
@@ -276,4 +279,31 @@ export const documentNav = [
             }
         ]
     }
+]
+
+export const homeBanner = [
+    {
+        title: "Manage your Business Easily",
+        btnText: "MIS Report",
+        link: "/",
+        img: "/media/banner/b_1.png"
+    },
+    {
+        title: "Manage your asset quickly",
+        btnText: "Asset Requisition & Tracking",
+        link: "/home",
+        img: "/media/banner/b_2.png"
+    },
+    {
+        title: "Manage your Documents Easily",
+        btnText: "Document Management",
+        link: "/documents",
+        img: "/media/banner/b_3.png"
+    },
+    {
+        title: "Find your Locations",
+        btnText: "Location Finder",
+        link: "/location",
+        img: "/media/banner/b_4.png"
+    },
 ]

@@ -107,6 +107,15 @@ class Topnav extends Component {
     render() {
         const {home} = this.props
         const {showUserOption} = this.state
+        const moduleName = window.location.pathname.replace('/', '').split('/');
+        let breadCrumb = moduleName.map((item, index) => (
+            <>
+                {item !== 'home' && <li className="breadcrumb-item active f-capitalize" aria-current="page">
+                    {moduleName.length === index + 1 ? <>{item.replace('-', ' ')}</> : <Link to={'/' + item}>{item.replace('-', ' ')}</Link>}
+                </li>}
+            </>
+        ))
+        console.log(moduleName, 111)
         const {userName, image, userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         if (home) {
             return (
@@ -154,8 +163,10 @@ class Topnav extends Component {
                                     <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
                                 </Link>
                                 <div className={'ui-search-bar'}>
-                                    <input type="text" placeholder={'Search'}/>
-                                    <i className="icofont-search-1"></i>
+                                    <ol className="breadcrumb h-100">
+                                        <li className="breadcrumb-item"><Link to={'/'}>Home</Link></li>
+                                        {breadCrumb}
+                                    </ol>
                                 </div>
                             </div>
                             <div className={'text-white ui-user-nav d-flex align-items-center'}>

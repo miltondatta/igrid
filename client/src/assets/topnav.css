@@ -5,9 +5,12 @@
 }
 
 .ui-topnav .ui-search-bar{
-    height: 44px;
+    height: 52px;
     margin-left: 25px;
     position: relative;
+    width: 500px;
+    background: #eaf3f9;
+    border-radius: 5px;
 }
 
 .ui-topnav .ui-search-bar input{

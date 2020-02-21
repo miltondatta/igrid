@@ -1,21 +1,38 @@
 import React from 'react';
+import Slider from "react-slick";
 import {Link} from 'react-router-dom';
 import NoticeBoardComponent from "./NoticeBoardComponent";
+import {homeBanner} from "../../utility/constant";
 
 const HomeComponent = () => {
+    let settings = {
+        className: "",
+        dots: false,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 4000,
+        pauseOnHover: true,
+    };
+    const homeBan = homeBanner.map((item, index) => (
+        <div>
+            <div className={'ui-help-center'}>
+                <p>{item.title}</p>
+                <Link to={item.link}><button>{item.btnText}</button></Link>
+            </div>
+            <img src={process.env.PUBLIC_URL + item.img} alt="banner"/>
+        </div>
+    ))
     return (
         <>
             <div className="ui-hometop">
                 <div className={'ui-news'}>
                     <p className={'f-19px f-weight-600 text-grey border-bottom-gray pb-3'}>Latest Updates</p>
                 </div>
-                <div>
-                    <div className={'ui-help-center'}>
-                        <p>Manage your Business Easily</p>
-                        <button>Help Center</button>
-                    </div>
-                    <img src={process.env.PUBLIC_URL + '/media/image/banner.png'} alt="banner"/>
-                </div>
+                <Slider {...settings}>
+                    {homeBan}
+                </Slider>
             </div>
             <div className="ui-hometop">
                 <div className={'ui-news'}>

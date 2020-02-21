@@ -130,6 +130,8 @@ input[type=date],
 .f-28px{font-size: 28px;}
 .f-30px{font-size: 30px;}
 
+.f-capitalize{text-transform: capitalize;}
+
 .pb-6px{padding-bottom: 6px}
 
 .px-13px{padding: 0 13px}
