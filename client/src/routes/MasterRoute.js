@@ -232,7 +232,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/model' component={AsyncModels}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/admin/vendor' component={AsyncVendor}/>
-                                    <Route exact path='/asset/:option' component={AsyncAsset}/>
+                                    <Route exact path='/asset' component={AsyncAsset}/>
                                     <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>

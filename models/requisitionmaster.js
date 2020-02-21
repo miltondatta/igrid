@@ -36,30 +36,6 @@ const RequisitionMaster = db.define('requisition_masters', {
       key: 'id'
     }
   },
-  brand: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  model: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  reason: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  details: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  expected_date: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
-  file: {
-    type: Sequelize.STRING,
-    allowNull: true
-  },
   request_date: {
     type: Sequelize.DATEONLY,
     defaultValue: Sequelize.NOW

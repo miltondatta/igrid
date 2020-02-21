@@ -40,7 +40,7 @@ export const sidenav = [
             {
                 id: 4,
                 name: 'Material Requisition',
-                link: '/asset/1',
+                link: '/asset',
                 icon: "far fa-keyboard"
             },
         ]

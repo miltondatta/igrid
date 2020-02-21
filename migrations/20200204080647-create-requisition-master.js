@@ -17,30 +17,6 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      brand: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      model: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      reason: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      details: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      expected_date: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      file: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
       location_id: {
         type: Sequelize.INTEGER,
         references: {
