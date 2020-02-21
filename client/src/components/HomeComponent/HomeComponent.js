@@ -11,8 +11,9 @@ const HomeComponent = () => {
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
+        speed: 1500,
         autoplay: true,
-        autoplaySpeed: 4000,
+        autoplaySpeed: 4500,
         pauseOnHover: true,
     };
     const homeBan = homeBanner.map((item, index) => (
