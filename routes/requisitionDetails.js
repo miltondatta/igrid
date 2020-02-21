@@ -75,7 +75,7 @@ route.put('/requisition-details/update/:id', (req,res,next) => {
 route.post('/requisition-details/entry', (req,res,next) => {
         let response = []
         req.body.forEach(item => {
-            if(item.requisition_id === '' || item.asset_category === '' || item.asset_sub_category === '' || item.quantity === '') {
+            if(item.requisition_id === '' || item.asset_category === '' || item.asset_sub_category === '' || item.quantity === '' || item.reason === '') {
                 res.status(200).json({message: 'All fields required!'})
             } else {
                 RequisitionDetails.create(item)

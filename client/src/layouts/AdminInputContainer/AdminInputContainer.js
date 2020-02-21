@@ -53,7 +53,7 @@ class AdminInputContainer extends Component {
     
     handleSubmit = () => {
         const {getApi} = this.props
-        console.log(getApi, 50)
+        console.log(this.getApiData(), 50)
         if (Object.values(this.validate()).includes(false)) {
             return
         }
@@ -789,7 +789,7 @@ class AdminInputContainer extends Component {
 
                         <div className="px-1 mb-2">
                             <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
-                                <option>Select Parent</option>
+                                <option>Select Module</option>
                                 <ModuleOptions />
                             </select>
                         </div>
