@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {withRouter} from 'react-router-dom';
 import Axios from "axios";
-import {apiUrl} from "../../utility/constant";
+import {apiUrl, apiBaseUrl} from "../../utility/constant";
 import moment from "moment";
 import {getFileExtension} from "../../utility/custom";
+
 moment.locale('en');
 
 
@@ -34,20 +35,27 @@ class DocumentListDetails extends Component {
                     this.setState({
                         item: res.data
                     }, () => {
-                        Axios(apiUrl() + `document/list/pdf/${res.data.file_name}`, {
-                            method: "GET",
-                            responseType: "blob"
-                        })
-                            .then(response => {
-                                const file = new Blob([response.data], {type: "application/pdf"});
-
-                                this.setState({
-                                    fileUrl: URL.createObjectURL(file)
-                                });
+                        let ext = getFileExtension(res.data.file_name);
+                        if (res.data.file_name && ext === 'pdf') {
+                            Axios(apiUrl() + `document/list/pdf/${res.data.file_name}`, {
+                                method: "GET",
+                                responseType: "blob"
                             })
-                            .catch(error => {
-                                console.log(error);
-                            });
+                                .then(response => {
+                                    const file = new Blob([response.data], {type: "application/pdf"});
+
+                                    this.setState({
+                                        fileUrl: URL.createObjectURL(file)
+                                    });
+                                })
+                                .catch(err => {
+                                    this.setState({
+                                        fileError: true,
+                                        fileErrorMessage: res.data.file_name + ' File didn\'t found!'
+                                    });
+                                    console.log(err.response);
+                                });
+                        }
                     });
                 })
                 .then(() => {
@@ -95,8 +103,8 @@ class DocumentListDetails extends Component {
         return (
             <>
                 {fileError &&
-                <div className="row ml-1">
-                    <div className="col-md-4 alert alert-danger" role="alert">
+                <div className="row mx-1">
+                    <div className="col-md-12 alert alert-danger" role="alert">
                         {fileErrorMessage}
                     </div>
                 </div>
@@ -104,45 +112,52 @@ class DocumentListDetails extends Component {
                 <div className="ui-dataEntry">
                     <div className="bg-white p-3">
                         <div className="row">
-                            <div className="col-md-3">
-                                <ul className="list-unstyled pl-1"
-                                    style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>Category</li>
-                                    <li>Sub Category</li>
-                                    <li>Title</li>
-                                    <li>Content Type</li>
-                                    <li>Circular Number</li>
-                                    <li>Display Notice</li>
-                                    <li>Status</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-1">
-                                <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>:</li>
-                                    <li>:</li>
-                                    <li>:</li>
-                                    <li>:</li>
-                                    <li>:</li>
-                                    <li>:</li>
-                                    <li>:</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-8">
-                                <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>{item.document_category && item.document_category.category_name}</li>
-                                    <li>{item.document_sub_category && item.document_sub_category.sub_category_name}</li>
-                                    <li>{item.title}</li>
-                                    <li>{item.content_type ? 'Notice' : 'Circular'}</li>
-                                    <li>{item.circular_no}</li>
-                                    <li>{item.display_notice ? 'On' : 'Off'}</li>
-                                    <li>{item.status ? 'Active' : 'Inactive'}</li>
-                                </ul>
+                            <div className="col-md-12">
+                                <table className="table border-less-table">
+                                    <tbody>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>:</th>
+                                        <td>{item.document_category && item.document_category.category_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Sub Category</th>
+                                        <th>:</th>
+                                        <td>{item.document_sub_category && item.document_sub_category.sub_category_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>:</th>
+                                        <td>{item.title}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Content Type</th>
+                                        <th>:</th>
+                                        <td>{item.content_type ? 'Notice' : 'Circular'}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Circular Number</th>
+                                        <th>:</th>
+                                        <td>{item.circular_no}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Display Notice</th>
+                                        <th>:</th>
+                                        <td>{item.display_notice ? 'On' : 'Off'}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>:</th>
+                                        <td>{item.status ? 'Active' : 'Inactive'}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                     <div className="bg-white p-3">
                         <div className="row">
-                            <div className="col-md-2">
+                            <div className="col-md-4">
                                 <ul className="list-unstyled pl-1"
                                     style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                     <li>Document Date</li>
@@ -155,7 +170,7 @@ class DocumentListDetails extends Component {
                                     <li>:</li>
                                 </ul>
                             </div>
-                            <div className="col-md-9">
+                            <div className="col-md-7">
                                 <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                     <li>{moment(item.document_date).format('dddd MM, YYYY hh:mm a')}</li>
                                     <li style={{fontWeight: 400}}
@@ -164,7 +179,7 @@ class DocumentListDetails extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-md-2">
+                            <div className="col-md-4">
                                 <ul className="list-unstyled pl-1"
                                     style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                     <li>File Download</li>
@@ -175,7 +190,7 @@ class DocumentListDetails extends Component {
                                     <li>:</li>
                                 </ul>
                             </div>
-                            <div className="col-md-9">
+                            <div className="col-md-7">
                                 <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                     <li>
                                         <a href="/"
@@ -184,7 +199,7 @@ class DocumentListDetails extends Component {
                                 </ul>
                             </div>
                         </div>
-                        {item.file_name &&
+                        {item.file_name && !fileError &&
                         <div className="row">
                             <div className="col-md-12">
                                 {(ext === 'pdf') &&
@@ -198,9 +213,10 @@ class DocumentListDetails extends Component {
                                 </div>
                                 }
 
-                                {images.includes(ext) &&
+                                {(images.includes(ext)) &&
                                 <div className="ui-docDetailsFile">
-                                    <img src={fileUrl} alt="" width="100%" height="100%"/>
+                                    <img src={`${apiBaseUrl}document/${item.file_name}`} alt="" width="100%"
+                                         height="100%"/>
                                 </div>
                                 }
                             </div>
