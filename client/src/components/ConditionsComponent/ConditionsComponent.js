@@ -8,6 +8,8 @@ class ConditionsComponent extends Component {
                 <AdminInputContainer
                     formType = 'CONDITIONS'
                     getApi = 'conditions'
+                    title = 'Condition List'
+                    headTitle = 'Condition Information'
                 />
             </>
         );

@@ -27,6 +27,8 @@ class LocationsComponent extends Component {
             <AdminInputContainer
                 formType = 'LOCATIONS'
                 getApi = 'locations'
+                title = 'Location List'
+                headTitle = 'Location Information'
             />
         );
     }

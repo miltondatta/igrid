@@ -7,7 +7,8 @@ class ApprovalLevelComponent extends Component {
             <AdminInputContainer
                 formType = 'USERAPPROVAL'
                 getApi = 'approval_level'
-                title = 'Approval Level'
+                title = 'Approval Level List'
+                headTitle = 'Approval Level Information'
             />
         );
     }

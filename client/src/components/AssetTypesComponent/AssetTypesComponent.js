@@ -8,6 +8,8 @@ class AssetTypesComponent extends Component {
                 <AdminInputContainer
                     formType = 'ASSETTYPES'
                     getApi = 'assets-types'
+                    title = 'Asset Type List'
+                    headTitle = 'Asset Type Information'
                 />
             </div>
         );

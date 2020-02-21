@@ -14,6 +14,8 @@ class DocumentSubCategory extends Component {
                     formType = 'DOCUMENTSUBCATEGORY'
                     getApi = 'document/sub/category'
                     table_header={this.table_header}
+                    title='Document Sub Category List'
+                    headTitle = 'Document Sub Category Information'
                 />
             </>
         );

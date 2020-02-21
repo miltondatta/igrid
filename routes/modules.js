@@ -32,7 +32,7 @@ route.get('/modules', (req,res,next) => {
             res.status(200).json(resData)
         })
         .catch(err => {
-            res.status(404).json({message: 'Something Went Wrong', err})
+            res.status(200).json({message: 'Something Went Wrong', err})
         })
 })
 
@@ -61,7 +61,7 @@ route.put('/modules/update/:id', (req,res,next) => {
                             res.status(200).json(resData)
                         })
                         .catch(err => {
-                            res.status(404).json({message: 'Something went wrong'})
+                            res.status(200).json({message: 'Something went wrong'})
                         })
                 })
         }
@@ -81,7 +81,7 @@ route.post('/modules/entry', (req,res,next) => {
                     res.status(200).json(resData)
                 })
                 .catch(err => {
-                    res.status(404).json({message: 'Something went wrong', err})
+                    res.status(200).json({message: 'Something went wrong', err})
                 })
         }
     })
@@ -99,7 +99,7 @@ route.delete('/modules/delete', (req,res,next) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            res.status(200).json({message: 'Something went wrong', err})
         })
 })
 

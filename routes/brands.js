@@ -10,7 +10,7 @@ route.get('/brands', (req,res,next) => {
             res.status(200).json(resData)
         })
         .catch(err => {
-            res.status(404).json({message: 'Something Went Wrong', err})
+            res.status(200).json({message: 'Something Went Wrong', err})
         })
 })
 
@@ -26,7 +26,7 @@ route.post('/brands/entry', (req,res,next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(404).json({message: 'Something went wrong', err})
+                res.status(200).json({message: 'Something went wrong', err})
             })
     }
 })
@@ -42,7 +42,7 @@ route.put('/brands/update/:id', (req,res,next) => {
                 res.status(200).json(resData)
             })
             .catch(err => {
-                res.status(404).json({message: 'Something went wrong'})
+                res.status(200).json({message: 'Something went wrong'})
             })
     } else {
         res.status(200).json({message: 'All fields required!'})
@@ -62,7 +62,7 @@ route.delete('/brands/delete', (req,res,next) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            res.status(200).json({message: 'Something went wrong', err})
         })
 })
 

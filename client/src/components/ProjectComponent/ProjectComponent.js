@@ -7,6 +7,8 @@ class ProjectComponent extends Component {
             <AdminInputContainer
                 formType = 'PROJECT'
                 getApi = 'projects'
+                title = 'Project List'
+                headTitle = 'Project Information'
             />
         );
     }

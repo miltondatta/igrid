@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const documentListController = require('../../controllers/document/DocumentListController');
 
 /*
@@ -61,10 +62,47 @@ router.get('/by/notice', documentListController.documentListDataByNotice);
 router.get('/by/circular', documentListController.documentListDataByCircular);
 
 /*
+    @route          GET api/v1/document/list/by/category/sub/category
+    @desc           Get All Document List Data By Category Sub Category
+    @access         Private
+ */
+router.post('/by/category/sub/category', documentListController.documentListDataByCategorySubCategory);
+
+/*
     @route          GET api/v1/document/list/search
     @desc           Search Document list data
     @access         Private
  */
 router.post('/search', documentListController.documentListSearch);
+
+/*
+    @route          GET api/v1/document/list/download/:file_name
+    @desc           Download Document List File
+    @access         Private
+ */
+router.get('/download/:file_name', documentListController.documentListFileDownload);
+
+/*
+    @route          GET api/v1/document/list/details/:id
+    @desc           Download Document List Details By Id
+    @access         Private
+ */
+router.get('/details/:id', documentListController.documentListDetailsById);
+
+/*
+    @route          GET api/v1/document/list/pdf/:file_name
+    @desc           Serve Pdf file as Blob Data
+    @access         Private
+ */
+router.get("/pdf/:file_name", (req, res) => {
+    let file_path = 'public/document/' + req.params.file_name;
+    if (!fs.existsSync(file_path)) return res.status(400).json({
+        msg: `${req.params.file_name} File didn\'t found!`,
+        error: true
+    });
+
+    let file = fs.createReadStream("public/document/" + req.params.file_name);
+    return file.pipe(res);
+});
 
 module.exports = router;

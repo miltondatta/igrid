@@ -14,7 +14,7 @@ route.get('/approval_level/options', async (req,res,next) => {
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(404).json({message: 'Something Went Wrong'})
+        res.status(200).json({message: 'No Data Found'})
     }
 })
 
@@ -28,7 +28,7 @@ route.get('/approval_level', async (req,res,next) => {
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(404).json({message: 'Something Went Wrong'})
+        res.status(200).json({message: 'No Data Found'})
     }
 })
 
@@ -41,7 +41,7 @@ route.put('/approval_level/update/:id', (req,res,next) => {
                 res.status(200).json(resData)
             })
             .catch(err => {
-                res.status(404).json({message: 'Something went wrong'})
+                res.status(200).json({message: 'Something went wrong'})
             })
     } else {
         res.status(200).json({message: 'All fields required!'})
@@ -58,7 +58,7 @@ route.post('/approval_level/entry', (req,res,next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(404).json({message: 'Something went wrong', err})
+                res.status(200).json({message: 'Something went wrong', err})
             })
     } else {
         res.status(200).json({message: 'All fields required!'})
@@ -78,7 +78,7 @@ route.delete('/approval_level/delete', (req,res,next) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(404).json({message: 'Something went wrong', err})
+            res.status(200).json({message: 'Something went wrong', err})
         })
 })
 

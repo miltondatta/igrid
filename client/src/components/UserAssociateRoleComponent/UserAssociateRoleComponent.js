@@ -7,7 +7,8 @@ class   UserAssociateRoleComponent extends Component {
             <AdminInputContainer
                 formType = 'USERASSOCIATE'
                 getApi = 'user-associate-roles'
-                title = 'User Associate Role'
+                title = 'User Associate Role List'
+                headTitle = 'User Associate Role Information'
             />
         );
     }

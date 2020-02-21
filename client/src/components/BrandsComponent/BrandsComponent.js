@@ -7,6 +7,8 @@ class BrandsComponent extends Component {
             <AdminInputContainer
                 formType = 'BRANDS'
                 getApi = 'brands'
+                title = 'Brand List'
+                headTitle = 'Brand Information'
             />
         );
     }

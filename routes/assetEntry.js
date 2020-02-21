@@ -1,6 +1,8 @@
 const multer = require('multer')
 const express = require('express')
 const db = require('../config/db');
+const { Op } = require("sequelize");
+const Vendors  = require('../models/asset/vendors')
 const Challan = require('../models/asset/challan')
 const Assets = require('../models/asset/assets')
 
@@ -115,14 +117,35 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
             }
             Challan.create(data)
                 .then(resData => {
-                    res.status(200).json(resData.id)
+                    Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
+                        .then(resDataInner => {
+                            res.status(200).json({resId: resData.id, vendorName: resDataInner[0].dataValues.vendor_name})
+                        })
                 })
                 .catch(err => {
                     console.log(err)
-                    res.status(404).json({message: 'Something went wrong', err})
+                    res.status(200).json({message: 'Something went wrong', err})
                 })
         }
     })
+})
+
+// Get Challan Receiver
+route.post('/challan-receiver', async (req,res,next) => {
+    let {receiverName} = req.body
+    if (receiverName.length >= 3) {
+        Challan.findAll({
+            attributes: ['received_by'],
+            group: ['received_by']
+        })
+            .then(resData => {
+                let output = resData.filter(item => item.received_by.toLowerCase().includes(receiverName.toLowerCase()))
+                res.status(200).json(output)
+            })
+            .catch(err => {
+                console.log(err, 140)
+            })
+    }
 })
 
 // Asset Entry
@@ -141,7 +164,7 @@ route.post('/assets-entry/entry', (req,res,next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(404).json({message: 'Something went wrong', err})
+                res.status(200).json({message: 'Something went wrong', err})
             })
     })
 })
@@ -197,7 +220,7 @@ route.delete('/assets-entry/delete', (req,res,next) => {
     })
     .catch(err => {
         console.log(err)
-        res.status(404).json({message: 'Something went wrong', err})
+        res.status(200).json({message: 'Something went wrong', err})
     })
 })
 

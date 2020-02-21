@@ -115,104 +115,48 @@ class AssetComponent extends Component{
         })
     }
 
-    handleReqMaster = (e) => {
-        e.preventDefault()
-        const {mobile, email} = this.state
-        const {location_id, role_id, id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        const payload = {
-            mobile,
-            email,
-            location_id,
-            role_id,
-            request_by: id
-        }
-        Axios.post(apiUrl() + 'requisition-master/entry', payload)
-            .then(resData => {
-                if(resData){
-                    this.setState({
-                        reqMaster: resData.data[0]
-                    })
-                }
-            })
-            .catch(err => {console.log(err)})
-    }
-
     render(){
-        const {asset_category, mobile, email, quantity, reqMaster, userName, asset_sub_category, productSet, arrayData} = this.state
+        const {asset_category, mobile, email, quantity, reqMaster, details, asset_sub_category, productSet, arrayData} = this.state
 
         return(
-            <div className={'ui-asset-component m-auto justify-content-between'}>
-                {!reqMaster ? <div className={'bg-white p-3 rounded shadow'}>
-                    <nav className="navbar text-center mb-3 p-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0">Your Information</p>
-                    </nav>
-                    <form>
-                        <div className="form-row">
-                            <div className="form-group col-md-6">
-                                <label htmlFor="email">Email</label>
-                                <input onChange={this.handleChange} value={email} type="email" className="form-control" name={'email'} id="email" placeholder="Email" />
-                            </div>
-                            <div className="form-group col-md-6">
-                                <label htmlFor="mobile">Phone</label>
-                                <input onChange={this.handleChange} value={mobile} type="text" className="form-control" name={'mobile'} id="mobile" placeholder="Phone Number" />
-                            </div>
-                        </div>
-                        <button type="submit" onClick={this.handleReqMaster} className="ui-btn">Add Info</button>
-                    </form>
-                </div> : <div className={'bg-white p-3 rounded shadow'}>
-                    <nav className="navbar text-center p-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0" href="#">Your Information</p>
-                    </nav>
-                    <div className={'row px-3'}>
-                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Your Name</div>
-                        <div className="col-md-9 mt-3 pl-2 f-18px">{userName}</div>
-                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Your Email</div>
-                        <div className="col-md-9 mt-3 pl-2 f-18px">{reqMaster.email}</div>
-                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Phone Number</div>
-                        <div className="col-md-9 mt-3 pl-2 f-18px">{reqMaster.mobile}</div>
-                        <div className="col-md-3 mt-3 pl-2 f-18px f-weight-500">Request Date</div>
-                        <div className="col-md-9 mt-3 pl-2 f-18px">{reqMaster.request_date}</div>
-                    </div>
-                </div>}
-                <div className={'bg-white p-3 rounded shadow ui-req-dataTable'}>
-                    <nav className="navbar text-center mb-3 p-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0">Submit Product</p>
-                    </nav>
-                    <ReactDataTable
-                        tableData={arrayData}
-                    />
-                    {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="ui-btn">Submit</button>}
-                </div>
-                {reqMaster &&
-                    <div className={'bg-white p-3 rounded shadow'}>
+            <>
+                <div className={'ui-dataEntry p-1'}>
+                    <div className={'bg-white rounded p-2 min-h-80vh position-relative'}>
                         <nav className="navbar text-center mb-3 p-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0">Add Products</p>
+                            <p className="text-dark f-weight-500 f-20px m-0">Requisition</p>
                         </nav>
-                        <form className={'p-2'}>
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="requeston">Request On</label>
-                                    <select onChange={this.handleChange} className="form-control" id="requeston" value={asset_category} name={'asset_category'}>
-                                        <option value={0}>--Select--</option>
-                                        <AssetCategoryOptions />
-                                    </select>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="itemname">Item Name</label>
-                                    <select onChange={this.handleChange} className="form-control" id="itemname" name={'asset_sub_category'} value={asset_sub_category}>
-                                        <option value={0}>--Select Items--</option>
-                                        <AssetSubCategoryOptions assetId={asset_category} />
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="inputAddress">Quantity</label>
-                                <input onChange={this.handleChange} value={quantity} type="number" className="form-control" name={'quantity'} id="inputAddress" placeholder="Quantity" />
-                            </div>
-                            <button type="submit" onClick={this.handleSubmit} className="ui-btn">Add Product</button>
-                        </form>
-                    </div>}
-            </div>
+                        <div className={'px-1 mb-2'}>
+                            <select onChange={this.handleChange} className="ui-custom-input" id="requeston" value={asset_category} name={'asset_category'}>
+                                <option value={0}>Select Category</option>
+                                <AssetCategoryOptions />
+                            </select>
+                        </div>
+                        <div className={"px-1 mb-2"}>
+                            <select onChange={this.handleChange} className="ui-custom-input" id="itemname" name={'asset_sub_category'} value={asset_sub_category}>
+                                <option value={0}>Select Sub Category</option>
+                                <AssetSubCategoryOptions assetId={asset_category} />
+                            </select>
+                        </div>
+                        <div className="px-1 mb-2">
+                            <input onChange={this.handleChange} value={quantity} type="number" className="ui-custom-input" name={'quantity'} id="inputAddress" placeholder="Quantity" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <textarea onChange={this.handleChange} value={details} type="number" className="ui-custom-input " name={'details'} placeholder="Details" />
+                        </div>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
+                    </div>
+                    <div className={'rounded p-2 bg-white min-h-80vh'}>
+                        <nav className="navbar text-center mb-3 p-2 rounded">
+                            <p className="text-dark f-weight-500 f-20px m-0">Submit Requisiiton</p>
+                        </nav>
+                        {arrayData.length > 0 ? <ReactDataTable
+                            tableData={arrayData}
+                        /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+
+                        {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="ui-btn">Submit</button>}
+                    </div>
+                </div>
+            </>
         )
     }
 }
