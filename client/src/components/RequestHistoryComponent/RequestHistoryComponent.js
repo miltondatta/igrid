@@ -54,9 +54,7 @@ class RequestHistoryComponent extends Component {
         const {reqDetails} = this.state
         Axios.post(apiUrl() + 'requisition-approve/entry', reqDetails)
             .then(res => {
-                this.setState({
-                    renderRidirect: true
-                })
+                return null
             })
             .catch(err => {
                 console.log(err)
@@ -81,6 +79,7 @@ class RequestHistoryComponent extends Component {
                         location_id,
                         requisition_id,
                         delivery_to: null,
+                        status: 1,
                         requisition_details_id,
                         [type]: type === 'update_quantity' && !value ? quantity : parseInt(value, 10)
                     })
@@ -95,6 +94,7 @@ class RequestHistoryComponent extends Component {
                 requisition_id,
                 delivery_to: null,
                 requisition_details_id,
+                status: 1,
                 [type]: type === 'update_quantity' && !value ? quantity : parseInt(value, 10)
             })
         }
@@ -130,19 +130,12 @@ class RequestHistoryComponent extends Component {
                             }}
                             value={item.quantity} />}
                     </td>
-                    <td>
-                        <select className={'ui-transparent-select'} onChange={(e) => {this.handleChange(e, item.id, 'status', requisition_id )}}>
-                            <option>--Select Action--</option>
-                            <StatusOptions />
-                        </select>
-                    </td>
                 </tr>
             )
         })
 
         return (
             <div className={'bg-white p-3 rounded shadow'}>
-                { renderRidirect && <Redirect to={'/delivery-request'} />}
                 {!showDetails ? <>
                 <nav className="navbar text-center mb-3 p-2 rounded">
                     <p className="text-dark f-weight-500 f-20px m-0" >Requisition History</p>

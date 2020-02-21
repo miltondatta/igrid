@@ -36,13 +36,15 @@ class AssetComponent extends Component{
             this.setState({
                 [name]: files[0]
             })
+        } else {
+            this.setState({
+                [name]: value
+            })
         }
-        this.setState({
-            [name]: value
-        })
     }
 
     componentDidMount() {
+        this.handleReqMaster()
         Axios.get(apiUrl() + 'asset-category')
             .then(resData => {
                 this.setState({
@@ -71,9 +73,7 @@ class AssetComponent extends Component{
         }
         const productCombinationStore = {
             id: length + 1,
-            request_name: asset_category,
-            item_name: asset_sub_category,
-            quantity, brand, expected_date, model, upload_file, details, reason
+            asset_category, asset_sub_category, quantity, brand, expected_date, model, upload_file, details, reason
         }
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             this.setState((prevState) => ({
@@ -94,10 +94,10 @@ class AssetComponent extends Component{
 
         productSet.forEach((item, index) => {
             delete item.id
+            console.log(item)
             Object.keys(item).forEach(itemData => {
-                data.append('data', item[itemData])
+                itemData === 'upload_file' ? data.append('file', item[itemData]) : data.append(itemData, item[itemData])
             })
-            console.log(data  , 101)
             data.append('requisition_id', reqMaster.id)
             Axios.post(apiUrl() + 'requisition-details/entry', data)
                 .then(resData => {
@@ -106,16 +106,29 @@ class AssetComponent extends Component{
                     }
                 })
                 .catch(err => {console.log(err)})
+
+            data = new FormData()
         })
     }
 
-    handleFilter = (e) => {
-        const {value} = e.target
-        this.setState({
-            filterText: value
-        }, () => {
-            console.log(this.state.filterText)
-        })
+    handleReqMaster = () => {
+        const {location_id, role_id, id, email, phone_number} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        const payload = {
+            mobile: phone_number,
+            email,
+            location_id,
+            role_id,
+            request_by: id
+        }
+        Axios.post(apiUrl() + 'requisition-master/entry', payload)
+            .then(resData => {
+                if(resData){
+                    this.setState({
+                        reqMaster: resData.data[0]
+                    })
+                }
+            })
+            .catch(err => {console.log(err)})
     }
 
     render(){
@@ -156,10 +169,10 @@ class AssetComponent extends Component{
                             <input onChange={this.handleChange} value={expected_date} type={'date'} className="form-control" name={'expected_date'} placeholder="Expected Date" />
                         </div>
                         <div className="px-1 mb-2">
-                            <textarea onChange={this.handleChange} value={details} type="text" className="ui-custom-input " name={'details'} placeholder="Details" />
+                            <textarea onChange={this.handleChange} value={details} className="ui-custom-input " name={'details'} placeholder="Details" />
                         </div>
                         <div className="ui-custom-file w-50 px-1">
-                            <input type="file" onChange={this.handleChange} name={'upload_file'} required />
+                            <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
                             <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>

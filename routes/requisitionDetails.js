@@ -1,8 +1,29 @@
+const multer = require('multer')
 const db = require('../config/db')
 const express = require('express')
 const RequisitionDetails = require('../models/requisitiondetails')
 
 const route = express.Router()
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/requisition')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' +file.originalname )
+    }
+})
+let upload =  multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
+            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
+
+        }
+        cb(null, true);
+    }
+}).single('file')
+
 
 // Read
 route.get('/requisition-details', async (req,res,next) => {
@@ -73,20 +94,25 @@ route.put('/requisition-details/update/:id', (req,res,next) => {
 
 // Create
 route.post('/requisition-details/entry', (req,res,next) => {
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
         let response = []
-        req.body.forEach(item => {
-            if(item.requisition_id === '' || item.asset_category === '' || item.asset_sub_category === '' || item.quantity === '' || item.reason === '') {
-                res.status(200).json({message: 'All fields required!'})
-            } else {
-                RequisitionDetails.create(item)
-                    .then(resData => {
-                        response.push(res.status(200).json(resData))
-                    })
-                    .catch(err => {
-                        res.status(200).json({message: 'Something went wrong', err})
-                    })
-            }
-        })
+        if (req.body.requisition_id === '' || req.body.asset_category === '' || req.body.asset_sub_category === '' || req.body.quantity === '' || req.body.reason === '') {
+            res.status(200).json({message: 'All fields required!'})
+        } else {
+            RequisitionDetails.create({...req.body, file: req.file ? req.file.filename : null})
+                .then(resData => {
+                    response.push(res.status(200).json(resData))
+                })
+                .catch(err => {
+                    res.status(200).json({message: 'Something went wrong', err})
+                })
+        }
+    })
 })
 
 // Delete
