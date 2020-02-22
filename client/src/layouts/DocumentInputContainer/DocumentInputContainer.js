@@ -6,6 +6,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
+import {getFileExtension} from "../../utility/custom";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -46,6 +47,7 @@ class DocumentInputContainer extends Component {
             errorDict: null,
             error: false,
             errorMessage: '',
+            extError: false,
             success: false,
             successMessage: '',
             isLoading: false,
@@ -56,6 +58,7 @@ class DocumentInputContainer extends Component {
         };
 
         this.content_types = ['Notice', 'Circular'];
+        this.accepted_file_ext = ['png', 'jpg', 'jpeg', 'doc', 'docx', 'pdf', 'xlsx'];
     }
 
     handleSubmit = () => {
@@ -232,13 +235,18 @@ class DocumentInputContainer extends Component {
         const {name, value, files, checked} = e.target;
         switch (name) {
             case "file_name":
+                const ext = getFileExtension(files[0].name);
+                if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
+
                 this.setState({
-                    file_name: files[0]
+                    file_name: files[0],
+                    extError: false
                 }, () => {
                     this.validate();
                 });
                 return;
             case "category_id":
+                if (!value) return;
                 Axios.get(apiUrl() + 'document/sub/category/by/category/' + value)
                     .then(resData => {
                         this.setState({
@@ -288,7 +296,7 @@ class DocumentInputContainer extends Component {
         const {formType} = this.props;
         const {
             category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
-            document_date, display_notice, status, editId, errorDict, documentSubCategory
+            document_date, display_notice, status, editId, errorDict, documentSubCategory, extError
         } = this.state;
 
         switch (formType) {
@@ -309,17 +317,17 @@ class DocumentInputContainer extends Component {
                         }
                         {editId === null ? <button className="submit-btn"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="btn btn-outline-info mr-2" onClick={this.updateData}>
+                            <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
                                 Update
                             </button>
-                            <button className="btn btn-outline-danger" onClick={() => {
+                            <button className="reset-btn-normal" onClick={() => {
                                 this.setState({
                                     editId: null,
                                     category_name: '',
                                     success: false,
                                     error: false
                                 })
-                            }}>Go Back
+                            }} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -330,7 +338,7 @@ class DocumentInputContainer extends Component {
                         <div className="px-1 mb-2">
                             <select name={'category_id'} value={category_id} onChange={this.handleChange}
                                     className={`ui-custom-input`}>
-                                <option>Select Category</option>
+                                <option value="">Select Category</option>
                                 <DocumentCategoryOptions/>
                             </select>
                             {errorDict && !errorDict.category_id &&
@@ -351,10 +359,10 @@ class DocumentInputContainer extends Component {
                         </div>
                         {editId === null ? <button className="submit-btn"
                                                    onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                            <button className="btn btn-outline-info mr-2" onClick={this.updateData}>
+                            <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
                                 Update
                             </button>
-                            <button className="btn btn-outline-danger" onClick={() => {
+                            <button className="reset-btn-normal" onClick={() => {
                                 this.setState({
                                     editId: null,
                                     category_id: '',
@@ -362,7 +370,7 @@ class DocumentInputContainer extends Component {
                                     success: false,
                                     error: false
                                 })
-                            }}>Go Back
+                            }} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -373,7 +381,7 @@ class DocumentInputContainer extends Component {
                         <div className="px-1 mb-2">
                             <select name={'category_id'} value={category_id} onChange={this.handleChange}
                                     className={`ui-custom-input`}>
-                                <option>Select Category</option>
+                                <option value="">Select Category</option>
                                 <DocumentCategoryOptions/>
                             </select>
                             {errorDict && !errorDict.category_id &&
@@ -384,7 +392,7 @@ class DocumentInputContainer extends Component {
                             <select name={'sub_category_id'} value={sub_category_id}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
-                                <option>Select Category</option>
+                                <option value="">Select Sub Category</option>
                                 {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
                                     <option key={index} value={item.id}>{item.sub_category_name}</option>
                                 ))}
@@ -397,7 +405,7 @@ class DocumentInputContainer extends Component {
                             <select name={'content_type'} value={content_type}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
-                                <option>Select Content Type</option>
+                                <option value="">Select Content Type</option>
                                 {this.content_types.map((value, index) => (
                                     <option value={index + 1} key={index}>{value}</option>
                                 ))}
@@ -453,7 +461,6 @@ class DocumentInputContainer extends Component {
                                         onChange={date => this.setState({document_date: date})}
                                         value={document_date}/>
                         </div>
-
                         <div className="px-1 mb-15p">
                             <div className="row align-items-center">
                                 <div className="col-md-4">
@@ -464,7 +471,13 @@ class DocumentInputContainer extends Component {
                                             htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
                                     </div>
                                     {errorDict && !errorDict.file_name &&
-                                    <span className="error">File Name Field is required</span>
+                                    <>
+                                        <span className="error">File Name Field is required</span>
+                                        <br/>
+                                    </>
+                                    }
+                                    {extError &&
+                                    <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
                                     }
                                 </div>
                                 <div className="col-md-4">
@@ -487,10 +500,10 @@ class DocumentInputContainer extends Component {
                         </div>
                         {editId === null ? <button className="submit-btn"
                                                    onClick={this.handleSubmit}>Submit Documents</button> : <>
-                            <button className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>
+                            <button className="submit-btn mr-2" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="btn btn-outline-danger mt-3" onClick={() => {
+                            <button className="reset-btn-normal  mt-3" onClick={() => {
                                 this.setState({
                                     category_id: '',
                                     sub_category_id: '',
@@ -507,7 +520,7 @@ class DocumentInputContainer extends Component {
                                     error: false,
                                     errorDict: null
                                 })
-                            }}>Go Back
+                            }} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -661,7 +674,7 @@ class DocumentInputContainer extends Component {
                         <td>{item.document_category.category_name}</td>
                         <td>{item.document_sub_category.sub_category_name}</td>
                         <td>{item.title}</td>
-                        <td>
+                        <td className="document-description-limit">
                             <div dangerouslySetInnerHTML={{__html: item.description}}/>
                         </td>
                         <td>{item.circular_no}</td>

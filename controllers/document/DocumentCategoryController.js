@@ -7,7 +7,7 @@ exports.index = async (req, res) => {
         const data = await DocumentCategory.findAll(
             {
                 attributes: ["id", "category_name"],
-                order: [['id', 'DESC']]
+                order: [['id', 'ASC']]
             }
         );
 

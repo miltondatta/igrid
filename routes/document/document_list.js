@@ -94,15 +94,6 @@ router.get('/details/:id', documentListController.documentListDetailsById);
     @desc           Serve Pdf file as Blob Data
     @access         Private
  */
-router.get("/pdf/:file_name", (req, res) => {
-    let file_path = 'public/document/' + req.params.file_name;
-    if (!fs.existsSync(file_path)) return res.status(400).json({
-        msg: `${req.params.file_name} File didn\'t found!`,
-        error: true
-    });
-
-    let file = fs.createReadStream("public/document/" + req.params.file_name);
-    return file.pipe(res);
-});
+router.get("/pdf/:file_name", documentListController.documentListDetailsPdf);
 
 module.exports = router;

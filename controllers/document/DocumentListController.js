@@ -6,6 +6,8 @@ const {capitalize} = require('../../utility/custom');
 const multer = require('multer');
 const fs = require('fs');
 const db = require('../../config/db');
+const moment = require('moment');
+const keywordExtractor = require('keyword-extractor');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,8 +21,8 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
-            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
+        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf|xlsx)$/)) {
+            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf, .xlsx format allowed!'));
         }
         cb(null, true);
     }
@@ -30,8 +32,9 @@ exports.index = async (req, res) => {
     try {
         const data = await DocumentList.findAll(
             {
-                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
+                attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "keyword", "file_name", "document_date",
                     "display_notice", "status"],
+                order: [['id', 'ASC']],
                 include: [{
                     model: DocumentCategory,
                     attributes: ["category_name"]
@@ -54,6 +57,7 @@ exports.store = (req, res) => {
     try {
         let file_name = '';
         upload(req, res, (err) => {
+            console.log(err);
             if (err instanceof multer.MulterError) {
                 return res.status(500).json(err);
             } else if (err) {
@@ -63,6 +67,14 @@ exports.store = (req, res) => {
             file_name = req.file.originalname;
             const {category_id, sub_category_id, content_type, title, circular_no, description, document_date, display_notice, status} = req.body;
 
+            const keyword_options = {
+                language: 'english',
+                remove_digits: true,
+                return_changed_case: true,
+                remove_duplicates: true
+            };
+
+            const extraction_result = keywordExtractor.extract((title + ' ' + description), keyword_options).join();
             const newDocumentList = {
                 category_id: category_id,
                 sub_category_id: sub_category_id,
@@ -70,6 +82,7 @@ exports.store = (req, res) => {
                 title: title,
                 circular_no: circular_no,
                 description: description,
+                keyword: extraction_result,
                 file_name: file_name,
                 document_date: document_date,
                 display_notice: display_notice,
@@ -100,16 +113,16 @@ exports.store = (req, res) => {
                     return res.status(200).json({msg: 'New Document List saved successfully.', success: true});
                 }).catch(err => {
                     console.error(err.message);
-                    return res.status(500).json({msg: 'Server Error!'});
+                    return res.status(500).json({msg: err});
                 });
             }).catch(err => {
                 console.error(err.message);
-                return res.status(500).json({msg: 'Server Error!'});
+                return res.status(500).json({msg: err});
             });
         });
     } catch (err) {
         console.error(err.message);
-        return res.status(500).json({msg: 'Server Error!'});
+        return res.status(500).json({msg: err});
     }
 };
 
@@ -141,14 +154,22 @@ exports.update = (req, res) => {
 
             DocumentList.findOne({where: {id}}).then(resData => {
                 file_name = req.file ? req.file.originalname : resData.file_name;
+                const keyword_options = {
+                    language: 'english',
+                    remove_digits: true,
+                    return_changed_case: true,
+                    remove_duplicates: true
+                };
 
+                const extraction_result = keywordExtractor.extract((title + ' ' + description), keyword_options).join();
                 const updateDocumentList = {
                     category_id,
                     sub_category_id,
                     content_type,
                     title,
                     circular_no,
-                    description: description,
+                    description,
+                    keyword: extraction_result,
                     file_name,
                     document_date,
                     display_notice,
@@ -299,11 +320,10 @@ exports.documentListDataByCategorySubCategory = async (req, res) => {
 
 exports.documentListSearch = async (req, res) => {
     try {
-        const {category_id, sub_category_id, content_type, title, circular_no, keyword} = req.body;
-        if (!category_id) return res.status(400).json({msg: 'Category Field is required!', error: true});
+        const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, keyword} = req.body;
 
         var queryText = '';
-        if (category_id) queryText = 'document_lists.category_id = ' + category_id;
+        if (category_id) queryText = 'and document_lists.category_id = ' + category_id;
         if (sub_category_id) queryText += ' and document_lists.sub_category_id = ' + sub_category_id;
         if (content_type) queryText += ' and document_lists.content_type = ' + content_type;
         if (title) queryText += ' and document_lists.title = ' + "\'" + title + "\'";
@@ -334,12 +354,13 @@ exports.documentListSearch = async (req, res) => {
                                 FROM document_lists
                                          JOIN document_categories ON document_lists.category_id = document_categories.id
                                          JOIN document_sub_categories ON document_lists.sub_category_id = document_sub_categories.id
-                                where ${queryText}`);
+                                where document_lists.document_date >= '${moment(from_date).format('YYYY-MM-DD')}' and 
+                                document_lists.document_date <= '${moment(to_date).format('YYYY-MM-DD')}' ${queryText}`);
 
         return res.status(200).json(data);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).json({msg: 'Server Error!'});
+        return res.status(500).json({err});
     }
 };
 
@@ -377,5 +398,21 @@ exports.documentListDetailsById = async (req, res) => {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: 'Server Error!'});
+    }
+};
+
+exports.documentListDetailsPdf = async (req, res) => {
+    try {
+        let file_path = 'public/document/' + req.params.file_name;
+        if (!fs.existsSync(file_path)) return res.status(400).json({
+            msg: `${req.params.file_name} File didn\'t found!`,
+            error: true
+        });
+
+        let file = fs.createReadStream("public/document/" + req.params.file_name);
+        return file.pipe(res);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: err});
     }
 };

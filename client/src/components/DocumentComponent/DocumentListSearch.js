@@ -2,6 +2,15 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
 import Axios from "axios";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+moment.locale('en');
+
+const disabledRanges = [{
+    disabled: true,
+    start: moment().add(1, 'day'),
+    end: moment().add(50, 'year')
+}];
 
 class DocumentListSearch extends Component {
     constructor(props) {
@@ -12,6 +21,8 @@ class DocumentListSearch extends Component {
             content_type: '',
             title: '',
             circular_no: '',
+            from_date: moment().subtract(15, 'days'),
+            to_date: moment(),
             error: false,
             errorMessage: '',
             fileError: false,
@@ -24,7 +35,12 @@ class DocumentListSearch extends Component {
         };
 
         this.content_types = ['Notice', 'Circular'];
-        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Title', 'Description', 'Circular No', 'Content Type', 'Display Notice', 'Status', 'File', 'Details'];
+        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Title', 'Description', 'Circular No', 'Document Date', 'Content Type', 'File', 'Details'];
+    }
+
+    componentDidMount() {
+        const {from_date, to_date} = this.state;
+        this.getData({from_date, to_date, keyword: []});
     }
 
     handleChange = (e) => {
@@ -40,6 +56,9 @@ class DocumentListSearch extends Component {
                         }, () => {
                             this.setState({
                                 category_id: value,
+                                sub_category_id: '',
+                                title: '',
+                                documentTitle: [],
                                 error: false
                             });
                         })
@@ -55,7 +74,8 @@ class DocumentListSearch extends Component {
                             documentTitle: resData.data
                         }, () => {
                             this.setState({
-                                sub_category_id: value
+                                sub_category_id: value,
+                                title: ''
                             });
                         })
                     });
@@ -79,9 +99,10 @@ class DocumentListSearch extends Component {
     };
 
     handleSearch = () => {
-        const {category_id, sub_category_id, content_type, title, circular_no, keyword} = this.state;
+        const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, keyword} = this.state;
         let keywordArray = keyword ? keyword.split(',') : [];
         let keywordData = keywordArray.filter(value => value !== '');
+        if (!category_id) return this.setState({errorMessage: 'Category Field is required!', error: true});
 
         const data = {
             category_id,
@@ -89,9 +110,14 @@ class DocumentListSearch extends Component {
             content_type,
             title,
             circular_no,
+            from_date,
+            to_date,
             keyword: keywordData
         };
+        this.getData(data);
+    };
 
+    getData = (data) => {
         Axios.post(apiUrl() + 'document/list/search', data)
             .then(res => {
                 this.setState({
@@ -100,13 +126,6 @@ class DocumentListSearch extends Component {
                 })
             })
             .catch(err => {
-                const {error, msg} = err.response.data;
-                if (msg) {
-                    this.setState({
-                        error: error,
-                        errorMessage: error && msg
-                    })
-                }
                 console.log(err.response);
             })
     };
@@ -138,7 +157,7 @@ class DocumentListSearch extends Component {
     };
 
     render() {
-        const {category_id, sub_category_id, content_type, title, circular_no, documentTitle, documentSubCategory, error, errorMessage, fileError, fileErrorMessage, keyword, isLoading, searchData} = this.state;
+        const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, documentTitle, documentSubCategory, error, errorMessage, fileError, fileErrorMessage, keyword, isLoading, searchData} = this.state;
 
         return (
             <>
@@ -254,6 +273,40 @@ class DocumentListSearch extends Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="row px-2 my-3">
+                                <div className="col-md-6">
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            From Date
+                                        </div>
+                                        <div className="col-md-8">
+                                            <DatePicker timePicker={false}
+                                                        name={'document_date'}
+                                                        className={`form-control`}
+                                                        inputFormat="DD/MM/YYYY"
+                                                        onChange={date => this.setState({from_date: date})}
+                                                        ranges={disabledRanges}
+                                                        value={from_date}/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            To Date
+                                        </div>
+                                        <div className="col-md-8">
+                                            <DatePicker timePicker={false}
+                                                        name={'document_date'}
+                                                        className={`form-control`}
+                                                        inputFormat="DD/MM/YYYY"
+                                                        onChange={date => this.setState({to_date: date})}
+                                                        ranges={disabledRanges}
+                                                        value={to_date}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="d-flex justify-content-end">
                                 <button className="btn btn-outline-info"
                                         onClick={this.handleSearch}>Search
@@ -263,9 +316,12 @@ class DocumentListSearch extends Component {
                     </div>
                     <div className={'p-2 my-2'}>
                         {fileError &&
-                        <div className="row">
-                            <div className="col-md-4 alert alert-danger" role="alert">
+                        <div className="row ml-1">
+                            <div className="col-md-4 alert alert-danger position-relative d-flex justify-content-between align-items-center" role="alert">
                                 {fileErrorMessage}
+                                <i className="fas fa-times " onClick={() => {
+                                    this.setState({fileError: !fileError})
+                                }}></i>
                             </div>
                         </div>
                         }
@@ -289,31 +345,14 @@ class DocumentListSearch extends Component {
                                             <td>{item.category_name}</td>
                                             <td>{item.sub_category_name}</td>
                                             <td>{item.title}</td>
-                                            <td>
+                                            <td className="document-description-limit">
                                                 <div dangerouslySetInnerHTML={{__html: item.description}}/>
                                             </td>
                                             <td>{item.circular_no}</td>
+                                            <td>{moment(item.document_date).format('YYYY-MM-DD')}</td>
                                             <td>
                                                 <span
                                                     className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'on' : 'off'}</span>
-                                            </td>
-                                            <td>
-                                                {item.status ?
-                                                    <>
-                                                        <span className="badge badge-success">
-                                                            <i className="far fa-check-circle"></i>
-                                                        </span>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        <span className="badge badge-danger">
-                                                            <i className="far fa-times-circle"></i>
-                                                        </span>
-                                                    </>}
                                             </td>
                                             <td>
                                                 <a href="/"

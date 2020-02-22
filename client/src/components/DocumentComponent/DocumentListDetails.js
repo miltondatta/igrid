@@ -64,7 +64,7 @@ class DocumentListDetails extends Component {
                     })
                 })
                 .catch(err => {
-                    console.log(err)
+                    console.log(err.response);
                 })
         })
     };
@@ -103,10 +103,10 @@ class DocumentListDetails extends Component {
         return (
             <>
                 {fileError &&
-                <div className="row mx-1">
-                    <div className="col-md-12 alert alert-danger" role="alert">
-                        {fileErrorMessage}
-                    </div>
+                <div
+                    className="alert alert-danger mx-1 mb-2"
+                    role="alert">
+                    {fileErrorMessage}
                 </div>
                 }
                 <div className="ui-dataEntry">
@@ -192,10 +192,10 @@ class DocumentListDetails extends Component {
                             </div>
                             <div className="col-md-7">
                                 <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>
+                                    {!fileError && <li>
                                         <a href="/"
                                            onClick={e => this.downloadFile(e, item.file_name)}>{item.file_name}</a>
-                                    </li>
+                                    </li>}
                                 </ul>
                             </div>
                         </div>
