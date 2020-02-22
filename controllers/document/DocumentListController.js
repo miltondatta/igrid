@@ -322,7 +322,7 @@ exports.documentListSearch = async (req, res) => {
     try {
         const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, keyword} = req.body;
 
-        var queryText = '';
+        let queryText = '';
         if (category_id) queryText = 'and document_lists.category_id = ' + category_id;
         if (sub_category_id) queryText += ' and document_lists.sub_category_id = ' + sub_category_id;
         if (content_type) queryText += ' and document_lists.content_type = ' + content_type;
@@ -414,5 +414,23 @@ exports.documentListDetailsPdf = async (req, res) => {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err});
+    }
+};
+
+exports.documentListKeywordByCategoryAndSubCategory = async (req, res) => {
+    try {
+        const {category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (category_id) queryText = 'where document_lists.category_id = ' + category_id;
+        if (sub_category_id) queryText += ' and document_lists.sub_category_id = ' + sub_category_id;
+
+        const data = await db.query(`SELECT document_lists.keyword
+                                FROM document_lists ${queryText}`);
+
+        return res.status(200).json(data[0]);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({err});
     }
 };

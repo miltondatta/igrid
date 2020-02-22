@@ -96,4 +96,11 @@ router.get('/details/:id', documentListController.documentListDetailsById);
  */
 router.get("/pdf/:file_name", documentListController.documentListDetailsPdf);
 
+/*
+    @route          GET api/v1/document/list/keyword/by/category/sub/category
+    @desc           Document List Keyword By Category And Sub Category
+    @access         Private
+ */
+router.post("/keyword/by/category/sub/category", documentListController.documentListKeywordByCategoryAndSubCategory);
+
 module.exports = router;

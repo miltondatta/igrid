@@ -4,6 +4,10 @@ import DocumentCategoryOptions from "../../utility/component/documentCategoryOpt
 import Axios from "axios";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
+import Chip from "@material-ui/core/Chip";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
+
 moment.locale('en');
 
 const disabledRanges = [{
@@ -11,6 +15,8 @@ const disabledRanges = [{
     start: moment().add(1, 'day'),
     end: moment().add(50, 'year')
 }];
+
+let selected_keyword = [];
 
 class DocumentListSearch extends Component {
     constructor(props) {
@@ -30,7 +36,7 @@ class DocumentListSearch extends Component {
             searchData: [],
             documentTitle: [],
             documentSubCategory: [],
-            keyword: '',
+            keyword: [],
             isLoading: false
         };
 
@@ -49,6 +55,7 @@ class DocumentListSearch extends Component {
 
         switch (name) {
             case "category_id":
+                if (!value) return;
                 Axios.get(apiUrl() + 'document/sub/category/by/category/' + value)
                     .then(resData => {
                         this.setState({
@@ -59,12 +66,16 @@ class DocumentListSearch extends Component {
                                 sub_category_id: '',
                                 title: '',
                                 documentTitle: [],
+                                keyword: [],
                                 error: false
+                            }, () => {
+                                this.getKeyword({category_id: value});
                             });
                         })
                     });
                 return;
             case "sub_category_id":
+                if (!value) return;
                 Axios.post(apiUrl() + 'document/list/by/category/sub/category', {
                     category_id: category_id,
                     sub_category_id: value
@@ -75,7 +86,10 @@ class DocumentListSearch extends Component {
                         }, () => {
                             this.setState({
                                 sub_category_id: value,
-                                title: ''
+                                title: '',
+                                keyword: []
+                            }, () => {
+                                this.getKeyword({category_id, sub_category_id: value});
                             });
                         })
                     });
@@ -100,8 +114,8 @@ class DocumentListSearch extends Component {
 
     handleSearch = () => {
         const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, keyword} = this.state;
-        let keywordArray = keyword ? keyword.split(',') : [];
-        let keywordData = keywordArray.filter(value => value !== '');
+        let keywordArray = selected_keyword.filter((value, index, self) => self.indexOf(value) === index);
+        let keywordData = keywordArray.filter(value => keyword.includes(value));
         if (!category_id) return this.setState({errorMessage: 'Category Field is required!', error: true});
 
         const data = {
@@ -128,6 +142,27 @@ class DocumentListSearch extends Component {
             .catch(err => {
                 console.log(err.response);
             })
+    };
+
+    getKeyword = (data) => {
+        Axios.post(apiUrl() + 'document/list/keyword/by/category/sub/category', data)
+            .then(res => {
+                let keyword_content = [];
+                res.data.map(item => {
+                    if (item.keyword !== null) {
+                        item.keyword.split(',').map(val => {
+                            keyword_content.push(val);
+                        });
+                    }
+                });
+
+                this.setState({
+                    keyword: keyword_content
+                });
+            })
+            .catch(err => {
+                console.log(err.response);
+            });
     };
 
     downloadFile = (e, file_name) => {
@@ -175,7 +210,7 @@ class DocumentListSearch extends Component {
                                             <select name={'category_id'} value={category_id}
                                                     onChange={this.handleChange}
                                                     className={`form-control`}>
-                                                <option>--Select Category--</option>
+                                                <option value="">--Select Category--</option>
                                                 <DocumentCategoryOptions/>
                                             </select>
                                             {error &&
@@ -193,7 +228,7 @@ class DocumentListSearch extends Component {
                                             <select name={'sub_category_id'} value={sub_category_id}
                                                     onChange={this.handleChange}
                                                     className={`form-control`}>
-                                                <option>--Select Category--</option>
+                                                <option value="">--Select Category--</option>
                                                 {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
                                                     <option key={index}
                                                             value={item.id}>{item.sub_category_name}</option>
@@ -258,7 +293,7 @@ class DocumentListSearch extends Component {
                                 </div>
                                 <div className="col-md-6">
                                     <div className="row">
-                                        <div className="col-md-4">
+                                        {/*<div className="col-md-4">
                                             Keyword (Multiple Keyword Separated by Comma)
                                         </div>
                                         <div className="col-md-8">
@@ -269,6 +304,32 @@ class DocumentListSearch extends Component {
                                                 onChange={this.handleChange}
                                                 onKeyPress={this.handleKeyPress}
                                                 className={`form-control`}/>
+                                        </div>*/}
+                                        <div className="col-md-4">
+                                            Keyword
+                                        </div>
+                                        <div className="col-md-8">
+                                            <Autocomplete
+                                                multiple
+                                                id="size-small-filled-multi"
+                                                size="small"
+                                                options={keyword}
+                                                getOptionLabel={option => option}
+                                                renderTags={(value, getTagProps) =>
+                                                    value.map((option, index) => (
+                                                        selected_keyword.push(option) && <Chip
+                                                            variant="outlined"
+                                                            label={option}
+                                                            size="small"
+                                                            {...getTagProps({index})}
+                                                        />
+                                                    ))
+                                                }
+                                                renderInput={params => (
+                                                    <TextField {...params} variant="filled" placeholder="Tab Seperated"
+                                                               fullWidth/>
+                                                )}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -317,7 +378,9 @@ class DocumentListSearch extends Component {
                     <div className={'p-2 my-2'}>
                         {fileError &&
                         <div className="row ml-1">
-                            <div className="col-md-4 alert alert-danger position-relative d-flex justify-content-between align-items-center" role="alert">
+                            <div
+                                className="col-md-4 alert alert-danger position-relative d-flex justify-content-between align-items-center"
+                                role="alert">
                                 {fileErrorMessage}
                                 <i className="fas fa-times " onClick={() => {
                                     this.setState({fileError: !fileError})
