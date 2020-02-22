@@ -61,7 +61,7 @@ class Topnav extends Component {
                                                           style={{display: currentHover !== items.id && 'none'}}>
                                         {items.categories.map((subItems, key) => (
                                             <>
-                                                {userType !== 2 && subItems.id === 4 ? null : <a key={subItems.id} href={subItems.link}>
+                                                {items.id === 4 && userType !== 2 && subItems.id === 4 ? null : <a key={subItems.id} href={subItems.link}>
                                                     <p key={key + 10}
                                                        className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
                                                         {subItems.name}
@@ -115,7 +115,6 @@ class Topnav extends Component {
                 </li>}
             </>
         ))
-        console.log(moduleName, 111)
         const {userName, image, userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         if (home) {
             return (

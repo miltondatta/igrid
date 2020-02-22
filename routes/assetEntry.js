@@ -119,7 +119,7 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
                 .then(resData => {
                     Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
                         .then(resDataInner => {
-                            res.status(200).json({resId: resData.id, vendorName: resDataInner[0].dataValues.vendor_name})
+                            res.status(200).json({resId: resData.id, vendorName: resDataInner[0].dataValues.vendor_name, message: 'Challan Added Successfully!'})
                         })
                 })
                 .catch(err => {
@@ -160,7 +160,7 @@ route.post('/assets-entry/entry', (req,res,next) => {
                             console.log('Successfully Updated Product Serial', 78)
                         })
                 }
-                res.status(200).json({message: 'Product Stored'})
+                res.status(200).json({message: 'Product Stored', status: true})
             })
             .catch(err => {
                 console.log(err)

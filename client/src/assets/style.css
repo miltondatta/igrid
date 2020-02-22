@@ -26,6 +26,9 @@ a:hover{text-decoration: none}
 .min-h-80vh{
    min-height: 80.5vh;
 }
+.min-h-50vh{
+   min-height: 50vh;
+}
 .min-h-70vh{
    min-height: 70vh;
 }
@@ -49,10 +52,18 @@ select:focus{
 .ui-custom-input,
 .ui-custom-textarea{
    width: 100%;
-   padding: 9px;
+   padding: 22px 9px 9px;
    border-radius: 5px;
    border: 1.2px solid #e7e7e7;
    -webkit-appearance: checkbox !important;
+}
+.ui-custom-label{
+   position: absolute;
+   z-index: 1;
+   font-size: 12px;
+   left: 15px;
+   top: 3px;
+   font-weight: 400;
 }
 .ui-custom-textarea{
    height: 180px;
@@ -480,6 +491,23 @@ label:focus,
    background-color: #eee;
    box-shadow: 4px 1px 20px #888;
    overflow-y: scroll;
+}
+
+.add-button{
+   background: #2184d0;
+   width: 42px;
+   height: 55px;
+   border: none;
+   border-radius: 5px;
+   color: white;
+   font-size: 22px;
+}
+
+.input-grid{
+   display: grid;
+   grid-gap: 10px;
+   grid-template-columns: auto 42px;
+   align-items: center;
 }
 
 .border-less-table, .border-less-table td, .border-less-table th {

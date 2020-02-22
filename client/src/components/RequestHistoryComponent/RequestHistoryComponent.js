@@ -6,6 +6,8 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import StatusOptions from "../../utility/component/statusOptions";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import InstaAdd from "../../module/insta-add/InstaAdd";
+import AdminInputContainer from "../../layouts/AdminInputContainer/AdminInputContainer";
 
 class RequestHistoryComponent extends Component {
     constructor(props){

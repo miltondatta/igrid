@@ -11,6 +11,10 @@ class LocationsOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         const {selectedId} = this.props
         Axios.get(apiUrl() + 'locations/' + selectedId)
             .then(resData => {
@@ -22,6 +26,10 @@ class LocationsOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {data} = this.state
         console.log(data, 32)
         const Options = data.length > 0 && data.map((item, index) => (

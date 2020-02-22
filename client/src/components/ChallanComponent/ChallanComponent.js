@@ -19,6 +19,7 @@ class ChallanComponent extends Component {
             challans: [],
             assets: [],
             assetId: '',
+            forceUpdate: false,
             challan_no: '',
             challan_name: '',
             challan_description: '',
@@ -77,6 +78,12 @@ class ChallanComponent extends Component {
                     challans: resData.data
                 })
             })
+    }
+
+    forceUp = () => {
+        this.setState({
+            forceUpdate: !this.state.forceUpdate
+        })
     }
 
     assetList = (id) => {
@@ -331,7 +338,7 @@ class ChallanComponent extends Component {
                                         <div className={'col-7 pl-2'}>
                                             <select className={`form-control w-100 ${errorDict && !errorDict.vendor_id && 'is-invalid'}`} value={vendor_id} onChange={this.handleChange} name={'vendor_id'}>
                                                 <option>--Select Vendor--</option>
-                                                <VendorOptions />
+                                                <VendorOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                             </select>
                                         </div>
                                     </div>

@@ -142,33 +142,41 @@ class AssetComponent extends Component{
                             <p className="text-dark f-weight-500 f-20px m-0">Requisition</p>
                         </nav>
                         <div className={'px-1 mb-2'}>
+                            <label className={'ui-custom-label'}>Select Category</label>
                             <select onChange={this.handleChange} className="ui-custom-input" id="requeston" value={asset_category} name={'asset_category'}>
                                 <option value={0}>Select Category</option>
                                 <AssetCategoryOptions />
                             </select>
                         </div>
                         <div className={"px-1 mb-2"}>
+                            <label className={'ui-custom-label'}>Select Sub Category</label>
                             <select onChange={this.handleChange} className="ui-custom-input" id="itemname" name={'asset_sub_category'} value={asset_sub_category}>
                                 <option value={0}>Select Sub Category</option>
                                 <AssetSubCategoryOptions assetId={asset_category} />
                             </select>
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Quantity</label>
                             <input onChange={this.handleChange} value={quantity} type="number" className="ui-custom-input" name={'quantity'} id="inputAddress" placeholder="Quantity" />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Model</label>
                             <input onChange={this.handleChange} value={model} type="text" className="ui-custom-input" name={'model'} placeholder="Model" />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Brand</label>
                             <input onChange={this.handleChange} value={brand} type="text" className="ui-custom-input" name={'brand'} placeholder="Brand" />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Reason</label>
                             <input onChange={this.handleChange} value={reason} type="text" className="ui-custom-input" name={'reason'} placeholder="Reason" />
                         </div>
                         <div className="px-1 mb-2">
-                            <input onChange={this.handleChange} value={expected_date} type={'date'} className="form-control" name={'expected_date'} placeholder="Expected Date" />
+                            <label className={'ui-custom-label'}>Expected Date</label>
+                            <input onChange={this.handleChange} value={expected_date} type={'date'} className="ui-custom-input" name={'expected_date'} placeholder="Expected Date" />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Details</label>
                             <textarea onChange={this.handleChange} value={details} className="ui-custom-input " name={'details'} placeholder="Details" />
                         </div>
                         <div className="ui-custom-file w-50 px-1">

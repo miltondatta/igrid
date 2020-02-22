@@ -11,6 +11,10 @@ class ConditionOptions extends Component {
     }
     
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'conditions')
             .then(resData => {
 
@@ -21,6 +25,10 @@ class ConditionOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {assetCategory} = this.state
         const options = assetCategory.length > 0 && assetCategory.map((item, index) => (
             <option key={index} value={item.id}>{item.condition_type}</option>

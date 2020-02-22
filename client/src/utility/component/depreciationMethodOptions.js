@@ -11,6 +11,10 @@ class DepreciationOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'depreciation-methods')
             .then(resData => {
 
@@ -21,6 +25,10 @@ class DepreciationOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {brandData} = this.state
         const Options = brandData.length > 0 && brandData.map((item, index) => (
             <option key={index} value={item.id}>{item.method_name}</option>

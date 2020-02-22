@@ -11,6 +11,10 @@ class AssetSubCategoryOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'asset-sub-category')
             .then(resData => {
 
@@ -21,6 +25,10 @@ class AssetSubCategoryOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {assetId} = this.props
         const {assetSubCategory} = this.state
         const filteredCategory = assetSubCategory.length > 0 && assetSubCategory.filter(item => item.category_id === parseInt(assetId, 10))

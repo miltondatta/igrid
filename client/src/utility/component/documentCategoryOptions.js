@@ -11,6 +11,10 @@ class DocumentCategoryOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'document/category/all')
             .then(resData => {
                 this.setState({
@@ -20,6 +24,10 @@ class DocumentCategoryOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {documentCategory} = this.state;
         const options = documentCategory.length > 0 && documentCategory.map((item, index) => (
             <option key={index} value={item.id}>{item.category_name}</option>

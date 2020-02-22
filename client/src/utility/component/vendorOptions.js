@@ -11,9 +11,12 @@ class VendorOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'vendors')
             .then(resData => {
-
                 this.setState({
                     brandData: resData.data
                 })
@@ -21,6 +24,10 @@ class VendorOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {brandData} = this.state
         const Options = brandData.length > 0 && brandData.map((item, index) => (
             <option key={index} value={item.id}>{item.vendor_name}</option>

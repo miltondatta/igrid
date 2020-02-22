@@ -11,6 +11,10 @@ class AssetTypeOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'assets-types')
             .then(resData => {
 
@@ -21,6 +25,10 @@ class AssetTypeOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {brandData} = this.state
         const Options = brandData.length > 0 && brandData.map((item, index) => (
             <option key={index} value={item.id}>{item.type_name}</option>

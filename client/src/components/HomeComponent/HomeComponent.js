@@ -12,7 +12,9 @@ const HomeComponent = () => {
         slidesToShow: 1,
         centerPadding: '0',
         infinite: true,
-        autoplaySpeed: 2000,
+        autoplay: true,
+        speed: 1500,
+        autoplaySpeed: 2500,
     };
     const homeBan = homeBanner.map((item, index) => (
         <div>

@@ -11,6 +11,10 @@ class ProductsOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'products')
             .then(resData => {
                 this.setState({
@@ -20,6 +24,10 @@ class ProductsOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {data} = this.state
         const {subId, catId} = this.props
         const filteredCategory = data.length > 0 && data.filter(item => (item.sub_category_id === parseInt(subId, 10) && item.category_id === parseInt(catId, 10)))

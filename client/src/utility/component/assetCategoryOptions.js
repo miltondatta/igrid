@@ -10,6 +10,10 @@ class AssetCategoryOptions extends Component {
         }
     }
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'asset-category')
             .then(resData => {
 
@@ -21,6 +25,10 @@ class AssetCategoryOptions extends Component {
 
     render() {
         const {assetCategory} = this.state
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const assetCategoryOptions = assetCategory.length > 0 && assetCategory.map((item, index) => (
             <option key={index} value={item.id}>{item.category_name}</option>
         ))

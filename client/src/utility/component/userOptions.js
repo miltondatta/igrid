@@ -11,6 +11,10 @@ class UserOptions extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         Axios.get(apiUrl() + 'users')
             .then(resData => {
                 this.setState({
@@ -20,6 +24,10 @@ class UserOptions extends Component {
     }
 
     render() {
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
         const {brandData} = this.state
         const Options = brandData.length > 0 && brandData.map((item, index) => (
             <option key={index} value={item.id}>{item.firstName + " " + item.lastName}</option>
