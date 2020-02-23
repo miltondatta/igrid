@@ -357,16 +357,16 @@ class AssetRegComponent extends Component {
                             <input value={challan_date} type={'date'} onChange={this.handleChange} name={'challan_date'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_date && 'is-invalid'}`} />
                         </div>
                         <div className={'mb-2'}>
-                            {/*<div className="input-grid">*/}
+                            <div className="input-grid">
                                 <label className={'ui-custom-label'}>Vendor</label>
                                 <select onClick={() => {this.forceUpdate()}} className={`ui-custom-input w-100 ${errorDict && !errorDict.vendor_id && 'is-invalid'}`} value={vendor_id} onChange={this.handleChange} name={'vendor_id'}>
                                     <option>Select Vendor</option>
                                     <VendorOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                 </select>
-                            {/*    <button onClick={() => {this.setState({formType: 'VENDOR', getApi: 'vendors', headTitle: 'Vendor Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                            {/*        <i className="fas fa-plus"></i>*/}
-                            {/*    </button>*/}
-                            {/*</div>*/}
+                                <button onClick={() => {this.setState({formType: 'VENDOR', getApi: 'vendors', headTitle: 'Vendor Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                    <i className="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div className={'mb-2 position-relative'}>
                             <label className={'ui-custom-label'}>Received By</label>
@@ -508,52 +508,52 @@ class AssetRegComponent extends Component {
                             <div className="row">
                                 <div className="col-md-6 pr-1">
                                     <div className={'mb-1'}>
-                                        {/*<div className="input-grid">*/}
+                                        <div className="input-grid">
                                             <label className={'ui-custom-label'}>Project</label>
                                             <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
                                                 <option>Select Project</option>
                                                 <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                             </select>
-                                        {/*    <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                        {/*        <i className="fas fa-plus"></i>*/}
-                                        {/*    </button>*/}
-                                        {/*</div>*/}
+                                            <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className={'mb-1'}>
-                                        {/*<div className="input-grid">*/}
+                                        <div className="input-grid">
                                             <label className={'ui-custom-label'}>Category</label>
                                             <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
                                             <option>Asset Category</option>
                                             <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                         </select>
-                                        {/*    <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                        {/*        <i className="fas fa-plus"></i>*/}
-                                        {/*    </button>*/}
-                                        {/*</div>*/}
+                                            <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className={'mb-1'}>
-                                        {/*<div className="input-grid">*/}
+                                        <div className="input-grid">
                                             <label className={'ui-custom-label'}>Sub Category</label>
                                             <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
                                                 <option>Asset Sub Category</option>
                                                 <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                             </select>
-                                        {/*    <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                        {/*        <i className="fas fa-plus"></i>*/}
-                                        {/*    </button>*/}
-                                        {/*</div>*/}
+                                            <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className={'mb-1'}>
-                                        {/*<div className="input-grid">*/}
+                                        <div className="input-grid">
                                             <label className={'ui-custom-label'}>Product</label>
                                             <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
                                             <option>Product</option>
                                             <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                         </select>
-                                        {/*    <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                        {/*        <i className="fas fa-plus"></i>*/}
-                                        {/*    </button>*/}
-                                        {/*</div>*/}
+                                            <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                <i className="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className={'mb-1'}>
                                         <label className={'ui-custom-label'}>Cost of Purchase</label>
@@ -665,40 +665,40 @@ class AssetRegComponent extends Component {
                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
                                         </div>
                                         <div className={'mb-1'}>
-                                            {/*<div className="input-grid">*/}
+                                            <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Condition</label>
                                                 <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
                                                     <option>Select Condition</option>
                                                     <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                                 </select>
-                                            {/*    <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                            {/*        <i className="fas fa-plus"></i>*/}
-                                            {/*    </button>*/}
-                                            {/*</div>*/}
+                                                <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className={'mb-1'}>
-                                            {/*<div className="input-grid">*/}
+                                            <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Asset Type</label>
                                                 <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
                                                 <option>Asset Type</option>
                                                 <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                             </select>
-                                            {/*    <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                            {/*        <i className="fas fa-plus"></i>*/}
-                                            {/*    </button>*/}
-                                            {/*</div>*/}
+                                                <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className={'mb-1'}>
-                                            {/*<div className="input-grid">*/}
+                                            <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Depreciation Method</label>
                                                 <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
                                                     <option>Select Depreciation Method</option>
                                                     <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
                                                 </select>
-                                            {/*    <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">*/}
-                                            {/*        <i className="fas fa-plus"></i>*/}
-                                            {/*    </button>*/}
-                                            {/*</div>*/}
+                                                <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                     </div>
                                         <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
                                             <div className="ui-custom-checkbox">
