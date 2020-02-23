@@ -3,11 +3,17 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('brands', [{
-        brand: 'Xiaomi'
+        brand: 'Xiaomi',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }, {
-        brand: 'Samsung'
+        brand: 'Samsung',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        brand: 'Apple'
+        brand: 'Apple',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 
