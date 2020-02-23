@@ -8,8 +8,9 @@
 
 html,body, #root{
    width: 100%;
-   height: 100vh;
+   height: 100%;
    font-size: 16px;
+   background: #ebf2f8;
    background-size: 15px 18px;
 }
 
@@ -18,6 +19,7 @@ a:hover{text-decoration: none}
 
 .h-0{height: 0}
 .h-75px{height: 75px}
+.h-45px{height: 45px}
 .h-50px{height: 50px}
 .h-60px{height: 60px}
 .h-20px{height: 20px}
@@ -41,6 +43,8 @@ a:hover{text-decoration: none}
 .w-76{width: 76%}
 .w-80{width: 80%;}
 .w-86{width: 86%;}
+.w-60px{width: 60px !important;}
+.w-80px{width: 80px !important;}
 
 input:focus,
 textarea:focus,
@@ -215,11 +219,13 @@ input[type=date],
 
 .ui-grid-70{grid-template-columns: 70px auto;}
 
-.ui-container .ui-body-container{
-   height: 85%;
-   padding: 10px;
-   background: #ebf2f8;
+.ui-body-container{
+   height: 92.5%;
 }
+
+/*.ui-body-container-short{*/
+/*   height: 92.5%;*/
+/*}*/
 
 .ui-btn{
    border: none;
@@ -446,8 +452,6 @@ input[type=date],
    padding: 10px;
    border-bottom: 1px solid #17a2b8;
 }
-
-tbody{border: 1px solid #ddd}
 
 @keyframes uiSliderModal {
    0%{

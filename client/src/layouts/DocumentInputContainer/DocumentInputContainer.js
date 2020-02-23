@@ -753,8 +753,8 @@ class DocumentInputContainer extends Component {
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded p-2 bg-white min-h-80vh">
-                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                    <div className="rounded bg-white min-h-80vh">
+                        <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>

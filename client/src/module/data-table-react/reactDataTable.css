@@ -1,32 +1,93 @@
-/*.reactDataTable th{*/
-/*    font-size: 14px;*/
-/*}*/
+.reactDataTable{
+    background: white;
+    padding: 15px 5px;
+    width: 98%;
+    border-radius: 5px;
+    margin: 1% auto;
+}
 
-/*.reactDataTable td{*/
-/*    padding: 10px 5px;*/
-/*    vertical-align: middle;*/
-/*}*/
+.reactDataTable select{
+    color: #666666;
+    font-weight: 600;
+}
+.reactDataTable .tbody p,
+.reactDataTable .thead p{
+    color: #0f88e7;
+    font-size: 18px;
+    width: 200px;
+    padding: 12px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
 
-/*table tbody tr:nth-child(even){*/
-/*    background: #eafffc;*/
-/*}*/
+.reactDataTable .tbody p{color: #555; font-size: 16px;}
 
-/*table thead tr{*/
-/*    background: #baf4eb;*/
-/*}*/
+.reactDataTable td{
+    width: 130px;
+    padding: 12px;
+    vertical-align: middle;
+}
 
-/*table tbody tr:hover{*/
-/*    background: #eee;*/
-/*}*/
+.reactDataTable i{
+    font-size: 22px;
+}
 
-/*.reactDataTable .page-link{*/
-/*    color: #12b79e;*/
-/*}*/
+.tbody p:nth-child(even){
+    background: #eafffc;
+}
 
-/*.reactDataTable .page-item.active .page-link{*/
-/*    background: #12b79e;*/
-/*}*/
+.tbody .ui-tbody-child,
+.thead{
+    background: #c6e4f9;
+    display: flex;
+    width: 100%;
+    margin-bottom: 3px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
 
-/*.reactDataTable .page-item.active .page-link{*/
-/*    border-color: #12b79e*/
-/*}*/
+.reactDataTable .custom-search div{
+    color: white;
+    background: #329df0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tbody .ui-tbody-child:nth-child(even){
+    background: white;
+}
+.tbody .ui-tbody-child:nth-child(odd){
+    background: #e2f1fc;
+}
+
+.thead p:nth-child(1) {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.thead p:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tbody p:hover{
+   background: #eee;
+}
+
+.reactDataTable .page-link{
+    color: #12b79e;
+}
+
+.reactDataTable .page-item.active .page-link{
+    background: #12b79e;
+}
+
+.reactDataTable .page-item.active .page-link{
+    border-color: #12b79e
+}

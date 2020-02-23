@@ -113,7 +113,7 @@ class ReactDataTable extends Component {
         const {del} = this.props
         const data = {id}
         Axios.delete(apiUrl() + del + '/delete', {data})
-            .then(resData => {
+            .pen(resData => {
 
                 window.location.reload()
             })
@@ -130,42 +130,40 @@ class ReactDataTable extends Component {
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
-                {item !== 'id' && <th onClick={(e) => this.sortColumn(e, item)} scope="col" key={index} className={'text-capitalize'}>
-                    {sortColumn === item ? <i className="fas fa-angle-up text-dark"></i> : <i className="fas fa-angle-down text-dark"></i>} {item.replace('_', " ")}
-                </th>}
+                {item !== 'id' && <p onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
+                    {item.replace('_', " ")}
+                </p>}
             </>
         ))
         let table_body = filteredData.length > 0 && filteredData.map((item, index) => (
-            <tr key={index + 10}>
-                <td>{index + 1}</td>
-                {Object.keys(filteredData[0]).map((items, key) => (
-                    <>
-                    {items !== 'id' &&
-                        <td key={key + 20}>
-                            {items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}
-                        </td>
-                    }
-                    </>
-                ))}
-                {edit && <td className={'text-warning'}>
-                    <p className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>Edit</p>
-                </td>}
-                {del && <td className={'text-danger'}>
-                    <p className="cursor-pointer text-danger" onClick={() => {this.deleteItem(item.id)}}>Delete</p>
-                </td>}
-                {add && <td className={'text-danger'}>
-                    <p className="cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>
-                </td>}
-                {details && <td className={'text-danger'}>
-                    <button className="cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>Details</button>
-                </td>}
-                {approve && <td className={'text-danger'}>
-                    <p className="cursor-pointer text-danger">Approve</p>
-                </td>}
-                {track && <td className={'text-danger'}>
-                    <p className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>Track</p>
-                </td>}
-            </tr>
+            <div key={index + 10} className={'ui-tbody-child'}>
+                <div className={'d-flex align-items-center'}>
+                    <p className={'w-60px'}>{index + 1}</p>
+                    {Object.keys(filteredData[0]).map((items, key) => (
+                        <>
+                        {items !== 'id' &&
+                            <p key={key + 20}>
+                                {items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}
+                            </p>
+                        }
+                        </>
+                    ))}
+                </div>
+                <div className={'d-flex align-items-center'}>
+                    {edit && <p className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                        <i className="icofont-ui-edit"></i>
+                    </p>}
+                    {del && <p className="cursor-pointer text-danger" onClick={() => {this.deleteItem(item.id)}}>
+                        <i className="icofont-ui-delete"></i>
+                    </p>}
+                    {add && <p className="cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
+                    {details && <button className="cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>Details</button>}
+                    {approve && <p className="cursor-pointer text-danger">Approve</p>}
+                    {track && <p className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
+                        <i className="icofont-location-pin"></i>
+                    </p>}
+                </div>
+            </div>
         ))
 
         return (
@@ -173,7 +171,7 @@ class ReactDataTable extends Component {
                 <div className="row">
                     {tableData.length > 0 && <> <div className="col-md-6 justify-content-between row">
                         <div className="col-md-3">
-                            <select name={'displayRow'} value={displayRow} className="form-control px-1 mb-3" style={{width: '100%'}} onChange={this.handleChange}>
+                            <select name={'displayRow'} value={displayRow} className="form-control px-1 mb-3" style={{widp: '100%'}} onChange={this.handleChange}>
                                 <option value={5}>5</option>
                                 <option value={10}>10</option>
                                 <option value={50}>50</option>
@@ -185,33 +183,35 @@ class ReactDataTable extends Component {
                         </div>}
                     </div></>}
                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
-                        <div className="input-group" style={{width: 280}}>
-                            <input name={'filterByTitle'} onChange={this.handleChange} className="form-control" placeholder={`Search by ${title.split('_').join(' ')}`} />
+                        <div className="input-group custom-search" style={{width: 280}}>
+                            <input name={'filterByTitle'} onChange={this.handleChange} className="form-control h-45px" placeholder={`Search by ${title.split('_').join(' ')}`} />
                             <div className="input-group-append">
-                                <div className="input-group-text"><i className="fas fa-search"></i></div>
+                                <div className="input-group-text"><i className="icofont-search-1"></i></div>
                             </div>
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <table id={'__table_react'} className={'table'}>
-                    <thead className={'thead-dark'}>
-                        <tr>
-                            <th scope="col" className={'text-capitalize'}>
-                                No
-                            </th>
-                            {table_headers}
-                            {edit && <th>Edit</th>}
-                            {del && <th>Delete</th>}
-                            {add && <th>Add</th>}
-                            {details && <th>Details</th>}
-                            {approve && <th>Approve</th>}
-                            {track && <th>Track</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
+                {tableData.length > 0 ? <div id={'__table_react'} className={'table'}>
+                    <div className={'thead'}>
+                            <div className={'d-flex align-items-center'}>
+                                <p className={'w-60px'}>
+                                    No
+                                </p>
+                                {table_headers}
+                            </div>
+                            <div className={'d-flex align-items-center'}>
+                                {edit && <p>Edit</p>}
+                                {del && <p>Delete</p>}
+                                {add && <p>Add</p>}
+                                {details && <p>Details</p>}
+                                {approve && <p>Approve</p>}
+                                {track && <p>Track</p>}
+                            </div>
+                    </div>
+                    <div className={'tbody'}>
                         {table_body}
-                    </tbody>
-                </table> : <h3>No Data Available</h3>}
+                    </div>
+                </div> : <h3>No Data Available</h3>}
                 <div className={'row'}>
                     {tableData.length > 0 && <div className="col-md-5 mt-1">
                         <p>Showing {dataCount + 1} to {dataCount + tableData.length} of {actualData.length} entries</p>

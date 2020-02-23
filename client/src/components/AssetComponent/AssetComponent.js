@@ -185,8 +185,8 @@ class AssetComponent extends Component{
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
                     </div>
-                    <div className={'rounded p-2 bg-white min-h-80vh'}>
-                        <nav className="navbar text-center mb-3 p-2 rounded">
+                    <div className={'rounded bg-white min-h-80vh'}>
+                        <nav className="navbar text-center mb-3 p-3 rounded">
                             <p className="text-dark f-weight-500 f-20px m-0">Submit Requisiiton</p>
                         </nav>
                         {arrayData.length > 0 ? <ReactDataTable
