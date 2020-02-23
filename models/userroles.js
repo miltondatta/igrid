@@ -11,11 +11,8 @@ const UserRoles = db.define('user_roles', {
     type: Sequelize.STRING
   },
   module_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Modules,
-      key: 'id'
-    }
+    defaultValue: 0,
+    type: Sequelize.INTEGER
   }
 })
 
