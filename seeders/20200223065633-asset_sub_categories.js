@@ -16,6 +16,13 @@ module.exports = {
         description: 'A computer is a machine that can be instructed to carry out sequences of arithmetic or logical operations automatically via computer programming.',
         createdAt: new Date(),
         updatedAt: new Date()
+      },{
+        category_id: 2,
+        sub_category_name: 'Monitor',
+        sub_category_code: 2011,
+        description: 'A computer monitor is an output device that displays information in pictorial form.',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 

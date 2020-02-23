@@ -2,30 +2,30 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-      return queryInterface.bulkInsert('models', [{
-        model: 'Note 4',
+      return queryInterface.bulkInsert('location_hierarchies', [{
+        hierarchy_name: 'Program',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        model: 'Note 10 plus',
+        hierarchy_name: 'Division',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        model: 'iPhone 11 XR',
+        hierarchy_name: 'Region',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        model: 'iPhone 11 XR',
+        hierarchy_name: 'Area',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        model: 'Curved LED Monitor',
+        hierarchy_name: 'Branch',
         createdAt: new Date(),
         updatedAt: new Date()
       }], {});
   },
 
   down: (queryInterface, Sequelize) => {
-      return queryInterface.bulkDelete('models', null, {});
+      return queryInterface.bulkDelete('location_hierarchies', null, {});
   }
 };
