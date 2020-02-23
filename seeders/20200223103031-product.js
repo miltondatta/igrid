@@ -8,7 +8,7 @@ module.exports = {
         sub_category_id: 1,
         brand_id: 1,
         model_id: 1,
-        product_code: 01,
+        product_code: '01',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
@@ -17,7 +17,7 @@ module.exports = {
         sub_category_id: 3,
         brand_id: 2,
         model_id: 4,
-        product_code: 02,
+        product_code: '02',
         createdAt: new Date(),
         updatedAt: new Date()
       }], {});
