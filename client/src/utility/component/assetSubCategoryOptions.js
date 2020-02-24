@@ -15,7 +15,7 @@ class AssetSubCategoryOptions extends Component {
     }
 
     getData = () => {
-        Axios.get(apiUrl() + 'asset-sub-category')
+        Axios.get(apiUrl() + '/asset-sub-category/options')
             .then(resData => {
 
                 this.setState({
@@ -32,6 +32,7 @@ class AssetSubCategoryOptions extends Component {
         const {assetId} = this.props
         const {assetSubCategory} = this.state
         const filteredCategory = assetSubCategory.length > 0 && assetSubCategory.filter(item => item.category_id === parseInt(assetId, 10))
+        console.log(filteredCategory, assetSubCategory, assetId, 35)
         const assetCategoryOptions = filteredCategory.length > 0 && filteredCategory.map((item, index) => (
             <option key={index} value={item.id}>{item.sub_category_name}</option>
         ))

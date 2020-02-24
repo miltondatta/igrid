@@ -176,19 +176,19 @@ class ReactDataTable extends Component {
                         </div>
                     </div>
                     <div className={'d-flex align-items-center'}>
-                        {edit && <p className="w-90px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                        {edit && <p className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                             <i className="icofont-ui-edit"></i>
                         </p>}
-                        {del && <p onClick={() => {this.setState({delId: item.id})}} className="w-90px cursor-pointer text-danger" data-toggle="modal"
+                        {del && <p onClick={() => {this.setState({delId: item.id})}} className="w-95px cursor-pointer text-danger" data-toggle="modal"
                                    data-target="#rowDeleteModal">
                             <i className="icofont-ui-delete"></i>
                         </p>}
-                        {add && <p className="w-90px cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
-                        {details && <button className="w-90px cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>
+                        {add && <p className="w-95px cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
+                        {details && <button className="w-95px cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>
                             <i className="fas fa-info-circle"></i>
                         </button>}
-                        {approve && <p className="w-90px cursor-pointer text-danger">Approve</p>}
-                        {track && <p className="w-90px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
+                        {approve && <p className="w-95px cursor-pointer text-danger">Approve</p>}
+                        {track && <p className="w-95px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
                             <i className="icofont-location-pin"></i>
                         </p>}
                     </div>
@@ -229,12 +229,12 @@ class ReactDataTable extends Component {
                                 {table_headers}
                             </div>
                             <div className={'d-flex align-items-center'}>
-                                {edit && <p className={'w-90px'}>Edit</p>}
-                                {del && <p className={'w-90px'}>Delete</p>}
-                                {add && <p className={'w-90px'}>Add</p>}
-                                {details && <p className={'w-90px'}>Details</p>}
-                                {approve && <p className={'w-90px'}>Approve</p>}
-                                {track && <p className={'w-90px'}>Track</p>}
+                                {edit && <p className={'w-95px'}>Edit</p>}
+                                {del && <p className={'w-95px'}>Delete</p>}
+                                {add && <p className={'w-95px'}>Add</p>}
+                                {details && <p className={'w-95px'}>Details</p>}
+                                {approve && <p className={'w-95px'}>Approve</p>}
+                                {track && <p className={'w-95px'}>Track</p>}
                             </div>
                     </div>
                     <div className={'tbody'}>

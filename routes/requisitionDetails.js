@@ -50,6 +50,23 @@ route.get('/requisition-details', async (req,res,next) => {
 })
 
 // Read
+route.get('/requisition-details/status/:id', async (req,res,next) => {
+    const [data, master] = await db.query(`
+        SELECT * FROM requisition_details 
+        JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id
+        JOIN requisition_approves ON requisition_approves.requisition_id = requisition_masters.id
+        WHERE requisition_masters.request_by = ${req.params.id}
+    `)
+    RequisitionMaster.findAll({attributes: ['id', 'mobile', 'email', 'location_id', 'role_id', 'request_by', 'request_date', 'delivery_date', 'status', 'requisition_no']})
+        .then(resData => {
+            res.status(200).json(resData)
+        })
+        .catch(err => {
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
+// Read
 route.get('/requisition-details/details/:id', async (req,res,next) => {
     let reqId = []
     const [resultsMain, metadataMain] = await db.query(`

@@ -184,6 +184,10 @@ const AsyncApprovalLevel = Loadable({
     loader: () => import('../containers/ApprovalLevel'),
     loading: Loading,
 });
+const AsyncRequisitionStatus = Loadable({
+    loader: () => import('../containers/RequisitionStatus'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -234,7 +238,6 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
-                                    <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/admin/user-roles' component={AsyncUserRoles}/>
                                     <Route exact path='/admin/project' component={AsyncCreateProject}/>
                                     <Route exact path='/admin/conditions' component={AsyncConditions}/>
@@ -250,6 +253,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/admin/asset-category' component={AsyncAssetCategory}/>
+                                    <Route exact path='/requisition-status' component={AsyncRequisitionStatus}/>
                                     <Route exact path='/admin/approval-level' component={AsyncApprovalLevel}/>
                                     <Route exact path='/admin/loc_hierarchies' component={AsyncLocHierarchies}/>
                                     <Route exact path='/admin/depreciation-methods' component={AsyncDepMethod}/>

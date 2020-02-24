@@ -7,13 +7,16 @@ const route = express.Router()
 // Read
 route.get('/user-associate-roles', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT user_associate_roles.id,CONCAT(users."firstName", ' ', users."lastName") as user_name, modules.module_name, locations.location_name, user_roles.role_name FROM user_associate_roles
+        SELECT user_associate_roles.id,CONCAT(users."firstName", ' ', users."lastName") as user_name, locations.location_name, user_roles.role_name FROM user_associate_roles
         JOIN users ON users.id = user_associate_roles.user_id
-        JOIN modules ON modules.id = user_associate_roles.module_id
         JOIN locations ON locations.id = user_associate_roles.location_id
         JOIN user_roles ON user_roles.id = user_associate_roles.role_id
     `)
-    res.status(200).json(results)
+    if(results.length > 0) {
+        res.status(200).json(results)
+    } else {
+        res.status(200).json()
+    }
 })
 
 // Update
@@ -38,7 +41,7 @@ route.put('/user-associate-roles/update/:id', (req,res,next) => {
 // Create
 route.post('/user-associate-roles/entry', (req,res,next) => {
     const {user_id,location_id,module_id,role_id} = req.body
-    if(user_id === '' || location_id === '' || module_id === '' || role_id === '') {
+    if(user_id === '' || location_id === '' || role_id === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
         UserAssociateRoles.create(req.body)

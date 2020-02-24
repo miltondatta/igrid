@@ -41,6 +41,12 @@ export const sidenav = [
                 link: '/asset',
                 icon: "far fa-keyboard"
             },
+            {
+                id: 5,
+                name: 'Requisition Status',
+                link: '/requisition-status',
+                icon: "far fa-keyboard"
+            },
         ]
     },
     {

@@ -61,7 +61,17 @@ class Topnav extends Component {
                                                           style={{display: currentHover !== items.id && 'none'}}>
                                         {items.categories.map((subItems, key) => (
                                             <>
-                                                {items.id === 4 && userType !== 2 && subItems.id === 4 ? null : <a key={subItems.id} href={subItems.link}>
+                                                {items.id === 4 && userType === 2 ? ((subItems.id === 4 || subItems.id === 5) ? <a key={subItems.id} href={subItems.link}>
+                                                    <p key={key + 10}
+                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                        {subItems.name}
+                                                    </p>
+                                                </a> : null) : (items.id === 4 && userType === 1) ? (subItems.id !== 4 || subItems.id !== 5) && <a key={subItems.id} href={subItems.link}>
+                                                    <p key={key + 10}
+                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                        {subItems.name}
+                                                    </p>
+                                                </a> : <a key={subItems.id} href={subItems.link}>
                                                     <p key={key + 10}
                                                        className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
                                                         {subItems.name}
@@ -129,7 +139,7 @@ class Topnav extends Component {
                         </div>
                         <div className={'text-white ui-user-nav d-flex align-items-center'}>
                             <i className="fas fa-bell"></i>
-                            {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-2'}>System Admin</span></Link> :
+                            {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-1'}>{userName}</span></Link> :
                                 <span onClick={this.handleUserOptions}>{userName}</span>}
                             <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                  src={'http://localhost:5000/images/' + image} alt={'user'}/>
@@ -170,7 +180,7 @@ class Topnav extends Component {
                             </div>
                             <div className={'text-white ui-user-nav d-flex align-items-center'}>
                                 <i className="fas fa-bell"></i>
-                                {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-2'}>System Admin</span></Link> : <span onClick={this.handleUserOptions}>{userName}</span>}
+                                {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-1'}>{userName}</span></Link> : <span onClick={this.handleUserOptions}>{userName}</span>}
                                 <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                      src={'http://localhost:5000/images/' + image} alt={'user'}/>
                                 {showUserOption && <div className={'ui-user-dropdown'}>

@@ -18,7 +18,11 @@ class RequestHistoryComponent extends Component {
             reqDetails: [],
             detailedData: [],
             showDetails: false,
-            renderRidirect: false
+            renderRidirect: false,
+            error: false,
+            success: false,
+            errorMessage: '',
+            successMessage: '',
         }
     }
 
@@ -56,7 +60,17 @@ class RequestHistoryComponent extends Component {
         const {reqDetails} = this.state
         Axios.post(apiUrl() + 'requisition-approve/entry', reqDetails)
             .then(res => {
-                return null
+                if(!res.data.status){
+                    this.setState({
+                        error: true,
+                        errorMessage: res.data.message
+                    })
+                } else {
+                    this.setState({
+                        success: true,
+                        successMessage: res.data.message
+                    })
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -111,7 +125,7 @@ class RequestHistoryComponent extends Component {
     }
 
     render() {
-        const {data, showDetails, detailedData, requisition_id, renderRidirect} = this.state
+        const {data, showDetails, detailedData, error, errorMessage, success, successMessage} = this.state
         let tableData = detailedData.map((item, index) => {
             return(
                 <tr key={index + 10}>
@@ -137,42 +151,51 @@ class RequestHistoryComponent extends Component {
         })
 
         return (
-            <div className={'bg-white p-3 rounded shadow'}>
-                {!showDetails ? <>
-                <nav className="navbar text-center mb-3 p-2 rounded">
-                    <p className="text-dark f-weight-500 f-20px m-0" >Requisition History</p>
-                </nav>
-                    {data.length > 0 ? <ReactDataTable
-                        details={'reqHistory'}
-                        assetList={this.assetList}
-                        searchable
-                        pagination
-                        tableData={data}
-                    /> : <h2>Loading...</h2>}
-                </> : <>
-                    <nav className="navbar text-center mb-2 p-2 rounded cursor-pointer">
-                        <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-dark f-weight-500 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i>     Go Back</p>
+            <div className={'m-3'}>
+                {error && <div className="alert alert-danger my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
+                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
+                </div>}
+                {success &&
+                <div className="alert alert-success my-2 position-relative d-flex justify-content-between align-items-center"
+                     role="alert">
+                    {successMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: false})
+                }}></i>
+                </div>}
+                <div className={'bg-white p-3 rounded'}>
+                    {!showDetails ? <>
+                    <nav className="navbar text-center mb-3 p-2 rounded">
+                        <p className="text-dark f-weight-500 f-20px m-0" >Requisition History</p>
                     </nav>
-                    <div className={'ui-req-history'}>
-                        <table className="table">
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Category</th>
-                                    <th>Sub Category</th>
-                                    <th>Quantity</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {tableData}
-                            </tbody>
-                        </table>
-                        <div className="d-flex w-100 justify-content-end">
-                            <button className="btn btn-info px-4 f-18px" onClick={this.submitApprove}>Submit</button>
+                        {data.length > 0 ? <ReactDataTable
+                            details={'reqHistory'}
+                            assetList={this.assetList}
+                            tableData={data}
+                        /> : <h2>Loading...</h2>}
+                    </> : <>
+                        <nav className="navbar text-center mb-2 p-2 rounded cursor-pointer">
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-dark f-weight-500 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i>     Go Back</p>
+                        </nav>
+                        <div className={'ui-req-history'}>
+                            <table className="table">
+                                <thead className="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {tableData}
+                                </tbody>
+                            </table>
+                            <div className="d-flex w-100 justify-content-end">
+                                <button className="btn btn-info px-4 f-18px" onClick={this.submitApprove}>Submit</button>
+                            </div>
                         </div>
-                    </div>
-                </>}
+                    </>}
+                </div>
             </div>
         );
     }

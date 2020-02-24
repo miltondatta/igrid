@@ -37,6 +37,13 @@ router.get('/users', (req,res,next) => {
         .catch(err => {console.log(err); res.status(404).send(err)})
 })
 
+// Get All Users
+router.get('/users/options', (req,res,next) => {
+    Users.findAll({attributes: ['id', 'firstName', 'lastName']})
+        .then(data => {res.send(data)})
+        .catch(err => {console.log(err); res.status(404).send(err)})
+})
+
 // Create User
 router.post('/users/register', (req,res,next) => {
     const userData = req.body
@@ -126,7 +133,7 @@ router.post('/users/login', (req,res,next) => {
                                  location_id = results[0].location_id
                                  userType    = results[0].role_id
                             }
-                            payload = {id, userName, email, phone_number, pin, address, image, userType, location_id}
+                            payload = {id, userName, email, phone_number, pin, address, image, userType, role_id: results[0].role_id, location_id}
 
                             const token = jwt.sign({
                                 exp: Math.floor(Date.now() / 1000) + (60 * 60),

@@ -17,6 +17,17 @@ route.get('/asset-sub-category', async (req,res,next) => {
     }
 })
 
+// Read
+route.get('/asset-sub-category/options', async (req,res,next) => {
+    AssetSubCategory.findAll({attributes: ['id', 'sub_category_name', 'category_id','sub_category_code','description']})
+        .then(resData => {
+            res.status(200).json(resData)
+        })
+        .catch(err => {
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Update
 route.put('/asset-sub-category/update/:id', (req,res,next) => {
     const {category_id,sub_category_name,sub_category_code,description} = req.body

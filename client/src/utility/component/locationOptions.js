@@ -16,6 +16,7 @@ class LocationsOptions extends Component {
 
     getData = () => {
         const {selectedId} = this.props
+        console.log(19, selectedId)
         Axios.get(apiUrl() + 'locations/' + selectedId)
             .then(resData => {
                 console.log(resData.data, 17)
@@ -31,7 +32,6 @@ class LocationsOptions extends Component {
             this.props.forceUp()
         }
         const {data} = this.state
-        console.log(data, 32)
         const Options = data.length > 0 && data.map((item, index) => (
             <option key={index} value={item.id}>{item.location_name}</option>
         ))

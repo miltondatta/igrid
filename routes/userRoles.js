@@ -5,7 +5,7 @@ const route = express.Router()
 
 // Read
 route.get('/user-roles', (req,res,next) => {
-    UserRoles.findAll({attributes: ['id', 'role_name', 'role_desc', 'module_id']})
+    UserRoles.findAll({attributes: ['id', 'role_name', 'role_desc']})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -17,7 +17,7 @@ route.get('/user-roles', (req,res,next) => {
 // Update
 route.put('/user-roles/update/:id', (req,res,next) => {
     const {role_name,role_desc,module_id} = req.body
-    if(role_desc === '' || role_name === '' || module_id === '') {
+    if(role_desc === '' || role_name === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
         UserRoles.findAll({where: {id: req.params.id}})
@@ -36,7 +36,7 @@ route.put('/user-roles/update/:id', (req,res,next) => {
 // Create
 route.post('/user-roles/entry', (req,res,next) => {
     const {role_desc, role_name, module_id} = req.body
-    if(role_desc === '' || role_name === '' || module_id === '') {
+    if(role_desc === '' || role_name === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
         UserRoles.findAll({where: {role_desc}})

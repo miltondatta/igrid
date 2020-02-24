@@ -15,7 +15,7 @@ class UserOptions extends Component {
     }
 
     getData = () => {
-        Axios.get(apiUrl() + 'users')
+        Axios.get(apiUrl() + 'users/options')
             .then(resData => {
                 this.setState({
                     brandData: resData.data

@@ -13,7 +13,7 @@ route.get('/locations', async (req,res,next) => {
     if(data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json({message: 'Something Went Wrong'})
+        res.status(200).json()
     }
 })
 

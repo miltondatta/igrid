@@ -229,11 +229,12 @@ class AdminInputContainer extends Component {
     }
 
     locationApi = (id) => {
+        console.log(id, 232)
         Axios.get(apiUrl() + 'locations/' + id)
             .then(resData => {
                 if(resData.data.length > 0) {
                     this.setState({
-                        locationHolder: [resData.data, ...this.state.locationHolder]
+                        locationHolder: [...this.state.locationHolder, ...resData.data]
                     })
                 }
             })
@@ -712,14 +713,20 @@ class AdminInputContainer extends Component {
                     </>
                 )
             case 'LOCATIONS':
-                let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) => (
-                    <div className="px-1 mb-2">
-                        <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                            <option>Select Sub Location</option>
-                            <LocationsOptions selectedId={item[index].parent_id} />
-                        </select>
-                    </div>
-                ))
+                console.log(locationHolder, 715)
+                let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) =>
+                    {
+
+                        console.log(item)
+                        return(
+                            <div className="px-1 mb-2">
+                                <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
+                                    <option>Select Sub Location {item.location_name}</option>
+                                    <LocationsOptions selectedId={item.parent_id} />
+                                </select>
+                            </div>
+                    )}
+                )
                 return(
                     <>
                             <div className="px-1 mb-2">
@@ -790,12 +797,6 @@ class AdminInputContainer extends Component {
                                 value={role_desc}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
-                        </div>
-                        <div className="px-1 mb-20p">
-                            <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
-                                <option>Select Module</option>
-                                <ModuleOptions />
-                            </select>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Role</button>
@@ -878,12 +879,12 @@ class AdminInputContainer extends Component {
                                 <UserOptions />
                             </select>
                         </div>
-                        <div className="px-1 mb-2">
-                            <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
-                                <option>Select Module</option>
-                                <ModuleOptions />
-                            </select>
-                        </div>
+                        {/*<div className="px-1 mb-2">*/}
+                        {/*    <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>*/}
+                        {/*        <option>Select Module</option>*/}
+                        {/*        <ModuleOptions />*/}
+                        {/*    </select>*/}
+                        {/*</div>*/}
                         <div className="px-1 mb-2">
                             <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
                                 <option>Select Location</option>
