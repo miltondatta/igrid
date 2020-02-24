@@ -1,24 +1,20 @@
+const db = require('../config/db')
 const express = require('express')
 const Locations = require('../models/locations')
-const Location_hierarchies = require('../models/location_hierarchies')
 
 const route = express.Router()
 
 // Read
-route.get('/locations', (req,res,next) => {
-    Locations.findAll({
-        attributes: ['id', 'location_name','parent_id','hierarchy'],
-        // include: [{
-        //     model: Location_hierarchies,
-        //     attributes: ['hierarchy_name']
-        // }]
-    })
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            res.status(200).json({message: 'Something Went Wrong', err})
-        })
+route.get('/locations', async (req,res,next) => {
+    const [data, naster] = await db.query(`
+        SELECT locations.id, locations.location_name, location_hierarchies.hierarchy_name, locations.location_code, locations.parent_id FROM locations
+            JOIN location_hierarchies ON locations.hierarchy = location_hierarchies.id
+    `)
+    if(data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json({message: 'Something Went Wrong'})
+    }
 })
 
 // Read Specific Location

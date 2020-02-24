@@ -1,6 +1,5 @@
 const db = require('../../config/db')
 const Sequelize = require('sequelize')
-const Challan = require('./challan')
 
 const Vendors = db.define('vendors', {
     vendor_name:{
@@ -13,6 +12,7 @@ const Vendors = db.define('vendors', {
         type: Sequelize.STRING
     },
     file_name:{
+        allowNull: true,
         type: Sequelize.STRING
     },
 })

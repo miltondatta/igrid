@@ -43,18 +43,17 @@ route.post('/vendors/entry', (req,res,next) => {
         } else if (err) {
             return res.status(500).json(err)
         }
-        const {vendor_name,description} = req.body
-        const file_name = req.file.filename
-        if (vendor_name === '' || file_name === '' || description === '') {
+        const {vendor_name,description, enlisted} = req.body
+        const file_name = req.file ? req.file.filename : null
+        if (vendor_name === '' || description === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
-            let data = {vendor_name,description,file_name}
+            let data = {vendor_name,description,file_name, enlisted}
             Vendors.create(data)
                 .then(resData => {
                     res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                 })
                 .catch(err => {
-                    console.log(err)
                     res.status(200).json({message: 'Something went wrong', err})
                 })
         }
@@ -72,14 +71,14 @@ route.put('/vendors/update/:id', (req,res,next) => {
 
         Vendors.findAll({where: {id: req.params.id}})
             .then(data => {
-                if (fs.existsSync('public/vendor/' + data[0].dataValues.file_name)) {
+                const {vendor_name, enlisted, description} = req.body
+                const file_name = typeof req.file !== 'undefined' ? req.file.filename : req.body.file
+                console.log(req.body, req.file, 76)
+                if (fs.existsSync('public/vendor/' + data[0].dataValues.file_name) && (file_name !== data[0].dataValues.file_name)) {
                     fs.unlink('public/vendor/' + data[0].dataValues.file_name, (err) => {
                         if (err) throw err;
-                        console.log('successfully deleted /tmp/hello');
                     });
                 }
-                const {vendor_name, enlisted, description} = req.body
-                const file_name = req.file.filename
                 Vendors.update({vendor_name, enlisted, description, file_name}, {where: {id: req.params.id}})
                     .then(resData => {
                         res.status(200).json({resData, message: 'Data Saved Successfully', status: true})

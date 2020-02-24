@@ -7,14 +7,14 @@ const route = express.Router()
 // Read
 route.get('/approval_level/options', async (req,res,next) => {
     const [data, metaData] = await db.query(`
-       SELECT approval_levels.id, CONCAT(location_hierarchies.hierarchy_name, ' ' ,user_roles.role_name) as approval_name FROM approval_levels
+       SELECT approval_levels.id, CONCAT(location_hierarchies.hierarchy_name, '_' ,user_roles.role_name) as approval_name FROM approval_levels
         JOIN location_hierarchies ON approval_levels.location_heirarchy_id = location_hierarchies.id
         JOIN user_roles ON approval_levels.role_id = user_roles.id
     `)
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json({message: 'No Data Found'})
+        res.status(200).json()
     }
 })
 
@@ -28,7 +28,7 @@ route.get('/approval_level', async (req,res,next) => {
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json({message: 'No Data Found'})
+        res.status(200).json()
     }
 })
 
