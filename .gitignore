@@ -195,7 +195,6 @@ config/config.json
 
 ##Exclude Public Folder Uploaded File 
 public/assets
-public/images
 public/modules
 public/vendor
 public/document
