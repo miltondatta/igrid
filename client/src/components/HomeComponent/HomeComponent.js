@@ -13,8 +13,8 @@ const HomeComponent = () => {
         centerPadding: '0',
         infinite: true,
         autoplay: true,
-        speed: 1500,
-        autoplaySpeed: 2500,
+        speed: 1200,
+        autoplaySpeed: 3000,
     };
     const homeBan = homeBanner.map((item, index) => (
         <div>
@@ -31,9 +31,11 @@ const HomeComponent = () => {
                 <div className={'ui-news'}>
                     <p className={'f-19px f-weight-600 text-grey border-bottom-gray pb-3'}>Latest Updates</p>
                 </div>
-                <Slider {...settings}>
+                <div className={'w-100 rounded overflow-hidden'}>
+                    <Slider {...settings}>
                     {homeBan}
                 </Slider>
+                </div>
             </div>
             <div className="ui-hometop">
                 <div className={'ui-news'}>

@@ -1,17 +1,20 @@
+const db = require('../config/db')
 const express = require('express')
 const AssetSubCategory = require('../models/asset/assetSubCategory')
 
 const route = express.Router()
 
 // Read
-route.get('/asset-sub-category', (req,res,next) => {
-    AssetSubCategory.findAll({attributes: ['id', 'sub_category_name', 'category_id','sub_category_code','description']})
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            res.status(200).json({message: 'Something Went Wrong', err})
-        })
+route.get('/asset-sub-category', async (req,res,next) => {
+    const [data, metaData] = await db.query(`
+        SELECT asset_sub_categories.id, asset_sub_categories.sub_category_name, asset_categories.category_name, asset_sub_categories.sub_category_code, asset_sub_categories.description FROM asset_sub_categories
+        JOIN asset_categories ON asset_categories.id = asset_sub_categories.category_id
+    `)
+    if (data.length > 0 ) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json({message: 'Something Went Wrong'})
+    }
 })
 
 // Update
