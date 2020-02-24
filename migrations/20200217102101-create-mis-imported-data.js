@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('mis_indicator_datas', {
+    return queryInterface.createTable('mis_imported_datas', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -39,6 +39,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('mis_indicator_datas');
+    return queryInterface.dropTable('mis_imported_datas');
   }
 };
