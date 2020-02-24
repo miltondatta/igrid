@@ -329,7 +329,7 @@ exports.documentListSearch = async (req, res) => {
         if (title) queryText += ' and document_lists.title = ' + "\'" + title + "\'";
         if (circular_no) queryText += ' and document_lists.circular_no = ' + "\'" + circular_no + "\'";
 
-        if (keyword.length > 0) {
+        if (keyword && keyword.length > 0) {
             keyword.forEach((value) => {
                 queryText += ' or document_lists.title ilike ' + "\'%" + value + "%\'";
                 queryText += ' or document_lists.description ilike ' + "\'%" + value + "%\'";
