@@ -74,7 +74,7 @@ exports.store = (req, res) => {
                 remove_duplicates: true
             };
 
-            const extraction_result = keywordExtractor.extract((title + ' ' + description), keyword_options).join();
+            const extraction_result = ',' + keywordExtractor.extract((title + ' ' + description), keyword_options).filter(value => !value.includes("'")).join() + ',';
             const newDocumentList = {
                 category_id: category_id,
                 sub_category_id: sub_category_id,
@@ -161,7 +161,7 @@ exports.update = (req, res) => {
                     remove_duplicates: true
                 };
 
-                const extraction_result = keywordExtractor.extract((title + ' ' + description), keyword_options).join();
+                const extraction_result = ',' + keywordExtractor.extract((title + ' ' + description), keyword_options).filter(value => !value.includes("'")).join() + ',';
                 const updateDocumentList = {
                     category_id,
                     sub_category_id,
@@ -331,8 +331,7 @@ exports.documentListSearch = async (req, res) => {
 
         if (keyword && keyword.length > 0) {
             keyword.forEach((value) => {
-                queryText += ' or document_lists.title ilike ' + "\'%" + value + "%\'";
-                queryText += ' or document_lists.description ilike ' + "\'%" + value + "%\'";
+                queryText += ' or document_lists.keyword ilike ' + "\'%," + value + ",%\'";
             });
         }
 
