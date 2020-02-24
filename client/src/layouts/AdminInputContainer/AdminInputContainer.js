@@ -90,6 +90,7 @@ class AdminInputContainer extends Component {
                         sub_category_code: '',
                         enlisted: false
                     }, () => {
+                        window.location.reload()
                         this.validate()
                     })
                 }
@@ -140,6 +141,7 @@ class AdminInputContainer extends Component {
                     editId: id
                 }, () => {
                     Object.keys(item).map(val => {
+                        console.log(val, 144)
                         this.setState({
                             [val]: item[val]
                         }, () => {
@@ -266,11 +268,11 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
                                 onChange={this.handleChange} />
                         </div>
-                        <div className="px-1 mb-4 grid-2">
+                        <div className="px-1 mb-20p grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file'}</label>
+                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
                             </div>
                             <div className="d-flex justify-content-center align-items-center ui-custom-checkbox">
                                 <input
@@ -319,7 +321,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.project_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -356,7 +358,7 @@ class AdminInputContainer extends Component {
                                 <UserRoleOptions />
                             </select>
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
                                 <option>Select Parent</option>
                                 <ApproveLevelOptions />
@@ -413,7 +415,7 @@ class AdminInputContainer extends Component {
                                 <BrandIdOptions />
                             </select>
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.model_id) && 'is-invalid'}`}>
                                 <option>Select Model</option>
                                 <ModelIdOptions />
@@ -551,7 +553,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.depreciation_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -594,7 +596,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.asset_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -637,7 +639,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.category_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -745,7 +747,7 @@ class AdminInputContainer extends Component {
                                 </select>
                             </div>
                             {subLoc}
-                            <div className="px-1 mb-2">
+                            <div className="px-1 mb-20p">
                                 <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
                                     <option>Select Hierarchy</option>
                                     <HierarchiesOptions />
@@ -789,8 +791,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
                         </div>
-
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
                                 <option>Select Module</option>
                                 <ModuleOptions />
@@ -890,7 +891,7 @@ class AdminInputContainer extends Component {
                             </select>
                         </div>
                         {subLocation}
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
                                 <option>Select Role</option>
                                 <UserRoleOptions />
@@ -990,7 +991,6 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "VENDOR":
                 errorDict = {
-                    file_name: file_name !== '',
                     vendor_name: vendor_name !== '',
                     description: description !== '',
                 }
