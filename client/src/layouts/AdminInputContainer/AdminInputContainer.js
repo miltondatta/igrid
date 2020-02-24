@@ -686,7 +686,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -1196,9 +1196,12 @@ class AdminInputContainer extends Component {
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
                             <ReactDataTable
                                 edit
+                                dataDisplay
+                                footer
                                 isLoading
                                 pagination
                                 searchable
+
                                 deleteModalTitle={title}
                                 del={getApi}
                                 tableData={allProjects}
