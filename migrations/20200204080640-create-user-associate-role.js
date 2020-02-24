@@ -20,11 +20,7 @@ module.exports = {
         defaultValue: 0,
       },
       role_id: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'user_roles',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

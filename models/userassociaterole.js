@@ -19,11 +19,7 @@ const UserAssociateRoles = db.define('user_associate_roles', {
     defaultValue: 0
   },
   role_id: {
-    type: Sequelize.INTEGER,
-    references:{
-      model: UserRoles,
-      key: 'id'
-    }
+    type: Sequelize.INTEGER
   },
 })
 
