@@ -109,12 +109,12 @@ class ReactDataTable extends Component {
         }
     }
 
-    deleteItem = (id) => {
+    deleteItem = (e, id) => {
+        e.preventDefault()
         const {del} = this.props
         const data = {id}
         Axios.delete(apiUrl() + del + '/delete', {data})
-            .pen(resData => {
-
+            .then(resData => {
                 window.location.reload()
             })
             .catch(res => {
@@ -123,8 +123,8 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del, details, approve, addName, add, track} = this.props
-        const {tableData, sortColumn, actualData, dataCount, displayRow, filterByTitle} = this.state
+        const {searchable, exportable, pagination, edit, del, details, approve, addName, add, track, deleteModalTitle, dataDisplay, footer} = this.props
+        const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 
@@ -135,56 +135,83 @@ class ReactDataTable extends Component {
                 </p>}
             </>
         ))
-        let table_body = filteredData.length > 0 && filteredData.map((item, index) => (
-            <div key={index + 10} className={'ui-tbody-child'}>
-                <div className={'d-flex align-items-center'}>
-                    <p className={'w-60px'}>{index + 1}</p>
-                    {Object.keys(filteredData[0]).map((items, key) => (
-                        <>
-                        {items !== 'id' &&
-                            <p key={key + 20}>
-                                {items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}
-                            </p>
-                        }
-                        </>
-                    ))}
+        let table_body = filteredData.length > 0 && filteredData.map((item, index) => {
+            return (
+                <div key={index + 10} className={'ui-tbody-child'}>
+                    <div className={'d-flex align-items-center'}>
+                        <p className={'w-60px'}>{index + 1}</p>
+                        {Object.keys(filteredData[0]).map((items, key) => (
+                            <>
+                            {items !== 'id' &&
+                                <p key={key + 20}>
+                                    {items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}
+                                </p>
+                            }
+                            </>
+                        ))}
+                    </div>
+                    <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="rowDeleteModal" aria-hidden="true">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">{deleteModalTitle}</h5>
+                                    <button type="button" className="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <p className={'w-100'}>Are you sure you want to delete?</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary"
+                                            data-dismiss="modal">Cancel
+                                    </button>
+                                    <button type="button" className="btn btn-danger" data-dismiss="modal"
+                                            onClick={(e) => this.deleteItem(e, delId)}>Delete Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={'d-flex align-items-center'}>
+                        {edit && <p className="w-90px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                            <i className="icofont-ui-edit"></i>
+                        </p>}
+                        {del && <p onClick={() => {this.setState({delId: item.id})}} className="w-90px cursor-pointer text-danger" data-toggle="modal"
+                                   data-target="#rowDeleteModal">
+                            <i className="icofont-ui-delete"></i>
+                        </p>}
+                        {add && <p className="w-90px cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
+                        {details && <button className="w-90px cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>
+                            <i className="fas fa-info-circle"></i>
+                        </button>}
+                        {approve && <p className="w-90px cursor-pointer text-danger">Approve</p>}
+                        {track && <p className="w-90px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
+                            <i className="icofont-location-pin"></i>
+                        </p>}
+                    </div>
                 </div>
-                <div className={'d-flex align-items-center'}>
-                    {edit && <p className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
-                        <i className="icofont-ui-edit"></i>
-                    </p>}
-                    {del && <p className="cursor-pointer text-danger" onClick={() => {this.deleteItem(item.id)}}>
-                        <i className="icofont-ui-delete"></i>
-                    </p>}
-                    {add && <p className="cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
-                    {details && <button className="cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>
-                        <i className="fas fa-info-circle"></i>
-                    </button>}
-                    {approve && <p className="cursor-pointer text-danger">Approve</p>}
-                    {track && <p className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
-                        <i className="icofont-location-pin"></i>
-                    </p>}
-                </div>
-            </div>
-        ))
+            )})
 
         return (
             <div className={'reactDataTable'}>
                 <div className="row">
-                    {tableData.length > 0 && <> <div className="col-md-6 justify-content-between row">
-                        <div className="col-md-3">
+                    {tableData.length > 0 && <><div className="col-md-6 justify-content-between row">
+                        {dataDisplay && <div className="col-md-3">
                             <select name={'displayRow'} value={displayRow} className="form-control px-1 mb-3" style={{widp: '100%'}} onChange={this.handleChange}>
                                 <option value={5}>5</option>
                                 <option value={10}>10</option>
                                 <option value={50}>50</option>
                                 <option value={100}>100</option>
                             </select>
-                        </div>
+                        </div>}
                         {exportable && <div className="col-md-9">
                             <button onClick={this.exportExcel} className="btn btn-outline-secondary">Export Excel</button>
                         </div>}
                     </div></>}
-                   {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
+                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
                         <div className="input-group custom-search" style={{width: 280}}>
                             <input name={'filterByTitle'} onChange={this.handleChange} className="form-control h-45px" placeholder={`Search by ${title.split('_').join(' ')}`} />
                             <div className="input-group-append">
@@ -202,12 +229,12 @@ class ReactDataTable extends Component {
                                 {table_headers}
                             </div>
                             <div className={'d-flex align-items-center'}>
-                                {edit && <p>Edit</p>}
-                                {del && <p>Delete</p>}
-                                {add && <p>Add</p>}
-                                {details && <p>Details</p>}
-                                {approve && <p>Approve</p>}
-                                {track && <p>Track</p>}
+                                {edit && <p className={'w-90px'}>Edit</p>}
+                                {del && <p className={'w-90px'}>Delete</p>}
+                                {add && <p className={'w-90px'}>Add</p>}
+                                {details && <p className={'w-90px'}>Details</p>}
+                                {approve && <p className={'w-90px'}>Approve</p>}
+                                {track && <p className={'w-90px'}>Track</p>}
                             </div>
                     </div>
                     <div className={'tbody'}>
@@ -215,7 +242,7 @@ class ReactDataTable extends Component {
                     </div>
                 </div> : <h3>No Data Available</h3>}
                 <div className={'row'}>
-                    {tableData.length > 0 && <div className="col-md-5 mt-1">
+                    {tableData.length > 0 && footer &&  <div className="col-md-5 mt-1">
                         <p>Showing {dataCount + 1} to {dataCount + tableData.length} of {actualData.length} entries</p>
                     </div>}
                     <div className={' col-md-7 align-items-center'}>

@@ -35,9 +35,8 @@ a:hover{text-decoration: none}
    min-height: 70vh;
 }
 
-.mb-15p{
-   margin-bottom: 15%;
-}
+.mb-15p{margin-bottom: 15%;}
+.mb-20p{margin-bottom: 20%;}
 
 .w-90{width: 89%;}
 .w-76{width: 76%}
@@ -45,6 +44,7 @@ a:hover{text-decoration: none}
 .w-86{width: 86%;}
 .w-60px{width: 60px !important;}
 .w-80px{width: 80px !important;}
+.w-90px{width: 90px !important;}
 
 input:focus,
 textarea:focus,
@@ -240,7 +240,7 @@ input[type=date],
 .ui-dataEntry{
    display: grid;
    grid-gap: 15px;
-   grid-template-columns: 38% 61%;
+   grid-template-columns: 36% 63%;
 }
 .submit-btn{
    font-weight: 700;
@@ -252,7 +252,7 @@ input[type=date],
    font-size: 18px;
    position: absolute;
    bottom: 12px;
-   left: 12px;
+   left: 14px;
 }
 .submit-btn-normal{
    font-weight: 700;
@@ -297,7 +297,15 @@ input[type=date],
 .ui-slider-modal[data-modal=false]{
    display: none !important;
 }
-
+.ui-register{
+   background: #def4ed;
+   height: 100%;
+   width: 100%;
+   border-radius: 7px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
 .ui-slider-modal .fa-times{
    font-size: 25px;
    position: absolute;

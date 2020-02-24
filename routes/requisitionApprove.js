@@ -45,7 +45,7 @@ route.put('/requisition-approve/update/:id', (req,res,next) => {
     } else {
         RequisitionApproves.update({requisition_id}, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
@@ -63,7 +63,7 @@ route.post('/requisition-approve/entry', (req,res,next) => {
         } else {
             RequisitionApproves.create(item)
                 .then(resData => {
-                    res.status(200).json(resData)
+                    res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                 })
                 .catch(err => {
                     res.status(200).json({message: 'Something went wrong', err})

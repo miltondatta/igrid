@@ -23,7 +23,7 @@ route.put('/asset-sub-category/update/:id', (req,res,next) => {
                 if (resData[0].dataValues.sub_category_code === sub_category_code) {
                     AssetSubCategory.update({category_id,sub_category_name,sub_category_code,description}, {where: {id: req.params.id}})
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             res.status(200).json({message: 'Something went wrong'})
@@ -43,11 +43,10 @@ route.post('/asset-sub-category/entry', (req,res,next) => {
     if (category_id !== '' && sub_category_name !== '' && sub_category_code !== '' && description !== '') {
         AssetSubCategory.findAll({where: {sub_category_code}})
             .then(resData => {
-                console.log(resData.length, 46)
                 if (resData.length === 0) {
                     AssetSubCategory.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)

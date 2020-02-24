@@ -24,7 +24,7 @@ route.put('/user-roles/update/:id', (req,res,next) => {
             .then(resData => {
                 UserRoles.update({role_name,role_desc,module_id}, {where: {id: req.params.id}})
                     .then(resData => {
-                        res.status(200).json(resData)
+                        res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                     })
                     .catch(err => {
                         res.status(200).json({message: 'Something went wrong'})
@@ -44,7 +44,7 @@ route.post('/user-roles/entry', (req,res,next) => {
                 if(resData.length === 0) {
                     UserRoles.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)

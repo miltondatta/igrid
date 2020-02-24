@@ -34,7 +34,7 @@ route.put('/products/update/:id', (req,res,next) => {
                 if(resData[0].dataValues.product_code === product_code) {
                     Products.update({category_id,sub_category_id,product_name,product_code,brand_id,model_id}, {where: {id: req.params.id}})
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             res.status(200).json({message: 'Something went wrong'})
@@ -58,7 +58,7 @@ route.post('/products/entry', (req,res,next) => {
                 if(resData.length === 0) {
                     Products.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)

@@ -51,7 +51,7 @@ route.post('/vendors/entry', (req,res,next) => {
             let data = {vendor_name,description,file_name}
             Vendors.create(data)
                 .then(resData => {
-                    res.status(200).json(resData)
+                    res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                 })
                 .catch(err => {
                     console.log(err)
@@ -82,10 +82,10 @@ route.put('/vendors/update/:id', (req,res,next) => {
                 const file_name = req.file.filename
                 Vendors.update({vendor_name, enlisted, description, file_name}, {where: {id: req.params.id}})
                     .then(resData => {
-                        res.status(200).json(resData)
+                        res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                     })
                     .catch(err => {
-                        res.status(200).json({message: 'Something went wrong'})
+                        res.status(200).json({message: 'Something went wrong', err})
                     })
             })
     })

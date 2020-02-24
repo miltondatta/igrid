@@ -387,7 +387,7 @@ class AssetRegComponent extends Component {
                             <label className={'ui-custom-label'}>Purchase Order Date</label>
                             <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
                         </div>
-                        <div className={'mb-2 w-50'}>
+                        <div className={'mb-2 w-50 mb-20p'}>
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
                                 <label htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>

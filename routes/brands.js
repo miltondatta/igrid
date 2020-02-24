@@ -22,7 +22,7 @@ route.post('/brands/entry', (req,res,next) => {
     } else {
         Brands.create(req.body)
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 console.log(err)
@@ -39,7 +39,7 @@ route.put('/brands/update/:id', (req,res,next) => {
             brand
         }, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
