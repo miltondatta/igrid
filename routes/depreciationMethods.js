@@ -23,7 +23,7 @@ route.put('/depreciation-methods/update/:id', (req,res,next) => {
                 if(resData[0].dataValues.depreciation_code === depreciation_code) {
                     DepreciationMethods.update({method_name, depreciation_code, description}, {where: {id: req.params.id}})
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             res.status(200).json({message: 'Something went wrong'})
@@ -46,7 +46,7 @@ route.post('/depreciation-methods/entry', (req,res,next) => {
                 if (resData.length === 0) {
                     DepreciationMethods.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)

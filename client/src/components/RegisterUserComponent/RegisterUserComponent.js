@@ -39,55 +39,50 @@ class RegisterUserComponent extends Component {
     render() {
         const {firstName, lastName, phone_number, email, pin, address, confirm_password, password} = this.state
         return (
-            <div className={'bg-white p-3 rounded shadow'}>
-                <nav className="navbar navbar-light mb-3 f-weight-500">
-                    <p className="navbar-brand m-0">Register User</p>
-                </nav>
-                <form>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputEmail4">First Name</label>
-                            <input onChange={this.handleChange} name={'firstName'} value={firstName} type="text" className="form-control" id="inputEmail4" placeholder="First Name" />
+            <div className={'bg-white p-3 rounded m-3 grid-2'}>
+                <div className={'ui-register'}>
+                    <img src={process.env.PUBLIC_URL + '/media/image/register.png'} alt="Register"/>
+                </div>
+                <div className={'min-h-80vh position-relative'}>
+                        <nav className="navbar text-center mb-2 pl-3 rounded">
+                            <p className="text-blue f-weight-700 f-20px m-0">Register User</p>
+                        </nav>
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputEmail4" className={'ui-custom-label'}>First Name</label>
+                            <input onChange={this.handleChange} name={'firstName'} value={firstName} type="text" className="ui-custom-input" id="inputEmail4" placeholder="First Name" />
                         </div>
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputPassword4">Last Name</label>
-                            <input onChange={this.handleChange} name={'lastName'} value={lastName} type="text" className="form-control" id="inputPassword4" placeholder="Last Name" />
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Last Name</label>
+                            <input onChange={this.handleChange} name={'lastName'} value={lastName} type="text" className="ui-custom-input" id="inputPassword4" placeholder="Last Name" />
                         </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputEmail4">Official Email</label>
-                            <input onChange={this.handleChange} name={'email'} value={email} type="text" className="form-control" id="inputEmail4" placeholder="Official Email" />
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputEmail4" className={'ui-custom-label'}>Official Email</label>
+                            <input onChange={this.handleChange} name={'email'} value={email} type="text" className="ui-custom-input" id="inputEmail4" placeholder="Official Email" />
                         </div>
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputPassword4">Official Phone Number</label>
-                            <input onChange={this.handleChange} name={'phone_number'} value={phone_number} type="text" className="form-control" id="inputPassword4" placeholder="Official Phone Number" />
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Official Phone Number</label>
+                            <input onChange={this.handleChange} name={'phone_number'} value={phone_number} type="text" className="ui-custom-input" id="inputPassword4" placeholder="Official Phone Number" />
                         </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputAddress">Address</label>
-                            <input onChange={this.handleChange} name={'address'} value={address} type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" />
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputAddress" className={'ui-custom-label'}>Address</label>
+                            <input onChange={this.handleChange} name={'address'} value={address} type="text" className="ui-custom-input" id="inputAddress" placeholder="1234 Main St" />
                         </div>
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputEmail4">Your PIN</label>
-                            <input type="text" className="form-control" id="inputEmail4" name='pin' value={pin} onChange={this.handleChange} placeholder="PIN" />
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputEmail4" className={'ui-custom-label'}>Your PIN</label>
+                            <input type="text" className="ui-custom-input" id="inputEmail4" name='pin' value={pin} onChange={this.handleChange} placeholder="PIN" />
                         </div>
-                    </div>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputAddress">Password</label>
-                            <input onChange={this.handleChange} name={'password'} value={password} type="password" className="form-control"
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputAddress" className={'ui-custom-label'}>Password</label>
+                            <input onChange={this.handleChange} name={'password'} value={password} type="password" className="ui-custom-input"
                                    id="inputAddress" placeholder="Password" />
                         </div>
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputEmail4">Confirm Password</label>
-                            <input type="password" className="form-control" id="inputEmail4" name='confirm_password'
+                        <div className="mb-2 ml-3">
+                            <label htmlFor="inputEmail4" className={'ui-custom-label'}>Confirm Password</label>
+                            <input type="password" className="ui-custom-input" id="inputEmail4" name='confirm_password'
                                    value={confirm_password} onChange={this.handleChange} placeholder="Confirm Password" />
                         </div>
-                    </div>
-                    <button type="submit" onClick={this.handleSubmit} className="ui-btn mt-2">Register</button>
-                </form>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Register</button>
+                </div>
             </div>
         );
     }

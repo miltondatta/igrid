@@ -20,7 +20,7 @@ route.put('/conditions/update/:id', (req,res,next) => {
     if (condition_type !== '') {
         Conditions.update({condition_type}, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
@@ -36,7 +36,7 @@ route.post('/conditions/entry', (req,res,next) => {
     if (condition_type !== '') {
         Conditions.create(req.body)
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 console.log(err)

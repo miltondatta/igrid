@@ -26,7 +26,7 @@ route.put('/user-associate-roles/update/:id', (req,res,next) => {
             .then(resData => {
                 UserAssociateRoles.update(req.body, {where: {id: req.params.id}})
                     .then(resData => {
-                        res.status(200).json(resData)
+                        res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                     })
                     .catch(err => {
                         res.status(200).json({message: 'Something went wrong'})
@@ -43,7 +43,7 @@ route.post('/user-associate-roles/entry', (req,res,next) => {
     } else {
         UserAssociateRoles.create(req.body)
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 console.log(err)

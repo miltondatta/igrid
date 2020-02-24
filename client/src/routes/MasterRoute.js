@@ -197,14 +197,12 @@ class MasterRoute extends Component{
         } else if(pathname === '/'){
             return(
                 <div className=' h-100'>
-                    <div>
                         <Topnav home />
                         <div className='ui-body-container'>
                             <Switch>
                                 <Route exact path='/' component={AsyncHome} />
                             </Switch>
                         </div>
-                    </div>
                 </div>
             )
         } else {
@@ -220,7 +218,6 @@ class MasterRoute extends Component{
                     <div className={`ui-container h-100`}>
                         <div>
                             <Topnav/>
-                            <div className='ui-body-container'>
                                 <Switch>
                                     <Route exact path='/mis' component={AsyncMIS}/>
                                     <Route exact path='/home' component={AsyncHomeLand}/>
@@ -265,8 +262,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
                                     <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                                     <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
-                                </Switch>
-                            </div>
+                            </Switch>
                         </div>
                     </div>
                 )

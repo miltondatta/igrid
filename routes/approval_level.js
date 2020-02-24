@@ -38,7 +38,7 @@ route.put('/approval_level/update/:id', (req,res,next) => {
     if(location_heirarchy_id !== '' && role_id !== '' && parent_id !== '') {
         Approval_levels.update({location_heirarchy_id,role_id,parent_id}, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
@@ -54,7 +54,7 @@ route.post('/approval_level/entry', (req,res,next) => {
     if(location_heirarchy_id !== '' && role_id !== '' && parent_id !== '') {
         Approval_levels.create(req.body)
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 console.log(err)

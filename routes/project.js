@@ -25,7 +25,7 @@ route.put('/projects/update/:id', (req,res,next) => {
                 if(resData[0].dataValues.project_code === project_code) {
                     Project.update({project_name,project_code,description}, {where: {id: req.params.id}})
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             res.status(200).json({message: 'Something went wrong'})
@@ -48,7 +48,7 @@ route.post('/projects/entry', (req,res,next) => {
                 if(resData.length === 0) {
                     Project.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)

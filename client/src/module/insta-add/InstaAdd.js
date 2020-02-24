@@ -759,7 +759,7 @@ class InstaAdd extends Component {
                                 <option value={2}>Descending</option>
                             </select>
                         </div>
-                        <div className="ui-custom-file w-50 px-1">
+                        <div className="ui-custom-file w-50 px-1 mb-20p">
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>

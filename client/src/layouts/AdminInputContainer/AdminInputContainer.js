@@ -46,6 +46,7 @@ class AdminInputContainer extends Component {
             editId: null,
             errorDict: null,
             error: false,
+            success: false,
             enlisted: false,
             isLoading: false,
         }
@@ -60,13 +61,15 @@ class AdminInputContainer extends Component {
         Axios.post(apiUrl() + getApi + '/entry', this.getApiData())
             .then(res => {
                 console.log(res)
-                if(res.data.message){
+                if(!res.data.status){
                     this.setState({
                         error: true,
                         errorMessage: res.data.message
                     })
                 } else {
                     this.setState({
+                        success: true,
+                        successMessage: res.data.message,
                         error: false,
                         model: '',
                         brand: '',
@@ -109,7 +112,6 @@ class AdminInputContainer extends Component {
         }, () => {
             Axios.get(apiUrl() + getApi)
                 .then(res => {
-                    console.log(res.data.message, 112)
                     if(res.data.message){
                         this.setState({
                             error: true,
@@ -158,14 +160,15 @@ class AdminInputContainer extends Component {
         }
         Axios.put(apiUrl() + getApi + '/update/' + editId, this.getApiData())
             .then(resData => {
-
-                if(resData.data.message){
+                if(!resData.data.status){
                     this.setState({
                         error: true,
                         errorMessage: resData.data.message
                     })
                 } else {
                     this.setState({
+                        success: true,
+                        successMessage: resData.data.message,
                         error: false,
                         allProjects: []
                     })
@@ -683,7 +686,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -836,7 +839,7 @@ class AdminInputContainer extends Component {
                                 <option value={2}>Descending</option>
                             </select>
                         </div>
-                        <div className="ui-custom-file w-50 px-1">
+                        <div className="ui-custom-file w-50 px-1 mb-20p">
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
@@ -1166,11 +1169,18 @@ class AdminInputContainer extends Component {
 
     render() {
         const {getApi, title, headTitle} = this.props
-        const {error, errorMessage, isLoading, allProjects} = this.state
+        const {error, errorMessage, isLoading, allProjects, success, successMessage} = this.state
         return (
             <>
-                {error && <div className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
+                {error && <div className="alert alert-danger mx-2 my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
                     {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
+                </div>}
+                {success &&
+                <div className="alert alert-success mx-2 my-2 position-relative d-flex justify-content-between align-items-center"
+                    role="alert">
+                    {successMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: false})
+                }}></i>
                 </div>}
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
@@ -1179,16 +1189,20 @@ class AdminInputContainer extends Component {
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded p-2 bg-white min-h-80vh">
-                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                    <div className="rounded bg-white min-h-80vh">
+                        <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
                             <ReactDataTable
                                 edit
+                                dataDisplay
+                                footer
                                 isLoading
                                 pagination
                                 searchable
+
+                                deleteModalTitle={title}
                                 del={getApi}
                                 tableData={allProjects}
                                 updateEdit={this.updateEdit}

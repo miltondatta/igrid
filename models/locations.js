@@ -32,4 +32,7 @@ const Locations = db.define('locations', {
 })
 
 
+Locations.belongsTo(Location_hierarchies, {foreignKey: 'hierarchy'})
+
+
 module.exports = Locations

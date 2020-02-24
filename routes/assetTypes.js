@@ -23,7 +23,7 @@ route.put('/assets-types/update/:id', (req,res,next) => {
                 if(resData[0].dataValues.asset_code === asset_code) {
                     AssetType.update({type_name,asset_code,description}, {where: {id: req.params.id}})
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             res.status(200).json({message: 'Something went wrong'})
@@ -46,7 +46,7 @@ route.post('/assets-types/entry', (req,res,next) => {
                 if (resData.length === 0) {
                     AssetType.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)

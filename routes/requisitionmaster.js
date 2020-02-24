@@ -22,7 +22,7 @@ route.put('/requisition-master/update/:id', (req,res,next) => {
     } else {
         RequisitionMaster.update({mobile, email, location_id, role_id, request_by, request_date, delivery_date, status, requisition_no}, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
@@ -54,7 +54,7 @@ route.post('/requisition-master/entry', (req,res,next) => {
                     .then(() => {
                         RequisitionMaster.findAll({attributes: ['id', 'mobile','email','request_date'],where: {id: resData.dataValues.id}})
                             .then(resData1 => {
-                                res.status(200).json(resData1)
+                                res.status(200).json({resData1, message: 'Data Saved Successfully', status: true})
                             })
                             .catch(err => {
                                 res.status(200).json({message: 'Something Went Wrong', err})

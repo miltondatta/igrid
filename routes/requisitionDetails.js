@@ -84,7 +84,7 @@ route.put('/requisition-details/update/:id', (req,res,next) => {
     } else {
         RequisitionDetails.update({requisition_id, asset_category, asset_sub_category, quantity}, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
@@ -106,7 +106,7 @@ route.post('/requisition-details/entry', (req,res,next) => {
         } else {
             RequisitionDetails.create({...req.body, file: req.file ? req.file.filename : null})
                 .then(resData => {
-                    response.push(res.status(200).json(resData))
+                    response.push(res.status(200).json({resData, message: 'Data Saved Successfully', status: true}))
                 })
                 .catch(err => {
                     res.status(200).json({message: 'Something went wrong', err})

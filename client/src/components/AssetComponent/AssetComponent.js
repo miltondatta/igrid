@@ -20,6 +20,10 @@ class AssetComponent extends Component{
             assetCategory: [],
             assetSubCategory: [],
             filterText: '',
+            error: false,
+            errorMessage: '',
+            success: false,
+            successMessage: '',
             asset_category: '',
             submitProduct: false,
             asset_sub_category: '',
@@ -101,8 +105,16 @@ class AssetComponent extends Component{
             data.append('requisition_id', reqMaster.id)
             Axios.post(apiUrl() + 'requisition-details/entry', data)
                 .then(resData => {
-                    if(resData){
-                        console.log(resData)
+                    if(!resData.data.status){
+                        this.setState({
+                            error: true,
+                            errorMessage: resData.data.message
+                        })
+                    } else {
+                        this.setState({
+                            success: true,
+                            successMessage: resData.data.message,
+                        })
                     }
                 })
                 .catch(err => {console.log(err)})
@@ -124,7 +136,7 @@ class AssetComponent extends Component{
             .then(resData => {
                 if(resData){
                     this.setState({
-                        reqMaster: resData.data[0]
+                        reqMaster: resData.data.resData1[0]
                     })
                 }
             })
@@ -132,14 +144,24 @@ class AssetComponent extends Component{
     }
 
     render(){
-        const {asset_category, brand, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
+        const {asset_category, brand, error, success, successMessage, errorMessage, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
 
         return(
             <>
-                <div className={'ui-dataEntry p-1'}>
+                {error && <div className="alert alert-danger mx-2 my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
+                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
+                </div>}
+                {success &&
+                <div className="alert alert-success mx-2 my-2 position-relative d-flex justify-content-between align-items-center"
+                     role="alert">
+                    {successMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: false})
+                }}></i>
+                </div>}
+                <div className={'ui-dataEntry p-3'}>
                     <div className={'bg-white rounded p-2 min-h-80vh position-relative'}>
-                        <nav className="navbar text-center mb-3 p-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0">Requisition</p>
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p className="text-blue f-weight-700 f-20px m-0">Requisition</p>
                         </nav>
                         <div className={'px-1 mb-2'}>
                             <label className={'ui-custom-label'}>Select Category</label>
@@ -179,21 +201,21 @@ class AssetComponent extends Component{
                             <label className={'ui-custom-label'}>Details</label>
                             <textarea onChange={this.handleChange} value={details} className="ui-custom-input " name={'details'} placeholder="Details" />
                         </div>
-                        <div className="ui-custom-file w-50 px-1">
+                        <div className="ui-custom-file w-50 px-1 mb-20p">
                             <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
                             <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
                     </div>
-                    <div className={'rounded p-2 bg-white min-h-80vh'}>
-                        <nav className="navbar text-center mb-3 p-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0">Submit Requisiiton</p>
+                    <div className={'rounded bg-white min-h-80vh p-2'}>
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p className="text-blue f-weight-700 f-20px m-0">Submit Requisition</p>
                         </nav>
                         {arrayData.length > 0 ? <ReactDataTable
                             tableData={arrayData}
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 
-                        {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="ui-btn">Submit</button>}
+                        {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="submit-btn">Submit</button>}
                     </div>
                 </div>
             </>

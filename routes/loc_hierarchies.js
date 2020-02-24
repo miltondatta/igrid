@@ -20,7 +20,7 @@ route.put('/locHierarchies/update/:id', (req,res,next) => {
     if (hierarchy_name !== '') {
         Location_hierarchies.update({hierarchy_name}, {where: {id: req.params.id}})
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
@@ -36,7 +36,7 @@ route.post('/locHierarchies/entry', (req,res,next) => {
     if (hierarchy_name !== '') {
         Location_hierarchies.create(req.body)
             .then(resData => {
-                res.status(200).json(resData)
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
             .catch(err => {
                 console.log(err)

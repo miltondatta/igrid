@@ -1,11 +1,18 @@
 const express = require('express')
 const Locations = require('../models/locations')
+const Location_hierarchies = require('../models/location_hierarchies')
 
 const route = express.Router()
 
 // Read
 route.get('/locations', (req,res,next) => {
-    Locations.findAll({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy']})
+    Locations.findAll({
+        attributes: ['id', 'location_name','parent_id','hierarchy'],
+        // include: [{
+        //     model: Location_hierarchies,
+        //     attributes: ['hierarchy_name']
+        // }]
+    })
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -34,7 +41,7 @@ route.put('/locations/update/:id', (req,res,next) => {
                 if (resData[0].dataValues.location_code === location_code) {
                     Locations.update({parent_id,location_name,location_code,hierarchy}, {where: {id: req.params.id}})
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             res.status(200).json({message: 'Something went wrong'})
@@ -58,7 +65,7 @@ route.post('/locations/entry', (req,res,next) => {
                 if (resData.length === 0) {
                     Locations.create(req.body)
                         .then(resData => {
-                            res.status(200).json(resData)
+                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
                             console.log(err)
