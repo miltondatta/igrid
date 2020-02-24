@@ -121,7 +121,7 @@ router.post('/users/login', (req,res,next) => {
                             let userType    = null;
 
 
-                            const [results, metadata] = await db.query(`SELECT user_associate_roles.id as location_id, user_roles.id as role_id FROM user_associate_roles JOIN user_roles ON user_roles.id = user_associate_roles.role_id WHERE user_associate_roles.user_id = ${data[0].dataValues.id}`)
+                            const [results, metadata] = await db.query(`SELECT user_associate_roles.location_id as location_id, user_associate_roles.role_id as role_id FROM user_associate_roles WHERE user_associate_roles.user_id = ${data[0].dataValues.id}`)
                             if(results.length > 0) {
                                  location_id = results[0].location_id
                                  userType    = results[0].role_id
