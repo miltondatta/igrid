@@ -8,7 +8,7 @@ import {homeBanner} from "../../utility/constant";
 
 const HomeComponent = () => {
     let settings = {
-        centerMode: true,
+        centerMode: false,
         slidesToShow: 1,
         centerPadding: '0',
         infinite: true,
