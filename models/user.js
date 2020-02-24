@@ -28,9 +28,6 @@ const Users = db.define('users', {
     phone_number: {
         type: Sequelize.INTEGER
     },
-    userType: {
-      type: Sequelize.INTEGER
-    },
     is_verified: {
       type: Sequelize.BOOLEAN
     }

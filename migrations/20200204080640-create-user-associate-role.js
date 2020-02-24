@@ -15,19 +15,9 @@ module.exports = {
           key: 'id'
         }
       },
-      module_id: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'modules',
-          key: 'id'
-        }
-      },
       location_id: {
         type: Sequelize.INTEGER,
-        references:{
-          model: 'locations',
-          key: 'id'
-        }
+        defaultValue: 0,
       },
       role_id: {
         type: Sequelize.INTEGER,
