@@ -585,6 +585,11 @@ label:focus,
    border-left: 5px solid #2384d0;
 }
 
+.ui-received-by-active {
+   background: #469de1 !important;
+   border-left: 5px solid #2384d0 !important;
+}
+
 
 @keyframes animte {
    from{

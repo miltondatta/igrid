@@ -4,9 +4,6 @@ import DocumentCategoryOptions from "../../utility/component/documentCategoryOpt
 import Axios from "axios";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
-import Chip from "@material-ui/core/Chip";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
 
 moment.locale('en');
 
@@ -16,8 +13,6 @@ const disabledRanges = [{
     end: moment().add(50, 'year')
 }];
 
-let selected_keyword = [];
-
 class DocumentListSearch extends Component {
     constructor(props) {
         super(props);
@@ -26,9 +21,9 @@ class DocumentListSearch extends Component {
             keywordText: '',
             sub_category_id: '',
             content_type: '',
-            keywordHolder: [],
             title: '',
             circular_no: '',
+            activeSuggestion: 0,
             from_date: moment().subtract(15, 'days'),
             to_date: moment(),
             error: false,
@@ -41,6 +36,7 @@ class DocumentListSearch extends Component {
             documentTitle: [],
             documentSubCategory: [],
             keyword: [],
+            keywordHolder: [],
             isLoading: false
         };
 
@@ -50,7 +46,7 @@ class DocumentListSearch extends Component {
 
     componentDidMount() {
         const {from_date, to_date} = this.state;
-        this.getData({from_date, to_date, keyword: []});
+        this.getData({from_date, to_date});
     }
 
     handleChange = (e) => {
@@ -69,9 +65,10 @@ class DocumentListSearch extends Component {
                                 category_id: value,
                                 sub_category_id: '',
                                 title: '',
-                                keywordHolder: [],
                                 documentTitle: [],
                                 keyword: [],
+                                keywordHolder: [],
+                                activeSuggestion: 0,
                                 error: false
                             }, () => {
                                 this.getKeyword({category_id: value});
@@ -92,7 +89,9 @@ class DocumentListSearch extends Component {
                             this.setState({
                                 sub_category_id: value,
                                 title: '',
-                                keyword: []
+                                keyword: [],
+                                keywordHolder: [],
+                                activeSuggestion: 0
                             }, () => {
                                 this.getKeyword({category_id, sub_category_id: value});
                             });
@@ -101,26 +100,15 @@ class DocumentListSearch extends Component {
                 return;
             default:
                 this.setState({
-                    [name]: value
+                    [name]: value,
+                    receivedByFocus: true
                 });
                 return;
         }
     };
 
-    handleKeyPress = (event) => {
-        /*
-        * 32 = Single Space
-        * 46 = Dot
-        */
-
-        let keyboardKey = [32, 46];
-        if (keyboardKey.includes(event.which)) event.preventDefault();
-    };
-
     handleSearch = () => {
-        const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, keyword} = this.state;
-        let keywordArray = selected_keyword.filter((value, index, self) => self.indexOf(value) === index);
-        let keywordData = keywordArray.filter(value => keyword.includes(value));
+        const {category_id, sub_category_id, content_type, title, circular_no, from_date, to_date, keywordHolder} = this.state;
         if (!category_id) return this.setState({errorMessage: 'Category Field is required!', error: true});
 
         const data = {
@@ -131,7 +119,7 @@ class DocumentListSearch extends Component {
             circular_no,
             from_date,
             to_date,
-            keyword: keywordData
+            keyword: keywordHolder
         };
         this.getData(data);
     };
@@ -160,7 +148,7 @@ class DocumentListSearch extends Component {
                 });
 
                 this.setState({
-                    keyword: keyword_content
+                    keyword: keyword_content.filter((value, index, self) => self.indexOf(value) === index)
                 });
             })
             .catch(err => {
@@ -195,21 +183,69 @@ class DocumentListSearch extends Component {
     };
 
     deleteKey = (index) => {
-        let newKeys = this.state.keywordHolder.filter((item, ind) => index !== ind)
+        let newKeys = this.state.keywordHolder.filter((item, ind) => index !== ind);
         this.setState({
             keywordHolder: newKeys
         })
-    }
+    };
+
+    onKeyDown = e => {
+        const {activeSuggestion, keyword, keywordHolder, keywordText} = this.state;
+        let filterKeys = keyword.length > 0 && keyword.filter(item => item.includes(keywordText));
+
+        // User pressed the enter key, update the input and close the
+        if (e.keyCode === 13) {
+            if (!keywordHolder.includes(filterKeys[activeSuggestion])) {
+                this.setState({
+                    activeSuggestion: 0,
+                    keywordHolder: [...keywordHolder, filterKeys[activeSuggestion]],
+                    keywordText: '',
+                    receivedByFocus: false
+                });
+            } else {
+                return false;
+            }
+        }
+
+        // User pressed the up arrow, decrement the index
+        else if (e.keyCode === 38) {
+            if (activeSuggestion === 0) {
+                return;
+            }
+            this.setState({activeSuggestion: activeSuggestion - 1});
+        }
+
+        // User pressed the down arrow, increment the index
+        else if (e.keyCode === 40) {
+            if (activeSuggestion === filterKeys.length - 1) {
+                return;
+            }
+            console.log(activeSuggestion);
+            console.log(filterKeys.length);
+            this.setState({activeSuggestion: activeSuggestion + 1});
+        }
+    };
 
     render() {
-        const {category_id, keywordText, sub_category_id, content_type, title, circular_no, receivedByFocus, recDropFoc, from_date, to_date, documentTitle, keywordHolder, documentSubCategory, error, errorMessage, fileError, fileErrorMessage, keyword, isLoading, searchData} = this.state;
-        let filterKeys = keyword.length > 0 && keyword.filter(item => item.includes(keywordText))
+        const {
+            category_id, keywordText, sub_category_id, content_type, title, circular_no, receivedByFocus, recDropFoc, from_date, to_date, documentTitle, keywordHolder,
+            documentSubCategory, error, errorMessage, fileError, fileErrorMessage, keyword, activeSuggestion, isLoading, searchData
+        } = this.state;
+        let filterKeys = keyword.length > 0 && keyword.filter(item => item.includes(keywordText));
         const keywordList = filterKeys.length > 0 && filterKeys.map((item, index) => (
-            <p key={index} onClick={() => {!keywordHolder.includes(item) && this.setState({keywordHolder: [...this.state.keywordHolder, item]})}}>{item}</p>
-        ))
+            <p key={index} className={index === activeSuggestion ? 'ui-received-by-active' : ''} onClick={() => {
+                !keywordHolder.includes(item) && this.setState({
+                    keywordHolder: [...this.state.keywordHolder, item],
+                    keywordText: ''
+                })
+            }}>{item}</p>
+        ));
         const badgeKeyword = keywordHolder.length > 0 && keywordHolder.map((item, index) => (
-            <span className="ui-custom-badge" key={index}>{item} <i onClick={() => {this.deleteKey(index)}} className="fas fa-times-circle"></i></span>
-        ))
+            <span className="ui-custom-badge" key={index}>{item} <i onClick={() => {
+                this.deleteKey(index)
+            }} className="fas fa-times-circle"></i></span>
+        ));
+
         return (
             <>
                 <div className="px-2 my-2">
@@ -309,30 +345,22 @@ class DocumentListSearch extends Component {
                                 </div>
                                 <div className="col-md-6">
                                     <div className="row">
-                                        {/*<div className="col-md-4">
-                                            Keyword (Multiple Keyword Separated by Comma)
-                                        </div>
-                                        <div className="col-md-8">
-                                            <input
-                                                placeholder='Add Comma Seperated keyword'
-                                                name={'keyword'}
-                                                value={keyword}
-                                                onChange={this.handleChange}
-                                                onKeyPress={this.handleKeyPress}
-                                                className={`form-control`}/>
-                                        </div>*/}
                                         <div className="col-md-4">
                                             Keyword
                                         </div>
                                         <div className="col-md-8">
-
-                                            <div className={'mb-2 position-relative'}>
+                                            <div className={'mb-2 position-relative'} style={{height: 200}}>
                                                 <label className={'ui-custom-label'}>
                                                     {keywordHolder.length > 0 ? badgeKeyword : <p>Keywords</p>}
                                                 </label>
-                                                <input onFocus={() => {this.setState({receivedByFocus: true})}} onBlur={() => {this.setState({receivedByFocus: false})}} autoComplete={'off'} placeholder='Search Keywords' onChange={this.handleChange} name={'keywordText'} type={'text'} className={`ui-custom-keyInput`} />
-                                                {(keyword.length > 0 &&  (receivedByFocus || recDropFoc)) && <div onMouseEnter={() => {this.setState({recDropFoc: true})}} onMouseLeave={() => {this.setState({recDropFoc: false})}} className={'ui-received-by'}>
-                                                    {keywordList}
+                                                <input onFocus={() => {
+                                                    this.setState({receivedByFocus: true})
+                                                }} onBlur={() => {
+                                                    this.setState({receivedByFocus: false})
+                                                }} autoComplete={'off'} placeholder='Search Keywords' onKeyDown={this.onKeyDown} onChange={this.handleChange}
+                                                       name={'keywordText'} value={this.state.keywordText} type={'text'} className={`ui-custom-keyInput`}/>
+                                                {(keyword.length > 0 &&  (receivedByFocus || recDropFoc)) && <div onMouseEnter={() => {this.setState({recDropFoc: true})}}
+                                                    onMouseLeave={() => {this.setState({recDropFoc: false})}} className={'ui-received-by'}> {keywordList}
                                                 </div>}
                                             </div>
                                         </div>
