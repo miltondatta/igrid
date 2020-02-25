@@ -37,6 +37,28 @@ route.get('/requisition-approve', async (req,res,next) => {
 
 })
 
+// Read
+route.get('/requisition-approve/specific/:id', async (req,res,next) => {
+    const [results, metadata] = await db.query(`
+        SELECT requisition_approves.id, requisition_approves.requisition_id, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
+               requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
+               user_roles.role_name, locations.location_name,requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
+            JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
+            JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id
+            JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
+            JOIN asset_sub_categories ON requisition_details.asset_category = asset_sub_categories.id
+            JOIN user_roles ON requisition_approves.role_id = user_roles.id
+            JOIN locations ON requisition_approves.location_id = locations.id
+            WHERE requisition_approves.requisition_id = ${req.params.id}
+        `)
+    if (results.length > 0) {
+        res.status(200).json(results)
+    } else {
+        res.status(200).json({message: "No Data Found"})
+    }
+
+})
+
 // Update
 route.put('/requisition-approve/update/:id', (req,res,next) => {
     const {requisition_id} = req.body
