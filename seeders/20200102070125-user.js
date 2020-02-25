@@ -5,7 +5,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('users', [
         {
-          firstName: 'Super',
+          firstName: 'Mr. Super',
           lastName: 'Admin',
           email: 'sadmin@example.com',
           phone_number: '01234567891',
@@ -18,7 +18,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Admin',
+          firstName: 'Mr. Admin',
           lastName: 'User',
           email: 'admin@example.com',
           phone_number: '01234567891',
@@ -31,7 +31,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'PM',
+          firstName: 'Mr. PM',
           lastName: 'User',
           email: 'pm@example.com',
           phone_number: '01234567891',
@@ -44,7 +44,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'DM',
+          firstName: 'Mr. DM',
           lastName: 'User',
           email: 'dm@example.com',
           phone_number: '01234567891',
@@ -57,7 +57,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'RM',
+          firstName: 'Mr. RM',
           lastName: 'User',
           email: 'rm@example.com',
           phone_number: '01234567891',
@@ -70,7 +70,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'AM',
+          firstName: 'Mr. AM',
           lastName: 'User',
           email: 'am@example.com',
           phone_number: '01234567891',
@@ -83,7 +83,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'BM',
+          firstName: 'Mr. BM',
           lastName: 'User',
           email: 'bm@example.com',
           phone_number: '01234567891',
@@ -96,8 +96,8 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Stock Manager',
-          lastName: 'User',
+          firstName: 'Mr. Stock',
+          lastName: 'Manager',
           email: 'sm@example.com',
           phone_number: '01234567891',
           password: bcrypt.hashSync('123456', 10),
