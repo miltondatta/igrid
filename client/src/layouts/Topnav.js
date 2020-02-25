@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import {Link, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
-import {documentNav, sidenav, systemAdmin} from "../utility/constant";
+import {documentNav, sidenav, systemAdmin, misNav} from "../utility/constant";
 
 class Topnav extends Component {
     constructor(props) {
@@ -35,6 +35,8 @@ class Topnav extends Component {
             data = documentNav;
         } else if (moduleName === 'admin') {
             data = systemAdmin
+        } else if (moduleName === 'mis') {
+            data = misNav;
         } else {
             data = sidenav;
         }

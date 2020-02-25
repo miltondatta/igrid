@@ -213,7 +213,8 @@ class DocumentInputContainer extends Component {
                     deleteContentName: '',
                     deleteModalTitle: ''
                 }, () => {
-                    this.getData()
+                    this.emptyStateValue();
+                    this.getData();
                 });
             })
             .catch(err => {
@@ -229,6 +230,27 @@ class DocumentInputContainer extends Component {
                 }
                 console.log(err.response);
             })
+    };
+
+    emptyStateValue = () => {
+        return this.setState({
+            category_id: '',
+            category_name: '',
+            sub_category_id: '',
+            sub_category_name: '',
+            content_type: 0,
+            title: '',
+            circular_no: '',
+            description: '',
+            file_name: '',
+            document_date: moment(),
+            display_notice: false,
+            status: true,
+            editId: null,
+            success: false,
+            error: false,
+            errorDict: null
+        });
     };
 
     handleChange = (e) => {
@@ -320,14 +342,7 @@ class DocumentInputContainer extends Component {
                             <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal" onClick={() => {
-                                this.setState({
-                                    editId: null,
-                                    category_name: '',
-                                    success: false,
-                                    error: false
-                                })
-                            }} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal"  onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -362,15 +377,7 @@ class DocumentInputContainer extends Component {
                             <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal" onClick={() => {
-                                this.setState({
-                                    editId: null,
-                                    category_id: '',
-                                    sub_category_name: '',
-                                    success: false,
-                                    error: false
-                                })
-                            }} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -503,24 +510,7 @@ class DocumentInputContainer extends Component {
                             <button className="submit-btn mr-2" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal  mt-3" onClick={() => {
-                                this.setState({
-                                    category_id: '',
-                                    sub_category_id: '',
-                                    content_type: 0,
-                                    title: '',
-                                    circular_no: '',
-                                    description: '',
-                                    file_name: '',
-                                    document_date: moment(),
-                                    display_notice: false,
-                                    status: true,
-                                    editId: null,
-                                    success: false,
-                                    error: false,
-                                    errorDict: null
-                                })
-                            }} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal  mt-3" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -731,7 +721,7 @@ class DocumentInputContainer extends Component {
             <>
                 {error &&
                 <div
-                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center"
+                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
                     role="alert">
                     {errorMessage} <i className="fas fa-times " onClick={() => {
                     this.setState({error: false})
@@ -739,7 +729,7 @@ class DocumentInputContainer extends Component {
                 </div>}
                 {success &&
                 <div
-                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center"
+                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
                     role="alert">
                     {successMessage} <i className="fas fa-times " onClick={() => {
                     this.setState({success: false})
