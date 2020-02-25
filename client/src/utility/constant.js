@@ -8,7 +8,7 @@ export const apiUrl = () => {
     } else {
         return prodBaseUrl
     }
-}
+};
 
 export const sidenav = [
     {
@@ -248,7 +248,7 @@ export const systemAdmin = [
             }
         ]
     },
-]
+];
 
 export const documentNav = [
     {
@@ -270,20 +270,43 @@ export const documentNav = [
                 icon: ""
             },
             {
-                id: 1,
+                id: 2,
                 name: 'Sub Category',
                 link: '/documents/document-sub-category',
                 icon: ""
             },
             {
-                id: 1,
+                id: 3,
                 name: 'New Document',
                 link: '/documents/document-list',
                 icon: ""
             }
         ]
     }
-]
+];
+
+export const misNav = [
+    {
+        id: 13,
+        name: 'MIS',
+        icon: 'far fa-file',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Indicator Category',
+                link: '/mis/indicator-category',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Indicator Sub Category',
+                link: '/mis/indicator-sub-category',
+                icon: ""
+            },
+        ]
+    }
+];
 
 export const homeBanner = [
     {
@@ -310,4 +333,4 @@ export const homeBanner = [
         link: "/location",
         img: "/media/banner/b_4.png"
     },
-]
+];

@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
         cb(null, 'public/document')
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname)
+        cb(null, Date.now() + '-' +file.originalname)
     }
 });
 
@@ -64,7 +64,7 @@ exports.store = (req, res) => {
                 return res.status(500).json(err);
             }
 
-            file_name = req.file.originalname;
+            file_name = req.file.filename;
             const {category_id, sub_category_id, content_type, title, circular_no, description, document_date, display_notice, status} = req.body;
 
             const keyword_options = {
@@ -153,7 +153,7 @@ exports.update = (req, res) => {
             const {id, category_id, sub_category_id, content_type, title, circular_no, description, document_date, display_notice, status} = req.body;
 
             DocumentList.findOne({where: {id}}).then(resData => {
-                file_name = req.file ? req.file.originalname : resData.file_name;
+                file_name = req.file ? req.file.filename : resData.file_name;
                 const keyword_options = {
                     language: 'english',
                     remove_digits: true,
@@ -215,6 +215,13 @@ exports.delete = async (req, res) => {
 
         const status = await DocumentList.findOne({where: {id}});
         if (!status) return res.status(400).json({msg: 'This Document List didn\'t found!', error: true});
+
+        if (fs.existsSync('public/document/' + status.file_name)) {
+            fs.unlink('public/document/' + status.file_name, (err) => {
+                if (err) throw err;
+                console.log('successfully deleted ' + status.file_name);
+            });
+        }
 
         const document_list = await DocumentList.destroy({where: {id}});
         if (!document_list) return res.status(400).json({msg: 'Please try again!', error: true});
@@ -330,8 +337,10 @@ exports.documentListSearch = async (req, res) => {
         if (circular_no) queryText += ' and document_lists.circular_no = ' + "\'" + circular_no + "\'";
 
         if (keyword && keyword.length > 0) {
-            keyword.forEach((value) => {
-                queryText += ' or document_lists.keyword ilike ' + "\'%," + value + ",%\'";
+            keyword.forEach((value, index) => {
+                const operator = index === 0 ? ' and (' : ' or ';
+                const close_parenthesis = (index === keyword.length -1 ) ? ')' : '';
+                queryText += operator + 'document_lists.keyword ilike ' + "\'%," + value + ",%\'" + close_parenthesis;
             });
         }
 
@@ -353,8 +362,8 @@ exports.documentListSearch = async (req, res) => {
                                 FROM document_lists
                                          JOIN document_categories ON document_lists.category_id = document_categories.id
                                          JOIN document_sub_categories ON document_lists.sub_category_id = document_sub_categories.id
-                                where document_lists.document_date >= '${moment(from_date).format('YYYY-MM-DD')}' and 
-                                document_lists.document_date <= '${moment(to_date).format('YYYY-MM-DD')}' ${queryText}`);
+                                where document_lists.document_date >= '${from_date}' and 
+                                document_lists.document_date <= '${to_date}' ${queryText}`);
 
         return res.status(200).json(data);
     } catch (err) {
