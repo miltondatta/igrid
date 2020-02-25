@@ -27,6 +27,35 @@ let upload =  multer({
 
 // Read
 route.get('/requisition-details', async (req,res,next) => {
+
+    /*
+    let role_id         = req.query.role_id;
+    let user_id         = req.query.id;
+
+    //check if this role id exist in approval_levels table 
+    const [approval_levels, approval_levels_meta] = await db.query(`
+        SELECT * from approval_levels
+            WHERE approval_levels.role_id = ${role_id}`);
+    if(!approval_levels.length) {
+        res.status(200).json({ message: "No Data Found" })
+    }
+
+    //If role id exist then check if this entry has child element or not
+    let approval_level_id = approval_levels[0].id;
+    const [approval_levels_parent, approval_levels_parent_meta] = await db.query(`
+        SELECT * from approval_levels
+            WHERE approval_levels.parent_id = ${approval_level_id}`);
+    if(!approval_levels_parent.length) {
+        res.status(200).json({ message: "No Data Found" })
+    }
+
+    //If this role has child element then find all location under this location
+
+    
+    return res.status(200).json({message: "check data pattern"});   */
+
+
+
     let reqId = []
     const [resultsMain, metadataMain] = await db.query(`
         SELECT requisition_approves.requisition_details_id from requisition_approves

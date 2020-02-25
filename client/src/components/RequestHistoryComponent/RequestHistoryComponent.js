@@ -27,14 +27,17 @@ class RequestHistoryComponent extends Component {
     }
 
     componentDidMount() {
-        Axios.get(apiUrl() + 'requisition-details')
-            .then(res => {
-                if(res.data.length > 0) {
-                    this.setState({
-                        data: res.data
-                    })
-                }
-            })
+        let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        console.log(user_data);
+        Axios.get(apiUrl() + 'requisition-details', {
+            params: user_data
+        }).then(res => {
+            if (res.data.length > 0) {
+                this.setState({
+                    data: res.data
+                })
+            }
+        })
     }
 
     assetList = (id) => {
