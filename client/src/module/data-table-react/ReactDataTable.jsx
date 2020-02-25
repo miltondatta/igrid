@@ -240,7 +240,7 @@ class ReactDataTable extends Component {
                     <div className={'tbody'}>
                         {table_body}
                     </div>
-                </div> : <h3>No Data Available</h3>}
+                </div> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> No Data Found</h4>}
                 <div className={'row'}>
                     {tableData.length > 0 && footer &&  <div className="col-md-5 mt-1">
                         <p>Showing {dataCount + 1} to {dataCount + tableData.length} of {actualData.length} entries</p>

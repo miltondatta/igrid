@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 const Vendors  = require('../models/asset/vendors')
 const Challan = require('../models/asset/challan')
 const Assets = require('../models/asset/assets')
+const AssetHistory = require('../models/asset/asset_history')
 
 const route = express.Router()
 
@@ -83,11 +84,10 @@ route.get('/assets-entry/sub-assets/:id', async (req,res,next) => {
             JOIN products ON assets.product_id = products.id
             WHERE assets.assign_to = ${req.params.id}
     `)
-    console.log(data, 84)
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json({message: "Something Went Wrong"})
+        res.status(200).json({message: "No Data Found"})
     }
 })
 
@@ -99,13 +99,14 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
         } else if (err) {
             return res.status(500).json(err)
         }
-        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments} = req.body
-        if (challan_no === '' || challan_name === '' || challan_description === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '' || challanComments === '') {
+        const {challan_no, challan_date, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments} = req.body
+        if (challan_no === '' || challan_date === '' || challan_name === '' || challan_description === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '' || challanComments === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             let data = {
                 attachment: req.file.filename,
                 challan_no,
+                challan_date,
                 challan_name,
                 challan_description,
                 purchase_order_no,
@@ -160,6 +161,9 @@ route.post('/assets-entry/entry', (req,res,next) => {
                             console.log('Successfully Updated Product Serial', 78)
                         })
                 }
+                AssetHistory.create({asset_id: resData.id, assign_to: resData.assign_to})
+                    .then(resHistory => {
+                    })
                 res.status(200).json({message: 'Product Stored', status: true})
             })
             .catch(err => {

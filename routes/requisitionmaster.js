@@ -51,7 +51,7 @@ route.post('/requisition-master/entry', (req,res,next) => {
         RequisitionMaster.create(sendData)
             .then(resData => {
                 console.log(resData.dataValues.id, 52)
-                RequisitionMaster.update({requisition_no: resData.dataValues.id},{where: {id: resData.dataValues.id}})
+                RequisitionMaster.update({requisition_no: 'Req-' + resData.dataValues.id},{where: {id: resData.dataValues.id}})
                     .then(() => {
                         RequisitionMaster.findAll({attributes: ['id', 'mobile','email','request_date'],where: {id: resData.dataValues.id}})
                             .then(resData1 => {
