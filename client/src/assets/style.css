@@ -159,12 +159,12 @@ input[type=date],
 .f-22px{font-size: 22px;}
 .f-28px{font-size: 28px;}
 .f-30px{font-size: 30px;}
-
 .f-capitalize{text-transform: capitalize;}
 
 .pb-6px{padding-bottom: 6px}
-
 .px-13px{padding: 0 13px}
+
+.is-invalid{border: 1px solid red}
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
 .text-grey{color: #5e6367}
@@ -174,7 +174,7 @@ input[type=date],
 .bg-red{background-color: #dc3545}
 .bg-pink{background-color: #e04a58}
 .bg-blue{background-color: #1c45ef}
-.bg-orange{background-color: #fdbc00}
+.bg-orange{background-color: #f7edde}
 .bg-project{background-color: #005da6}
 .bg-project-primary{background-color: #2384d0}
 .bg-purple{background-color: #7639ea}
@@ -299,6 +299,24 @@ input[type=date],
 }
 .ui-register{
    background: #def4ed;
+   height: 100%;
+   width: 100%;
+   border-radius: 7px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.ui-passwordUpdate{
+   background: #f7edde;
+   height: 100%;
+   width: 100%;
+   border-radius: 7px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.ui-profile{
+   background: #e8e1f7;
    height: 100%;
    width: 100%;
    border-radius: 7px;

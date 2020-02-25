@@ -164,8 +164,8 @@ class RequestHistoryComponent extends Component {
                 </div>}
                 <div className={'bg-white p-3 rounded'}>
                     {!showDetails ? <>
-                    <nav className="navbar text-center mb-3 p-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0" >Requisition History</p>
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p className="text-blue f-weight-700 f-20px m-0" >Requisition History</p>
                     </nav>
                         {data.length > 0 ? <ReactDataTable
                             details={'reqHistory'}
@@ -191,7 +191,7 @@ class RequestHistoryComponent extends Component {
                                 </tbody>
                             </table>
                             <div className="d-flex w-100 justify-content-end">
-                                <button className="btn btn-info px-4 f-18px" onClick={this.submitApprove}>Submit</button>
+                                <button className="btn btn-info px-4 f-18px" onClick={this.submitApprove}>Approve</button>
                             </div>
                         </div>
                     </>}

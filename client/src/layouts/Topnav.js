@@ -144,19 +144,19 @@ class Topnav extends Component {
                             <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                  src={'http://localhost:5000/images/' + image} alt={'user'}/>
                             {showUserOption && <div className={'ui-user-dropdown'}>
-                                <p><Link onClick={() => {
+                                <Link onClick={() => {
                                     this.setState((prevState) => ({
                                         showUserOption: false
                                     }))
-                                }} to={'/profile'}>Profile</Link></p>
-                                <p><Link onClick={() => {
+                                }} to={'/profile'}><p>Profile</p></Link>
+                                <Link onClick={() => {
                                     this.setState((prevState) => ({
                                         showUserOption: false
                                     }))
-                                }} to={'/pass-reset'}>Update Password</Link></p>
-                                <p><a onClick={() => {
+                                }} to={'/pass-reset'}><p>Update Password</p></Link>
+                                <a onClick={() => {
                                     localStorage.removeItem('user')
-                                }} href={'/'}>Logout</a></p>
+                                }} href={'/'}><p>Logout</p></a>
                             </div>}
                         </div>
                     </div>
