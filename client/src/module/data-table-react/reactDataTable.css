@@ -45,14 +45,15 @@
 .tbody .ui-tbody-child,
 .thead{
     background: #c6e4f9;
-    display: flex;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    justify-content: space-between;
     width: 100%;
     margin-bottom: 3px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     align-items: center;
-    justify-content: space-between;
 }
 
 .reactDataTable .custom-search div{

@@ -1,4 +1,5 @@
 import Axios from "axios";
+import './adminInputContainer.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
@@ -8,7 +9,6 @@ import BrandIdOptions from "../../utility/component/brandIdOptions";
 import ModelIdOptions from "../../utility/component/modelIdOptions";
 import LocationsOptions from "../../utility/component/locationOptions";
 import HierarchiesOptions from "../../utility/component/hierarchyOptions";
-import ModuleOptions from "../../utility/component/moduleOptions";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
 import UserOptions from "../../utility/component/userOptions";
 import ApproveLevelOptions from "../../utility/component/approveLevelOptions";
@@ -19,6 +19,7 @@ class AdminInputContainer extends Component {
         this.state = {
             allProjects: [],
             locationHolder: [],
+            dataTableData: [],
             model: '',
             brand: '',
             parent_id: 0,
@@ -123,6 +124,8 @@ class AdminInputContainer extends Component {
                         this.setState({
                             allProjects: res.data,
                             isLoading: false
+                        }, () => {
+                            this.filterData()
                         })
                     }
                 })
@@ -132,8 +135,163 @@ class AdminInputContainer extends Component {
         })
     }
 
+    filterData = () => {
+        let dataTableData = []
+        const {formType} = this.props
+        const {allProjects} = this.state
+
+        switch (formType) {
+            case "ASSETSUBCATEGORY":
+                allProjects.map((items, key) => {
+                        let obj = {}
+                        Object.keys(items).forEach(item => {
+                            if (item !== 'category_id') {
+                                obj[item] = items[item]
+                            }
+                        })
+                        dataTableData.push(obj)
+                }, {})
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'VENDOR':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'PROJECT':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'USERAPPROVAL':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'PRODUCTS':
+                allProjects.map((items, key) => {
+                    let obj = {}
+                    Object.keys(items).forEach(item => {
+                        if (item === 'category_id' || item === 'sub_category_id' ||  item === 'brand_id' || item === 'model_id') {
+                            return
+                        } else {
+                            obj[item] = items[item]
+                        }
+                    })
+                    dataTableData.push(obj)
+                    console.log(dataTableData, 186)
+                }, {})
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'MODELS':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'BRANDS':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'CONDITIONS':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'LOCHIERARCHY':
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'DEPMETHOD':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'ASSETTYPES':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'ASSETCATEGORY':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'LOCATIONS':
+                allProjects.map((items, key) => {
+                    let obj = {}
+                    Object.keys(items).forEach(item => {
+                        if (item === 'hierarchy') {return null}
+                        else {
+                            obj[item] = items[item]
+                        }
+                    })
+                    dataTableData.push(obj)
+                }, {})
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'USERROLES':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'MODULE':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'USERASSOCIATE':
+                allProjects.map((items, key) => {
+                    let obj = {}
+                    Object.keys(items).forEach(item => {
+                        if (item === 'role_id' || item === 'user_id' || item === 'location_id') {
+                            return
+                        } else {
+                            obj[item] = items[item]
+                        }
+                    })
+                    dataTableData.push(obj)
+                    console.log(dataTableData, 269)
+                }, {})
+                this.setState({
+                    dataTableData,
+                })
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            default:
+                return null
+        }
+    }
+
     updateEdit = (id) => {
         const {allProjects} = this.state
+        console.log(allProjects, 137)
         allProjects.find(item => {
             if (item.id === id) {
                 console.log(item)
@@ -252,6 +410,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Vendor Name</label>
                             <input
                                 placeholder='Vendor Name'
                                 type={'text'}
@@ -261,6 +420,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.vendor_name) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Description</label>
                             <textarea
                                 placeholder={'Description'}
                                 id={'enCh1'}
@@ -287,8 +447,8 @@ class AdminInputContainer extends Component {
                             </div>
                         </div>
                         {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit Vendor</button> : <>
-                            <button className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
-                            <button className="btn btn-outline-danger mt-3" onClick={() => {
+                            <button className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-3" onClick={() => {
                                 this.setState({
                                     editId: null,
                                     vendor_name: '',
@@ -305,6 +465,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Project Name</label>
                             <input
                                 placeholder='Project Name'
                                 type={'text'}
@@ -314,6 +475,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.project_name) && 'is-invalid'}`}  />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Project Code</label>
                             <input
                                 placeholder='Project Code'
                                 type={'text'}
@@ -323,6 +485,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.project_code) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Description</label>
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -331,8 +494,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
-                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         project_name: '',
@@ -348,26 +511,29 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Location Hierarchy</label>
                             <select name={'location_heirarchy_id'} value={location_heirarchy_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_heirarchy_id) && 'is-invalid'}`}>
                                 <option>Select Location</option>
                                 <HierarchiesOptions />
                             </select>
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>User Role</label>
                             <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
                                 <option>Select User Role</option>
                                 <UserRoleOptions />
                             </select>
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Parent</label>
                             <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
                                 <option>Select Parent</option>
                                 <ApproveLevelOptions />
                             </select>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             project_name: '',
@@ -383,18 +549,21 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Asset Category</label>
                             <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
                                 <option>Select Category</option>
                                 <AssetCategoryOptions />
                             </select>
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Asset Sub Category</label>
                             <select name={'sub_category_id'} value={sub_category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.sub_category_id) && 'is-invalid'}`}>
-                                <option>Select Category</option>
+                                <option>Select Sub Category</option>
                                 <AssetSubCategoryOptions assetId={category_id} />
                             </select>
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Product Name</label>
                             <input
                                 placeholder='Product Name'
                                 name={'product_name'}
@@ -403,6 +572,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.product_name) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Product Code</label>
                             <input
                                 placeholder='Product Code'
                                 name={'product_code'}
@@ -411,20 +581,22 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.product_code) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Brand</label>
                             <select name={'brand_id'} value={brand_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.brand_id) && 'is-invalid'}`}>
                                 <option>Select Brand</option>
                                 <BrandIdOptions />
                             </select>
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Model</label>
                             <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.model_id) && 'is-invalid'}`}>
                                 <option>Select Model</option>
                                 <ModelIdOptions />
                             </select>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Product</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Products</button>
-                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         error: false,
@@ -440,18 +612,19 @@ class AdminInputContainer extends Component {
             case 'MODELS':
                 return(
                     <>
-                            <div className="px-1 mb-2">
-                                <input
-                                    placeholder='Models'
-                                    type={'text'}
-                                    name={'model'}
-                                    value={model}
-                                    onChange={this.handleChange}
-                                    className={`form-control ${(errorDict && !errorDict.model) && 'is-invalid'}`}  />
-                            </div>
-                            {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <div>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Model</button>
-                                <button className="btn btn-outline-danger" onClick={() => {
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Models</label>
+                            <input
+                                placeholder='Models'
+                                type={'text'}
+                                name={'model'}
+                                value={model}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.model) && 'is-invalid'}`}  />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <div>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         model: '',
@@ -465,6 +638,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Brands</label>
                             <input
                                 placeholder='Brands'
                                 type={'text'}
@@ -474,8 +648,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.brand) && 'is-invalid'}`}  />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Brand</button>
-                                    <button className="btn btn-outline-danger" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             brand: '',
@@ -489,6 +663,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Condition</label>
                             <input
                                 placeholder='Condition Type'
                                 type={'text'}
@@ -498,8 +673,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.condition_type) && 'is-invalid'}`}  />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
-                                    <button className="btn btn-outline-danger" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             condition_type: '',
@@ -513,6 +688,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Hierarchy</label>
                             <input
                                 placeholder='Hierarchy Name'
                                 type={'text'}
@@ -522,8 +698,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.hierarchy_name) && 'is-invalid'}`}  />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Hierarchy</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mr-2" onClick={this.updateData}>Update Condition</button>
-                                    <button className="btn btn-outline-danger" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             hierarchy_name: '',
@@ -537,6 +713,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Methods</label>
                             <input
                                 placeholder='Method Name'
                                 type={'text'}
@@ -546,6 +723,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.method_name) && 'is-invalid'}`}  />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Depreciation Code</label>
                             <input
                                 placeholder='Depreciation Code'
                                 type={'text'}
@@ -555,6 +733,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.depreciation_code) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Description</label>
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -563,8 +742,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Method</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             depreciation_code: '',
@@ -580,6 +759,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Type Name</label>
                             <input
                                 placeholder='Type Name'
                                 type={'text'}
@@ -589,6 +769,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.type_name) && 'is-invalid'}`}  />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Asset Code</label>
                             <input
                                 placeholder='Asset Code'
                                 type={'text'}
@@ -598,6 +779,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.asset_code) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Description</label>
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -606,8 +788,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Asset Type</button>
-                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         asset_code: '',
@@ -623,6 +805,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Category Name</label>
                             <input
                                 placeholder='Category Name'
                                 type={'text'}
@@ -632,6 +815,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.category_name) && 'is-invalid'}`}  />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Category Code</label>
                             <input
                                 placeholder='Category Code'
                                 type={'text'}
@@ -641,6 +825,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.category_code) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Description</label>
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -649,8 +834,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Category</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             category_name: '',
@@ -666,12 +851,14 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Asset Category</label>
                             <select name={'category_id'} value={category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.category_id) && 'is-invalid'}`}>
                                 <option>Select Category</option>
                                 <AssetCategoryOptions assetId={category_id}/>
                             </select>
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Sub Category Name</label>
                             <input
                                 placeholder='Sub Category Name'
                                 type={'text'}
@@ -681,6 +868,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.sub_category_name) && 'is-invalid'}`}  />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Sub Category Code</label>
                             <input
                                 placeholder='Sub Category Code'
                                 type={'text'}
@@ -690,6 +878,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Description</label>
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -698,8 +887,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Sub Category</button>
-                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         error: false,
@@ -713,11 +902,11 @@ class AdminInputContainer extends Component {
                     </>
                 )
             case 'LOCATIONS':
-                console.log(locationHolder, 715)
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) =>
                     {
                         return(
                             <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Select Sub Location {item.location_name}</label>
                                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
                                     <option>Select Sub Location {item.location_name}</option>
                                     <LocationsOptions selectedId={item.parent_id} />
@@ -728,6 +917,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                             <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Location Name</label>
                                 <input
                                     placeholder='Location Name'
                                     type={'text'}
@@ -737,6 +927,7 @@ class AdminInputContainer extends Component {
                                     className={`ui-custom-input ${(errorDict && !errorDict.location_name) && 'is-invalid'}`} />
                             </div>
                             <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Location Code</label>
                                 <input
                                     placeholder='Location Code'
                                     type={'text'}
@@ -746,21 +937,23 @@ class AdminInputContainer extends Component {
                                     className={`ui-custom-input ${(errorDict && !errorDict.location_code) && 'is-invalid'}`} />
                             </div>
                             <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Location Hierarchy</label>
+                                <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
+                                    <option>Select Hierarchy</option>
+                                    <HierarchiesOptions />
+                                </select>
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Parent</label>
                                 <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
                                     <option value={0}>Select Parent</option>
                                     <LocationsOptions selectedId={parent_id} />
                                 </select>
                             </div>
                             {subLoc}
-                            <div className="px-1 mb-20p">
-                                <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
-                                    <option>Select Hierarchy</option>
-                                    <HierarchiesOptions />
-                                </select>
-                            </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Location</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Locations</button>
-                                <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         error: false,
@@ -779,6 +972,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Role Name</label>
                             <input
                                 placeholder='Role Name'
                                 type={'text'}
@@ -788,6 +982,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.role_name) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Role Description</label>
                             <input
                                 placeholder='Role Description'
                                 type={'text'}
@@ -797,8 +992,8 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Role</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             error: false,
@@ -815,6 +1010,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Module Name</label>
                             <input
                                 placeholder='Module Name'
                                 type={'text'}
@@ -824,6 +1020,7 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.module_name) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Initial Link</label>
                             <input
                                 placeholder='Initial Link'
                                 type={'text'}
@@ -833,8 +1030,9 @@ class AdminInputContainer extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.initial_link) && 'is-invalid'}`} />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Order</label>
                             <select name={'order_by'} value={order_by} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.order_by) && 'is-invalid'}`}>
-                                <option>Select Options</option>
+                                <option>Select Order</option>
                                 <option value={1}>Ascending</option>
                                 <option value={2}>Descending</option>
                             </select>
@@ -845,8 +1043,8 @@ class AdminInputContainer extends Component {
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             error: false,
@@ -863,6 +1061,7 @@ class AdminInputContainer extends Component {
             case 'USERASSOCIATE':
                 let subLocation = locationHolder.length > 0 && locationHolder.map((item, index) => (
                     <div className="px-1 mb-2">
+                        <label className={'ui-custom-label'}>Sub Locations</label>
                         <select name={'location_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
                             <option>Select Sub Location</option>
                             <LocationsOptions selectedId={item.parent_id} />
@@ -872,18 +1071,14 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Users</label>
                             <select name={'user_id'} value={user_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.user_id) && 'is-invalid'}`}>
                                 <option>Select User</option>
                                 <UserOptions />
                             </select>
                         </div>
-                        {/*<div className="px-1 mb-2">*/}
-                        {/*    <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>*/}
-                        {/*        <option>Select Module</option>*/}
-                        {/*        <ModuleOptions />*/}
-                        {/*    </select>*/}
-                        {/*</div>*/}
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Locations</label>
                             <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
                                 <option>Select Location</option>
                                 <LocationsOptions selectedId={location_id} />
@@ -891,14 +1086,15 @@ class AdminInputContainer extends Component {
                         </div>
                         {subLocation}
                         <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>User Role</label>
                             <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
                                 <option>Select Role</option>
                                 <UserRoleOptions />
                             </select>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
-                                    <button className="btn btn-outline-danger mt-3" onClick={() => {
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             error: false,
@@ -1168,7 +1364,7 @@ class AdminInputContainer extends Component {
 
     render() {
         const {getApi, title, headTitle} = this.props
-        const {error, errorMessage, isLoading, allProjects, success, successMessage} = this.state
+        const {error, errorMessage, isLoading, allProjects, success, successMessage, dataTableData} = this.state
         return (
             <>
                 {error && <div className="alert alert-danger mx-2 my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
@@ -1188,11 +1384,11 @@ class AdminInputContainer extends Component {
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white min-h-80vh">
-                        <nav className="navbar text-center mb-2 pl-3 rounded">
+                    <div className="rounded bg-white min-h-80vh p-2">
+                        <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
+                        {isLoading ? <h2>Loading</h2> : dataTableData.length > 0 ? <>
                             <ReactDataTable
                                 edit
                                 dataDisplay
@@ -1203,7 +1399,7 @@ class AdminInputContainer extends Component {
 
                                 deleteModalTitle={title}
                                 del={getApi}
-                                tableData={allProjects}
+                                tableData={dataTableData}
                                 updateEdit={this.updateEdit}
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
