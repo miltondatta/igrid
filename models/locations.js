@@ -20,7 +20,7 @@ const Locations = db.define('locations', {
     type: Sequelize.DOUBLE
   },
   parent_id: {
-    type: Sequelize.STRING
+    type: Sequelize.INTEGER
   },
   hierarchy: {
     type: Sequelize.INTEGER,

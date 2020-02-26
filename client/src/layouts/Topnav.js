@@ -35,8 +35,6 @@ class Topnav extends Component {
             data = documentNav;
         } else if (moduleName === 'admin') {
             data = systemAdmin
-        } else if (moduleName === 'mis') {
-            data = misNav;
         } else {
             data = sidenav;
         }

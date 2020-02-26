@@ -188,6 +188,14 @@ const AsyncRequisitionStatus = Loadable({
     loader: () => import('../containers/RequisitionStatus'),
     loading: Loading,
 });
+const AsyncIndicatorCategory = Loadable({
+    loader: () => import('../containers/IndCategory'),
+    loading: Loading,
+});
+const AsyncIndicatorSubCategory = Loadable({
+    loader: () => import('../containers/IndSubCategory'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -267,6 +275,8 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
                                     <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                                     <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
+                                    <Route exact path='/mis-indicator-category' component={AsyncIndicatorCategory}/>
+                                    <Route exact path='/mis-indicator' component={AsyncIndicatorSubCategory}/>
                             </Switch>
                         </div>
                     </div>
