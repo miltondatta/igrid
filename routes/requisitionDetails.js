@@ -102,6 +102,9 @@ route.get('/requisition-details', async (req,res,next) => {
      console.log(updated_reqId);
 
     let pending_requisition_details_id =  [...child_approve_reqId, ...child_created_reqId];
+    if(updated_reqId.length) {
+        pending_requisition_details_id     =   pending_requisition_details_id.filter(item => !updated_reqId.includes(item));
+    }
     console.log(pending_requisition_details_id);   
 
     let results = [];
