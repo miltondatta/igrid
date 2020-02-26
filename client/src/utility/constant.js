@@ -300,8 +300,8 @@ export const misNav = [
             },
             {
                 id: 2,
-                name: 'Indicator Sub Category',
-                link: '/mis/indicator-sub-category',
+                name: 'Indicator',
+                link: '/mis/indicator',
                 icon: ""
             },
         ]

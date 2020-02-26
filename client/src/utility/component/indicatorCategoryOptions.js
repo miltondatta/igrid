@@ -1,12 +1,12 @@
-import Axios from "axios";
 import React, {Component} from 'react';
+import Axios from "axios";
 import {apiUrl} from "../constant";
 
-class DocumentCategoryOptions extends Component {
+class IndicatorCategoryOptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            documentCategory: []
+            indicatorCategory: []
         }
     }
 
@@ -15,10 +15,10 @@ class DocumentCategoryOptions extends Component {
     }
 
     getData = () => {
-        Axios.get(apiUrl() + 'document/category/all')
+        Axios.get(apiUrl() + 'mis/indicator/category/all')
             .then(resData => {
                 this.setState({
-                    documentCategory: resData.data
+                    indicatorCategory: resData.data
                 })
             })
     };
@@ -28,9 +28,9 @@ class DocumentCategoryOptions extends Component {
             this.getData();
             this.props.forceUp()
         }
-        const {documentCategory} = this.state;
-        const options = documentCategory.length > 0 && documentCategory.map((item, index) => (
-            <option key={index} value={item.id}>{item.category_name}</option>
+        const {indicatorCategory} = this.state;
+        const options = indicatorCategory.length > 0 && indicatorCategory.map((item, index) => (
+            <option key={index} value={item.id}>{item.indicatormaster_name}</option>
         ));
 
         return (
@@ -41,4 +41,4 @@ class DocumentCategoryOptions extends Component {
     }
 }
 
-export default DocumentCategoryOptions;
+export default IndicatorCategoryOptions;

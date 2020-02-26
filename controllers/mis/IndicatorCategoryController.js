@@ -20,15 +20,15 @@ exports.store = async (req, res) => {
     try {
         const {indicatormaster_code, indicatormaster_name, description, is_default} = req.body;
         const newMisIndicatorMaster = {
-            indicatormaster_code,
-            indicatormaster_name,
-            description,
-            is_default
+            indicatormaster_code: indicatormaster_code,
+            indicatormaster_name: indicatormaster_name,
+            description: description,
+            is_default: is_default
         };
 
         const mis_indicator_category = await MisIndicatorMaster.findOne({where: {indicatormaster_code}});
         if (mis_indicator_category) return res.status(400).json({
-            msg: 'This MIS Indicator Category is already exist!',
+            msg: 'This MIS Indicator Master Code is already exist!',
             error: true
         });
 
