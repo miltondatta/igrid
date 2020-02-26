@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrintDelivery from "./PrintDelivery";
 
 class DeliveryRequestComponent extends Component {
     constructor(props){
@@ -81,9 +82,16 @@ class DeliveryRequestComponent extends Component {
 
         Axios.post(apiUrl() + 'requisition-approve/delivery', payload)
             .then(res => {
-                console.log(res.data)
+                this.setState({
+                    printDelivery: true
+                })
             })
+    }
 
+    comeBack = () => {
+        this.setState({
+            printDelivery: false
+        })
     }
 
     subAssets = (cat, sub, dev_to) => {
@@ -122,7 +130,7 @@ class DeliveryRequestComponent extends Component {
     }
 
     render() {
-        const {resData, reqDetails, showDetails} = this.state
+        const {resData, reqDetails, showDetails, printDelivery} = this.state
         let tableData = resData.length > 0 && resData.map((item, index) => {
             return(
                 <tr key={index + 10}>
@@ -140,11 +148,14 @@ class DeliveryRequestComponent extends Component {
                 </tr>
             )
         })
+
+
         return (
                 <div className={'bg-white p-3 rounded m-3'}>
+                    {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
                     {showDetails ?  <div className={'ui-req-history'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue f-weight-700 f-22px m-0" ><i className="fas fa-chevron-circle-left"></i>     Go Back</p>
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
                         </nav>
                         <table className="table">
                             <thead className="thead-dark">
