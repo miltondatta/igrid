@@ -325,7 +325,8 @@ class DocumentInputContainer extends Component {
             case 'DOCUMENTCATEGORY':
                 return (
                     <>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Document Category Name</label>
                             <input
                                 placeholder='Enter Document Category Name'
                                 type={'text'}
@@ -351,6 +352,7 @@ class DocumentInputContainer extends Component {
                 return (
                     <>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Category Name</label>
                             <select name={'category_id'} value={category_id} onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Category</option>
@@ -360,7 +362,8 @@ class DocumentInputContainer extends Component {
                             <span className="error">Category Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Sub Category Name</label>
                             <input
                                 placeholder='Sub Category Name'
                                 type={'text'}
@@ -386,6 +389,7 @@ class DocumentInputContainer extends Component {
                 return (
                     <>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Category Name</label>
                             <select name={'category_id'} value={category_id} onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Category</option>
@@ -396,6 +400,7 @@ class DocumentInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Sub Category Name</label>
                             <select name={'sub_category_id'} value={sub_category_id}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
@@ -409,6 +414,7 @@ class DocumentInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Content Type</label>
                             <select name={'content_type'} value={content_type}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
@@ -422,6 +428,7 @@ class DocumentInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Title</label>
                             <input
                                 placeholder='Title'
                                 name={'title'}
@@ -433,6 +440,7 @@ class DocumentInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Circular No</label>
                             <input
                                 placeholder='Circular No'
                                 name={'circular_no'}
@@ -468,7 +476,7 @@ class DocumentInputContainer extends Component {
                                         onChange={date => this.setState({document_date: date})}
                                         value={document_date}/>
                         </div>
-                        <div className="px-1 mb-15p">
+                        <div className="px-1 mb-20p">
                             <div className="row align-items-center">
                                 <div className="col-md-4">
                                     <div className="ui-custom-file">
@@ -743,8 +751,8 @@ class DocumentInputContainer extends Component {
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white min-h-80vh">
-                        <nav className="navbar text-center mb-2 pl-3 rounded">
+                    <div className="rounded bg-white p-3 min-h-80vh">
+                        <nav className="navbar text-center mb-2 pl-0 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
@@ -785,7 +793,7 @@ class DocumentInputContainer extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </> : <h4>Currently There are No Content</h4>}
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
                     </div>
                 </div>
             </>

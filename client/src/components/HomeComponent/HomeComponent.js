@@ -43,7 +43,7 @@ const HomeComponent = () => {
                     <NoticeBoardComponent />
                 </div>
                 <div className={'ui-home-options'}>
-                    <Link to={'/documents'}>
+                    <Link to={'/documents/document-list-search'}>
                         <div className={'ui-cards ui-document'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/document_management.png'} alt="document_management"/>
@@ -59,7 +59,7 @@ const HomeComponent = () => {
                             <p>LOCATION FINDER</p>
                         </div>
                     </Link>
-                    <Link to={'/home'}>
+                    <Link to={'/stock-reg'}>
                         <div className={'ui-cards ui-asset'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/asset.png'} alt="document_management"/>

@@ -8,7 +8,7 @@ const route = express.Router()
 // Read
 route.get('/locations', async (req,res,next) => {
     const [data, naster] = await db.query(`
-        SELECT locations.id, locations.location_name, location_hierarchies.hierarchy_name, locations.location_code, locations.parent_id FROM locations
+        SELECT locations.id, locations.location_name, location_hierarchies.hierarchy_name, location_hierarchies.id as hierarchy, locations.location_code, locations.parent_id FROM locations
             JOIN location_hierarchies ON locations.hierarchy = location_hierarchies.id
     `)
     if(data.length > 0) {

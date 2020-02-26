@@ -7,7 +7,7 @@ const route = express.Router()
 // Read
 route.get('/asset-sub-category', async (req,res,next) => {
     const [data, metaData] = await db.query(`
-        SELECT asset_sub_categories.id, asset_sub_categories.sub_category_name, asset_categories.category_name, asset_sub_categories.sub_category_code, asset_sub_categories.description FROM asset_sub_categories
+        SELECT asset_sub_categories.id, asset_sub_categories.id as category_id, asset_sub_categories.sub_category_name, asset_categories.category_name, asset_sub_categories.sub_category_code, asset_sub_categories.description FROM asset_sub_categories
         JOIN asset_categories ON asset_categories.id = asset_sub_categories.category_id
     `)
     if (data.length > 0 ) {

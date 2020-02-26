@@ -1,13 +1,9 @@
 import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import './RequestHistoryCom.css'
-import {Redirect} from 'react-router-dom'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import StatusOptions from "../../utility/component/statusOptions";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
-import InstaAdd from "../../module/insta-add/InstaAdd";
-import AdminInputContainer from "../../layouts/AdminInputContainer/AdminInputContainer";
 
 class RequestHistoryComponent extends Component {
     constructor(props){
@@ -28,7 +24,6 @@ class RequestHistoryComponent extends Component {
 
     componentDidMount() {
         let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
-        console.log(user_data);
         Axios.get(apiUrl() + 'requisition-details', {
             params: user_data
         }).then(res => {
@@ -131,25 +126,27 @@ class RequestHistoryComponent extends Component {
         const {data, showDetails, detailedData, error, errorMessage, success, successMessage} = this.state
         let tableData = detailedData.map((item, index) => {
             return(
-                <tr key={index + 10}>
-                    <td>{index + 1}</td>
-                    <td>{item.category_name}</td>
-                    <td>{item.sub_category_name}</td>
-                    <td>
-                        {this.state[item.id] ? <input
+                <div key={index + 10} className={'ui-tbody-child'}>
+                    <div className={'d-flex align-items-center'}>
+                        <p className={'w-60px'}>{index + 1}</p>
+                        <p>{item.category_name}</p>
+                        <p>{item.sub_category_name}</p>
+                        <p>
+                            {this.state[item.id] ? <input
+                                    className={'ui-transparent-input'}
+                                    onChange={(e) => {this.handleChange(e,item.id, 'update_quantity', item.quantity )}}
+                                /> :
+                            <input
                                 className={'ui-transparent-input'}
-                                onChange={(e) => {this.handleChange(e,item.id, 'update_quantity', item.quantity )}}
-                            /> :
-                        <input
-                            className={'ui-transparent-input'}
-                            onFocus={() => {
-                                this.setState({
-                                    [item.id]: true
-                                })
-                            }}
-                            value={item.quantity} />}
-                    </td>
-                </tr>
+                                onFocus={() => {
+                                    this.setState({
+                                        [item.id]: true
+                                    })
+                                }}
+                                value={item.quantity} />}
+                        </p>
+                    </div>
+                </div>
             )
         })
 
@@ -174,29 +171,29 @@ class RequestHistoryComponent extends Component {
                             details={'reqHistory'}
                             assetList={this.assetList}
                             tableData={data}
-                        /> : <h2>Loading...</h2>}
+                        /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </> : <>
-                        <nav className="navbar text-center mb-2 p-2 rounded cursor-pointer">
-                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-dark f-weight-500 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i>     Go Back</p>
+                        <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
                         </nav>
-                        <div className={'ui-req-history'}>
-                            <table className="table">
-                                <thead className="thead-dark">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Category</th>
-                                        <th>Sub Category</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+
+                        <div className={'reactDataTable mb-20p'}>
+                            <div className={'table'}>
+                                <div className={'thead'}>
+                                    <div className={'d-flex align-items-center'}>
+                                        <p className={'w-60px'}>No</p>
+                                        <p>Category</p>
+                                        <p>Sub Category</p>
+                                        <p>Quantity</p>
+                                    </div>
+                                    <div className={'d-flex align-items-center'}> </div>
+                                </div>
+                                <div className={'tbody'}>
                                     {tableData}
-                                </tbody>
-                            </table>
-                            <div className="d-flex w-100 justify-content-end">
-                                <button className="btn btn-info px-4 f-18px" onClick={this.submitApprove}>Approve</button>
+                                </div>
                             </div>
                         </div>
+                        <button className="submit-btn" onClick={this.submitApprove}>Approve</button>
                     </>}
                 </div>
             </div>

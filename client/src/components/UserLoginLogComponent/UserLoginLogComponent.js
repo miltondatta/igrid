@@ -37,8 +37,8 @@ class UserLoginLogComponent extends Component {
         const {data, trackData, zoom} = this.state
         console.log(data)
         return (
-            <div className={'p-1 m-3 bg-white rounded'}>
-                <nav className="navbar text-center mb-2 pl-3 rounded">
+            <div className={'p-2 m-3 bg-white rounded'}>
+                <nav className="navbar text-center mb-2 pl-1 rounded">
                     <p className="text-blue f-weight-700 f-22px ml-2 mb-0">Login Logs</p>
                 </nav>
                 {trackData.length === 0 ? <ReactDataTable

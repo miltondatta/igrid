@@ -603,7 +603,7 @@ class MisInputContainer extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </> : <h4>Currently There are No Content</h4>}
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </div>
                 </div>
             </>

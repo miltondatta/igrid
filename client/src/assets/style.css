@@ -36,7 +36,7 @@ a:hover{text-decoration: none}
 }
 
 .mb-15p{margin-bottom: 15%;}
-.mb-20p{margin-bottom: 20%;}
+.mb-20p{margin-bottom: 20% !important;}
 
 .w-90{width: 89%;}
 .w-76{width: 76%}
@@ -471,12 +471,12 @@ input[type=date],
    border-bottom: 1px solid #17a2b8;
 }
 .ui-transparent-input{
-   background: transparent;
-   border: none;
-   width: 80%;
+   background: #f8f8f8;
+   width: 100%;
    outline: none;
    padding: 10px;
-   border-bottom: 1px solid #17a2b8;
+   border-radius: 5px;
+   border: 1px solid #c0c0c0;
 }
 
 @keyframes uiSliderModal {

@@ -27,12 +27,12 @@ let upload =  multer({
 
 // Read
 route.get('/requisition-details', async (req,res,next) => {
-
-    /*
     let role_id         = req.query.role_id;
     let user_id         = req.query.id;
+    let location_id     = req.query.location_id;
 
     //check if this role id exist in approval_levels table 
+    //We can skip this step if we want
     const [approval_levels, approval_levels_meta] = await db.query(`
         SELECT * from approval_levels
             WHERE approval_levels.role_id = ${role_id}`);
@@ -41,6 +41,7 @@ route.get('/requisition-details', async (req,res,next) => {
     }
 
     //If role id exist then check if this entry has child element or not
+    //We can skip this step if we want
     let approval_level_id = approval_levels[0].id;
     const [approval_levels_parent, approval_levels_parent_meta] = await db.query(`
         SELECT * from approval_levels
@@ -49,34 +50,90 @@ route.get('/requisition-details', async (req,res,next) => {
         res.status(200).json({ message: "No Data Found" })
     }
 
-    //If this role has child element then find all location under this location
+    //If this role has child element, then find all location under this location
+    const [locations, locations_meta] = await db.query(`
+    SELECT id from locations
+        WHERE parent_id = '${location_id}'`);
+    if(!locations.length) {
+        res.status(200).json({ message: "No Data Found" })
+    }
+    let location_ids = [];
+    locations.forEach(item => {
+        location_ids.push(item.id);
+    });
+    location_ids    =   location_ids.join(",");
+    console.log(location_ids);
 
+    //Get update/approve requistion by child user to display for this user 
+    let child_approve_reqId = []
+    if (location_ids) {
+        const [resultsChildMain, metadataChildMain] = await db.query(`
+            SELECT requisition_approves.requisition_details_id from requisition_approves
+                WHERE location_id IN (${location_ids})  
+        `)
+        resultsChildMain.length > 0 && resultsChildMain.forEach(item => {
+            child_approve_reqId.push(item.requisition_details_id)
+        });
+    }
+    console.log(child_approve_reqId);
+
+    //Get new created requistion by child user to display for this user 
+    let child_created_reqId = []
+    if (location_ids) {
+        const [resultsChildCreated, metadataChildCreated] = await db.query(`
+        SELECT requisition_details.id AS requisition_details_id FROM requisition_masters JOIN requisition_details ON requisition_masters.id = requisition_details.requisition_id
+         WHERE requisition_masters.location_id IN (${location_ids}) 
+        `);
+        resultsChildCreated.length > 0 && resultsChildCreated.forEach(item => {
+            child_created_reqId.push(item.requisition_details_id)
+        });
+    }
+    console.log(child_created_reqId);
+
+     //Get update requistion by login user to subtract those request 
+     let updated_reqId = []
+     const [resultsMain, metadataMain] = await db.query(`
+         SELECT requisition_approves.requisition_details_id from requisition_approves
+             WHERE update_by = '${user_id}'  
+     `)
+     resultsMain.length > 0 && resultsMain.forEach(item => {
+         updated_reqId.push(item.requisition_details_id)
+     });
+     console.log(updated_reqId);
+
+    let pending_requisition_details_id =  [...child_approve_reqId, ...child_created_reqId];
+    if(updated_reqId.length) {
+        pending_requisition_details_id     =   pending_requisition_details_id.filter(item => !updated_reqId.includes(item));
+    }
+    console.log(pending_requisition_details_id);   
+
+    let results = [];
+    if (pending_requisition_details_id.length) {
+        pending_requisition_details_id = pending_requisition_details_id.join(",");
+        const [results, metadata] = await db.query(`SELECT DISTINCT ON
+        ( requisition_details.requisition_id ) requisition_details.id,
+        concat(location_hierarchies.hierarchy_name, '-', locations.location_name) as location_name,
+        Concat ( users."firstName", ' ', users."lastName" ) AS request_by,
+        user_roles.role_name as role_name,
+        requisition_masters.requisition_no,
+        requisition_details.requisition_id 
+    FROM
+        requisition_details
+        JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id 
+        JOIN users ON requisition_masters.request_by = users.id 
+        JOIN user_roles ON user_roles.id = requisition_masters.role_id
+        JOIN locations ON requisition_masters.location_id = locations.id
+        JOIN location_hierarchies ON location_hierarchies.id = locations.hierarchy
+    WHERE requisition_details.id IN (${pending_requisition_details_id})
+                    `);
+        res.status(200).json(results)
+    } else {
+        res.status(200).json({ message: "No Data Found" })
+    }    
     
-    return res.status(200).json({message: "check data pattern"});   */
-
-
-
-    let reqId = []
-    const [resultsMain, metadataMain] = await db.query(`
-        SELECT requisition_approves.requisition_details_id from requisition_approves
-            WHERE requisition_approves.delivery_to IS NOT NULL
-    `)
-    resultsMain.length > 0 && resultsMain.forEach(item => {
-        reqId.push(item.requisition_details_id)
-    })
-    const [results, metadata] = await db.query(`
-        SELECT DISTINCT ON(requisition_details.requisition_id) requisition_details.id, Concat(users."firstName", ' ', users."lastName") as requestBy, requisition_details.requisition_id
-            FROM requisition_details
-                 Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
-                 Join users ON requisition_masters.request_by = users.id`)
-
-    let payLoad = results.filter(item => !reqId.includes(item.id))
-        if (results.length > 0) {
-            res.status(200).json(payLoad)
-        } else {
-            res.status(200).json({message: "No Data Found"})
-        }
 })
+
+
 
 
 // Read
