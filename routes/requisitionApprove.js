@@ -40,7 +40,7 @@ route.get('/requisition-approve', async (req,res,next) => {
 // Read
 route.get('/requisition-approve/specific/:id', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT requisition_approves.id, requisition_approves.requisition_id, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
+        SELECT requisition_approves.id, CONCAT(users."firstName", ' ', users."lastName") as username, requisition_details.brand, requisition_details.model, requisition_approves.requisition_id, requisition_masters.requisition_no, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
                requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
                user_roles.role_name, locations.location_name,requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
             JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
@@ -48,6 +48,7 @@ route.get('/requisition-approve/specific/:id', async (req,res,next) => {
             JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
             JOIN asset_sub_categories ON requisition_details.asset_category = asset_sub_categories.id
             JOIN user_roles ON requisition_approves.role_id = user_roles.id
+            JOIN users ON requisition_masters.request_by = users.id
             JOIN locations ON requisition_approves.location_id = locations.id
             WHERE requisition_approves.requisition_id = ${req.params.id}
         `)
