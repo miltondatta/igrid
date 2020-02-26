@@ -120,6 +120,11 @@ class AssetComponent extends Component{
                 .catch(err => {console.log(err)})
 
             data = new FormData()
+            if (index + 1 === productSet.length) {
+                this.setState({
+                    arrayData: []
+                })
+            }
         })
     }
 
@@ -148,11 +153,11 @@ class AssetComponent extends Component{
 
         return(
             <>
-                {error && <div className="alert alert-danger mx-2 my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
+                {error && <div className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center  " role="alert">
                     {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
                 </div>}
                 {success &&
-                <div className="alert alert-success mx-2 my-2 position-relative d-flex justify-content-between align-items-center"
+                <div className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
                      role="alert">
                     {successMessage} <i className="fas fa-times " onClick={() => {
                     this.setState({success: false})
@@ -215,7 +220,7 @@ class AssetComponent extends Component{
                             tableData={arrayData}
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 
-                        {productSet.length > 0 && <button type="submit" onClick={this.sendRequisition} className="submit-btn">Submit</button>}
+                        {arrayData.length > 0 && <button type="submit" onClick={this.sendRequisition} className="submit-btn">Submit</button>}
                     </div>
                 </div>
             </>

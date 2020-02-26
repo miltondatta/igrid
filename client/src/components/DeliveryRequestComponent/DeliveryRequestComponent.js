@@ -3,6 +3,7 @@ import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class DeliveryRequestComponent extends Component {
     constructor(props){
@@ -11,18 +12,14 @@ class DeliveryRequestComponent extends Component {
             resData: [],
             products: [],
             assetsList: [],
+            reqDetails: [],
+            showDetails: false,
         }
     }
 
     componentDidMount = () => {
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        Axios.get(apiUrl() + 'requisition-approve')
-            .then(resData => {
-                this.setState({
-                    resData: resData.data
-                })
-            })
-
+        this.getReqDetails()
         Axios.get(apiUrl() + 'assets-entry/sub-assets/' + id)
             .then(resData => {
                 if (resData.data.length > 0) {
@@ -31,6 +28,33 @@ class DeliveryRequestComponent extends Component {
                     })
                 }
             })
+    }
+
+    getReqApproveData = (id) => {
+        Axios.get(apiUrl() + 'requisition-approve/specific/' + id)
+            .then(resData => {
+                this.setState({
+                    resData: resData.data
+                })
+            })
+    }
+
+    getReqDetails = () => {
+        Axios.get(apiUrl() + 'requisition-details/delivery')
+            .then(res => {
+                if(res.data.length > 0) {
+                    this.setState({
+                        reqDetails: res.data
+                    })
+                }
+            })
+    }
+
+    assetList = (id) => {
+        this.getReqApproveData(id)
+        this.setState({
+            showDetails: true
+        })
     }
 
     customizeData = () => {
@@ -98,7 +122,7 @@ class DeliveryRequestComponent extends Component {
     }
 
     render() {
-        const {resData} = this.state
+        const {resData, reqDetails, showDetails} = this.state
         let tableData = resData.length > 0 && resData.map((item, index) => {
             return(
                 <tr key={index + 10}>
@@ -117,34 +141,43 @@ class DeliveryRequestComponent extends Component {
             )
         })
         return (
-            <div>
-                <div className={'bg-white p-3 rounded shadow'}>
-                    <nav className="navbar text-center mb-3 p-2 rounded">
-                        <p className="text-dark f-weight-500 f-20px m-0">Delivery Request</p>
-                    </nav>
-                    <div className={'ui-req-history'}>
+                <div className={'bg-white p-3 rounded m-3'}>
+                    {showDetails ?  <div className={'ui-req-history'}>
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue f-weight-700 f-22px m-0" ><i className="fas fa-chevron-circle-left"></i>     Go Back</p>
+                        </nav>
                         <table className="table">
                             <thead className="thead-dark">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Category</th>
-                                    <th>Sub Category</th>
-                                    <th>Role</th>
-                                    <th>Location</th>
-                                    <th>Quantity</th>
-                                    <th>Product</th>
-                                </tr>
+                            <tr>
+                                <th>No</th>
+                                <th>Category</th>
+                                <th>Sub Category</th>
+                                <th>Role</th>
+                                <th>Location</th>
+                                <th>Quantity</th>
+                                <th>Product</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {tableData}
+                            {tableData}
                             </tbody>
                         </table>
                         <div className="d-flex w-100 justify-content-end">
                             <button className="btn btn-info px-4 f-18px" onClick={this.customizeData}>Deliver</button>
                         </div>
-                    </div>
+                    </div> : <>
+                        <nav className="navbar text-center mb-2 pl-2 rounded">
+                            <p className="text-blue f-weight-700 f-22px m-0">Delivery Request</p>
+                        </nav>
+                        {
+                            reqDetails.length > 0 ? <ReactDataTable
+                                details={'reqHistory'}
+                                assetList={this.assetList}
+                                tableData={reqDetails}
+                            /> : <h3>Loading...</h3>
+                        }
+                    </>}
                 </div>
-            </div>
         );
     }
 }

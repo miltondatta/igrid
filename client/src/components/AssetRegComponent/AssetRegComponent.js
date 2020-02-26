@@ -323,7 +323,7 @@ class AssetRegComponent extends Component {
             <div>
                 {error &&
                 <div
-                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center"
+                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
                     role="alert">
                     {errorMessage} <i className="fas fa-times " onClick={() => {
                     this.setState({error: false})
@@ -331,7 +331,7 @@ class AssetRegComponent extends Component {
                 </div>}
                 {success &&
                 <div
-                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center"
+                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
                     role="alert">
                     {successMessage} <i className="fas fa-times " onClick={() => {
                     this.setState({success: false})
@@ -343,7 +343,7 @@ class AssetRegComponent extends Component {
                     getApi = {getApi}
                     headTitle = {headTitle}
                 />
-                {challan_id === '' && <div className=" p-2 ui-dataEntry">
+                {challan_id === '' && <div className=" p-3 ui-dataEntry">
                     <div className={'min-h-80vh bg-white rounded position-relative p-3'}>
                         <nav className="navbar text-center mb-2 pl-1 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
@@ -387,10 +387,10 @@ class AssetRegComponent extends Component {
                             <label className={'ui-custom-label'}>Purchase Order Date</label>
                             <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
                         </div>
-                        <div className={'mb-2 w-50 mb-20p'}>
+                        <div className={'w-50 mb-20p'}>
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
-                                <label htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
+                                <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
                             </div>
                         </div>
                         <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
@@ -422,7 +422,7 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-                {challan_id !== '' && <div className=" p-2 ui-dataEntry">
+                {challan_id !== '' && <div className=" p-3 ui-dataEntry">
                     <div className="min-h-80vh bg-white rounded position-relative p-3">
                         <nav className="navbar text-center mb-2 pl-1 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Challan Info</p>
@@ -432,7 +432,7 @@ class AssetRegComponent extends Component {
                                 Challan No
                             </div>
                             <div className={'col-8 pr-2'}>
-                                <span className={'ui-text mr-3'}>:</span> {challan_description}
+                                <span className={'ui-text mr-3'}>:</span> {challan_no}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>

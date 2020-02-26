@@ -1,9 +1,9 @@
 .reactDataTable{
     background: white;
     padding: 15px 5px;
-    width: 98%;
+    width: 100%;
     border-radius: 5px;
-    margin: 1% auto;
+    margin: 0 auto;
 }
 
 .reactDataTable select{

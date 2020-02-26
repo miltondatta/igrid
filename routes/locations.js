@@ -1,4 +1,5 @@
 const db = require('../config/db')
+const {Op} = require('sequelize')
 const express = require('express')
 const Locations = require('../models/locations')
 
@@ -43,7 +44,7 @@ route.put('/locations/update/:id', (req,res,next) => {
                             res.status(200).json({message: 'Something went wrong'})
                         })
                 } else {
-                    res.status(200).json({message: 'Sub Category Code Exist'})
+                    res.status(200).json({message: 'Location Code Exist'})
                 }
             })
     } else {
@@ -54,10 +55,11 @@ route.put('/locations/update/:id', (req,res,next) => {
 // Create
 route.post('/locations/entry', (req,res,next) => {
     const {parent_id,location_name,location_code,hierarchy} = req.body
+    console.log(hierarchy, 58)
     if (location_name !== '' && location_code !== '' && hierarchy !== '') {
-        Locations.findAll({where: {location_code}})
+        Locations.findAll({where: {location_code, hierarchy}})
             .then(resData => {
-                console.log(resData.length, 46)
+                console.log(resData, 46)
                 if (resData.length === 0) {
                     Locations.create(req.body)
                         .then(resData => {
@@ -68,7 +70,7 @@ route.post('/locations/entry', (req,res,next) => {
                             res.status(200).json({message: 'Something went wrong', err})
                         })
                 }  else {
-                    res.status(200).json({message: 'Sub Category Code Exist'})
+                    res.status(200).json({message: 'Location Code Exist'})
                 }
             })
     }  else {

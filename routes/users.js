@@ -243,7 +243,7 @@ router.put('/users/password-reset/:id', (req,res,next) => {
 
 // User Login Logs
 router.get('/user-login-logs', async (req, res, next) => {
-    const [results, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ' ,users."lastName") as name, users.email, user_login_logs.user_ip,user_login_logs.date,user_login_logs.time FROM user_login_logs  JOIN users ON user_login_logs.user_id = users."id"`)
+    const [results, metadata] = await db.query(`SELECT users.id, CONCAT(users."firstName", ' ' ,users."lastName") as name, users.email, user_login_logs.user_ip,user_login_logs.date,user_login_logs.time FROM user_login_logs  JOIN users ON user_login_logs.user_id = users."id"`)
     res.status(200).json(results)
 })
 

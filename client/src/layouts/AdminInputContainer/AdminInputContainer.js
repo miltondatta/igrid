@@ -716,8 +716,6 @@ class AdminInputContainer extends Component {
                 console.log(locationHolder, 715)
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) =>
                     {
-
-                        console.log(item)
                         return(
                             <div className="px-1 mb-2">
                                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
@@ -865,10 +863,10 @@ class AdminInputContainer extends Component {
             case 'USERASSOCIATE':
                 let subLocation = locationHolder.length > 0 && locationHolder.map((item, index) => (
                     <div className="px-1 mb-2">
-                            <select name={'location_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                                <option>Select Sub Location</option>
-                                <LocationsOptions selectedId={item[index].parent_id} />
-                            </select>
+                        <select name={'location_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                            <option>Select Sub Location</option>
+                            <LocationsOptions selectedId={item.parent_id} />
+                        </select>
                     </div>
                 ))
                 return(

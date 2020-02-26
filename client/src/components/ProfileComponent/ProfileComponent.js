@@ -59,8 +59,8 @@ class ProfileComponent extends Component{
         const {firstName, lastName, phone_number, email, pin, address} = this.state
         return(
             <div className={'bg-white p-3 rounded m-3 grid-2'}>
-                <div className={'ui-register'}>
-                    <img src={process.env.PUBLIC_URL + '/media/image/register.png'} alt="Register"/>
+                <div className={'ui-profile'}>
+                    <img src={process.env.PUBLIC_URL + '/media/image/profile.png'} alt="Register"/>
                 </div>
                 <div className={'min-h-80vh position-relative'}>
                     <nav className="navbar text-center mb-2 pl-3 rounded">
