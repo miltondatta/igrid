@@ -56,13 +56,19 @@ export const sidenav = [
         subCat: true,
         categories: [
             {
-                id: 9,
+                id: 1,
                 name: 'Asset Registration',
                 link: '/stock-reg',
                 icon: ""
             },
             {
-                id: 1,
+                id: 2,
+                name: 'Own Stock',
+                link: '/own-stock',
+                icon: ""
+            },
+            {
+                id: 3,
                 name: 'Stock',
                 link: '/challan',
                 icon: ""
@@ -74,19 +80,19 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 11,
+                id: 5,
                 name: 'Asset Dispose',
                 link: '/asset-dispose',
                 icon: ""
             },
             {
-                id: 14,
+                id: 6,
                 name: 'Asset Transfer',
                 link: '/asset-transfer',
                 icon: ""
             },
             {
-                id: 15,
+                id: 7,
                 name: 'Repair & Maintenance',
                 link: '/asset-repair',
                 icon: ""
