@@ -7,7 +7,7 @@ const route = express.Router()
 // Read
 route.get('/user-associate-roles', async (req,res,next) => {
     const [results, metadata] = await db.query(`
-        SELECT user_associate_roles.id,CONCAT(users."firstName", ' ', users."lastName") as user_name, locations.location_name, user_roles.role_name FROM user_associate_roles
+        SELECT user_associate_roles.id,CONCAT(users."firstName", ' ', users."lastName") as user_name, user_roles.id as role_id, users.id as user_id, locations.id as location_id, locations.location_name, user_roles.role_name FROM user_associate_roles
         JOIN users ON users.id = user_associate_roles.user_id
         JOIN locations ON locations.id = user_associate_roles.location_id
         JOIN user_roles ON user_roles.id = user_associate_roles.role_id

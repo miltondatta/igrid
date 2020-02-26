@@ -133,62 +133,64 @@ class DeliveryRequestComponent extends Component {
         const {resData, reqDetails, showDetails, printDelivery} = this.state
         let tableData = resData.length > 0 && resData.map((item, index) => {
             return(
-                <tr key={index + 10}>
-                    <td>{index + 1}</td>
-                    <td>{item.category_name}</td>
-                    <td>{item.sub_category_name}</td>
-                    <td>{item.role_name}</td>
-                    <td>{item.location_name}</td>
-                    <td>{item.update_quantity}</td>
-                    <td style={{width: 350}}>
-                        <div className={'ui-multiselect'}>
-                            {this.subAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
-                        </div>
-                    </td>
-                </tr>
+                <div key={index + 10} className={'ui-tbody-child'}>
+                    <div className={'d-flex align-items-center'}>
+                        <p className={'w-60px'}>{index + 1}</p>
+                        <p>{item.category_name}</p>
+                        <p>{item.sub_category_name}</p>
+                        <p>{item.role_name}</p>
+                        <p>{item.location_name}</p>
+                        <p>{item.update_quantity}</p>
+                        <p style={{width: 350, overflow: "visible"}}>
+                            <div className={'ui-multiselect'}>
+                                {this.subAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
+                            </div>
+                        </p>
+                    </div>
+                </div>
             )
         })
 
 
         return (
-                <div className={'bg-white p-3 rounded m-3'}>
-                    {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
-                    {showDetails ?  <div className={'ui-req-history'}>
-                        <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
-                        </nav>
-                        <table className="table">
-                            <thead className="thead-dark">
-                            <tr>
-                                <th>No</th>
-                                <th>Category</th>
-                                <th>Sub Category</th>
-                                <th>Role</th>
-                                <th>Location</th>
-                                <th>Quantity</th>
-                                <th>Product</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {tableData}
-                            </tbody>
-                        </table>
-                        <div className="d-flex w-100 justify-content-end">
-                            <button className="btn btn-info px-4 f-18px" onClick={this.customizeData}>Deliver</button>
+            <div className={'bg-white p-3 rounded m-3 min-h-80vh'}>
+                {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
+                {showDetails ?  <>
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
+                    </nav>
+                    <div className={'reactDataTable mb-20p'}>
+                        <div className={'table'}>
+                            <div className={'thead'}>
+                                <div className={'d-flex align-items-center'}>
+                                    <p className={'w-60px'}>No</p>
+                                    <p>Category</p>
+                                    <p>Sub Category</p>
+                                    <p>Role</p>
+                                    <p>Location</p>
+                                    <p>Quantity</p>
+                                    <p>Product</p>
+                                </div>
+                            </div>
+                            <div className={'tbody'}>
+                                {tableData}
+                            </div>
                         </div>
-                    </div> : <>
-                        <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-blue f-weight-700 f-22px m-0">Delivery Request</p>
-                        </nav>
-                        {
-                            reqDetails.length > 0 ? <ReactDataTable
-                                details={'reqHistory'}
-                                assetList={this.assetList}
-                                tableData={reqDetails}
-                            /> : <h3>Loading...</h3>
-                        }
-                    </>}
-                </div>
+                    </div>
+                    <button className="submit-btn" onClick={this.customizeData}>Deliver</button>
+                </> : <>
+                    <nav className="navbar text-center mb-2 pl-2 rounded">
+                        <p className="text-blue f-weight-700 f-22px m-0">Delivery Request</p>
+                    </nav>
+                    {
+                        reqDetails.length > 0 ? <ReactDataTable
+                            details={'reqHistory'}
+                            assetList={this.assetList}
+                            tableData={reqDetails}
+                        /> : <h3>Loading...</h3>
+                    }
+                </>}
+            </div>
         );
     }
 }

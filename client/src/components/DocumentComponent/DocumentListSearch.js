@@ -464,7 +464,7 @@ class DocumentListSearch extends Component {
                                     ))}
                                     </tbody>
                                 </table>
-                            </> : <h5>Currently There are No Content</h5>}
+                            </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
                         </div>
                     </div>
                 </div>

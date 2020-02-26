@@ -318,7 +318,7 @@ export const homeBanner = [
     {
         title: "Manage your asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/home",
+        link: "/stock-reg",
         img: "/media/banner/b_2.png"
     },
     {

@@ -1,3 +1,101 @@
+.reactDataTable{
+    background: white;
+    padding: 15px 5px;
+    width: 100%;
+    border-radius: 5px;
+    margin: 0 auto;
+    transition: all 0.3s cubic-bezier(0.01, 0.14, 0.89, 0.9);
+}
+
+.reactDataTable select{
+    color: #666666;
+    font-weight: 600;
+}
+.reactDataTable .tbody p,
+.reactDataTable .thead p{
+    color: #0f88e7;
+    font-size: 18px;
+    width: 200px;
+    padding: 12px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.reactDataTable .tbody p{color: #555; font-size: 16px;}
+
+.reactDataTable td{
+    width: 130px;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.reactDataTable i{
+    font-size: 20px;
+}
+
+.tbody p:nth-child(even){
+    background: #eafffc;
+}
+
+.tbody .ui-tbody-child,
+.thead{
+    background: #c6e4f9;
+    display: flex;
+    width: 100%;
+    margin-bottom: 3px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reactDataTable .custom-search div{
+    color: white;
+    background: #329df0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tbody .ui-tbody-child:nth-child(even){
+    background: white;
+}
+.tbody .ui-tbody-child:nth-child(odd){
+    background: #e2f1fc;
+}
+
+.thead p:nth-child(1) {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.thead p:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tbody p:hover{
+    background: #eee;
+}
+
+.reactDataTable .page-link{
+    color: #12b79e;
+}
+
+.reactDataTable .page-item.active .page-link{
+    background: #12b79e;
+}
+
+.reactDataTable .page-item.active .page-link{
+    border-color: #12b79e
+}
+
 .ui-multiselect{
     width: 220px;
     padding: 5px;
@@ -6,8 +104,9 @@
     position: absolute;
     border: 1px solid #ccc;
     border-radius: 5px;
-    top: 7px;
+    top: -6px;
     background: white;
+    transition: all 0.2s cubic-bezier(0.01, 0.14, 0.89, 0.9);
 }
 
 .ui-multiselect:hover{

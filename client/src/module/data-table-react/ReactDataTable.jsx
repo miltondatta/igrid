@@ -184,9 +184,7 @@ class ReactDataTable extends Component {
                             <i className="icofont-ui-delete"></i>
                         </p>}
                         {add && <p className="w-95px cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
-                        {details && <button className="w-95px cursor-pointer btn btn-info px-4" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}>
-                            <i className="fas fa-info-circle"></i>
-                        </button>}
+                        {details && <p className="w-95px cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></p>}
                         {approve && <p className="w-95px cursor-pointer text-danger">Approve</p>}
                         {track && <p className="w-95px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
                             <i className="icofont-location-pin"></i>
