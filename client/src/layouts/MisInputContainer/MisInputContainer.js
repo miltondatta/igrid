@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import IndicatorCategoryOptions from "../../utility/component/indicatorCategoryOptions";
 import LocationsOptions from "../../utility/component/locationOptions";
+import {validateInput} from "../../utility/custom";
 
 class MisInputContainer extends Component {
     constructor(props) {
@@ -60,6 +61,16 @@ class MisInputContainer extends Component {
     handleChange = (e) => {
         const {name, value, checked} = e.target;
         switch (name) {
+            case "order_by":
+                let valid = validateInput(e);
+                if (valid || valid === '') {
+                    this.setState({
+                        [name]: valid
+                    }, () => {
+                        this.validate();
+                    });
+                }
+                return;
             case "is_default":
                 this.setState({
                     [name]: checked
@@ -170,10 +181,7 @@ class MisInputContainer extends Component {
                     allData: [],
                     error: false,
                     success: success,
-                    successMessage: success && msg,
-                    deleteId: 0,
-                    deleteContentName: '',
-                    deleteModalTitle: ''
+                    successMessage: success && msg
                 }, () => {
                     this.emptyStateValue();
                     this.getData();
@@ -233,6 +241,9 @@ class MisInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                         </div>
+                        {errorDict && !errorDict.indicatormaster_name &&
+                        <span className="error">Indicator Category Name Field is required</span>
+                        }
                         <div className="px-1 mb-2">
                             <input
                                 placeholder='Enter Indicator Master Code'
@@ -244,9 +255,6 @@ class MisInputContainer extends Component {
                         </div>
                         {errorDict && !errorDict.indicatormaster_code &&
                         <span className="error">Indicator Master Code Field is required</span>
-                        }
-                        {errorDict && !errorDict.indicatormaster_name &&
-                        <span className="error">Indicator Category Field is required</span>
                         }
                         <div className="px-1 mb-2">
                             <textarea
@@ -334,6 +342,7 @@ class MisInputContainer extends Component {
                                 name={'order_by'}
                                 value={order_by}
                                 onChange={this.handleChange}
+                                data-number={'integer_only'}
                                 className={`ui-custom-input`}/>
                             {errorDict && !errorDict.order_by &&
                             <span className="error">Order By Field is required</span>

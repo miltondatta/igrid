@@ -1,4 +1,6 @@
+const {Op} = require("sequelize");
 const MisIndicatorMaster = require('../../models/mis_indicatormaster');
+const {capitalize} = require('../../utility/custom');
 
 exports.index = async (req, res) => {
     try {
@@ -25,6 +27,21 @@ exports.store = async (req, res) => {
             description: description,
             is_default: is_default
         };
+
+        const mis_indicator_category_name = await MisIndicatorMaster.findAll({
+            where: {
+                [Op.or]: [
+                    {indicatormaster_name: indicatormaster_name},
+                    {indicatormaster_name: indicatormaster_name.toLowerCase()},
+                    {indicatormaster_name: indicatormaster_name.toUpperCase()},
+                    {indicatormaster_name: capitalize(indicatormaster_name)}
+                ]
+            }
+        });
+        if (mis_indicator_category_name.length) return res.status(400).json({
+            msg: 'This MIS Indicator Master Name is already exist!',
+            error: true
+        });
 
         const mis_indicator_category = await MisIndicatorMaster.findOne({where: {indicatormaster_code}});
         if (mis_indicator_category) return res.status(400).json({

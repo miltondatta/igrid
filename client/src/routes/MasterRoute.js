@@ -196,6 +196,10 @@ const AsyncIndicatorSubCategory = Loadable({
     loader: () => import('../containers/IndSubCategory'),
     loading: Loading,
 });
+const AsyncOwnStockContainer = Loadable({
+    loader: () => import('../containers/OwnStockContainer'),
+    loading: Loading,
+});
 const AsyncComplaintCategory = Loadable({
     loader: () => import('../containers/Complaints/ComplaintsCategory'),
     loading: Loading,
@@ -297,6 +301,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
                                     <Route exact path='/mis-indicator-category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/mis-indicator' component={AsyncIndicatorSubCategory}/>
+                                    <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
                             </Switch>
                         </div>
                     </div>

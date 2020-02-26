@@ -7,7 +7,7 @@ export const validateInput = (e) => {
         } else {
             return;
         }
-    } else if (e.target.dataset.number === 'float_only') {
+    } else if (numDataset === 'float_only') {
         if (!isNaN(value)) {
             return value
         } else {

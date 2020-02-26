@@ -67,6 +67,13 @@ export const sidenav = [
                 link: '/challan',
                 icon: ""
             },
+
+            {
+                id: 2,
+                name: 'Own Stock',
+                link: '/own-stock',
+                icon: ""
+            },
             {
                 id: 4,
                 name: 'Lost Assets Information',
