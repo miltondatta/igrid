@@ -1,13 +1,11 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const indicatormaster = sequelize.define('mis_indicatormaster', {
-    indicatormaster_code: DataTypes.STRING,
-    indicatormaster_name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    is_default: DataTypes.BOOLEAN
-  }, {});
-  indicatormaster.associate = function(models) {
-    // associations can be defined here
-  };
-  return indicatormaster;
-};
+const db = require('../config/db');
+const Sequelize = require('sequelize');
+
+const mis_indicatormaster = db.define('mis_indicatormaster', {
+    indicatormaster_code: Sequelize.STRING,
+    indicatormaster_name: Sequelize.STRING,
+    description: Sequelize.STRING,
+    is_default: Sequelize.BOOLEAN
+});
+
+module.exports = mis_indicatormaster;

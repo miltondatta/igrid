@@ -31,6 +31,8 @@ const LocationHierarchiesRouter = require('./routes/loc_hierarchies');
 const DocumentCategory = require('./routes/document/document_category');
 const DocumentSubCategory = require('./routes/document/document_sub_category');
 const DocumentList = require('./routes/document/document_list');
+const IndicatorCategory = require('./routes/mis/indicator_category');
+const IndicatorSubCategory = require('./routes/mis/indicator_sub_category');
 
 
 // Database Connection
@@ -88,6 +90,8 @@ app.use('/api/v1', LocationHierarchiesRouter);
 app.use('/api/v1/document/category', DocumentCategory);
 app.use('/api/v1/document/sub/category', DocumentSubCategory);
 app.use('/api/v1/document/list', DocumentList);
+app.use('/api/v1/mis/indicator/category', IndicatorCategory);
+app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 
 
 module.exports = app;
