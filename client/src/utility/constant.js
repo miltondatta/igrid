@@ -63,7 +63,7 @@ export const sidenav = [
             },
             {
                 id: 1,
-                name: 'Stock',
+                name: 'Existing Assets',
                 link: '/challan',
                 icon: ""
             },
@@ -114,6 +114,20 @@ export const sidenav = [
         ]
     },
     {
+        id: 8,
+        name: 'Complaints',
+        icon: 'fas fa-book-dead',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Complaints',
+                link: '/complain',
+                icon: ""
+            },
+        ]
+    },
+    {
         id: 7,
         name: 'MIS',
         icon: 'fas fa-reply-all',
@@ -132,7 +146,7 @@ export const sidenav = [
                 icon: ""
             },
         ]
-    }
+    },
 ]
 
 export const systemAdmin = [
@@ -264,6 +278,32 @@ export const systemAdmin = [
                 id: 1,
                 name: 'User Login',
                 link: '/admin/user-login-log',
+                icon: ""
+            }
+        ]
+    },
+    {
+        id: 11,
+        name: 'Complaints',
+        icon: 'fas fa-book-dead',
+        subCat: true,
+        categories: [
+            {
+                id: 3,
+                name: 'Complaints',
+                link: '/admin/complaint',
+                icon: ""
+            },
+            {
+                id: 1,
+                name: 'Complaint Category',
+                link: '/admin/complain-category',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Complaint Sub Category',
+                link: '/admin/complain-sub-category',
                 icon: ""
             }
         ]

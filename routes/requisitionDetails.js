@@ -133,9 +133,6 @@ route.get('/requisition-details', async (req,res,next) => {
     
 })
 
-
-
-
 // Read
 route.get('/requisition-details/delivery', async (req,res,next) => {
     let reqId = []
@@ -164,14 +161,15 @@ route.get('/requisition-details/delivery', async (req,res,next) => {
 // Read
 route.get('/requisition-details/status/:id', async (req,res,next) => {
     const [data, master] = await db.query(`
-        SELECT requisition_details.id, asset_categories.category_name, asset_sub_categories.sub_category_name, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
+        SELECT requisition_details.id, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name, asset_sub_categories.sub_category_name, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
                requisition_details.brand, requisition_details.model, requisition_approves.update_quantity, statuses.status_name FROM requisition_details 
         JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id
         JOIN requisition_approves ON requisition_approves.requisition_id = requisition_masters.id
+        JOIN users ON requisition_approves.update_by = users.id
         JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
         JOIN asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
         JOIN statuses ON requisition_approves.status = statuses.id
-        WHERE requisition_masters.request_by = ${req.params.id}
+        WHERE requisition_masters.id = ${req.params.id}
     `)
     if (data.length > 0) {
         res.status(200).json(data)

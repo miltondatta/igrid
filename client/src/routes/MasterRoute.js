@@ -196,6 +196,22 @@ const AsyncIndicatorSubCategory = Loadable({
     loader: () => import('../containers/IndSubCategory'),
     loading: Loading,
 });
+const AsyncComplaintCategory = Loadable({
+    loader: () => import('../containers/Complaints/ComplaintsCategory'),
+    loading: Loading,
+});
+const AsyncComplaintSubCategory = Loadable({
+    loader: () => import('../containers/Complaints/ComplaintsSubCategory'),
+    loading: Loading,
+});
+const AsyncComplain = Loadable({
+    loader: () => import('../containers/Complaints/Complaint'),
+    loading: Loading,
+});
+const AsyncComplainList = Loadable({
+    loader: () => import('../containers/Complaints/ComplintList'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -237,11 +253,13 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/modules' component={AsyncModules}/>
                                     <Route exact path='/challan' component={AsyncChallan}/>
                                     <Route exact path='/admin/product' component={AsyncProduct}/>
+                                    <Route exact path='/complain' component={AsyncComplain}/>
                                     <Route exact path='/admin/brand' component={AsyncBrands}/>
                                     <Route exact path='/admin/model' component={AsyncModels}/>
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/admin/vendor' component={AsyncVendor}/>
                                     <Route exact path='/asset' component={AsyncAsset}/>
+                                    <Route exact path='/admin/complaint' component={AsyncComplainList}/>
                                     <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
@@ -269,6 +287,8 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                                     <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
+                                    <Route exact path='/admin/complain-category' component={AsyncComplaintCategory}/>
+                                    <Route exact path='/admin/complain-sub-category' component={AsyncComplaintSubCategory}/>
                                     <Route exact path='/admin/user-associate-role' component={AsyncUserAssociateRole}/>
                                     <Route exact path='/documents/document-category' component={AsyncDocumentCategory}/>
                                     <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>

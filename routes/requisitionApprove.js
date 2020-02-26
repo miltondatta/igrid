@@ -60,6 +60,21 @@ route.get('/requisition-approve/specific/:id', async (req,res,next) => {
 
 })
 
+// Read
+route.get('/requisition-approve/count-req/:id', async (req,res,next) => {
+    const [results, metadata] = await db.query(`
+        SELECT * FROM requisition_approves
+              JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
+                WHERE requisition_masters.request_by = 7
+        `)
+    if (results.length > 0) {
+        res.status(200).json(results.length)
+    } else {
+        res.status(200).json({message: "No Data Found"})
+    }
+
+})
+
 // Update
 route.put('/requisition-approve/update/:id', (req,res,next) => {
     const {requisition_id} = req.body
