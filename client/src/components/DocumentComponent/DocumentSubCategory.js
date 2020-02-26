@@ -11,11 +11,11 @@ class DocumentSubCategory extends Component {
         return (
             <>
                 <DocumentInputContainer
-                    formType = 'DOCUMENTSUBCATEGORY'
-                    getApi = 'document/sub/category'
+                    formType='DOCUMENTSUBCATEGORY'
+                    getApi='document/sub/category'
                     table_header={this.table_header}
                     title='Document Sub Category List'
-                    headTitle = 'Document Sub Category Information'
+                    headTitle='Document Sub Category Information'
                 />
             </>
         );
