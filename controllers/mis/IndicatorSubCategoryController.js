@@ -44,6 +44,7 @@ exports.store = async (req, res) => {
         const mis_indicator_sub_category_exist_name = await MisIndicatorDetail.findAll({
             where: {
                 indicatormaster_id: indicatormaster_id,
+                parent_location_id: parent_location_id,
                 [Op.or]: [
                     {indicator_name: indicator_name},
                     {indicator_name: indicator_name.toLowerCase()},
@@ -61,6 +62,7 @@ exports.store = async (req, res) => {
         const mis_indicator_sub_category_exist_item_no = await MisIndicatorDetail.findAll({
             where: {
                 indicatormaster_id: indicatormaster_id,
+                parent_location_id: parent_location_id,
                 item_no: item_no
             }
         });

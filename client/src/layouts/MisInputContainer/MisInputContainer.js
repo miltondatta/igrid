@@ -226,6 +226,15 @@ class MisInputContainer extends Component {
                     <>
                         <div className="px-1 mb-2">
                             <input
+                                placeholder='Enter Indicator Category Name'
+                                type={'text'}
+                                name={'indicatormaster_name'}
+                                value={indicatormaster_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input`}/>
+                        </div>
+                        <div className="px-1 mb-2">
+                            <input
                                 placeholder='Enter Indicator Master Code'
                                 type={'text'}
                                 name={'indicatormaster_code'}
@@ -236,15 +245,6 @@ class MisInputContainer extends Component {
                         {errorDict && !errorDict.indicatormaster_code &&
                         <span className="error">Indicator Master Code Field is required</span>
                         }
-                        <div className="px-1 mb-2">
-                            <input
-                                placeholder='Enter Indicator Category Name'
-                                type={'text'}
-                                name={'indicatormaster_name'}
-                                value={indicatormaster_name}
-                                onChange={this.handleChange}
-                                className={`ui-custom-input`}/>
-                        </div>
                         {errorDict && !errorDict.indicatormaster_name &&
                         <span className="error">Indicator Category Field is required</span>
                         }
@@ -294,6 +294,16 @@ class MisInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <select name={'parent_location_id'} value={parent_location_id} onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select Indicator Parent Location</option>
+                                <LocationsOptions selectedId={0}/>
+                            </select>
+                            {errorDict && !errorDict.parent_location_id &&
+                            <span className="error">Indicator Parent Location Field is required</span>
+                            }
+                        </div>
+                        <div className="px-1 mb-2">
                             <input
                                 placeholder='Indicator Name'
                                 type={'text'}
@@ -327,16 +337,6 @@ class MisInputContainer extends Component {
                                 className={`ui-custom-input`}/>
                             {errorDict && !errorDict.order_by &&
                             <span className="error">Order By Field is required</span>
-                            }
-                        </div>
-                        <div className="px-1 mb-2">
-                            <select name={'parent_location_id'} value={parent_location_id} onChange={this.handleChange}
-                                    className={`ui-custom-input`}>
-                                <option value="">Select Indicator Parent Location</option>
-                                <LocationsOptions selectedId={0}/>
-                            </select>
-                            {errorDict && !errorDict.parent_location_id &&
-                            <span className="error">Indicator Parent Location Field is required</span>
                             }
                         </div>
                         <div className="px-1 mb-2">
@@ -442,8 +442,8 @@ class MisInputContainer extends Component {
                     <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{item.indicatormaster_name}</td>
-                        <td>{item.description}</td>
                         <td>{item.indicatormaster_code}</td>
+                        <td>{item.description.substring(0, 20)}{item.description.length > 20 ? ' ...' : ''}</td>
                         <td>
                             {item.is_default ?
                                 <>
@@ -481,9 +481,9 @@ class MisInputContainer extends Component {
                     <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{item.mis_indicatormaster.indicatormaster_name}</td>
+                        <td>{item.location.location_name}</td>
                         <td>{item.indicator_name}</td>
                         <td>{item.item_no}</td>
-                        <td>{item.location.location_name}</td>
                         <td>{item.order_by}</td>
                         <td>
                             {item.is_default ?

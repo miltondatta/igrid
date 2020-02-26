@@ -4,7 +4,7 @@ import MisInputContainer from "../../layouts/MisInputContainer/MisInputContainer
 class DocumentSubCategory extends Component {
     constructor(props) {
         super(props);
-        this.table_header = ['Serial No', 'Category Name', 'Indicator Name', 'Item No', 'Location', 'Order By', 'Is Default', 'Action'];
+        this.table_header = ['Serial No', 'Category Name', 'Location', 'Indicator Name', 'Item No', 'Order By', 'Is Default', 'Action'];
     }
 
     render() {

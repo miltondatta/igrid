@@ -113,6 +113,26 @@ export const sidenav = [
             }
         ]
     },
+    {
+        id: 7,
+        name: 'MIS',
+        icon: 'fas fa-reply-all',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Indicator Category',
+                link: '/mis-indicator-category',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Indicator',
+                link: '/mis-indicator',
+                icon: ""
+            },
+        ]
+    }
 ]
 
 export const systemAdmin = [
@@ -281,29 +301,6 @@ export const documentNav = [
                 link: '/documents/document-list',
                 icon: ""
             }
-        ]
-    }
-];
-
-export const misNav = [
-    {
-        id: 13,
-        name: 'MIS',
-        icon: 'far fa-file',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Indicator Category',
-                link: '/mis/indicator-category',
-                icon: ""
-            },
-            {
-                id: 2,
-                name: 'Indicator',
-                link: '/mis/indicator',
-                icon: ""
-            },
         ]
     }
 ];

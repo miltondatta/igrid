@@ -275,8 +275,8 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
                                     <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                                     <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
-                                    <Route exact path='/mis/indicator-category' component={AsyncIndicatorCategory}/>
-                                    <Route exact path='/mis/indicator' component={AsyncIndicatorSubCategory}/>
+                                    <Route exact path='/mis-indicator-category' component={AsyncIndicatorCategory}/>
+                                    <Route exact path='/mis-indicator' component={AsyncIndicatorSubCategory}/>
                             </Switch>
                         </div>
                     </div>

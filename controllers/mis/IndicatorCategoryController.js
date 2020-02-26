@@ -109,7 +109,7 @@ exports.delete = async (req, res) => {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({
-            msg: 'This Indicator Category has sub category. So delete first sub category!',
+            msg: 'This Indicator Category has indicator. So delete first indicator!',
             error: true,
             fullError: err
         });
