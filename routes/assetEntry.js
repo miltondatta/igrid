@@ -228,11 +228,42 @@ route.delete('/assets-entry/delete', (req,res,next) => {
     })
 })
 
-/*// Delete
-route.delete('/assets-entry/delete', (req,res,next) => {
-    const {user_id} = req.body;
+// Assets Entry
+route.get('/assets-entry/all/:user_id', async (req, res) => {
+    try {
+        const user_id = req.params.user_id;
 
+        const data = await db.query(`select assets.id,
+                               products.product_name,
+                               asset_categories.category_name,
+                               asset_sub_categories.sub_category_name,
+                               assets.product_serial,
+                               assets.cost_of_purchase,
+                               assets.installation_cost,
+                               assets.carrying_cost,
+                               assets.other_cost,
+                               assets.rate,
+                               assets.effective_date,
+                               assets.book_value,
+                               assets.salvage_value,
+                               assets.useful_life,
+                               assets.last_effective_date,
+                               assets.warranty,
+                               assets.last_warranty_date,
+                               conditions.condition_type,
+                               assets.comments
+                        from assets
+                                 join products on assets.product_id = products.id
+                                 join asset_categories on assets.asset_category = asset_categories.id
+                                 join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                 join conditions on assets.condition = conditions.id
+                        where assign_to = ${user_id}`);
 
-});*/
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
 
-module.exports = route
+module.exports = route;
