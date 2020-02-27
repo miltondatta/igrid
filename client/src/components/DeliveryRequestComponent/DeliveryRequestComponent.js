@@ -41,8 +41,10 @@ class DeliveryRequestComponent extends Component {
     }
 
     getReqDetails = () => {
-        Axios.get(apiUrl() + 'requisition-details/delivery')
-            .then(res => {
+        let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        Axios.get(apiUrl() + 'requisition-details/delivery', {
+            params: user_data
+        }).then(res => {
                 if(res.data.length > 0) {
                     this.setState({
                         reqDetails: res.data
