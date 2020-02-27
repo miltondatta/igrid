@@ -38,7 +38,12 @@ route.get('/requisition-approve', async (req,res,next) => {
 })
 
 // Read
-route.get('/requisition-approve/specific/:id', async (req,res,next) => {
+route.get('/requisition-approve/specific', async (req,res,next) => {
+    let requisition_id = req.query.requisition_id;
+    let role_id = req.query.role_id;
+    let user_id = req.query.id;
+    let location_id = req.query.location_id;
+
     const [results, metadata] = await db.query(`
         SELECT requisition_approves.id, CONCAT(users."firstName", ' ', users."lastName") as username, requisition_details.brand, requisition_details.model, requisition_approves.requisition_id, requisition_masters.requisition_no, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
                requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
@@ -50,7 +55,7 @@ route.get('/requisition-approve/specific/:id', async (req,res,next) => {
             JOIN user_roles ON requisition_approves.role_id = user_roles.id
             JOIN users ON requisition_masters.request_by = users.id
             JOIN locations ON requisition_approves.location_id = locations.id
-            WHERE requisition_approves.requisition_id = ${req.params.id}
+            WHERE requisition_approves.requisition_id = ${requisition_id} AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
         `)
     if (results.length > 0) {
         res.status(200).json(results)
