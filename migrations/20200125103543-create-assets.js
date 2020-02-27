@@ -113,6 +113,29 @@ module.exports = {
       barcode:{
         type: Sequelize.BOOLEAN
       },
+      is_disposal:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      disposal_by_location:{
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      disposal_by_role_id:{
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      disposal_by:{
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      disposal_date:{
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      disposal_reason:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
