@@ -228,4 +228,11 @@ route.delete('/assets-entry/delete', (req,res,next) => {
     })
 })
 
+/*// Delete
+route.delete('/assets-entry/delete', (req,res,next) => {
+    const {user_id} = req.body;
+
+
+});*/
+
 module.exports = route
