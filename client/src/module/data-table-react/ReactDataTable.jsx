@@ -130,7 +130,7 @@ class ReactDataTable extends Component {
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
-                {item !== 'id' && <p onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
+                {item === 'id' ? null : item === 'requisition_id' ? null : <p onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
                     {item.replace('_', " ")}
                 </p>}
             </>
@@ -144,7 +144,7 @@ class ReactDataTable extends Component {
                             <>
                             {items !== 'id' &&
                                 <p key={key + 20}>
-                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : item[items] === null ? 'N/A' : item[items]}
+                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : item[items] === null ? 'N/A' : items === 'requisition_id' ? null : item[items]}
                                 </p>
                             }
                             </>

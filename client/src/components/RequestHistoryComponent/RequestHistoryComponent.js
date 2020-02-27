@@ -82,6 +82,8 @@ class RequestHistoryComponent extends Component {
                     this.setState({
                         success: true,
                         successMessage: res.data.message
+                    }, () => {
+                        window.location.reload()
                     })
                 }
             })
@@ -147,6 +149,9 @@ class RequestHistoryComponent extends Component {
                         <p className={'w-60px'}>{index + 1}</p>
                         <p>{item.category_name}</p>
                         <p>{item.sub_category_name}</p>
+                        <p>{item.brand}</p>
+                        <p>{item.model}</p>
+                        <p>{item.reason}</p>
                         <p>
                             {this.state[item.id] ? <input
                                     className={'ui-transparent-input'}
@@ -209,6 +214,9 @@ class RequestHistoryComponent extends Component {
                                         <p className={'w-60px'}>No</p>
                                         <p>Category</p>
                                         <p>Sub Category</p>
+                                        <p>Brand</p>
+                                        <p>Model</p>
+                                        <p>Reasons</p>
                                         <p>Quantity</p>
                                         <p>Comment</p>
                                     </div>

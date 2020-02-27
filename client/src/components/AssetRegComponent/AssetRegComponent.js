@@ -143,38 +143,52 @@ class AssetRegComponent extends Component {
             return
         }
         const {asset_quantity} = this.state
-        let prodSerialHolder = []
         let dataArray = []
+        let prodSerialHolder = []
         let stateHolder = this.state
         for(let i = 1; i <= asset_quantity; i++) {
-            prodSerialHolder.push(stateHolder['product_serial_'+i])
-            delete stateHolder['product_serial_'+i]
-            delete stateHolder['prodArr']
-            delete stateHolder['asset_quantity']
-            delete stateHolder['dataStore']
-            delete stateHolder['challan_no']
-            delete stateHolder['challan_date']
-            delete stateHolder['challan_description']
-            delete stateHolder['purchase_order_no']
-            delete stateHolder['purchase_order_date']
-            delete stateHolder['vendor_id']
-            delete stateHolder['received_by']
-            delete stateHolder['added_by']
-            delete stateHolder['challanComments']
-            delete stateHolder['attachment']
-
+            let obj = {}
+            Object.keys(stateHolder).forEach((item) => {
+                if (item === 'challan_id' ||
+                    item === 'project_id' ||
+                    item === 'asset_category' ||
+                    item === 'asset_sub_category' ||
+                    item === 'cost_of_purchase' ||
+                    item === 'installation_cost' ||
+                    item === 'carrying_cost' ||
+                    item === 'other_cost' ||
+                    item === 'asset_type' ||
+                    item === 'depreciation_method' ||
+                    item === 'rate' ||
+                    item === 'effective_date' ||
+                    item === 'book_value' ||
+                    item === 'salvage_value' ||
+                    item === 'useful_life' ||
+                    item === 'last_effective_date' ||
+                    item === 'warranty' ||
+                    item === 'last_warranty_date' ||
+                    item === 'condition' ||
+                    item === 'comments' ||
+                    item === 'barcode' ||
+                    item === 'product_id' ||
+                    item === 'assign_to' ||
+                    item === 'product_serial_'+i) {
+                    if(item === 'product_serial_'+i) {
+                        obj['product_serial'] = stateHolder[item]
+                    } else {
+                        obj[item] = stateHolder[item]
+                    }
+                }
+            })
+            prodSerialHolder.push(obj)
         }
-        prodSerialHolder.forEach(item => {
-            let x = {...stateHolder, product_serial: item}
-            dataArray.push(x)
-        })
 
         let prodArr = Array.from(Array(1).keys())
         this.setState({
             prodArr,
             asset_quantity: 1,
         })
-        Axios.post(apiUrl() + 'assets-entry/entry', dataArray)
+        Axios.post(apiUrl() + 'assets-entry/entry', prodSerialHolder)
             .then(resData => {
                 if (resData.data.status) {
                     this.setState({
@@ -706,7 +720,7 @@ class AssetRegComponent extends Component {
                                                     id={'customCheckbox'}
                                                     name={'barcode'}
                                                     onChange={this.handleChange} />
-                                                <label htmlFor="customCheckbox" className={'mb-0'}>Enlisted</label>
+                                                <label htmlFor="customCheckbox" className={'mb-0'}>Barcode</label>
                                             </div>
                                         </div>
                                 </div>

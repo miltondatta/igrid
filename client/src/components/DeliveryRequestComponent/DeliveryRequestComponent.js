@@ -85,12 +85,16 @@ class DeliveryRequestComponent extends Component {
         }
         const payload = {delivery: resData, products: assetsList}
 
-        Axios.post(apiUrl() + 'requisition-approve/delivery', payload)
-            .then(res => {
-                this.setState({
-                    printDelivery: true
+        console.log(payload, 88)
+
+        if (products.length === resData.length) {
+            Axios.post(apiUrl() + 'requisition-approve/delivery', payload)
+                .then(res => {
+                    this.setState({
+                        printDelivery: true
+                    })
                 })
-            })
+        }
     }
 
     comeBack = () => {
@@ -135,7 +139,7 @@ class DeliveryRequestComponent extends Component {
     }
 
     render() {
-        const {resData, reqDetails, showDetails, printDelivery} = this.state
+        const {resData, reqDetails, showDetails, printDelivery, assetsList} = this.state
         let tableData = resData.length > 0 && resData.map((item, index) => {
             return(
                 <div key={index + 10} className={'ui-tbody-child'}>
@@ -156,6 +160,7 @@ class DeliveryRequestComponent extends Component {
             )
         })
 
+        console.log({delivery: resData, products: assetsList})
 
         return (
             <div className={'bg-white p-3 rounded m-3 min-h-80vh'}>
@@ -192,7 +197,7 @@ class DeliveryRequestComponent extends Component {
                             details={'reqHistory'}
                             assetList={this.assetList}
                             tableData={reqDetails}
-                        /> : <h3>Loading...</h3>
+                        /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>
                     }
                 </>}
             </div>
