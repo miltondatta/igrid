@@ -234,7 +234,7 @@ route.delete('/assets-entry/delete', (req,res,next) => {
 route.get('/assets-entry/all/:user_id', async (req, res) => {
     try {
         const user_id = req.params.user_id;
-        const data = await db.query(`select assets.id,
+        const data = await db.query(`select distinct on(assets.product_serial) product_serial, assets.id,
                                products.product_name,
                                asset_categories.category_name,
                                asset_sub_categories.sub_category_name,
@@ -271,7 +271,7 @@ route.get('/assets-entry/all/:user_id', async (req, res) => {
 route.get('/assets-category/all/:user_id', async (req, res) => {
     try {
         const user_id = req.params.user_id;
-        const data = await db.query(`select asset_categories.id, asset_categories.category_name
+        const data = await db.query(`select distinct asset_categories.id, asset_categories.category_name
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                         where assign_to = ${user_id}`);
@@ -287,7 +287,7 @@ route.get('/assets-category/all/:user_id', async (req, res) => {
 route.get('/assets-sub-category/all/:user_id/:category_id', async (req, res) => {
     try {
         const {user_id, category_id} = req.params;
-        const data = await db.query(`select asset_sub_categories.id, asset_sub_categories.sub_category_name
+        const data = await db.query(`select distinct asset_sub_categories.id, asset_sub_categories.sub_category_name
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
@@ -304,7 +304,7 @@ route.get('/assets-sub-category/all/:user_id/:category_id', async (req, res) => 
 route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (req, res) => {
     try {
         const {user_id, category_id, sub_category_id} = req.params;
-        const data = await db.query(`select products.id, products.product_name
+        const data = await db.query(`select distinct products.id, products.product_name
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
@@ -323,9 +323,9 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
 route.post('/get/assets/by/credentials', async (req, res) => {
     try {
         const {user_id, category_id, sub_category_id, product_id} = req.body;
-        const data = await db.query(`select * from assets
+        const data = await db.query(`select distinct on (product_serial) product_serial, * from assets
                         where assign_to = ${user_id} and asset_category = ${category_id} 
-                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id}`);
+                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} order by product_serial`);
 
         return res.status(200).json(data);
     } catch (err) {

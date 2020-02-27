@@ -4,11 +4,11 @@ import {apiUrl} from "../constant";
 import jwt from 'jsonwebtoken';
 import memoize from 'memoize-one';
 
-class AssetSubCategoryByUserOption extends Component {
+class AssetProductByUserOptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            assetSubCategory: [],
+            assetProduct: [],
             id: ''
         }
     }
@@ -18,24 +18,24 @@ class AssetSubCategoryByUserOption extends Component {
         if (id) this.setState({id});
     }
 
-    getData = memoize(category_id => {
+    getData = memoize((category_id, sub_category_id) => {
         const {id} = this.state;
-        if (id && category_id) {
-            Axios.get(apiUrl() + 'assets-sub-category/all/' + id + '/' + category_id)
+        if (id && category_id && sub_category_id) {
+            Axios.get(apiUrl() + 'assets-product/all/' + id + '/' + category_id + '/' + sub_category_id)
                 .then(resData => {
                     this.setState({
-                        assetSubCategory: resData.data[0]
+                        assetProduct: resData.data[0]
                     })
                 })
         }
     });
 
     render() {
-        this.getData(this.props.category_id);
+        this.getData(this.props.category_id, this.props.sub_category_id);
 
-        const {assetSubCategory} = this.state;
-        const options = assetSubCategory.length > 0 && assetSubCategory.map((item, index) => (
-            <option key={index} value={item.id}>{item.sub_category_name}</option>
+        const {assetProduct} = this.state;
+        const options = assetProduct.length > 0 && assetProduct.map((item, index) => (
+            <option key={index} value={item.id}>{item.product_name}</option>
         ));
 
         return (
@@ -46,4 +46,4 @@ class AssetSubCategoryByUserOption extends Component {
     }
 }
 
-export default AssetSubCategoryByUserOption;
+export default AssetProductByUserOptions;

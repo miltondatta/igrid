@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import jwt from 'jsonwebtoken';
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
-import InstaAdd from "../../module/insta-add/InstaAdd";
-
-// import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import AssetProductByUserOptions from "../../utility/component/assetProductByUserOptions";
+import AssetListByUserOptions from "../../utility/component/assetListByUserOptions";
 
 class AssetDisposalComponent extends Component {
     constructor(props) {
@@ -25,7 +24,6 @@ class AssetDisposalComponent extends Component {
             errorMessage: '',
             errorDict: null,
             isLoading: false,
-            forceUpdate: false,
             disposalData: []
         }
     }
@@ -37,24 +35,45 @@ class AssetDisposalComponent extends Component {
 
     handleChange = e => {
         const {name, value} = e.target;
+        let name_list = ['category_id', 'sub_category_id', 'product_id', 'product_serial'];
+        if (name_list.includes(name) && value === '') return false;
+
         this.setState({
             [name]: value
         }, () => {
-            let name_list = ['category_id', 'sub_category_id', 'product_id'];
-            if (name_list.includes(name)) this.setState({forceUpdate: true});
-
-            this.validate();
+            if (name === 'category_id') this.setState({
+                sub_category_id: '',
+                product_id: '',
+                product_serial: ''
+            }, () => this.validate());
+            if (name === 'sub_category_id') this.setState({product_id: '', product_serial: ''}, () => this.validate());
+            if (name === 'product_id') this.setState({product_serial: ''}, () => this.validate());
+            this.validate()
         })
     };
 
     addDisposal = () => {
         if (Object.values(this.validate()).includes(false)) return false;
+        const {disposalData} = this.state;
+        const newDisposal = this.getFormData();
+
+        this.setState({
+            disposalData: [...disposalData, ...newDisposal]
+        }, () => this.emptyStateValue())
     };
 
-    forceUp = () => {
-        this.setState({
-            forceUpdate: !this.state.forceUpdate
-        })
+    getFormData = () => {
+        const {
+            category_id, sub_category_id, product_id, product_serial, disposal_reason
+        } = this.state;
+
+        return [{
+            category_id,
+            sub_category_id,
+            product_id,
+            product_serial,
+            disposal_reason
+        }]
     };
 
     validate = () => {
@@ -74,10 +93,20 @@ class AssetDisposalComponent extends Component {
         return errorDict;
     };
 
+    emptyStateValue = () => {
+        this.setState({
+            category_id: '',
+            sub_category_id: '',
+            product_id: '',
+            product_serial: '',
+            disposal_reason: ''
+        });
+    };
+
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, disposal_reason, success, successMessage, error, errorMessage,
-            errorDict, isLoading, disposalData, forceUpdate
+            errorDict, isLoading, disposalData
         } = this.state;
 
 
@@ -119,8 +148,6 @@ class AssetDisposalComponent extends Component {
                                     className={`ui-custom-input`}>
                                 <option value="">Select Sub Category</option>
                                 <AssetSubCategoryByUserOption
-                                    forceUp={this.forceUp}
-                                    stateForceUpdate={forceUpdate}
                                     category_id={category_id}/>
                             </select>
                             {errorDict && !errorDict.sub_category_id &&
@@ -133,6 +160,7 @@ class AssetDisposalComponent extends Component {
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Product</option>
+                                <AssetProductByUserOptions category_id={category_id} sub_category_id={sub_category_id}/>
                             </select>
                             {errorDict && !errorDict.product_id &&
                             <span className="error">Product Field is required</span>
@@ -144,6 +172,8 @@ class AssetDisposalComponent extends Component {
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Product Serial</option>
+                                <AssetListByUserOptions category_id={category_id} sub_category_id={sub_category_id}
+                                                        product_id={product_id}/>
                             </select>
                             {errorDict && !errorDict.product_serial &&
                             <span className="error">Product Serial Field is required</span>
