@@ -18,6 +18,7 @@ class RequestHistoryComponent extends Component {
             error: false,
             success: false,
             errorMessage: '',
+            comment: '',
             successMessage: '',
         }
     }
@@ -32,6 +33,20 @@ class RequestHistoryComponent extends Component {
                     data: res.data
                 })
             }
+        })
+    }
+
+    handleComment = (e, ind) => {
+        const {value, name} = e.target
+        const {reqDetails} = this.state
+        let commentedReqDetails = reqDetails.length > 0 && reqDetails.map((item, index) => {
+            if (index === ind) {
+                item[name] = value
+            }
+            return item
+        })
+        this.setState({
+            reqDetails: commentedReqDetails
         })
     }
 
@@ -123,7 +138,8 @@ class RequestHistoryComponent extends Component {
     }
 
     render() {
-        const {data, showDetails, detailedData, error, errorMessage, success, successMessage} = this.state
+        console.log(this.state.reqDetails, 134)
+        const {data, showDetails, detailedData, error, errorMessage, success, successMessage, comment} = this.state
         let tableData = detailedData.map((item, index) => {
             return(
                 <div key={index + 10} className={'ui-tbody-child'}>
@@ -144,6 +160,15 @@ class RequestHistoryComponent extends Component {
                                     })
                                 }}
                                 value={item.quantity} />}
+                        </p>
+                        <p>
+                            <input
+                                type={'text'}
+                                name={'comment'}
+                                placeholder={'Comments'}
+                                className={'ui-req-textarea'}
+                                onChange={(e) => this.handleComment(e, index)}
+                            />
                         </p>
                     </div>
                 </div>
@@ -185,6 +210,7 @@ class RequestHistoryComponent extends Component {
                                         <p>Category</p>
                                         <p>Sub Category</p>
                                         <p>Quantity</p>
+                                        <p>Comment</p>
                                     </div>
                                     <div className={'d-flex align-items-center'}> </div>
                                 </div>

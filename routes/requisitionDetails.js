@@ -134,29 +134,35 @@ route.get('/requisition-details', async (req,res,next) => {
 })
 
 // Read
-route.get('/requisition-details/delivery', async (req,res,next) => {
-    let reqId = []
-    const [resultsMain, metadataMain] = await db.query(`
-        SELECT requisition_approves.requisition_details_id from requisition_approves
-            WHERE requisition_approves.delivery_to IS NULL
-    `)
-    resultsMain.length > 0 && resultsMain.forEach(item => {
-        reqId.push(item.requisition_details_id)
-    })
-    console.log(resultsMain, 63)
-    const [results, metadata] = await db.query(`
-        SELECT DISTINCT ON(requisition_details.requisition_id) requisition_details.id, Concat(users."firstName", ' ', users."lastName") as requestBy, requisition_details.requisition_id
-            FROM requisition_details
-                 Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
-                 Join users ON requisition_masters.request_by = users.id`)
+route.get('/requisition-details/delivery', async (req, res, next) => {
+    let role_id = req.query.role_id;
+    let user_id = req.query.id;
+    let location_id = req.query.location_id;
+    let reqId = [];
 
-    let payLoad = results.filter(item => reqId.includes(item.id))
-        if (results.length > 0) {
-            res.status(200).json(payLoad)
-        } else {
-            res.status(200).json({message: "No Data Found"})
-        }
-})
+    const [results, metadata] = await db.query(`SELECT DISTINCT ON
+        (requisition_approves.requisition_id) requisition_approves.requisition_details_id,
+        concat(location_hierarchies.hierarchy_name, '-', locations.location_name) as location_name,
+        Concat ( users."firstName", ' ', users."lastName" ) AS request_by,
+        user_roles.role_name as role_name,
+        requisition_masters.requisition_no,
+        requisition_approves.requisition_id 
+    FROM
+        requisition_approves
+        JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id 
+        JOIN users ON requisition_masters.request_by = users.id 
+        JOIN user_roles ON user_roles.id = requisition_masters.role_id
+        JOIN locations ON requisition_masters.location_id = locations.id
+        JOIN location_hierarchies ON location_hierarchies.id = locations.hierarchy
+    WHERE requisition_approves.location_id = '${location_id}' AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
+                    `);
+
+    if (results.length > 0) {
+        res.status(200).json(results)
+    } else {
+        res.status(200).json({ message: "No Data Found" })
+    }
+});
 
 // Read
 route.get('/requisition-details/status/:id', async (req,res,next) => {

@@ -44,6 +44,11 @@ const RequisitionApproves = db.define('requisition_approves', {
       key: 'id'
     }
   },
+  comment: {
+    type: Sequelize.STRING,
+    defaultValue: null,
+    allowNull: true
+  },
   status: {
     type: Sequelize.INTEGER,
     references:{

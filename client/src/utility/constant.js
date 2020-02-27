@@ -57,7 +57,7 @@ export const sidenav = [
         categories: [
             {
                 id: 9,
-                name: 'Asset Registration',
+                name: 'New Asset Registration',
                 link: '/stock-reg',
                 icon: ""
             },

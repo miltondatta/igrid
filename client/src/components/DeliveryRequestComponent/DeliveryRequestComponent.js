@@ -31,9 +31,12 @@ class DeliveryRequestComponent extends Component {
             })
     }
 
-    getReqApproveData = (id) => {
-        Axios.get(apiUrl() + 'requisition-approve/specific/' + id)
-            .then(resData => {
+    getReqApproveData = (requisition_id) => {
+        let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        user_data['requisition_id'] =   requisition_id;
+        Axios.get(apiUrl() + 'requisition-approve/specific', {
+            params: user_data
+        }).then(resData => {
                 this.setState({
                     resData: resData.data
                 })
@@ -41,8 +44,10 @@ class DeliveryRequestComponent extends Component {
     }
 
     getReqDetails = () => {
-        Axios.get(apiUrl() + 'requisition-details/delivery')
-            .then(res => {
+        let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        Axios.get(apiUrl() + 'requisition-details/delivery', {
+            params: user_data
+        }).then(res => {
                 if(res.data.length > 0) {
                     this.setState({
                         reqDetails: res.data

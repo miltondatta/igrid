@@ -50,6 +50,11 @@ module.exports = {
           key: 'id'
         }
       },
+      comment: {
+        type: Sequelize.STRING,
+        defaultValue: null,
+        allowNull: true
+      },
       update_quantity: {
         type: Sequelize.INTEGER
       },

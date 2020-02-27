@@ -123,7 +123,7 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del, details, approve, addName, add, track, deleteModalTitle, dataDisplay, footer} = this.props
+        const {searchable, exportable, pagination, edit, del, details, approve, addName, add, track, deleteModalTitle, dataDisplay, footer, remove} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -183,11 +183,15 @@ class ReactDataTable extends Component {
                                    data-target="#rowDeleteModal">
                             <i className="icofont-ui-delete"></i>
                         </p>}
-                        {add && <p className="w-95px cursor-pointer text-primary" onClick={() => {this.props.addAssets(item.id)}}>Add {addName}</p>}
+                        {add && <p className="w-95px cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>
+                            <i className="icofont-ui-add"></i></p>}
                         {details && <p className="w-95px cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></p>}
                         {approve && <p className="w-95px cursor-pointer text-danger">Approve</p>}
                         {track && <p className="w-95px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
                             <i className="icofont-location-pin"></i>
+                        </p>}
+                        {remove && <p className="w-95px cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
+                            <i className="fas fa-times"></i>
                         </p>}
                     </div>
                 </div>
@@ -220,20 +224,21 @@ class ReactDataTable extends Component {
                 </div>
                 {tableData.length > 0 ? <div id={'__table_react'} className={'table'}>
                     <div className={'thead'}>
-                            <div className={'d-flex align-items-center'}>
-                                <p className={'w-60px'}>
-                                    No
-                                </p>
-                                {table_headers}
-                            </div>
-                            <div className={'d-flex align-items-center'}>
-                                {edit && <p className={'w-95px'}>Edit</p>}
-                                {del && <p className={'w-95px'}>Delete</p>}
-                                {add && <p className={'w-95px'}>Add</p>}
-                                {details && <p className={'w-95px'}>Details</p>}
-                                {approve && <p className={'w-95px'}>Approve</p>}
-                                {track && <p className={'w-95px'}>Track</p>}
-                            </div>
+                        <div className={'d-flex align-items-center'}>
+                            <p className={'w-60px'}>
+                                No
+                            </p>
+                            {table_headers}
+                        </div>
+                        <div className={'d-flex align-items-center'}>
+                            {edit && <p className={'w-95px'}>Edit</p>}
+                            {del && <p className={'w-95px'}>Delete</p>}
+                            {add && <p className={'w-95px'}>Add</p>}
+                            {details && <p className={'w-95px'}>Details</p>}
+                            {approve && <p className={'w-95px'}>Approve</p>}
+                            {track && <p className={'w-95px'}>Track</p>}
+                            {remove && <p className={'w-95px'}>Remove</p>}
+                        </div>
                     </div>
                     <div className={'tbody'}>
                         {table_body}

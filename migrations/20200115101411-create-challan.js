@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       added_by: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       attachment: {
         type: Sequelize.STRING,

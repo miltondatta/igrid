@@ -24,6 +24,7 @@ class VendorOptions extends Component {
     }
 
     render() {
+        console.log(this.props.stateForceUpdate, 27)
         if (this.props.stateForceUpdate) {
             this.getData()
             this.props.forceUp()
