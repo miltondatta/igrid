@@ -150,15 +150,15 @@ input[type=date],
    transform: rotate(45deg);
 }
 
-.f-16px{font-size: 16px;}
-.f-14px{font-size: 14px;}
-.f-15px{font-size: 15px;}
-.f-18px{font-size: 18px;}
-.f-19px{font-size: 19px;}
-.f-20px{font-size: 20px;}
-.f-22px{font-size: 22px;}
-.f-28px{font-size: 28px;}
-.f-30px{font-size: 30px;}
+.f-16px{font-size: 16px !important;}
+.f-14px{font-size: 14px !important;}
+.f-15px{font-size: 15px !important;}
+.f-18px{font-size: 18px !important;}
+.f-19px{font-size: 19px !important;}
+.f-20px{font-size: 20px !important;}
+.f-22px{font-size: 22px !important;}
+.f-28px{font-size: 28px !important;}
+.f-30px{font-size: 30px !important;}
 .f-capitalize{text-transform: capitalize;}
 
 .pb-6px{padding-bottom: 6px}
@@ -167,7 +167,7 @@ input[type=date],
 .is-invalid{border: 1px solid red}
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
-.text-grey{color: #5e6367}
+.text-grey{color: #5e6367 !important}
 .text-bold{color: #343434}
 .text-project{color: #0f5ea8}
 
@@ -215,7 +215,7 @@ input[type=date],
 
 .cursor-pointer{cursor: pointer}
 
-.ui-container{display: grid; overflow-y: auto; overflow-x: hidden}
+.ui-container{overflow-y: auto; overflow-x: hidden}
 
 .ui-grid-70{grid-template-columns: 70px auto;}
 

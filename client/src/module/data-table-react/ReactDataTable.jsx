@@ -144,7 +144,7 @@ class ReactDataTable extends Component {
                             <>
                             {items !== 'id' &&
                                 <p key={key + 20}>
-                                    {items === 'enlisted' ? item[items] ? 'True' : 'False' : item[items]}
+                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : item[items] === null ? 'N/A' : item[items]}
                                 </p>
                             }
                             </>
