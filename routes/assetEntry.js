@@ -228,11 +228,10 @@ route.delete('/assets-entry/delete', (req,res,next) => {
     })
 })
 
-// Assets Entry
+// Assets Entry Data By User ID
 route.get('/assets-entry/all/:user_id', async (req, res) => {
     try {
         const user_id = req.params.user_id;
-
         const data = await db.query(`select assets.id,
                                products.product_name,
                                asset_categories.category_name,
@@ -258,6 +257,73 @@ route.get('/assets-entry/all/:user_id', async (req, res) => {
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
                                  join conditions on assets.condition = conditions.id
                         where assign_to = ${user_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Assets Category List By User Id
+route.get('/assets-category/all/:user_id', async (req, res) => {
+    try {
+        const user_id = req.params.user_id;
+        const data = await db.query(`select asset_categories.id, asset_categories.category_name
+                        from assets
+                                 join asset_categories on assets.asset_category = asset_categories.id
+                        where assign_to = ${user_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Assets Sub Category List By User ID and Category ID
+route.get('/assets-sub-category/all/:user_id/:category_id', async (req, res) => {
+    try {
+        const {user_id, category_id} = req.params;
+        const data = await db.query(`select asset_sub_categories.id, asset_sub_categories.sub_category_name
+                        from assets
+                                 join asset_categories on assets.asset_category = asset_categories.id
+                                 join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                        where assets.assign_to = ${user_id} and assets.asset_category = ${category_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Assets Product List By User, Category and Sub Category ID
+route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.params;
+        const data = await db.query(`select products.id, products.product_name
+                        from assets
+                                 join asset_categories on assets.asset_category = asset_categories.id
+                                 join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                 join products on asset_categories.id = products.category_id
+                        where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} 
+                        and assets.asset_sub_category = ${sub_category_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Get Assets By User, Category, Sub Category and Product ID
+route.post('/get/assets/by/credentials', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id, product_id} = req.body;
+        const data = await db.query(`select * from assets
+                        where assign_to = ${user_id} and asset_category = ${category_id} 
+                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
