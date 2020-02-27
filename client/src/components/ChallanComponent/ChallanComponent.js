@@ -11,6 +11,7 @@ import DepreciationOptions from "../../utility/component/depreciationMethodOptio
 import jwt from "jsonwebtoken";
 import Barcode from "react-barcode"
 import VendorOptions from "../../utility/component/vendorOptions";
+import ProductsOptions from "../../utility/component/productOptions";
 
 class ChallanComponent extends Component {
     constructor(props){
@@ -23,7 +24,6 @@ class ChallanComponent extends Component {
             assetId: '',
             forceUpdate: false,
             challan_no: '',
-            challan_name: '',
             receivedByFocus: false,
             recDropFoc: false,
             challan_description: '',
@@ -176,6 +176,12 @@ class ChallanComponent extends Component {
                     asset_quantity: value
                 })
             }
+        } else if(name === 'received_by') {
+            this.setState({
+                received_by: value
+            }, () => {
+                this.getReceiver(value)
+            })
         } else {
             this.setState({
                 [name]: value
@@ -183,17 +189,25 @@ class ChallanComponent extends Component {
         }
     }
 
-    updateAsset = () => {
-        const {project_id, asset_category, asset_sub_category, cost_of_purchase, installation_cost, carrying_cost,
-            other_cost, asset_type, depreciation_method, rate, effective_date, book_value, salvage_value,
-            useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode} = this.state
-        const data = {project_id, asset_category, asset_sub_category, cost_of_purchase, installation_cost, carrying_cost,
-            other_cost, asset_type, depreciation_method, rate, effective_date, book_value, salvage_value,
-            useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode}
-        Axios.put(apiUrl() + 'assets-entry/assets/update/' + this.state.assetId, data)
-            .then(resData => {
-                console.log(resData, 124)
-            })
+    getReceiver = (name) => {
+        let data = {
+            receiverName: name
+        }
+        if (name.length >= 3) {
+            Axios.post(apiUrl() + 'challan-receiver', data)
+                .then(res => {
+                    if (res.message) {
+                        this.setState({
+                            error: true,
+                            errorMsg: res.message
+                        })
+                    } else {
+                        this.setState({
+                            receivedBy: res.data
+                        })
+                    }
+                })
+        }
     }
 
     updateChallan = () => {
@@ -201,7 +215,17 @@ class ChallanComponent extends Component {
             const data = {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, comments: challanComments, added_by}
             Axios.put(apiUrl() + 'assets-entry/challan-update/' + this.state.challan_id, data)
                 .then(resData => {
-                    console.log(resData, 124)
+                    if (resData.data.status) {
+                        this.setState({
+                            success: true,
+                            successMessage: resData.data.message,
+                        })
+                    } else {
+                        this.setState({
+                            error: true,
+                            errorMessage: resData.data.message,
+                        })
+                    }
                 })
     }
 
@@ -247,76 +271,105 @@ class ChallanComponent extends Component {
         })
     }
 
-    addAsset = () => {
+    addProduct = () => {
         const {asset_quantity} = this.state
         let prodSerialHolder = []
-        let dataArray = []
         let stateHolder = this.state
         for(let i = 1; i <= asset_quantity; i++) {
-            prodSerialHolder.push(stateHolder['product_serial_'+i])
-            delete stateHolder['product_serial_'+i]
-            delete stateHolder['prodArr']
-            delete stateHolder['asset_quantity']
-            delete stateHolder['dataStore']
-            delete stateHolder['challan_no']
-            delete stateHolder['challan_name']
-            delete stateHolder['challan_description']
-            delete stateHolder['purchase_order_no']
-            delete stateHolder['purchase_order_date']
-            delete stateHolder['vendor_id']
-            delete stateHolder['received_by']
-            delete stateHolder['added_by']
-            delete stateHolder['challanComments']
-            delete stateHolder['attachment']
-            delete stateHolder['targetAsset']
-            delete stateHolder['targetChallan']
-            delete stateHolder['addAssets']
-            delete stateHolder['assets']
-            delete stateHolder['challans']
+            let obj = {}
+            Object.keys(stateHolder).forEach((item) => {
+                if (item === 'challan_id' ||
+                item === 'project_id' ||
+                item === 'asset_category' ||
+                item === 'asset_sub_category' ||
+                item === 'cost_of_purchase' ||
+                item === 'installation_cost' ||
+                item === 'carrying_cost' ||
+                item === 'other_cost' ||
+                item === 'asset_type' ||
+                item === 'depreciation_method' ||
+                item === 'rate' ||
+                item === 'effective_date' ||
+                item === 'book_value' ||
+                item === 'salvage_value' ||
+                item === 'useful_life' ||
+                item === 'last_effective_date' ||
+                item === 'warranty' ||
+                item === 'last_warranty_date' ||
+                item === 'condition' ||
+                item === 'comments' ||
+                item === 'barcode' ||
+                item === 'assign_to' ||
+                item === 'product_serial_'+i) {
+                    if(item === 'product_serial_'+i) {
+                        obj['product_serial'] = stateHolder[item]
+                    } else {
+                        obj[item] = stateHolder[item]
+                    }
+                }
+            })
+            prodSerialHolder.push(obj)
         }
-        prodSerialHolder.forEach(item => {
-            let x = {...stateHolder, product_serial: item}
-            dataArray.push(x)
-        })
 
         let prodArr = Array.from(Array(1).keys())
         this.setState({
-            prodArr: [],
+            prodArr,
             asset_quantity: 1,
-            targetAsset: [],
-            targetChallan: [],
-            challans: [],
-            assets: [],
         })
-        Axios.post(apiUrl() + 'assets-entry/entry', dataArray)
+        Axios.post(apiUrl() + 'assets-entry/entry', prodSerialHolder)
             .then(resData => {
-                this.getChallanData()
+                if (resData.data.status) {
+                    this.setState({
+                        success: true,
+                        targetAsset: [], addAssets: false,
+                        successMessage: resData.data.message,
+                    })
+                } else {
+                    this.setState({
+                        error: true,
+                        errorMessage: resData.data.message,
+                    })
+                }
             })
             .catch(err => {console.log(err)})
     }
 
     render() {
-        const {challans, assets, product_serial, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr,
-            received_by, challanComments, project_id, asset_category, asset_sub_category, cost_of_purchase,errorDictAsset, added_by, addAssets, asset_quantity,
+        const {challans, assets, product_id, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr, error,
+            received_by, challanComments, project_id, asset_category, asset_sub_category, cost_of_purchase,errorDictAsset, errorMessage, addAssets, asset_quantity,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, targetAsset, targetChallan,
             salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, challan_date, receivedBy, receivedByFocus,
-            recDropFoc} = this.state
+            recDropFoc, success, successMessage} = this.state
+        console.log(receivedBy, 334)
         const prodSer = asset_quantity && prodArr.map((item, index) => {
             return(
-                <div className={'row p-2 align-items-center'} key={10 + index}>
-                    <div className={'col-5 pr-2'}>Product Serial No {item + 1}</div>
-                    <div className={'col-7 pl-2'}>
-                        <input placeholder={`Product Serial No ${item + 1}`} onChange={this.handleChange} name={`product_serial_${item + 1}`}  className={'form-control w-100'}/>
-                    </div>
+                <div className={'mb-1'}>
+                    <label className={'ui-custom-label'}>Product Serial No {item + 1}</label>
+                    <input placeholder={`Product Serial No ${item + 1}`} onChange={this.handleChange} name={`product_serial_${item + 1}`}  className={'ui-custom-input w-100'}/>
                 </div>
             )
         })
-        const receiverList = receivedBy.length > 0 && receivedBy.map((item, index) => (
+        const receiverList = receivedBy && receivedBy.length > 0 && receivedBy.map((item, index) => (
             <p key={index} onClick={() => {this.setState({received_by: item.received_by, receivedBy: []})}}>{item.received_by}</p>
         ))
-        const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         return (
             <div className={'w-100 p-2'}>
+                {error &&
+                <div
+                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
+                    role="alert">
+                    {errorMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({error: false})
+                }}></i>
+                </div>}
+                {success &&
+                <div
+                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
+                    role="alert">
+                    {successMessage} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: false})
+                }}></i>
+                </div>}
                 <div className="rounded">
                     {targetChallan.length > 0 ? <>
                         <nav className="navbar text-center mb-0 mx-1 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({targetChallan: []})}}>
@@ -368,7 +421,7 @@ class ChallanComponent extends Component {
                                         <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
                                     </div>
                                 </div>
-                                <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
+                                <button onClick={this.updateChallan} className="submit-btn">Add Challan</button>
                             </div>
                             <div className="min-h-80vh bg-white rounded p-3">
                                 <div className={'mb-2'}>
@@ -399,12 +452,12 @@ class ChallanComponent extends Component {
                         </div>
                     </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white m-1 rounded'}>
                     <nav className="navbar text-center mb-0 pl-3 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ? <p className={'cursor-pointer'} onClick={() => {this.setState({assets: []})}}><i className="fas fa-angle-left"></i> Challan Details</p> : 'Challan Information'}</p>
+                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ? <p className={'cursor-pointer mb-0'} onClick={() => {this.setState({assets: []})}}><i className="fas fa-angle-left"></i> Challan Details</p> : 'Challan Information'}</p>
                     </nav>
                     <div className="px-2">
                         {assets.length > 0 ? <ReactDataTable
                             del={'assets-entry'}
-                            edit={'specific-assets/'}
+                            deleteModalTitle={'Delete Asset'}
                             updateEdit={this.updateEdit}
                             tableData={assets}
                         /> : challans.length > 0 && assets.length === 0 && <ReactDataTable
@@ -417,240 +470,228 @@ class ChallanComponent extends Component {
                             assetList={this.assetList}
                             tableData={challans}
                         />}
-                    </div> </div> : <div className={'p-3'}>
-                        <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0 cursor-pointer" onClick={() => {this.setState({    targetAsset: [], addAssets: false })}}><i className="fas fa-angle-left"></i> {addAssets ? 'Add Asset' : 'Update Asset Info'}</p>
+                    </div> </div> : <div className={'p-2'}>
+                        <nav className="navbar text-center mb-0 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({    targetAsset: [], addAssets: false })}}>
+                            <p className="text-blue f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
                         </nav>
-                        <div className="row">
-                            <div className="col-md-6 pr-2">
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Asset Type</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
-                                            <option>--Asset Type--</option>
-                                            <AssetTypeOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Asset Category</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
-                                            <option>--Asset Category--</option>
-                                            <AssetCategoryOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Asset Sub-category</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
-                                            <option>--Asset Sub Category--</option>
-                                            <AssetSubCategoryOptions assetId={asset_category} />
-                                        </select>
-                                    </div>
-                                </div>
-                                <br />
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Cost of Purchase</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="number"
-                                               value={cost_of_purchase}
-                                               onChange={this.handleChange} name={'cost_of_purchase'}
-                                               placeholder={'Cost of Purchase'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.cost_of_purchase && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Installation Cost</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="number"
-                                               value={installation_cost}
-                                               onChange={this.handleChange} name={'installation_cost'}
-                                               placeholder={'Installation Cost'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.installation_cost && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Carrying Cost</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="number"
-                                               value={carrying_cost}
-                                               onChange={this.handleChange} name={'carrying_cost'}
-                                               placeholder={'Carrying Cost'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.carrying_cost && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Other Cost</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type={'number'}
-                                               value={other_cost}
-                                               onChange={this.handleChange} name={'other_cost'}
-                                               placeholder={'Other Cost'}
-                                               className={`form-control ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <br />
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Depreciation Method</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
-                                            <option>--Select Depreciation Method--</option>
-                                            <DepreciationOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Condition</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
-                                            <option>--Select Condition--</option>
-                                            <ConditionOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Project</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <select className={`form-control w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
-                                            <option>--Select Project--</option>
-                                            <ProjectOptions />
-                                        </select>
-                                    </div>
-                                </div>
-                                {addAssets &&
-                                    <>
-                                        <br />
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-5 pr-2'}>Asset Quantity</div>
-                                            <div className={'col-7 pl-2'}>
-                                                <input type='number' className={`form-control`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
+                        <div>
+                            <div className={'bg-white rounded p-2'}>
+                                <nav className="navbar text-center mb-2 pl-1 rounded">
+                                    <p className="text-blue f-weight-700 f-20px m-0">Add Asset</p>
+                                </nav>
+                                <div className="row">
+                                    <div className="col-md-6 pr-1">
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Project</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                    <option>Select Project</option>
+                                                    <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
                                             </div>
                                         </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Category</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
+                                                    <option>Asset Category</option>
+                                                    <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Sub Category</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
+                                                    <option>Asset Sub Category</option>
+                                                    <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Product</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
+                                                    <option>Product</option>
+                                                    <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Cost of Purchase</label>
+                                            <input type="number"
+                                                   value={cost_of_purchase}
+                                                   onChange={this.handleChange} name={'cost_of_purchase'}
+                                                   placeholder={'Cost of Purchase'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.cost_of_purchase && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Installation Cost</label>
+                                            <input type="number"
+                                                   value={installation_cost}
+                                                   onChange={this.handleChange} name={'installation_cost'}
+                                                   placeholder={'Installation Cost'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.installation_cost && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Carrying Cost</label>
+                                            <input type="number"
+                                                   value={carrying_cost}
+                                                   onChange={this.handleChange} name={'carrying_cost'}
+                                                   placeholder={'Carrying Cost'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.carrying_cost && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Other Cost</label>
+                                            <input type={'number'}
+                                                   value={other_cost}
+                                                   onChange={this.handleChange} name={'other_cost'}
+                                                   placeholder={'Other Cost'}
+                                                   className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Rate</label>
+                                            <input type="number"
+                                                   value={rate}
+                                                   onChange={this.handleChange} name={'rate'}
+                                                   placeholder={'Rate'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Asset Quantity</label>
+                                            <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
+                                        </div>
                                         {prodSer}
-                                    </>
-                                }
-                                <div className={'row p-2 align-items-center mt-3'}>
-                                    <div className={'col-8 pr-2 d-flex w-100'}>
-                                        <button onClick={() => {addAssets ? this.addAsset() : this.updateAsset()}} className="btn mx-1 p-2 w-50 btn-outline-info">{addAssets ? 'Add Assets' : 'Update Assets'}</button>
+                                    </div>
+                                    <div className="col-md-6 pl-1">
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Effective Date</label>
+                                            <input type="date"
+                                                   value={effective_date}
+                                                   onChange={this.handleChange} name={'effective_date'}
+                                                   placeholder={'Effective Date'}
+                                                   className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.effective_date && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Book Value</label>
+                                            <input type="number"
+                                                   value={book_value}
+                                                   onChange={this.handleChange} name={'book_value'}
+                                                   placeholder={'Book Value'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.book_value && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Salvage Value</label>
+                                            <input type="number"
+                                                   value={salvage_value}
+                                                   onChange={this.handleChange} name={'salvage_value'}
+                                                   placeholder={'Salvage Value'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.salvage_value && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Useful Life</label>
+                                            <input type="text"
+                                                   value={useful_life}
+                                                   onChange={this.handleChange} name={'useful_life'}
+                                                   placeholder={'Useful Life'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Last Effective Date</label>
+                                            <input type="date"
+                                                   value={last_effective_date}
+                                                   onChange={this.handleChange} name={'last_effective_date'}
+                                                   placeholder={'Effective Date'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.last_effective_date && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Warranty</label>
+                                            <input type="text"
+                                                   value={warranty}
+                                                   onChange={this.handleChange} name={'warranty'}
+                                                   placeholder={'Warranty'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.warranty && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Last Warranty Date</label>
+                                            <input type="date"
+                                                   value={last_warranty_date}
+                                                   onChange={this.handleChange} name={'last_warranty_date'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.last_warranty_date && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Comments</label>
+                                            <textarea placeholder={'Comments'}
+                                                      onChange={this.handleChange} name={'comments'}
+                                                      value={comments}
+                                                      className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Condition</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
+                                                    <option>Select Condition</option>
+                                                    <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Asset Type</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
+                                                    <option>Asset Type</option>
+                                                    <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Depreciation Method</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
+                                                    <option>Select Depreciation Method</option>
+                                                    <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
+                                            <div className="ui-custom-checkbox">
+                                                <input
+                                                    type={'checkbox'}
+                                                    checked={barcode}
+                                                    id={'customCheckbox'}
+                                                    name={'barcode'}
+                                                    onChange={this.handleChange} />
+                                                <label htmlFor="customCheckbox" className={'mb-0'}>Barcode</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-6 pr-2">
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Effective Date</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="date"
-                                               value={effective_date}
-                                               onChange={this.handleChange} name={'effective_date'}
-                                               placeholder={'Effective Date'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.effective_date && 'is-invalid'}`}/>
-                                    </div>
+                            <div className={'row p-2 align-items-center mt-1'}>
+                                <div className={'col-6 px-2 d-flex w-100'}>
+                                    <button className="mr-3 submit-btn-normal" onClick={this.addProduct} >Submit Product</button>
                                 </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Last Effective Date</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="date"
-                                               value={last_effective_date}
-                                               onChange={this.handleChange} name={'last_effective_date'}
-                                               placeholder={'Effective Date'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.last_effective_date && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Last Warranty Date</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="date"
-                                               value={last_warranty_date}
-                                               onChange={this.handleChange} name={'last_warranty_date'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.last_warranty_date && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <br />
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Book Value</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="number"
-                                               value={book_value}
-                                               onChange={this.handleChange} name={'book_value'}
-                                               placeholder={'Book Value'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.book_value && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Salvage Value</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="number"
-                                               value={salvage_value}
-                                               onChange={this.handleChange} name={'salvage_value'}
-                                               placeholder={'Salvage Value'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.salvage_value && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <br />
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Useful Life</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="text"
-                                               value={useful_life}
-                                               onChange={this.handleChange} name={'useful_life'}
-                                               placeholder={'Useful Life'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Warranty</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="text"
-                                               value={warranty}
-                                               onChange={this.handleChange} name={'warranty'}
-                                               placeholder={'Warranty'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.warranty && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Rate</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="number"
-                                               value={rate}
-                                               onChange={this.handleChange} name={'rate'}
-                                               placeholder={'Rate'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <br />
-                                {!addAssets && <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Product Serial</div>
-                                    <div className={'col-7 pl-2'}>
-                                        <input type="text"
-                                               value={product_serial}
-                                               onChange={this.handleChange}
-                                               name={'product_serial'}
-                                               placeholder={'Product Serial'}
-                                               className={`form-control w-100 ${errorDictAsset && !errorDictAsset.product_serial && 'is-invalid'}`}/>
-                                    </div>
-                                </div>}
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Comments</div>
-                                    <div className={'col-7 pl-2'}>
-                                    <textarea placeholder={'Comments'}
-                                              onChange={this.handleChange} name={'comments'}
-                                              value={comments}
-                                              className={`form-control w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-5 pr-2'}>Barcode</div>
-                                    <div className={'col-7 pl-2 ui-checkbox'}>
-                                        <input type="checkbox"
-                                               name={'barcode'}
-                                               checked={barcode}
-                                               onChange={this.handleChange}
-                                        />
-                                    </div>
-                                </div>
-                                {barcode && <Barcode value={product_serial} />}
                             </div>
                         </div>
                     </div>}

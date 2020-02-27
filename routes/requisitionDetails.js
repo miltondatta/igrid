@@ -195,7 +195,8 @@ route.get('/requisition-details/details/:id', async (req,res,next) => {
         reqId.push(item.requisition_details_id)
     })
     const [results, metadata] = await db.query(`
-        SELECT requisition_details.id, asset_categories.category_name, asset_sub_categories.sub_category_name, requisition_details.quantity
+        SELECT requisition_details.id, asset_categories.category_name, asset_sub_categories.sub_category_name,requisition_details.brand, requisition_details.model,
+               requisition_details.reason,requisition_details.quantity
         FROM requisition_details
                  Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
                  Join users ON requisition_masters.request_by = users.id

@@ -29,6 +29,10 @@ module.exports = {
           key: 'id'
         },
       },
+      is_closed: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
       received_by: {
         type: Sequelize.STRING,
       },

@@ -15,14 +15,14 @@
 .reactDataTable .thead p{
     color: #0f88e7;
     font-size: 18px;
-    width: 200px;
+    min-width: 200px;
     padding: 12px;
     font-weight: 600;
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-transform: uppercase;
+    text-transform: capitalize;
     background-color: transparent !important;
     border-color: transparent !important;
 }

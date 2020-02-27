@@ -130,7 +130,7 @@ class ReactDataTable extends Component {
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
-                {item !== 'id' && <p onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
+                {item === 'id' ? null : item === 'requisition_id' ? null : <p onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
                     {item.replace('_', " ")}
                 </p>}
             </>
@@ -144,7 +144,7 @@ class ReactDataTable extends Component {
                             <>
                             {items !== 'id' &&
                                 <p key={key + 20}>
-                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : item[items] === null ? 'N/A' : item[items]}
+                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : item[items] === null ? 'N/A' : items === 'requisition_id' ? null : item[items]}
                                 </p>
                             }
                             </>
@@ -175,7 +175,7 @@ class ReactDataTable extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className={'d-flex align-items-center'}>
+                    <div className={'d-flex align-items-center justify-content-end'}>
                         {edit && <p className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                             <i className="icofont-ui-edit"></i>
                         </p>}
@@ -230,7 +230,7 @@ class ReactDataTable extends Component {
                             </p>
                             {table_headers}
                         </div>
-                        <div className={'d-flex align-items-center'}>
+                        <div className={'d-flex align-items-center justify-content-end'}>
                             {edit && <p className={'w-95px'}>Edit</p>}
                             {del && <p className={'w-95px'}>Delete</p>}
                             {add && <p className={'w-95px'}>Add</p>}

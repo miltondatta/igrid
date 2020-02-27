@@ -49,6 +49,7 @@ class AssetComponent extends Component{
     }
 
     componentDidMount() {
+        this.handleReqMaster()
         Axios.get(apiUrl() + 'asset-category')
             .then(resData => {
                 this.setState({
@@ -65,7 +66,30 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        this.handleReqMaster()
+        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
+        if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
+            const length = productSet.length
+            const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
+            const subAssName = assetSubCategory.find(item => item.id === parseInt(asset_sub_category, 10)).sub_category_name
+            const productCombination = {
+                id: length + 1,
+                request_name: assName,
+                item_id: subAssName,
+                quantity
+            }
+            const productCombinationStore = {
+                id: length + 1,
+                asset_category, asset_sub_category, quantity, brand, expected_date, model, upload_file, details, reason
+            }
+            this.setState((prevState) => ({
+                productSet: [...prevState.productSet, productCombinationStore],
+                arrayData: [...prevState.arrayData, productCombination],
+                submitProduct: true,
+                quantity: '',
+                request: 0,
+                items: 0,
+            }))
+        }
     }
 
     sendRequisition = (e) => {
@@ -119,31 +143,6 @@ class AssetComponent extends Component{
                 if(resData){
                     this.setState({
                         reqMaster: resData.data.resData1[0]
-                    }, () => {
-                        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
-                        const length = productSet.length
-                        const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
-                        const subAssName = assetSubCategory.find(item => item.id === parseInt(asset_sub_category, 10)).sub_category_name
-                        const productCombination = {
-                            id: length + 1,
-                            request_name: assName,
-                            item_id: subAssName,
-                            quantity
-                        }
-                        const productCombinationStore = {
-                            id: length + 1,
-                            asset_category, asset_sub_category, quantity, brand, expected_date, model, upload_file, details, reason
-                        }
-                        if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
-                            this.setState((prevState) => ({
-                                productSet: [...prevState.productSet, productCombinationStore],
-                                arrayData: [...prevState.arrayData, productCombination],
-                                submitProduct: true,
-                                quantity: '',
-                                request: 0,
-                                items: 0,
-                            }))
-                        }
                     })
                 }
             })
@@ -151,12 +150,13 @@ class AssetComponent extends Component{
     }
 
     removeItemFromList = (id) => {
-        const {arrayData} = this.state
+        const {arrayData, productSet} = this.state
         let filteredData = arrayData.length > 0 && arrayData.filter(item => item.id !== id)
+        let filteredData2 = productSet.length > 0 && productSet.filter(item => item.id !== id)
         this.setState({
-            arrayData: filteredData
+            arrayData: filteredData,
+            productSet: filteredData2
         })
-        console.log(filteredData, 158)
     }
 
     render(){
@@ -194,12 +194,12 @@ class AssetComponent extends Component{
                             </select>
                         </div>
                         <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Model</label>
-                            <input onChange={this.handleChange} value={model} type="text" className="ui-custom-input" name={'model'} placeholder="Model" />
-                        </div>
-                        <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Brand</label>
                             <input onChange={this.handleChange} value={brand} type="text" className="ui-custom-input" name={'brand'} placeholder="Brand" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Model</label>
+                            <input onChange={this.handleChange} value={model} type="text" className="ui-custom-input" name={'model'} placeholder="Model" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Quantity</label>
