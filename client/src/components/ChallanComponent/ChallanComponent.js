@@ -18,10 +18,14 @@ class ChallanComponent extends Component {
         this.state={
             challans: [],
             assets: [],
+            challan_date: '',
+            receivedBy: [],
             assetId: '',
             forceUpdate: false,
             challan_no: '',
             challan_name: '',
+            receivedByFocus: false,
+            recDropFoc: false,
             challan_description: '',
             purchase_order_no: '',
             purchase_order_date: '',
@@ -105,6 +109,7 @@ class ChallanComponent extends Component {
                         challan_id: id,
                         targetChallan: resData.data,
                         challan_no: data.challan_no,
+                        challan_date: data.challan_date,
                         challan_name: data.challan_name,
                         vendor_id: data.vendor_id,
                         challan_description: data.challan_description,
@@ -291,10 +296,11 @@ class ChallanComponent extends Component {
     }
 
     render() {
-        const {challans, assets, product_serial, challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr,
+        const {challans, assets, product_serial, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr,
             received_by, challanComments, project_id, asset_category, asset_sub_category, cost_of_purchase,errorDictAsset, added_by, addAssets, asset_quantity,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, targetAsset, targetChallan,
-            salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode} = this.state
+            salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, challan_date, receivedBy, receivedByFocus,
+            recDropFoc} = this.state
         const prodSer = asset_quantity && prodArr.map((item, index) => {
             return(
                 <div className={'row p-2 align-items-center'} key={10 + index}>
@@ -305,141 +311,101 @@ class ChallanComponent extends Component {
                 </div>
             )
         })
-        console.log(this.state, 166)
+        const receiverList = receivedBy.length > 0 && receivedBy.map((item, index) => (
+            <p key={index} onClick={() => {this.setState({received_by: item.received_by, receivedBy: []})}}>{item.received_by}</p>
+        ))
         const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         return (
             <div className={'w-100 p-2'}>
-                <div className="bg-white rounded shadow">
+                <div className="rounded">
                     {targetChallan.length > 0 ? <>
-                        <div className="bg-white rounded p-4 shadow">
-                            <nav className="navbar text-center mb-2 pl-2 rounded">
-                                <p className="text-dark f-weight-500 f-20px m-0 cursor-pointer" onClick={() => {this.setState({targetChallan: []})}}><i className="fas fa-angle-left"></i> Update Challan Info</p>
-                            </nav>
-                            <div className="row">
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Challan No</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input onChange={this.handleChange} name={'challan_no'}  value={challan_no} placeholder='Challan No' className={`form-control ${errorDict && !errorDict.challan_no && 'is-invalid'}`} />
-                                        </div>
+                        <nav className="navbar text-center mb-0 mx-1 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({targetChallan: []})}}>
+                            <p className="text-blue f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
+                        </nav>
+                        <div className=" p-1 ui-dataEntry">
+                            <div className={'min-h-80vh bg-white rounded position-relative p-3'}>
+                                <nav className="navbar text-center mb-2 pl-1 rounded">
+                                    <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
+                                </nav>
+                                <div className={'mb-2'}>
+                                    <label htmlFor="challan_no" className={'ui-custom-label'}>Challan No</label>
+                                    <input onChange={this.handleChange} name={'challan_no'} id={'challan_no'}  value={challan_no} placeholder='Challan No' className={`ui-custom-input ${errorDict && !errorDict.challan_no && 'is-invalid'}`} />
+                                </div>
+                                <div className={'mb-2'}>
+                                    <label htmlFor="challan_date" className={'ui-custom-label'}>Challan Date</label>
+                                    <input value={challan_date} type={'date'} onChange={this.handleChange} name={'challan_date'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_date && 'is-invalid'}`} />
+                                </div>
+                                <div className={'mb-2'}>
+                                    <div className="input-grid">
+                                        <label className={'ui-custom-label'}>Vendor</label>
+                                        <select onClick={() => {this.forceUpdate()}} className={`ui-custom-input w-100 ${errorDict && !errorDict.vendor_id && 'is-invalid'}`} value={vendor_id} onChange={this.handleChange} name={'vendor_id'}>
+                                            <option>Select Vendor</option>
+                                            <VendorOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                        </select>
+                                        <button onClick={() => {this.setState({formType: 'VENDOR', getApi: 'vendors', headTitle: 'Vendor Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                            <i className="fas fa-plus"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Challan Name</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input value={challan_name}  onChange={this.handleChange} name={'challan_name'} placeholder='Challan Name' className={`form-control ${errorDict && !errorDict.challan_name && 'is-invalid'}`} />
-                                        </div>
+                                <div className={'mb-2 position-relative'}>
+                                    <label className={'ui-custom-label'}>Received By</label>
+                                    <input onFocus={() => {this.setState({receivedByFocus: true})}} onBlur={() => {this.setState({receivedByFocus: false})}} autoComplete={'off'} placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`ui-custom-input ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
+                                    {(receivedBy.length > 0 && received_by.length >= 3 && (receivedByFocus || recDropFoc)) && <div onMouseOver={() => {this.setState({recDropFoc: true})}} onMouseOut={() => {this.setState({recDropFoc: false})}} className={'ui-received-by'}>
+                                        {receiverList}
+                                    </div>}
+                                </div>
+                                <div className={'mb-2'}>
+                                    <label className={'ui-custom-label'}>Purchase Order No</label>
+                                    <input value={purchase_order_no} onChange={this.handleChange} name={'purchase_order_no'} placeholder='Purchase Order No' className={`ui-custom-input ${errorDict && !errorDict.purchase_order_no && 'is-invalid'}`} />
+                                </div>
+                                <div className={'mb-2'}>
+                                    <label className={'ui-custom-label'}>Purchase Order Date</label>
+                                    <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
+                                </div>
+                                <div className={'w-50 mb-20p'}>
+                                    <div className="ui-custom-file">
+                                        <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
+                                        <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
                                     </div>
                                 </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Vendor</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <select className={`form-control w-100 ${errorDict && !errorDict.vendor_id && 'is-invalid'}`} value={vendor_id} onChange={this.handleChange} name={'vendor_id'}>
-                                                <option>--Select Vendor--</option>
-                                                <VendorOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpdate} />
-                                            </select>
-                                        </div>
-                                    </div>
+                                <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
+                            </div>
+                            <div className="min-h-80vh bg-white rounded p-3">
+                                <div className={'mb-2'}>
+                                    <nav className="navbar text-center mb-2 pl-1 rounded">
+                                        <p className="text-blue f-weight-700 f-20px m-0">Challan Description</p>
+                                    </nav>
+                                    <textarea
+                                        id={'enCh1'}
+                                        className={`ui-custom-textarea ${errorDict && !errorDict.challan_description && 'is-invalid'}`}
+                                        value={challan_description}
+                                        placeholder={'Write Description'}
+                                        onChange={this.handleChange} name={'challan_description'}
+                                    />
                                 </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Received By</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input placeholder='Received By' value={received_by} onChange={this.handleChange} name={'received_by'} type={'text'} className={`form-control ${errorDict && !errorDict.received_by && 'is-invalid'}`} />
-                                        </div>
-                                    </div>
+                                <div className={'mb-2'}>
+                                    <nav className="navbar text-center mb-2 pl-1 rounded">
+                                        <p className="text-blue f-weight-700 f-20px m-0">Comment</p>
+                                    </nav>
+                                    <textarea
+                                        id={'enCh1'}
+                                        value={challanComments}
+                                        onChange={this.handleChange} name={'challanComments'}
+                                        placeholder={'Write Comments'}
+                                        className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
+                                    />
                                 </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Added By</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input placeholder='Added By' value={userName} type={'text'} className={`form-control`}/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Attachment</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <div className="custom-file">
-                                                <input type="file" onChange={this.handleChange} name={'attachment'} className="custom-file-input" id="attachment" />
-                                                <label className={`custom-file-label ${errorDict && !errorDict.attachment && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose file'}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Purchase Order No</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input value={purchase_order_no} onChange={this.handleChange} name={'purchase_order_no'} placeholder='Purchase Order No' className={`form-control ${errorDict && !errorDict.purchase_order_no && 'is-invalid'}`} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Purchase Order Date</div>
-                                        <div className={'col-7 pl-2'}>
-                                            <input placeholder='Challan Name' onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`form-control ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 px-2">
-                                </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Challan Description</div>
-                                        <div className={'col-7 pl-2'}>
-                                <textarea
-                                    id={'enCh1'}
-                                    className={`form-control ${errorDict && !errorDict.challan_description && 'is-invalid'}`}
-                                    value={challan_description}
-                                    placeholder={'Description'}
-                                    onChange={this.handleChange} name={'challan_description'}
-                                />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-5 pr-2'}>Comments</div>
-                                        <div className={'col-7 pl-2'}>
-                                        <textarea
-                                            id={'enCh1'}
-                                            value={challanComments}
-                                            onChange={this.handleChange} name={'challanComments'}
-                                            placeholder={'Comments'}
-                                            className={`form-control ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
-                                        />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 px-2">
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-12 pl-4'}>
-                                            <div className={'row p-2 align-items-center'}>
-                                                <button onClick={this.updateChallan} className="btn btn-outline-info">Update Challan</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
-                    </> : (targetAsset.length === 0 && !addAssets) ? <>
-                    <nav className="navbar navbar-light mb-3 f-weight-500">
-                        <p className="navbar-brand m-0">{assets.length > 0 ? <p className={'cursor-pointer'} onClick={() => {this.setState({assets: []})}}><i className="fas fa-angle-left"></i> Challan Details</p> : 'Challan Information'}</p>
+                    </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white m-1 rounded'}>
+                    <nav className="navbar text-center mb-0 pl-3 rounded">
+                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ? <p className={'cursor-pointer'} onClick={() => {this.setState({assets: []})}}><i className="fas fa-angle-left"></i> Challan Details</p> : 'Challan Information'}</p>
                     </nav>
-                    <div className="px-4">
+                    <div className="px-2">
                         {assets.length > 0 ? <ReactDataTable
                             del={'assets-entry'}
                             edit={'specific-assets/'}
                             updateEdit={this.updateEdit}
-                            pagination
-                            exportable
-                            searchable
                             tableData={assets}
                         /> : challans.length > 0 && assets.length === 0 && <ReactDataTable
                             details
@@ -448,12 +414,10 @@ class ChallanComponent extends Component {
                             addAssets={this.addAssets}
                             edit={'specific-challan/'}
                             updateEdit={this.updateEdit}
-                            pagination
-                            searchable
                             assetList={this.assetList}
                             tableData={challans}
                         />}
-                    </div> </> : <div className={'p-3'}>
+                    </div> </div> : <div className={'p-3'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-dark f-weight-500 f-20px m-0 cursor-pointer" onClick={() => {this.setState({    targetAsset: [], addAssets: false })}}><i className="fas fa-angle-left"></i> {addAssets ? 'Add Asset' : 'Update Asset Info'}</p>
                         </nav>

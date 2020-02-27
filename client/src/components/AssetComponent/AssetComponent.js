@@ -9,6 +9,7 @@ import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOpt
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class AssetComponent extends Component{
+
     constructor(props){
         super(props)
         this.state={
@@ -48,7 +49,6 @@ class AssetComponent extends Component{
     }
 
     componentDidMount() {
-        this.handleReqMaster()
         Axios.get(apiUrl() + 'asset-category')
             .then(resData => {
                 this.setState({
@@ -65,30 +65,7 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
-        const length = productSet.length
-        const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
-        const subAssName = assetSubCategory.find(item => item.id === parseInt(asset_sub_category, 10)).sub_category_name
-        const productCombination = {
-            id: length + 1,
-            request_name: assName,
-            item_id: subAssName,
-            quantity
-        }
-        const productCombinationStore = {
-            id: length + 1,
-            asset_category, asset_sub_category, quantity, brand, expected_date, model, upload_file, details, reason
-        }
-        if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
-            this.setState((prevState) => ({
-                productSet: [...prevState.productSet, productCombinationStore],
-                arrayData: [...prevState.arrayData, productCombination],
-                submitProduct: true,
-                quantity: '',
-                request: 0,
-                items: 0,
-            }))
-        }
+        this.handleReqMaster()
     }
 
     sendRequisition = (e) => {
@@ -142,15 +119,49 @@ class AssetComponent extends Component{
                 if(resData){
                     this.setState({
                         reqMaster: resData.data.resData1[0]
+                    }, () => {
+                        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
+                        const length = productSet.length
+                        const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
+                        const subAssName = assetSubCategory.find(item => item.id === parseInt(asset_sub_category, 10)).sub_category_name
+                        const productCombination = {
+                            id: length + 1,
+                            request_name: assName,
+                            item_id: subAssName,
+                            quantity
+                        }
+                        const productCombinationStore = {
+                            id: length + 1,
+                            asset_category, asset_sub_category, quantity, brand, expected_date, model, upload_file, details, reason
+                        }
+                        if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
+                            this.setState((prevState) => ({
+                                productSet: [...prevState.productSet, productCombinationStore],
+                                arrayData: [...prevState.arrayData, productCombination],
+                                submitProduct: true,
+                                quantity: '',
+                                request: 0,
+                                items: 0,
+                            }))
+                        }
                     })
                 }
             })
             .catch(err => {console.log(err)})
     }
 
+    removeItemFromList = (id) => {
+        const {arrayData} = this.state
+        let filteredData = arrayData.length > 0 && arrayData.filter(item => item.id !== id)
+        this.setState({
+            arrayData: filteredData
+        })
+        console.log(filteredData, 158)
+    }
+
     render(){
         const {asset_category, brand, error, success, successMessage, errorMessage, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
-
+        console.log(arrayData, 154)
         return(
             <>
                 {error && <div className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center  " role="alert">
@@ -183,16 +194,16 @@ class AssetComponent extends Component{
                             </select>
                         </div>
                         <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Quantity</label>
-                            <input onChange={this.handleChange} value={quantity} type="number" className="ui-custom-input" name={'quantity'} id="inputAddress" placeholder="Quantity" />
-                        </div>
-                        <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Model</label>
                             <input onChange={this.handleChange} value={model} type="text" className="ui-custom-input" name={'model'} placeholder="Model" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Brand</label>
                             <input onChange={this.handleChange} value={brand} type="text" className="ui-custom-input" name={'brand'} placeholder="Brand" />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Quantity</label>
+                            <input onChange={this.handleChange} value={quantity} type="number" className="ui-custom-input" name={'quantity'} id="inputAddress" placeholder="Quantity" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Reason</label>
@@ -217,6 +228,7 @@ class AssetComponent extends Component{
                             <p className="text-blue f-weight-700 f-20px m-0">Submit Requisition</p>
                         </nav>
                         {arrayData.length > 0 ? <ReactDataTable
+                            remove={this.removeItemFromList}
                             tableData={arrayData}
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 

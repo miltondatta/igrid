@@ -168,8 +168,8 @@ input[type=date],
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
 .text-grey{color: #5e6367 !important}
-.text-bold{color: #343434}
-.text-project{color: #0f5ea8}
+.text-bold{color: #343434 !important;}
+.text-project{color: #0f5ea8 !important;}
 
 .bg-red{background-color: #dc3545}
 .bg-pink{background-color: #e04a58}

@@ -95,3 +95,11 @@
 .reactDataTable .page-item.active .page-link{
     border-color: #12b79e
 }
+
+.ui-req-textarea{
+    height: 46px;
+    border-radius: 5px;
+    padding-left: 8px;
+    border: 1px solid #cecece;
+    background: rgb(248, 248, 248);
+}

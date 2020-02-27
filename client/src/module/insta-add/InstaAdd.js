@@ -59,8 +59,7 @@ class InstaAdd extends Component {
         }
         Axios.post(apiUrl() + getApi + '/entry', this.getApiData())
             .then(res => {
-                console.log(res)
-                if(res.data.message){
+                if(!res.data.status){
                     this.setState({
                         error: true,
                         errorMessage: res.data.message
@@ -68,6 +67,8 @@ class InstaAdd extends Component {
                 } else {
                     this.props.forceUp()
                     this.setState({
+                        success: true,
+                        successMessage: res.data.message,
                         error: false,
                         model: '',
                         brand: '',
@@ -96,7 +97,6 @@ class InstaAdd extends Component {
                 this.setState({
                     allProjects: []
                 })
-                this.getData()
             })
             .catch(err => {
                 console.log(err)
@@ -146,6 +146,10 @@ class InstaAdd extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.forceUp()
+    }
+
     locationApi = (id) => {
         Axios.get(apiUrl() + 'locations/' + id)
             .then(resData => {
@@ -186,7 +190,7 @@ class InstaAdd extends Component {
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
                                 onChange={this.handleChange} />
                         </div>
-                        <div className="px-1 mb-4 grid-2">
+                        <div className="px-1 mb-20p grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
@@ -239,7 +243,7 @@ class InstaAdd extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.project_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -276,7 +280,7 @@ class InstaAdd extends Component {
                                 <UserRoleOptions />
                             </select>
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
                                 <option>Select Parent</option>
                                 <ApproveLevelOptions />
@@ -333,7 +337,7 @@ class InstaAdd extends Component {
                                 <BrandIdOptions />
                             </select>
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'model_id'} value={model_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.model_id) && 'is-invalid'}`}>
                                 <option>Select Model</option>
                                 <ModelIdOptions />
@@ -357,7 +361,7 @@ class InstaAdd extends Component {
             case 'MODELS':
                 return(
                     <>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <input
                                 placeholder='Models'
                                 type={'text'}
@@ -381,7 +385,7 @@ class InstaAdd extends Component {
             case 'BRANDS':
                 return(
                     <>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <input
                                 placeholder='Brands'
                                 type={'text'}
@@ -405,7 +409,7 @@ class InstaAdd extends Component {
             case 'CONDITIONS':
                 return(
                     <>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <input
                                 placeholder='Condition Type'
                                 type={'text'}
@@ -429,7 +433,7 @@ class InstaAdd extends Component {
             case 'LOCHIERARCHY':
                 return(
                     <>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <input
                                 placeholder='Hierarchy Name'
                                 type={'text'}
@@ -471,7 +475,7 @@ class InstaAdd extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.depreciation_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -514,7 +518,7 @@ class InstaAdd extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.asset_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -557,7 +561,7 @@ class InstaAdd extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.category_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -606,7 +610,7 @@ class InstaAdd extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.sub_category_code) && 'is-invalid'}`} />
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <textarea
                                 placeholder='Description'
                                 name={'description'}
@@ -665,7 +669,7 @@ class InstaAdd extends Component {
                             </select>
                         </div>
                         {subLoc}
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
                                 <option>Select Hierarchy</option>
                                 <HierarchiesOptions />
@@ -710,7 +714,7 @@ class InstaAdd extends Component {
                                 className={`ui-custom-input ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
                         </div>
 
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'module_id'} value={module_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.module_id) && 'is-invalid'}`}>
                                 <option>Select Module</option>
                                 <ModuleOptions />
@@ -810,7 +814,7 @@ class InstaAdd extends Component {
                             </select>
                         </div>
                         {subLocation}
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
                                 <option>Select Role</option>
                                 <UserRoleOptions />
@@ -1088,6 +1092,7 @@ class InstaAdd extends Component {
     }
 
     render() {
+        const {error, errorMessage, success, successMessage} = this.state
         return (
             <div>
                 <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
@@ -1101,6 +1106,16 @@ class InstaAdd extends Component {
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            {error && <div className="alert alert-danger mx-2 my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
+                                {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
+                            </div>}
+                            {success &&
+                            <div className="alert alert-success mx-2 my-2 position-relative d-flex justify-content-between align-items-center"
+                                 role="alert">
+                                {successMessage} <i className="fas fa-times " onClick={() => {
+                                this.setState({success: false})
+                            }}></i>
+                            </div>}
                             <div className="modal-body min-h-50vh">
                                 {this.renderForm()}
                             </div>

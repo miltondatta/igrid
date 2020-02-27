@@ -1064,6 +1064,7 @@ class AdminInputContainer extends Component {
                 )
                 return(
                     <>
+                        <div className={'mb-20p'}>
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Location Name</label>
                                 <input
@@ -1099,6 +1100,7 @@ class AdminInputContainer extends Component {
                                 </select>
                             </div>
                             {subLoc}
+                        </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Location</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
@@ -1218,27 +1220,29 @@ class AdminInputContainer extends Component {
                 ))
                 return(
                     <>
-                        <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Users</label>
-                            <select name={'user_id'} value={user_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.user_id) && 'is-invalid'}`}>
-                                <option>Select User</option>
-                                <UserOptions />
-                            </select>
-                        </div>
-                        <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Locations</label>
-                            <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
-                                <option>Select Location</option>
-                                <LocationsOptions selectedId={location_id} />
-                            </select>
-                        </div>
-                        {subLocation}
-                        <div className="px-1 mb-20p">
-                            <label className={'ui-custom-label'}>User Role</label>
-                            <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
-                                <option>Select Role</option>
-                                <UserRoleOptions />
-                            </select>
+                        <div className={'mb-20p'}>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Users Name</label>
+                                <select name={'user_id'} value={user_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.user_id) && 'is-invalid'}`}>
+                                    <option>Select User</option>
+                                    <UserOptions />
+                                </select>
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>User Role</label>
+                                <select name={'role_id'} value={role_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.role_id) && 'is-invalid'}`}>
+                                    <option>Select Role</option>
+                                    <UserRoleOptions />
+                                </select>
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Locations</label>
+                                <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                    <option>Select Location</option>
+                                    <LocationsOptions selectedId={location_id} />
+                                </select>
+                            </div>
+                            {subLocation}
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
