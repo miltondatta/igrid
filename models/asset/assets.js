@@ -10,110 +10,133 @@ const AssetSubCategory = require('./assetSubCategory')
 const DepreciationMethods = require('./depreciation_methods')
 
 const Assets = db.define('assets', {
-    challan_id:{
+    challan_id: {
         type: Sequelize.INTEGER,
         references: {
             model: Challan,
             key: 'id'
         },
     },
-    project_id:{
+    project_id: {
         type: Sequelize.INTEGER,
         references: {
             model: Project,
             key: 'id'
         },
     },
-    product_id:{
+    product_id: {
         type: Sequelize.INTEGER,
         references: {
             model: Products,
             key: 'id'
         },
     },
-    asset_category:{
+    asset_category: {
         type: Sequelize.INTEGER,
         references: {
             model: AssetCategory,
             key: 'id'
         },
     },
-    asset_sub_category:{
+    asset_sub_category: {
         type: Sequelize.INTEGER,
         references: {
             model: AssetSubCategory,
             key: 'id'
         },
     },
-    product_serial:{
+    product_serial: {
         type: Sequelize.STRING
     },
-    cost_of_purchase:{
+    cost_of_purchase: {
         type: Sequelize.DOUBLE
     },
-    installation_cost:{
+    installation_cost: {
         type: Sequelize.DOUBLE
     },
-    carrying_cost:{
+    carrying_cost: {
         type: Sequelize.DOUBLE
     },
-    other_cost:{
+    other_cost: {
         type: Sequelize.DOUBLE
     },
-    asset_type:{
+    asset_type: {
         type: Sequelize.INTEGER,
         references: {
             model: AssetType,
             key: 'id'
         },
     },
-    depreciation_method:{
+    depreciation_method: {
         type: Sequelize.INTEGER,
         references: {
             model: DepreciationMethods,
             key: 'id'
         },
     },
-    rate:{
+    rate: {
         type: Sequelize.INTEGER
     },
-    effective_date:{
+    effective_date: {
         type: Sequelize.DATEONLY
     },
-    book_value:{
+    book_value: {
         type: Sequelize.DOUBLE
     },
-    salvage_value:{
+    salvage_value: {
         type: Sequelize.DOUBLE
     },
-    useful_life:{
+    useful_life: {
         type: Sequelize.DOUBLE
     },
-    last_effective_date:{
+    last_effective_date: {
         type: Sequelize.DATEONLY
     },
-    warranty:{
+    warranty: {
         type: Sequelize.STRING
     },
-    last_warranty_date:{
+    last_warranty_date: {
         type: Sequelize.DATEONLY
     },
-    condition:{
+    condition: {
         type: Sequelize.INTEGER,
         references: {
             model: Conditions,
             key: 'id'
         },
     },
-    comments:{
+    comments: {
         type: Sequelize.TEXT
     },
-    barcode:{
+    barcode: {
         type: Sequelize.BOOLEAN
     },
-    assign_to:{
+    assign_to: {
         type: Sequelize.INTEGER
     },
+    is_disposal: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+    },
+    disposal_by_location: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    disposal_by_role_id: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    disposal_by: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    },
+    disposal_date: {
+        type: Sequelize.DATE,
+        allowNull: true
+    },
+    disposal_reason: {
+        type: Sequelize.STRING
+    }
 })
 
 module.exports = Assets

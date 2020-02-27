@@ -56,21 +56,22 @@ export const sidenav = [
         subCat: true,
         categories: [
             {
-                id: 1,
+                id: 9,
                 name: 'Asset Registration',
                 link: '/stock-reg',
                 icon: ""
             },
             {
+                id: 1,
+                name: 'Existing Assets',
+                link: '/challan',
+                icon: ""
+            },
+
+            {
                 id: 2,
                 name: 'Own Stock',
                 link: '/own-stock',
-                icon: ""
-            },
-            {
-                id: 3,
-                name: 'Stock',
-                link: '/challan',
                 icon: ""
             },
             {
@@ -80,19 +81,19 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 5,
+                id: 11,
                 name: 'Asset Dispose',
                 link: '/asset-dispose',
                 icon: ""
             },
             {
-                id: 6,
+                id: 14,
                 name: 'Asset Transfer',
                 link: '/asset-transfer',
                 icon: ""
             },
             {
-                id: 7,
+                id: 15,
                 name: 'Repair & Maintenance',
                 link: '/asset-repair',
                 icon: ""
@@ -120,6 +121,20 @@ export const sidenav = [
         ]
     },
     {
+        id: 8,
+        name: 'Complaints',
+        icon: 'fas fa-book-dead',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Complaints',
+                link: '/complain',
+                icon: ""
+            },
+        ]
+    },
+    {
         id: 7,
         name: 'MIS',
         icon: 'fas fa-reply-all',
@@ -138,7 +153,7 @@ export const sidenav = [
                 icon: ""
             },
         ]
-    }
+    },
 ]
 
 export const systemAdmin = [
@@ -270,6 +285,32 @@ export const systemAdmin = [
                 id: 1,
                 name: 'User Login',
                 link: '/admin/user-login-log',
+                icon: ""
+            }
+        ]
+    },
+    {
+        id: 11,
+        name: 'Complaints',
+        icon: 'fas fa-book-dead',
+        subCat: true,
+        categories: [
+            {
+                id: 3,
+                name: 'Complaints',
+                link: '/admin/complaint',
+                icon: ""
+            },
+            {
+                id: 1,
+                name: 'Complaint Category',
+                link: '/admin/complain-category',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Complaint Sub Category',
+                link: '/admin/complain-sub-category',
                 icon: ""
             }
         ]

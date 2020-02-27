@@ -12,6 +12,9 @@ import HierarchiesOptions from "../../utility/component/hierarchyOptions";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
 import UserOptions from "../../utility/component/userOptions";
 import ApproveLevelOptions from "../../utility/component/approveLevelOptions";
+import ComCategoryOptions from "../../utility/component/comCategoryOption";
+import ComSubCategoryOptions from "../../utility/component/comSubCategoryOptions";
+import jwt from "jsonwebtoken";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -47,6 +50,7 @@ class AdminInputContainer extends Component {
             editId: null,
             errorDict: null,
             error: false,
+            complaint_status: false,
             success: false,
             enlisted: false,
             isLoading: false,
@@ -264,6 +268,27 @@ class AdminInputContainer extends Component {
                     dataTableData,
                 })
                 break;
+            case 'COMCATEGORY':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'COMSUBCATEGORY':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
+            case 'COMPLAINT':
+
+                dataTableData = allProjects
+                this.setState({
+                    dataTableData,
+                })
+                break;
             case 'USERASSOCIATE':
                 allProjects.map((items, key) => {
                     let obj = {}
@@ -352,7 +377,7 @@ class AdminInputContainer extends Component {
                 })
             }
         }
-        else if(name === 'enlisted'){
+        else if(name === 'enlisted' || name === 'complaint_status'){
             this.setState({
                 [name]: checked
             })
@@ -402,8 +427,9 @@ class AdminInputContainer extends Component {
         const {formType} = this.props
         const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id, image_name,
             category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code, order_by,
-            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name, module_id,
-            module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id, location_heirarchy_id} = this.state
+            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name,
+            module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id, location_heirarchy_id,complaint_status, complaint_name,
+            com_sub_category_name, com_category_id, com_sub_category_id, problem_details} = this.state
 
         switch (formType){
             case 'VENDOR':
@@ -801,6 +827,128 @@ class AdminInputContainer extends Component {
                             </>}
                     </>
                 )
+            case 'COMCATEGORY':
+                return(
+                    <>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Complaint Name</label>
+                            <input
+                                placeholder='Type Name'
+                                type={'text'}
+                                name={'complaint_name'}
+                                value={complaint_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.complaint_name) && 'is-invalid'}`}  />
+                        </div>
+                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                            <input
+                                type={'checkbox'}
+                                checked={complaint_status}
+                                id={'complaint_status'}
+                                name={'complaint_status'}
+                                value={complaint_status}
+                                onChange={this.handleChange} />
+                            <label htmlFor="complaint_status" className={'mb-0'}>Display</label>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        asset_code: '',
+                                        type_name: '',
+                                        description: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                            </>}
+                    </>
+                )
+            case 'COMSUBCATEGORY':
+                return(
+                    <>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Complaint Category</label>
+                            <select name={'com_category_id'} value={com_category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.com_category_id) && 'is-invalid'}`}>
+                                <option>Select Category</option>
+                                <ComCategoryOptions />
+                            </select>
+                        </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Complaint Sub Category Name</label>
+                            <input
+                                placeholder='Sub Category Name'
+                                type={'text'}
+                                name={'com_sub_category_name'}
+                                value={com_sub_category_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.com_sub_category_name) && 'is-invalid'}`}  />
+                        </div>
+                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                            <input
+                                type={'checkbox'}
+                                checked={complaint_status}
+                                id={'complaint_status'}
+                                name={'complaint_status'}
+                                value={complaint_status}
+                                onChange={this.handleChange} />
+                            <label htmlFor="complaint_status" className={'mb-0'}>Status</label>
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        asset_code: '',
+                                        type_name: '',
+                                        description: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                            </>}
+                    </>
+                )
+            case 'COMPLAINT':
+                return(
+                    <>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Complaint Category</label>
+                            <select name={'com_category_id'} value={com_category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.com_category_id) && 'is-invalid'}`}>
+                                <option>Select Category</option>
+                                <ComCategoryOptions />
+                            </select>
+                        </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Complaint Category</label>
+                            <select name={'com_sub_category_id'} value={com_sub_category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.com_sub_category_id) && 'is-invalid'}`}>
+                                <option>Select Sub Category</option>
+                                <ComSubCategoryOptions com_category_id={com_category_id}/>
+                            </select>
+                        </div>
+                        <div className="px-1 mb-20p">
+                            <label className={'ui-custom-label'}>Problem Details</label>
+                            <textarea
+                                placeholder='Problem Details'
+                                type={'text'}
+                                name={'problem_details'}
+                                value={problem_details}
+                                onChange={this.handleChange}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.problem_details) && 'is-invalid'}`}  />
+                        </div>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                                <button className="reset-btn-normal mt-3" onClick={() => {
+                                    this.setState({
+                                        editId: null,
+                                        asset_code: '',
+                                        type_name: '',
+                                        description: '',
+                                    }, () => {
+                                        this.validate()
+                                    })}}>Go Back</button>
+                            </>}
+                    </>
+                )
             case 'ASSETCATEGORY':
                 return(
                     <>
@@ -1119,7 +1267,7 @@ class AdminInputContainer extends Component {
         const {vendor_name, file_name, description, project_name, project_code, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name, product_code, brand_id, model_id, depreciation_code, method_name,  module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id,
-            user_id, location_id, role_id, location_heirarchy_id} = this.state
+            user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, com_sub_category_id, com_category_id, problem_details} = this.state
         switch (formType){
             case "USERROLES":
                 errorDict = {
@@ -1193,6 +1341,16 @@ class AdminInputContainer extends Component {
                     errorDict
                 })
                 return errorDict
+            case "COMPLAINT":
+                errorDict = {
+                    com_category_id: com_category_id !== '',
+                    com_sub_category_id: com_sub_category_id !== '',
+                    problem_details: problem_details !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
             case "MODELS":
                 errorDict = {
                     model: model !== '',
@@ -1220,6 +1378,24 @@ class AdminInputContainer extends Component {
             case "BRANDS":
                 errorDict = {
                     brand: brand !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
+            case "COMCATEGORY":
+                errorDict = {
+                    complaint_status: complaint_status !== '',
+                    complaint_name: complaint_name !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
+            case "COMSUBCATEGORY":
+                errorDict = {
+                    com_sub_category_name: complaint_status !== '',
+                    com_category_id: complaint_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1289,7 +1465,7 @@ class AdminInputContainer extends Component {
         const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name, module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id, image_name,
-            user_id, location_id, role_id, location_heirarchy_id} = this.state
+            user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, com_sub_category_name, com_category_id, com_sub_category_id, problem_details} = this.state
         switch (formType){
             case "USERROLES":
                 return ({role_desc, role_name, module_id})
@@ -1335,11 +1511,24 @@ class AdminInputContainer extends Component {
                 })
             case "CONDITIONS":
                 return({condition_type})
+            case "COMCATEGORY":
+                return({status: complaint_status, complaint_name})
+            case "COMSUBCATEGORY":
+                return({status: complaint_status, sub_complaint_name: com_sub_category_name, complain_id: com_category_id})
             case "LOCHIERARCHY":
                 return({hierarchy_name})
             case "BRANDS":
                 return({
                     brand
+                })
+            case "COMPLAINT":
+                return({
+                    createdBy: jwt.decode(localStorage.getItem('user')).data.id,
+                    locationId: jwt.decode(localStorage.getItem('user')).data.location_id,
+                    roleID: jwt.decode(localStorage.getItem('user')).data.role_id,
+                    complaint_category: com_category_id,
+                    complaint_sub_category: com_sub_category_id,
+                    problemDetails: problem_details,
                 })
             case "LOCATIONS":
                 return({hierarchy, parent_id, location_code, location_name})
@@ -1363,7 +1552,7 @@ class AdminInputContainer extends Component {
     }
 
     render() {
-        const {getApi, title, headTitle} = this.props
+        const {getApi, title, headTitle, formType} = this.props
         const {error, errorMessage, isLoading, allProjects, success, successMessage, dataTableData} = this.state
         return (
             <>
@@ -1390,15 +1579,15 @@ class AdminInputContainer extends Component {
                         </nav>
                         {isLoading ? <h2>Loading</h2> : dataTableData.length > 0 ? <>
                             <ReactDataTable
-                                edit
-                                dataDisplay
-                                footer
-                                isLoading
-                                pagination
-                                searchable
+                                edit = {formType !== 'COMPLAINT'}
+                                dataDisplay = {formType !== 'COMPLAINT'}
+                                footer = {formType !== 'COMPLAINT'}
+                                isLoading = {formType !== 'COMPLAINT'}
+                                pagination = {formType !== 'COMPLAINT'}
+                                searchable = {formType !== 'COMPLAINT'}
 
                                 deleteModalTitle={title}
-                                del={getApi}
+                                del={formType !== 'COMPLAINT' ? getApi : false}
                                 tableData={dataTableData}
                                 updateEdit={this.updateEdit}
                             />

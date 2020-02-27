@@ -15,6 +15,21 @@ route.get('/requisition-master', (req,res,next) => {
         })
 })
 
+// My Requisition
+route.get('/requisition-master/my-req/:id', async (req,res,next) => {
+    const [data, metaData] = await db.query(`
+        SELECT requisition_masters.id, CONCAT(users."firstName", ' ', users."lastName") as userName, locations.location_name, requisition_masters.request_date, requisition_masters.requisition_no FROM requisition_masters
+            JOIN users ON users.id = requisition_masters.request_by
+            JOIN locations ON locations.id = requisition_masters.location_id
+            WHERE requisition_masters.request_by = ${req.params.id}
+    `)
+    if (data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json()
+    }
+})
+
 // Update
 route.put('/requisition-master/update/:id', (req,res,next) => {
     const {mobile, email, location_id, role_id, request_by} = req.body
