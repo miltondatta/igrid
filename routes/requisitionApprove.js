@@ -65,7 +65,7 @@ route.get('/requisition-approve/count-req/:id', async (req,res,next) => {
     const [results, metadata] = await db.query(`
         SELECT * FROM requisition_approves
               JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
-                WHERE requisition_masters.request_by = 7
+                WHERE requisition_masters.request_by = ${req.params.id}
         `)
     if (results.length > 0) {
         res.status(200).json(results.length)
