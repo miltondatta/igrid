@@ -29,6 +29,10 @@ const Challan = db.define('challans', {
     received_by: {
         type: Sequelize.STRING,
     },
+    is_closed: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+    },
     added_by: {
         type: Sequelize.INTEGER,
     },

@@ -22,7 +22,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-transform: uppercase;
+    text-transform: capitalize;
     background-color: transparent !important;
     border-color: transparent !important;
 }

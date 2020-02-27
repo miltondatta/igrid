@@ -175,7 +175,7 @@ class ReactDataTable extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className={'d-flex align-items-center'}>
+                    <div className={'d-flex align-items-center justify-content-end'}>
                         {edit && <p className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                             <i className="icofont-ui-edit"></i>
                         </p>}
@@ -230,7 +230,7 @@ class ReactDataTable extends Component {
                             </p>
                             {table_headers}
                         </div>
-                        <div className={'d-flex align-items-center'}>
+                        <div className={'d-flex align-items-center justify-content-end'}>
                             {edit && <p className={'w-95px'}>Edit</p>}
                             {del && <p className={'w-95px'}>Delete</p>}
                             {add && <p className={'w-95px'}>Add</p>}

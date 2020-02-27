@@ -55,7 +55,7 @@ route.get('/assets-entry/specific-challan/:id', (req,res,next) => {
 route.get('/assets-entry/assets/:id', async (req,res,next) => {
     console.log(req.params.id , 38)
     const [results, metadata] = await db.query(`
-            SELECT assets.id,assets.product_serial,challans.challan_name, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name,asset_sub_categories.sub_category_name,projects.project_name From assets
+            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name,asset_sub_categories.sub_category_name,projects.project_name From assets
             JOIN challans ON assets.challan_id = challans.id
             JOIN projects ON assets.project_id = projects.id
             JOIN asset_categories ON assets.asset_category = asset_categories.id
@@ -156,13 +156,11 @@ route.post('/challan-receiver', async (req,res,next) => {
 // Asset Entry
 route.post('/assets-entry/entry', (req,res,next) => {
     req.body.map(item => {
-        console.log(item, 73)
         Assets.create(item)
             .then(resData => {
                 if (item.product_serial === '') {
                     Assets.update({product_serial: resData.id},{where: {id: resData.id}})
                         .then(upd => {
-                            console.log('Successfully Updated Product Serial', 78)
                         })
                 }
                 AssetHistory.create({asset_id: resData.id, assign_to: resData.assign_to})
@@ -205,7 +203,7 @@ route.put('/assets-entry/challan-update/:id', (req, res, next) => {
         attachment !== '' && received_by !== '' && challanComments !== '' && added_by !== '') {
         Challan.update({...req.body}, {where: {id: req.params.id}})
             .then(() => {
-                res.status(200).json({message: 'Challan has been updated'})
+                res.status(200).json({message: 'Challan has been updated', status: true})
             })
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
