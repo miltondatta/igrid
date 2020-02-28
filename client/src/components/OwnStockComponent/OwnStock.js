@@ -43,7 +43,7 @@ class OwnStock extends Component {
         this.setState({
             isLoading: true
         }, () => {
-            axios.get(apiUrl() + 'assets-entry/all/' + id)
+            axios.post(apiUrl() + 'assets-entry/all/by/credentials', {user_id: id})
                 .then(res => {
                     this.setState({
                         allData: res.data[0],

@@ -27,6 +27,9 @@ class AssetListByUserOptions extends Component {
                         assetList: resData.data[0]
                     })
                 })
+                .catch(err => {
+                    console.log(err.response);
+                })
         }
     });
 

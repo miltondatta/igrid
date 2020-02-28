@@ -27,6 +27,9 @@ class AssetProductByUserOptions extends Component {
                         assetProduct: resData.data[0]
                     })
                 })
+                .catch(err => {
+                    console.log(err.response);
+                })
         }
     });
 

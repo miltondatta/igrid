@@ -24,6 +24,9 @@ class AssetCategoryByUserOption extends Component {
                     assetCategory: resData.data[0]
                 })
             })
+            .catch(err => {
+                console.log(err.response);
+            })
     };
 
     render() {

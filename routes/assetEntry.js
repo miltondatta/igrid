@@ -6,6 +6,8 @@ const Vendors  = require('../models/asset/vendors')
 const Challan = require('../models/asset/challan')
 const Assets = require('../models/asset/assets')
 const AssetHistory = require('../models/asset/asset_history')
+const UserAssociateRole = require('../models/userassociaterole')
+const moment = require('moment');
 
 const route = express.Router()
 
@@ -231,10 +233,20 @@ route.delete('/assets-entry/delete', (req,res,next) => {
 })
 
 // Assets Entry Data By User ID
-route.get('/assets-entry/all/:user_id', async (req, res) => {
+route.post('/assets-entry/all/by/credentials', async (req, res) => {
     try {
-        const user_id = req.params.user_id;
-        const data = await db.query(`select distinct on(assets.product_serial) product_serial, assets.id,
+        const {user_id, category_id, sub_category_id, product_id, product_serial, is_disposal} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+        if (product_id) queryText += ' and assets.product_id = ' + product_id;
+        if (product_serial) queryText += ' and assets.product_serial = ' + "\'" + product_serial + "\'";
+        if (is_disposal) queryText += ' and assets.is_disposal = ' + !is_disposal;
+
+        const data = await db.query(`select distinct on(assets.product_serial) product_serial, 
+                               assets.id,
                                products.product_name,
                                asset_categories.category_name,
                                asset_sub_categories.sub_category_name,
@@ -258,7 +270,7 @@ route.get('/assets-entry/all/:user_id', async (req, res) => {
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
                                  join conditions on assets.condition = conditions.id
-                        where assign_to = ${user_id}`);
+                        ${queryText} order by assets.product_serial`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -329,6 +341,41 @@ route.post('/get/assets/by/credentials', async (req, res) => {
 
         return res.status(200).json(data);
     } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Dispose Asset by Id List
+route.post('/asset-disposal/by/credentials', async (req, res) => {
+    try{
+        const {disposalCredential} = req.body;
+        if (!disposalCredential.length) return res.status(400).json({error: true, msg: 'No credential found!'});
+
+        const user_associate_info = await UserAssociateRole.findOne({attributes: ["location_id", "role_id"], where: {user_id: disposalCredential[0].user_id}});
+        if (!user_associate_info) return res.status(400).json({error: true, msg: 'User Associate Info didn\'t found!'});
+
+        disposalCredential.map((item, index) => {
+            const updateAsset = {
+                is_disposal: true,
+                disposal_by_location: user_associate_info.location_id,
+                disposal_by_role_id: user_associate_info.role_id,
+                disposal_by: item.user_id,
+                disposal_date: moment().format('YYYY-MM-DD'),
+                disposal_reason: item.disposal_reason
+            };
+
+            Assets.update(updateAsset, {where: {id: item.id}})
+                .then(() => {
+                    if (disposalCredential.length === index + 1) return res.status(200).json({success: true, msg: 'Asset Disposal Info saved successfully!'});
+                })
+                .catch(err => {
+                    console.error(err.message);
+                    return res.status(500).json(err);
+                })
+        });
+    }
+    catch (err) {
         console.error(err.message);
         return res.status(500).json(err);
     }
