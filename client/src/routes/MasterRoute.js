@@ -216,6 +216,10 @@ const AsyncComplainList = Loadable({
     loader: () => import('../containers/Complaints/ComplintList'),
     loading: Loading,
 });
+const AsyncLostAssets = Loadable({
+    loader: () => import('../containers/LostAssets'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -268,6 +272,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
                                     <Route exact path='/documents' component={AsyncDocManagement}/>
                                     <Route exact path='/location' component={AsyncLocationFinder}/>
+                                    <Route exact path='/lost-assets' component={AsyncLostAssets}/>
                                     <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                                     <Route exact path='/admin/user-roles' component={AsyncUserRoles}/>
                                     <Route exact path='/admin/project' component={AsyncCreateProject}/>

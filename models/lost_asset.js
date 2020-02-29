@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     role_id: DataTypes.INTEGER,
     added_by: DataTypes.INTEGER,
     asset_id: DataTypes.INTEGER,
-    asset_id: DataTypes.INTEGER, 
     incident_type: DataTypes.STRING,
     incident_date: DataTypes.DATEONLY,
     incident_time: DataTypes.TIME,

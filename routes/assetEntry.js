@@ -97,6 +97,20 @@ route.get('/assets-entry/sub-assets/:id', async (req,res,next) => {
     }
 })
 
+// Read All Assets By User Id
+route.get('/assets/user/options/:id', async (req,res,next) => {
+    const [data, metaData] = await db.query(`
+        SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products from assets
+            JOIN products ON assets.product_id = products.id
+            WHERE assets.assign_to = ${req.params.id}
+    `)
+    if (data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json({message: "No Data Found"})
+    }
+})
+
 // Challan Entry
 route.post('/assets-entry/challan/entry', (req,res,next) => {
     upload(req, res, function (err) {

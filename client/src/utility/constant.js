@@ -67,7 +67,6 @@ export const sidenav = [
                 link: '/challan',
                 icon: ""
             },
-
             {
                 id: 2,
                 name: 'Own Stock',
@@ -89,7 +88,7 @@ export const sidenav = [
             {
                 id: 4,
                 name: 'Lost Assets Information',
-                link: '',
+                link: '/lost-assets',
                 icon: ""
             },
             {
