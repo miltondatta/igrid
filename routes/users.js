@@ -239,7 +239,7 @@ router.put('/users/password-reset/:id', (req,res,next) => {
                     }
                 })}
         })
-})
+});
 
 // User Login Logs
 router.get('/user-login-logs', async (req, res, next) => {

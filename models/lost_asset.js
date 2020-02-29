@@ -1,20 +1,18 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const lost_asset = sequelize.define('lost_asset', {
-    location_id: DataTypes.INTEGER,
-    role_id: DataTypes.INTEGER,
-    added_by: DataTypes.INTEGER,
-    asset_id: DataTypes.INTEGER,
-    incident_type: DataTypes.STRING,
-    incident_date: DataTypes.DATEONLY,
-    incident_time: DataTypes.TIME,
-    police_station: DataTypes.STRING,
-    gd_no: DataTypes.STRING,
-    gd_date: DataTypes.DATEONLY,
-    gd_other_file: DataTypes.STRING
-  }, {});
-  lost_asset.associate = function(models) {
-    // associations can be defined here
-  };
-  return lost_asset;
-};
+const db = require('../config/db')
+const Sequelize = require('sequelize')
+
+const LostAsset = db.define('lost_assets', {
+  location_id: Sequelize.INTEGER,
+  role_id: Sequelize.INTEGER,
+  added_by: Sequelize.INTEGER,
+  asset_id: Sequelize.INTEGER,
+  incident_type: Sequelize.STRING,
+  incident_date: Sequelize.DATEONLY,
+  incident_time: Sequelize.TIME,
+  police_station: Sequelize.STRING,
+  gd_no: Sequelize.STRING,
+  gd_date: Sequelize.DATEONLY,
+  gd_other_file: Sequelize.STRING
+}, {});
+
+module.exports = LostAsset
