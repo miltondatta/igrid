@@ -133,29 +133,47 @@ export const sidenav = [
             },
         ]
     },
+]
+
+export const systemAdmin = [
     {
-        id: 7,
-        name: 'MIS',
-        icon: 'fas fa-reply-all',
+        id: 10,
+        name: 'System Config',
+        icon: 'icofont-ui-settings',
         subCat: true,
         categories: [
             {
-                id: 1,
-                name: 'Indicator Category',
-                link: '/mis-indicator-category',
+                id: 14,
+                name: 'Modules',
+                link: '/admin/modules',
                 icon: ""
             },
             {
-                id: 2,
-                name: 'Indicator',
-                link: '/mis-indicator',
+                id: 12,
+                name: 'User Roles',
+                link: '/admin/user-roles',
+                icon: ""
+            },
+            {
+                id: 10,
+                name: 'Location Hierarchies',
+                link: '/admin/loc_hierarchies',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Approval Level',
+                link: '/admin/approval-level',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'Depreciation Methods',
+                link: '/admin/depreciation-methods',
                 icon: ""
             },
         ]
     },
-]
-
-export const systemAdmin = [
     {
         id: 9,
         name: 'Setting',
@@ -237,39 +255,21 @@ export const systemAdmin = [
         ]
     },
     {
-        id: 10,
-        name: 'Configuration',
-        icon: 'icofont-ui-settings',
+        id: 7,
+        name: 'MIS Config',
+        icon: 'fas fa-reply-all',
         subCat: true,
         categories: [
             {
-                id: 14,
-                name: 'Modules',
-                link: '/admin/modules',
+                id: 1,
+                name: 'Indicator Category',
+                link: '/mis-indicator-category',
                 icon: ""
             },
             {
-                id: 12,
-                name: 'User Roles',
-                link: '/admin/user-roles',
-                icon: ""
-            },
-            {
-                id: 10,
-                name: 'Location Hierarchies',
-                link: '/admin/loc_hierarchies',
-                icon: ""
-            },
-            {
-                id: 17,
-                name: 'Approval Level',
-                link: '/admin/approval-level',
-                icon: ""
-            },
-            {
-                id: 7,
-                name: 'Depreciation Methods',
-                link: '/admin/depreciation-methods',
+                id: 2,
+                name: 'Indicator',
+                link: '/mis-indicator',
                 icon: ""
             },
         ]
