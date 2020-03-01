@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class AboutComponent extends Component {
     render() {
         return (
-            <div className={'grid-50-50 h-100 bg-white rounded'}>
+            <div className={'grid-55-45 h-100 bg-white rounded'}>
                 <div className={'ui-about'}>
                     <img src={process.env.PUBLIC_URL + '/media/image/about.png'} alt="Register"/>
                 </div>

@@ -3,6 +3,7 @@ import Loadable from 'react-loadable'
 import React, {Component} from 'react'
 import {Switch, Route, withRouter, Redirect} from 'react-router-dom'
 import Topnav from '../layouts/Topnav';
+import Footer from "../layouts/Footer";
 
 const AsyncHome = Loadable({
     loader: () => import('../containers/Home'),
@@ -244,14 +245,13 @@ class MasterRoute extends Component{
             )
         } else if(pathname === '/'){
             return(
-                <div className=' h-100'>
-                        <Topnav home />
-                        <div className='ui-body-container'>
-                            <Switch>
-                                <Route exact path='/' component={AsyncHome} />
-                            </Switch>
-                        </div>
-                </div>
+                <>
+                    <Topnav home />
+                        <Switch>
+                            <Route exact path='/' component={AsyncHome} />
+                        </Switch>
+                    <Footer />
+                </>
             )
         } else {
             const userInfo = localStorage.getItem('user')

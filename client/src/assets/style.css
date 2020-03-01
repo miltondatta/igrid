@@ -173,6 +173,8 @@ input[type=date],
 .is-invalid{border: 1px solid red}
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
+.text-copyright{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;    width: 100%;
+   bottom: -34px;}
 .text-grey{color: #5e6367 !important}
 .text-bold{color: #343434 !important;}
 .text-project{color: #0f5ea8 !important;}
@@ -215,6 +217,10 @@ input[type=date],
 .grid-50-50{
    display: grid;
    grid-template-columns: 50% 50%;
+}
+.grid-55-45{
+   display: grid;
+   grid-template-columns: 55% 45%;
 }
 
 .drop-shadow{
@@ -558,6 +564,15 @@ label:focus,
    outline:0px !important;
    -webkit-appearance:none;
    box-shadow: none !important;
+}
+
+.btn-message{
+   height: 55px;
+   background: #179fff;
+   color: white;
+   font-size: 19px;
+   border: none;
+   border-radius: 5px;
 }
 
 .ui-docDetailsFile{
