@@ -1,12 +1,24 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const lost_asset_feedback = sequelize.define('lost_asset_feedback', {
-    lost_asset_id: DataTypes.INTEGER,
-    feedback_by: DataTypes.INTEGER,
-    feedback_details: DataTypes.STRING
+const db = require('../config/db')
+const Sequelize = require('sequelize')
+const LostAsset = require('./lost_asset')
+const Users = require('./user')
+
+  const LostAssetFeedback = db.define('lost_asset_feedbacks', {
+    lost_asset_id: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: LostAsset,
+        key: 'id'
+      }
+    },
+    feedback_by: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: Users,
+        key: 'id'
+      }
+    },
+    feedback_details: Sequelize.STRING
   }, {});
-  lost_asset_feedback.associate = function(models) {
-    // associations can be defined here
-  };
-  return lost_asset_feedback;
-};
+
+  module.exports = LostAssetFeedback

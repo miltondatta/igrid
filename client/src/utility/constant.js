@@ -86,9 +86,15 @@ export const sidenav = [
                 icon: ""
             },
             {
-                id: 4,
+                id: 3,
                 name: 'Lost Assets Information',
                 link: '/lost-assets',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Lost Assets Status',
+                link: '/lost-assets-status',
                 icon: ""
             },
             {

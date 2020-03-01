@@ -24,6 +24,10 @@ a:hover{text-decoration: none}
 .h-60px{height: 60px}
 .h-20px{height: 20px}
 .h-215px{height: 215px;}
+.h-200px{height: 200px;}
+
+.overflow-y-auto{overflow-y: auto;}
+.overflow-x-auto{overflow-x: auto;}
 
 .min-h-80vh{
    min-height: 80.5vh;
@@ -620,6 +624,10 @@ label:focus,
 .ui-received-by-active {
    background: #469de1 !important;
    border-left: 5px solid #2384d0 !important;
+}
+
+.modal-dialog{
+   max-width: 1000px !important;
 }
 
 @keyframes animte {

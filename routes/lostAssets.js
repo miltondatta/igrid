@@ -3,6 +3,7 @@ const {Op} = require('sequelize')
 const multer = require('multer')
 const express = require('express')
 const LostAsset = require('../models/lost_asset')
+const LostAssetFeedback = require('../models/lost_asset_feedback')
 
 const route = express.Router()
 
@@ -26,6 +27,7 @@ let upload =  multer({
 }).single('file')
 
 
+// Get Lost Assets
 route.get('/lost-assets', (req,res,next) => {
     LostAsset.findAll({attributes: ['id', 'incident_type', 'police_station', 'gd_no', 'gd_date', 'incident_date', 'incident_time']})
         .then(resData => {
@@ -35,6 +37,25 @@ route.get('/lost-assets', (req,res,next) => {
             console.log(err)
             res.status(200).json({message: 'Something Went Wrong', err})
         })
+})
+
+// Get Lost Assets
+route.get('/lost-asset/feedback/:id', async (req,res,next) => {
+    const [data, metaData] = await db.query(`
+        SELECT lost_assets.id, CONCAT(users."firstName", '_', users."lastName") as feedback_by, user_roles.role_name as designation, locations.location_name as location,
+            lost_asset_feedbacks.feedback_details as feedback FROM lost_asset_feedbacks
+            JOIN lost_assets ON lost_assets.id = lost_asset_feedbacks.lost_asset_id
+            JOIN users ON lost_asset_feedbacks.feedback_by = users.id
+            JOIN user_roles ON lost_assets.role_id = user_roles.id
+            JOIN locations ON locations.id = lost_assets.location_id
+            WHERE lost_asset_feedbacks.lost_asset_id = ${req.params.id}
+    `)
+
+    if (data.length > 0) {
+        res.status(200).json({status: true, data})
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
 })
 
 // Get Lost Assets Incident Type
@@ -51,6 +72,20 @@ route.post('/lost-assets/incident_type', (req,res,next) => {
             })
             .catch(err => {
                 console.log(err, 140)
+            })
+    }
+});
+
+// Post Lost Assets Feedback
+route.post('/lost-assets/feedback', (req,res,next) => {
+    let {feedback_details, lost_asset_id} = req.body
+    if (feedback_details !== '' && lost_asset_id !== '') {
+        LostAssetFeedback.create(req.body)
+            .then(resData => {
+                res.status(200).json({status: true, message: 'Feedback Saved'})
+            })
+            .catch(err => {
+                res.status(200).json({message: 'Something Blew Up'})
             })
     }
 });

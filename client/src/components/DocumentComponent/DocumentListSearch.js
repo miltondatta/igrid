@@ -242,171 +242,173 @@ class DocumentListSearch extends Component {
             <>
                 <div className="px-2 my-2">
                     <h3 className="pb-3">Document Search</h3>
-                    <div className={`bg-white rounded p-2 my-2  `}>
-                        <div className="rounded p-3 my-2">
-                            <div className="row px-2 my-3">
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            Category
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select name={'category_id'} value={category_id}
-                                                    onChange={this.handleChange}
-                                                    className={`form-control`}>
-                                                <option value="">--Select Category--</option>
-                                                <DocumentCategoryOptions/>
-                                            </select>
-                                            {error &&
-                                            <span className="error">{errorMessage}</span>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            Sub Category
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select name={'sub_category_id'} value={sub_category_id}
-                                                    onChange={this.handleChange}
-                                                    className={`form-control`}>
-                                                <option value="">--Select Category--</option>
-                                                {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
-                                                    <option key={index}
-                                                            value={item.id}>{item.sub_category_name}</option>
-                                                ))}
-                                            </select>
+                    <div className="p-2 my-2">
+                        <div className={`bg-white rounded p-2 my-2`}>
+                            <div className="rounded p-3 my-2">
+                                <div className="row px-2 my-3">
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                Category
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select name={'category_id'} value={category_id}
+                                                        onChange={this.handleChange}
+                                                        className={`form-control`}>
+                                                    <option value="">--Select Category--</option>
+                                                    <DocumentCategoryOptions/>
+                                                </select>
+                                                {error &&
+                                                <span className="error">{errorMessage}</span>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="row px-2 my-3">
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            Title
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select name={'title'} value={title}
-                                                    onChange={this.handleChange}
-                                                    className={`form-control`}>
-                                                <option value="">--Select Title--</option>
-                                                {documentTitle.length > 0 && documentTitle.map((item, index) => (
-                                                    <option key={index}
-                                                            value={item.title}>{item.title}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            Content Type
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select name={'content_type'} value={content_type}
-                                                    onChange={this.handleChange}
-                                                    className={`form-control`}>
-                                                <option value="">--Select Content Type--</option>
-                                                {this.content_types.map((value, index) => (
-                                                    <option value={index + 1} key={index}>{value}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row px-2 my-3">
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            Circular No
-                                        </div>
-                                        <div className="col-md-8">
-                                            <input
-                                                placeholder='Circular No'
-                                                name={'circular_no'}
-                                                value={circular_no}
-                                                onChange={this.handleChange}
-                                                className={`form-control`}/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            Keyword
-                                        </div>
-                                        <div className="col-md-8">
-                                            <div className={'mb-2 position-relative'}>
-                                                <ul className={'d-flex flex-wrap mb-1'}>
-                                                    {keywordHolder.length > 0 ? badgeKeyword : <p>Keywords</p>}
-                                                </ul>
-                                                <input onFocus={() => {
-                                                    this.setState({receivedByFocus: true})
-                                                }} onBlur={() => {
-                                                    this.setState({receivedByFocus: false})
-                                                }} autoComplete={'off'} placeholder='Search Keywords'
-                                                       onKeyDown={this.onKeyDown}
-                                                       onKeyPress={e => e.which === 13 && e.preventDefault()}
-                                                       onChange={this.handleChange}
-                                                       name={'keywordText'}
-                                                       value={this.state.keywordText}
-                                                       className="form-control"/>
-                                                {(keyword.length > 0 && (receivedByFocus || recDropFoc)) &&
-                                                <div id={'keywordScrollID'} onMouseEnter={() => {
-                                                    this.setState({recDropFoc: true})
-                                                }}
-                                                     onMouseLeave={() => {
-                                                         this.setState({recDropFoc: false})
-                                                     }} className={'ui-received-by-keyword'} > {keywordList}
-                                                </div>}
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                Sub Category
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select name={'sub_category_id'} value={sub_category_id}
+                                                        onChange={this.handleChange}
+                                                        className={`form-control`}>
+                                                    <option value="">--Select Category--</option>
+                                                    {documentSubCategory.length > 0 && documentSubCategory.map((item, index) => (
+                                                        <option key={index}
+                                                                value={item.id}>{item.sub_category_name}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="row px-2 my-3">
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            From Date
+                                <div className="row px-2 my-3">
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                Title
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select name={'title'} value={title}
+                                                        onChange={this.handleChange}
+                                                        className={`form-control`}>
+                                                    <option value="">--Select Title--</option>
+                                                    {documentTitle.length > 0 && documentTitle.map((item, index) => (
+                                                        <option key={index}
+                                                                value={item.title}>{item.title}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div className="col-md-8">
-                                            <DatePicker timePicker={false}
-                                                        name={'document_date'}
-                                                        className={`form-control`}
-                                                        inputFormat="DD/MM/YYYY"
-                                                        onChange={date => this.setState({from_date: date})}
-                                                        ranges={disabledRanges}
-                                                        value={from_date}/>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                Content Type
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select name={'content_type'} value={content_type}
+                                                        onChange={this.handleChange}
+                                                        className={`form-control`}>
+                                                    <option value="">--Select Content Type--</option>
+                                                    {this.content_types.map((value, index) => (
+                                                        <option value={index + 1} key={index}>{value}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="col-md-4">
-                                            To Date
+                                <div className="row px-2 my-3">
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                Circular No
+                                            </div>
+                                            <div className="col-md-8">
+                                                <input
+                                                    placeholder='Circular No'
+                                                    name={'circular_no'}
+                                                    value={circular_no}
+                                                    onChange={this.handleChange}
+                                                    className={`form-control`}/>
+                                            </div>
                                         </div>
-                                        <div className="col-md-8">
-                                            <DatePicker timePicker={false}
-                                                        name={'document_date'}
-                                                        className={`form-control`}
-                                                        inputFormat="DD/MM/YYYY"
-                                                        onChange={date => this.setState({to_date: date})}
-                                                        ranges={disabledRanges}
-                                                        value={to_date}/>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                Keyword
+                                            </div>
+                                            <div className="col-md-8">
+                                                <div className={'mb-2 position-relative'}>
+                                                    <ul className={'d-flex flex-wrap mb-1'}>
+                                                        {keywordHolder.length > 0 ? badgeKeyword : <p>Keywords</p>}
+                                                    </ul>
+                                                    <input onFocus={() => {
+                                                        this.setState({receivedByFocus: true})
+                                                    }} onBlur={() => {
+                                                        this.setState({receivedByFocus: false})
+                                                    }} autoComplete={'off'} placeholder='Search Keywords'
+                                                           onKeyDown={this.onKeyDown}
+                                                           onKeyPress={e => e.which === 13 && e.preventDefault()}
+                                                           onChange={this.handleChange}
+                                                           name={'keywordText'}
+                                                           value={this.state.keywordText}
+                                                           className="form-control"/>
+                                                    {(keyword.length > 0 && (receivedByFocus || recDropFoc)) &&
+                                                    <div id={'keywordScrollID'} onMouseEnter={() => {
+                                                        this.setState({recDropFoc: true})
+                                                    }}
+                                                         onMouseLeave={() => {
+                                                             this.setState({recDropFoc: false})
+                                                         }} className={'ui-received-by-keyword'} > {keywordList}
+                                                    </div>}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="d-flex justify-content-end">
-                                <button className="btn btn-outline-info"
-                                        onClick={this.handleSearch}>Search
-                                </button>
+                                <div className="row px-2 my-3">
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                From Date
+                                            </div>
+                                            <div className="col-md-8">
+                                                <DatePicker timePicker={false}
+                                                            name={'document_date'}
+                                                            className={`form-control`}
+                                                            inputFormat="DD/MM/YYYY"
+                                                            onChange={date => this.setState({from_date: date})}
+                                                            ranges={disabledRanges}
+                                                            value={from_date}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                To Date
+                                            </div>
+                                            <div className="col-md-8">
+                                                <DatePicker timePicker={false}
+                                                            name={'document_date'}
+                                                            className={`form-control`}
+                                                            inputFormat="DD/MM/YYYY"
+                                                            onChange={date => this.setState({to_date: date})}
+                                                            ranges={disabledRanges}
+                                                            value={to_date}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="d-flex justify-content-end">
+                                    <button className="btn btn-outline-info"
+                                            onClick={this.handleSearch}>Search
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
