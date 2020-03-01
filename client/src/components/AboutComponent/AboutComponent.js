@@ -10,22 +10,10 @@ class AboutComponent extends Component {
                 <div className={'p-4'}>
                     <h1>About <b>iGrid</b></h1>
                     <p className={'text-justify line-h-35px '}>
-                        What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown
-                        printer took a galley of type and scrambled it to make a type specimen book it has What is Lorem
-                        Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has
-                        been the industry's standard dummy text ever since the 1500s when an unknown printer took a
-                        galley of type and scrambled it to make a type specimen book it has What is Lorem Ipsum Lorem
-                        Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s when an unknown printer took a galley of
-                        type and scrambled it to make a type specimen book it has What is Lorem Ipsum Lorem Ipsum is
-                        simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's
-                        standard dummy text ever since the 1500s when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book it has What is Lorem Ipsum Lorem Ipsum is simply dummy
-                        text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy
-                        text ever since the 1500s when an unknown printer took a galley of type and scrambled it to maketype
-                        specimen book it has What is Lorem Ipsum Lorem Ipsum is simply dummy the industry's standard dummy
-                        text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make
+                    All the stories that describe about our size and diversity, as remarkable and significant as they may be, are secondary to the truest measure of Penta Global: The impact we make to the people & the business. Despite of short tenure of establishment (July, 2013), Penta Global imparted more than 20+ years of skilled resources, long-term proven reliability and investment protection, as well as its many certified IT security standards which helps Penta Global to be the trustworthy company to across the industry.
+
+                    <br/><br/> 
+                    People may ask, “Why the Penta Global is different?” and the answer resides in the many specific cases of where we have helped our partners and people to achieve remarkable goals, solve complex problems, or make meaningful progress with trust. In deeper still, it’s in the beliefs, behaviors, and fundamental sense of purpose that underpin all that we do.
                     </p>
                 </div>
             </div>

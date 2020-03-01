@@ -9,132 +9,164 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      challan_id:{
+      challan_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'challans',
           key: 'id'
         },
       },
-      project_id:{
+      project_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'projects',
           key: 'id'
         },
       },
-      assign_to:{
+      assign_to: {
         type: Sequelize.INTEGER
       },
-      product_id:{
+      product_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "products",
           key: 'id'
         },
       },
-      asset_category:{
+      asset_category: {
         type: Sequelize.INTEGER,
         references: {
           model: 'asset_categories',
           key: 'id'
         },
       },
-      asset_sub_category:{
+      asset_sub_category: {
         type: Sequelize.INTEGER,
         references: {
           model: 'asset_sub_categories',
           key: 'id'
         },
       },
-      product_serial:{
+      product_serial: {
         type: Sequelize.STRING
       },
-      cost_of_purchase:{
+      cost_of_purchase: {
         type: Sequelize.DOUBLE
       },
-      installation_cost:{
+      installation_cost: {
         type: Sequelize.DOUBLE
       },
-      carrying_cost:{
+      carrying_cost: {
         type: Sequelize.DOUBLE
       },
-      other_cost:{
+      other_cost: {
         type: Sequelize.DOUBLE
       },
-      asset_type:{
+      asset_type: {
         type: Sequelize.INTEGER,
         references: {
           model: 'asset_types',
           key: 'id'
         },
       },
-      depreciation_method:{
+      depreciation_method: {
         type: Sequelize.INTEGER,
         references: {
           model: 'depreciation_methods',
           key: 'id'
         },
       },
-      rate:{
+      rate: {
         type: Sequelize.INTEGER
       },
-      effective_date:{
+      effective_date: {
         type: Sequelize.DATEONLY
       },
-      book_value:{
+      book_value: {
         type: Sequelize.DOUBLE
       },
-      salvage_value:{
+      salvage_value: {
         type: Sequelize.DOUBLE
       },
-      useful_life:{
+      useful_life: {
         type: Sequelize.DOUBLE
       },
-      last_effective_date:{
+      last_effective_date: {
         type: Sequelize.DATEONLY
       },
-      warranty:{
+      warranty: {
         type: Sequelize.STRING
       },
-      last_warranty_date:{
+      last_warranty_date: {
         type: Sequelize.DATEONLY
       },
-      condition:{
+      condition: {
         type: Sequelize.INTEGER,
         references: {
           model: 'conditions',
           key: 'id'
         },
       },
-      comments:{
+      comments: {
         type: Sequelize.TEXT
       },
-      barcode:{
+      barcode: {
         type: Sequelize.BOOLEAN
       },
-      is_disposal:{
+      is_disposal: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
-      disposal_by_location:{
+      disposal_by_location: {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      disposal_by_role_id:{
+      disposal_by_role_id: {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      disposal_by:{
+      disposal_by: {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      disposal_date:{
+      disposal_date: {
         type: Sequelize.DATE,
         allowNull: true
       },
-      disposal_reason:{
+      disposal_reason: {
         type: Sequelize.STRING
+      },
+      is_amc: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
+      },
+      amc_type: {
+        defaultValue: null,
+        type: Sequelize.STRING
+      },
+      amc_expire_date: {
+        defaultValue: null,
+        type: Sequelize.DATEONLY
+      },
+      amc_charge: {
+        defaultValue: null,
+        type: Sequelize.INTEGER
+      },
+      insurance_value: {
+        defaultValue: null,
+        type: Sequelize.INTEGER
+      },
+      insurance_premium: {
+        defaultValue: null,
+        type: Sequelize.INTEGER
+      },
+      insurance_company: {
+        defaultValue: null,
+        type: Sequelize.STRING
+      },
+      insurance_expire_date: {
+        defaultValue: null,
+        type: Sequelize.DATEONLY
       },
       createdAt: {
         allowNull: false,
