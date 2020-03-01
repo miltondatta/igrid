@@ -70,7 +70,7 @@ class LostAssetsComponent extends Component {
                         })
                     } else {
                         this.setState({
-                            incidentTypeList: res.data
+                            incidentTypeList: res.data.output
                         })
                     }
                 })
@@ -134,7 +134,6 @@ class LostAssetsComponent extends Component {
             incident_time,police_station,gd_no, gd_date, error, errorMessage, successMessage, success, lostAssets} = this.state
 
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        console.log(jwt.decode(localStorage.getItem('user')).data, 90)
         const incedentTypes = incidentTypeList.length > 0 && incidentTypeList.map((item, index) => (
             <p key={index} onClick={() => {this.setState({incident_type: item.incident_type, incidentTypeList: []})}}>{item.incident_type}</p>
         ))
@@ -236,7 +235,8 @@ class LostAssetsComponent extends Component {
                             <ReactDataTable
                                 tableData={lostAssets}
                             />
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                        </> :
+                            <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </div>
                 </div>
             </>

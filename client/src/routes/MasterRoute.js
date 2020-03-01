@@ -220,6 +220,10 @@ const AsyncLostAssets = Loadable({
     loader: () => import('../containers/LostAssets'),
     loading: Loading,
 });
+const AsyncLostAssetsStatus = Loadable({
+    loader: () => import('../containers/LostAssetsStatus'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -291,6 +295,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/asset-category' component={AsyncAssetCategory}/>
                                     <Route exact path='/requisition-status' component={AsyncRequisitionStatus}/>
                                     <Route exact path='/admin/approval-level' component={AsyncApprovalLevel}/>
+                                    <Route exact path='/lost-assets-status' component={AsyncLostAssetsStatus}/>
                                     <Route exact path='/admin/loc_hierarchies' component={AsyncLocHierarchies}/>
                                     <Route exact path='/admin/depreciation-methods' component={AsyncDepMethod}/>
                                     <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>

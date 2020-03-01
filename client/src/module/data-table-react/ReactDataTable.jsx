@@ -123,7 +123,8 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del, details, approve, addName, add, track, deleteModalTitle, dataDisplay, footer, remove} = this.props
+        const {searchable, exportable, pagination, edit, del, details, approve, modal, add, track, deleteModalTitle, dataDisplay, footer, remove,
+            feedback} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -176,7 +177,10 @@ class ReactDataTable extends Component {
                         </div>
                     </div>
                     <div className={'d-flex align-items-center justify-content-end'}>
-                        {edit && <p className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                        {edit && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                            <i className="icofont-ui-edit"></i>
+                        </p>}
+                        {feedback && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                             <i className="icofont-ui-edit"></i>
                         </p>}
                         {del && <p onClick={() => {this.setState({delId: item.id})}} className="w-95px cursor-pointer text-danger" data-toggle="modal"
@@ -237,6 +241,7 @@ class ReactDataTable extends Component {
                             {details && <p className={'w-95px'}>Details</p>}
                             {approve && <p className={'w-95px'}>Approve</p>}
                             {track && <p className={'w-95px'}>Track</p>}
+                            {feedback && <p className={'w-95px'}>Feedback</p>}
                             {remove && <p className={'w-95px'}>Remove</p>}
                         </div>
                     </div>

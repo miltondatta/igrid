@@ -9,13 +9,25 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       location_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'locations',
+          key: 'id'
+        }
       },
       role_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'user_roles',
+          key: 'id'
+        }
       },
       added_by: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
       asset_id: {
         type: Sequelize.INTEGER
