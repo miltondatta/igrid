@@ -1,303 +1,381 @@
-import React,{Component} from 'react'
+import React, {Component} from 'react'
+import jwt from 'jsonwebtoken';
+import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
+import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
+import AssetProductByUserOptions from "../../utility/component/assetProductByUserOptions";
+import AssetListByUserOptions from "../../utility/component/assetListByUserOptions";
+import LocationsOptions from "../../utility/component/locationOptions";
+import UserOptionsByLocation from "../../utility/component/userOptionsByLocation";
+import axios from "axios";
+import {apiUrl} from "../../utility/constant";
 
-class AssetTransferComponent extends Component{
-    render(){
-        return(
-            <div className={'row'}>
-                <div className="col-md-4 px-3">
-                    <div className="bg-white rounded p-2">
+class AssetTransferComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: {},
+            category_id: '',
+            category_name: '',
+            sub_category_id: '',
+            sub_category_name: '',
+            product_id: '',
+            product_name: '',
+            product_serial: '',
+            parent_id: '',
+            user_id: '',
+            success: false,
+            successMessage: '',
+            error: false,
+            errorMessage: '',
+            errorDict: null,
+            isLoading: false,
+            transferData: [],
+            transferCredential: [],
+            subLocation: []
+        };
+
+        this.table_header = [
+            "Product Serial",
+            "Product",
+            "Category",
+            "Sub Category",
+            "Cost of Purchase",
+            "Book Value",
+            "Salvage Value",
+            "Useful Life",
+            "Warranty",
+            "Last Warranty Date",
+            "Last Effective Date",
+            "Condition Type",
+            "Action"
+        ];
+    }
+
+    componentDidMount() {
+        const user = jwt.decode(localStorage.getItem('user')).data;
+        if (Object.keys(user).length) this.setState({user});
+    }
+
+    handleChange = e => {
+        const {name, value} = e.target;
+        let name_list = ['category_id', 'sub_category_id', 'product_id', 'product_serial'];
+        if (name_list.includes(name) && value === '') return false;
+
+        this.setState({
+            [name]: value
+        }, () => {
+            this.handleFilter(name, value);
+            this.validate()
+        })
+    };
+
+    addTransfer = () => {
+        if (Object.values(this.validate()).includes(false)) return false;
+        const {transferData, transferCredential, category_id, sub_category_id, product_id, product_serial} = this.state;
+        const newTransfer = this.getFormData();
+
+        const isExistTransfer = transferCredential.filter(item => {
+            return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id &&
+                item.product_serial === product_serial);
+        });
+        if (isExistTransfer.length) return this.setState({
+            error: true,
+            errorMessage: 'This Asset is already added in Transfer list!'
+        });
+
+        this.setState({isLoading: true}, () => {
+            axios.post(apiUrl() + 'assets-entry/all/by/credentials', this.getFormData())
+                .then(res => {
+                    if (!res.data[0].length) return this.setState({
+                        error: true,
+                        errorMessage: 'There is no asset found for Transfer!',
+                        isLoading: false,
+                        success: false
+                    });
+                    this.setState({
+                        transferData: [...transferData, ...res.data[0]],
+                        error: false,
+                        isLoading: false
+                    }, () => {
+                        res.data[0].map(item => {
+                            Object.keys(item).map(val => {
+                                if (val === 'id') Object.assign(newTransfer, {id: item[val]});
+                            });
+                        });
+
+                        let newTransferArray = [newTransfer];
+                        this.setState({
+                            transferCredential: [...transferCredential, ...newTransferArray]
+                        })
+                    })
+                })
+                .catch(err => {
+                    console.log(err.response);
+                });
+        })
+    };
+
+    cancelTransfer = index => {
+        const {transferData, transferCredential} = this.state;
+        this.setState({
+            transferData: transferData.filter((item, key) => key !== index),
+            transferCredential: transferCredential.filter((item, key) => key !== index)
+        });
+    };
+
+    handleSubmit = () => {
+        const {transferCredential} = this.state;
+
+        axios.post(apiUrl() + 'asset-transfer/by/credentials', {transferCredential})
+            .then(res => {
+                const {success, msg} = res.data;
+                this.setState({
+                    transferData: [],
+                    transferCredential: [],
+                    error: false,
+                    success: success,
+                    successMessage: success && msg
+                }, () => {
+                    this.emptyStateValue();
+                })
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        success: false,
+                        error: error,
+                        errorMessage: error && msg
+                    })
+                }
+                console.log(err.response);
+            })
+    };
+
+    getFormData = () => {
+        const {
+            category_id, sub_category_id, product_id, product_serial, user: {id}
+        } = this.state;
+
+        return {
+            user_id: id,
+            category_id,
+            sub_category_id,
+            product_id,
+            product_serial,
+            is_disposal: false
+        }
+    };
+
+    validate = () => {
+        const {
+            category_id, sub_category_id, product_id, product_serial, parent_id
+        } = this.state;
+
+        let errorDict = {
+            category_id: category_id !== '',
+            sub_category_id: sub_category_id !== '',
+            product_id: product_id !== '',
+            product_serial: product_serial !== '',
+            parent_id: parent_id !== ''
+        };
+
+        this.setState({errorDict});
+        return errorDict;
+    };
+
+    handleFilter = (name, value) => {
+        if (name === 'category_id') {
+            this.setState({
+                sub_category_id: '',
+                product_id: '',
+                product_serial: ''
+            }, () => this.validate());
+        }
+        if (name === 'sub_category_id') this.setState({product_id: '', product_serial: ''}, () => this.validate());
+        if (name === 'product_id') this.setState({product_serial: ''}, () => this.validate());
+        if (name === 'parent_id') this.getSubLocation(value);
+    };
+
+    getSubLocation = id => {
+        const {subLocation} = this.state;
+        axios.get(apiUrl() + 'locations/' + id)
+            .then(resData => {
+                this.setState({
+                    subLocation: [...subLocation, ...resData.data]
+                })
+            })
+    };
+
+    emptyStateValue = () => {
+        this.setState({
+            category_id: '',
+            sub_category_id: '',
+            product_id: '',
+            product_serial: ''
+        });
+    };
+
+    render() {
+        const {
+            category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
+            errorDict, isLoading, transferData, parent_id, subLocation, user_id
+        } = this.state;
+
+        const table_body = transferData.length && transferData.map((item, index) => (
+            <tr key={index}>
+                <td>{item.product_serial}</td>
+                <td>{item.product_name}</td>
+                <td>{item.category_name}</td>
+                <td>{item.sub_category_name}</td>
+                <td>{item.cost_of_purchase}</td>
+                <td>{item.book_value}</td>
+                <td>{item.salvage_value}</td>
+                <td>{item.useful_life}</td>
+                <td>{item.warranty}</td>
+                <td>{item.last_warranty_date}</td>
+                <td>{item.last_effective_date}</td>
+                <td>{item.condition_type}</td>
+                <td>
+                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelTransfer(index)}><i
+                        className="fas fa-times"/></span>
+                </td>
+            </tr>
+        ));
+
+        const table_header = this.table_header.length && this.table_header.map((item, index) => (
+            <th key={index} scope="col">{item}</th>
+        ));
+
+        let subLocationItem = subLocation.length > 0 && subLocation.map((item, index) => (
+            <div className="px-1 mb-2" key={index}>
+                <label className={'ui-custom-label'}>Select Sub Location {item.location_name}</label>
+                <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
+                    <option value="">Select Sub Location {item.location_name}</option>
+                    <LocationsOptions selectedId={item.parent_id}/>
+                </select>
+            </div>));
+
+        return (
+            <>
+                {error &&
+                <div
+                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
+                    role="alert">
+                    {errorMessage} <i className="fas fa-times " onClick={() => this.setState({error: false})}></i>
+                </div>}
+                {success &&
+                <div
+                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
+                    role="alert">
+                    {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
+                </div>}
+                <div className="px-2 my-2 ui-dataEntry">
+                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0" href="#">Search Product</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">Asset Transfer</p>
                         </nav>
-                        <div className={'row p-2 align-items-center'}>
-                            <div className={'col-5 pr-2'}>Asset Category</div>
-                            <div className={'col-7 pl-2'}>
-                                <select className={'form-control w-100'}>
-                                    <option>Electronics</option>
-                                    <option>Auto Mobile</option>
-                                    <option>Furnitures</option>
-                                </select>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Category</label>
+                            <select name={'category_id'} value={category_id}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select Category</option>
+                                <AssetCategoryByUserOption/>
+                            </select>
+                            {errorDict && !errorDict.category_id &&
+                            <span className="error">Category Field is required</span>
+                            }
                         </div>
-                        <div className={'row p-2 align-items-center'}>
-                            <div className={'col-5 pr-2'}>Asset Sub-Category</div>
-                            <div className={'col-7 pl-2'}>
-                                <select className={'form-control w-100'}>
-                                    <option>Laptop</option>
-                                    <option>Fan</option>
-                                    <option>Printer</option>
-                                </select>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Sub Category</label>
+                            <select name={'sub_category_id'} value={sub_category_id}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select Sub Category</option>
+                                <AssetSubCategoryByUserOption
+                                    category_id={category_id}/>
+                            </select>
+                            {errorDict && !errorDict.sub_category_id &&
+                            <span className="error">Sub Category Field is required</span>
+                            }
                         </div>
-                        <div className={'row p-2 align-items-center'}>
-                            <div className={'col-5 pr-2'}>Asset Name</div>
-                            <div className={'col-7 pl-2'}>
-                                <select className={'form-control w-100'}>
-                                    <option>Asus</option>
-                                    <option>HP</option>
-                                    <option>Dell</option>
-                                </select>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Product</label>
+                            <select name={'product_id'} value={product_id}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select Product</option>
+                                <AssetProductByUserOptions category_id={category_id} sub_category_id={sub_category_id}/>
+                            </select>
+                            {errorDict && !errorDict.product_id &&
+                            <span className="error">Product Field is required</span>
+                            }
                         </div>
-                        <div className={'row p-2 align-items-center'}>
-                            <div className={'col-5 pr-2'}>Order</div>
-                            <div className={'col-7 pl-2'}>
-                                <select className={'form-control w-100'}>
-                                    <option>Id</option>
-                                    <option>Name</option>
-                                </select>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Product Serial</label>
+                            <select name={'product_serial'} value={product_serial}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select Product Serial</option>
+                                <AssetListByUserOptions category_id={category_id} sub_category_id={sub_category_id}
+                                                        product_id={product_id}/>
+                            </select>
+                            {errorDict && !errorDict.product_serial &&
+                            <span className="error">Product Serial Field is required</span>
+                            }
                         </div>
-                        <div className={'row p-2 align-items-center'}>
-                            <div className={'col-5 pr-2'}>
-                            </div>
-                            <div className={'col-7 pl-2'}>
-                                <button className="btn px-4 btn-outline-info">Search</button>
-                            </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Parent Location</label>
+                            <select name={'parent_id'} value={parent_id}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select Parent</option>
+                                <LocationsOptions selectedId={0}/>
+                            </select>
+                            {errorDict && !errorDict.parent_id &&
+                            <span className="error">Parent Location Field is required</span>
+                            }
                         </div>
-                        <div className={'bg-light w-100 p-2'}>
-                            <nav className="navbar text-center m-0 p-0 rounded">
-                                <p className="text-dark f-weight-500 f-20px m-0" href="#">Product List</p>
-                            </nav>
-                            <ul className="list-group mt-2">
-                                <li className="cursor-pointer text-info list-group-item">ASUS - 101 G3</li>
-                                <li className="cursor-pointer text-info list-group-item">Dell Inspiron 2004</li>
-                                <li className="cursor-pointer text-info list-group-item">HP Pavilion x360</li>
-                                <li className="cursor-pointer text-info list-group-item">Dell Venue 11 Pro (7139)
-                                </li>
-                                <li className="cursor-pointer text-info list-group-item">Mony count Machine</li>
-                            </ul>
+                        {subLocationItem}
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>User</label>
+                            <select name={'user_id'} value={user_id}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input`}>
+                                <option value="">Select User</option>
+                                <UserOptionsByLocation location_id={parent_id && parent_id - 1}/>
+                            </select>
+                            {errorDict && !errorDict.parent_id &&
+                            <span className="error">Parent Location Field is required</span>
+                            }
                         </div>
+                        <button onClick={this.addTransfer} className="btn btn-info">Add Transfer</button>
+                    </div>
+                    <div className="rounded bg-white min-h-80vh p-2">
+                        <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
+                            <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
+                        </nav>
+                        {isLoading ? <h2>Loading</h2> : transferData.length ? <>
+                            <table className="table table-bordered table-responsive">
+                                <thead>
+                                <tr>
+                                    {table_header}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {table_body}
+                                </tbody>
+                            </table>
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
+                            There are No Transfer Asset</h4>}
+                        {transferData.length ?
+                            <button onClick={this.handleSubmit} className="submit-btn">Submit</button> : ''}
                     </div>
                 </div>
-                <div className={'col-md-8 px-2'}>
-                    <div className={'bg-white rounded p-2'}>
-                        <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-dark f-weight-500 f-20px m-0">Asset Transfer Form</p>
-                        </nav>
-                        <div className={'row'}>
-                            <div className={'col-md-6'}>
-                                <div className={'bg-light px-2'}>
-                                    <nav className="navbar text-center mb-2 pl-2 rounded">
-                                        <p className="text-dark f-weight-500 m-0">Asset Info</p>
-                                    </nav>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Asset Id :</div>
-                                        <div className={'col-md-7'}>00001</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Asset Name :</div>
-                                        <div className={'col-md-7'}>ASUS - 101 G3</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Asset Category :</div>
-                                        <div className={'col-md-7'}>Electronics</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Asset Sub-category :</div>
-                                        <div className={'col-md-7'}>Laptop</div>
-                                    </div>
-                                </div>
-                                <div className={'bg-light px-2 my-3'}>
-                                    <nav className="navbar text-center mb-2 pl-2 rounded">
-                                        <p className="text-dark f-weight-500 m-0">Transfer From</p>
-                                    </nav>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>User :</div>
-                                        <div className={'col-md-7'}>Rakibul Islam</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Location :</div>
-                                        <div className={'col-md-7'}>Gulshan</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Building :</div>
-                                        <div className={'col-md-7'}>Building 1</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Designation :</div>
-                                        <div className={'col-md-7'}>Manager</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Cost Center :</div>
-                                        <div className={'col-md-7'}>1001</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>sol :</div>
-                                        <div className={'col-md-7'}>102</div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center'}>
-                                        <div className={'col-md-5'}>Issue Date :</div>
-                                        <div className={'col-md-7'}>07/07/2014</div>
-                                    </div>
-                                </div>
-                                <div className={'row p-2 align-items-center'}>
-                                    <div className={'col-md-5'}>Reason / Comments :</div>
-                                    <div className={'col-md-7'}>
-                                        <textarea placeholder={'Reason / Comments'} className={'form-control w-100'}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={'col-md-6'}>
-                                <div className="bg-light px-2">
-                                    <div className={'bg-light px-2'}>
-                                        <nav className="navbar text-center mb-2 pl-2 rounded">
-                                            <p className="text-dark f-weight-500 m-0">Transfer Info</p>
-                                        </nav>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Transfer To :</div>
-                                            <div className={'col-md-7 row '}>
-                                                <div className="col-md-6 text-center">
-                                                    <input className="form-check-input" type="radio"
-                                                           name="exampleRadios" id="exampleRadios3" value="option3"/>
-                                                        <label className="form-check-label" htmlFor="exampleRadios3">
-                                                            User
-                                                        </label>
-                                                </div>
-                                                <div className="col-md-6 text-center">
-                                                    <input className="form-check-input" type="radio"
-                                                           name="exampleRadios" id="exampleRadios2" value="option3"/>
-                                                        <label className="form-check-label" htmlFor="exampleRadios2">
-                                                            Store
-                                                        </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Employee Id :</div>
-                                            <div className={'col-md-7'}>
-                                                <input placeholder={'Employee Id'} className={'form-control'} />
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Employee Name :</div>
-                                            <div className={'col-md-7'}>
-                                                <input placeholder={'Employee Name'} className={'form-control'} />
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Designation :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option>Manager</option>
-                                                    <option>Accountant</option>
-                                                    <option>Cashier</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Cost Center :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option>1001</option>
-                                                    <option>1002</option>
-                                                    <option>1003</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>SOL (Service Outlet Number) :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option>102</option>
-                                                    <option>103</option>
-                                                    <option>104</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Location :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option value="1">Dhanmondi</option>
-                                                    <option value="2">Gulshan</option>
-                                                    <option value="3">Banani</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Office Type :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option>Department</option>
-                                                    <option>Branch</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Building :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option value="">Building 1</option>
-                                                    <option value="">Building 2</option>
-                                                    <option value="">Building 3</option>
-                                                    <option value="">Building 4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Department/Branch :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option>Dhanmondi</option>
-                                                    <option>Banani</option>
-                                                    <option>Gulshan</option>
-                                                    <option>Banasree</option>
-                                                    <option>Motijhil</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Floor :</div>
-                                            <div className={'col-md-7'}>
-                                                <select className="form-control">
-                                                    <option value="4">1st</option>
-                                                    <option value="4">2nd</option>
-                                                    <option value="4">3rd</option>
-                                                    <option value="4">4th</option>
-                                                    <option value="4">5th</option>
-                                                    <option value="4">6th</option>
-                                                    <option value="4">7th</option>
-                                                    <option value="4">8th</option>
-                                                    <option value="4">9th</option>
-                                                    <option value="4">10th</option>
-                                                    <option value="4">11th</option>
-                                                    <option value="4">12th</option>
-                                                    <option value="4">13th</option>
-                                                    <option value="4">14th</option>
-                                                    <option value="4">15th</option>
-                                                    <option value="4">16th</option>
-                                                    <option value="4">17th</option>
-                                                    <option value="4">18th</option>
-                                                    <option value="4">19th</option>
-                                                    <option value="4">20th</option>
-                                                    <option value="4">21st</option>
-                                                    <option value="4">22nd</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className={'row p-2 align-items-center'}>
-                                            <div className={'col-md-5'}>Room No :</div>
-                                            <div className={'col-md-7'}>
-                                                <input placeholder={'Employee Id'} className={'form-control'} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={'row p-2 align-items-center mt-3'}>
-                            <div className={'col-md-5'}>
-                                <button className={'btn mx-1 px-4 btn-outline-info'}>Submit</button>
-                                <button className={'btn mx-1 px-4 btn-outline-warning'}>Clear</button>
-                                <button className={'btn mx-1 px-4 btn-outline-danger'}>Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </>
         )
     }
 }
 
-export default AssetTransferComponent
+export default AssetTransferComponent;

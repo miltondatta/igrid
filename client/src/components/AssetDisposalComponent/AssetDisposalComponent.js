@@ -118,7 +118,7 @@ class AssetDisposalComponent extends Component {
         const {disposalData, disposalCredential} = this.state;
         this.setState({
             disposalData: disposalData.filter((item, key) => key !== index),
-            disposalCredential: disposalCredential.filter((item, key) => key !== index),
+            disposalCredential: disposalCredential.filter((item, key) => key !== index)
         });
     };
 

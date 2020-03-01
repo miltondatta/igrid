@@ -69,6 +69,23 @@ route.delete('/user-associate-roles/delete', (req,res,next) => {
             console.log(err)
             res.status(200).json({message: 'Something went wrong', err})
         })
-})
+});
 
-module.exports = route
+// User info By Location Id
+route.get('/user-info/by/location/:location_id', async (req, res) => {
+    try {
+        const location_id = req.params.location_id;
+        const data = await db.query(`select users.id, concat(users."firstName", ' ', users."lastName") as name,  user_roles.role_name
+                                    from user_associate_roles
+                                             left join users on user_associate_roles.user_id = users.id
+                                             left join user_roles on user_associate_roles.role_id = user_roles.id
+                                    where user_associate_roles.location_id = ${location_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+module.exports = route;

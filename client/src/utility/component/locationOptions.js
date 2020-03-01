@@ -16,10 +16,8 @@ class LocationsOptions extends Component {
 
     getData = () => {
         const {selectedId} = this.props
-        console.log(19, selectedId)
         Axios.get(apiUrl() + 'locations/' + selectedId)
             .then(resData => {
-                console.log(resData.data, 17)
                 this.setState({
                     data: resData.data
                 })
