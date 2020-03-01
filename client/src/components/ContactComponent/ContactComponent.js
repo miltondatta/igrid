@@ -14,19 +14,15 @@ class ContactComponent extends Component {
                         <input type="text" className={'ui-custom-input'} placeholder={'Your Name'}/>
                     </div>
                     <div className="mb-2">
-                        <label className={'ui-custom-label'}>Your Name</label>
-                        <input type="text" className={'ui-custom-input'} placeholder={'Your Name'}/>
+                        <label className={'ui-custom-label'}>Company</label>
+                        <input type="text" className={'ui-custom-input'} placeholder={'Company'}/>
                     </div>
                     <div className="mb-2">
-                        <label className={'ui-custom-label'}>Your Name</label>
-                        <input type="text" className={'ui-custom-input'} placeholder={'Your Name'}/>
+                        <label className={'ui-custom-label'}>Email</label>
+                        <input type="text" className={'ui-custom-input'} placeholder={'Email'}/>
                     </div>
                     <div className="mb-2">
-                        <label className={'ui-custom-label'}>Your Name</label>
-                        <input type="text" className={'ui-custom-input'} placeholder={'Your Name'}/>
-                    </div>
-                    <div className="mb-2">
-                        <label className={'ui-custom-label'}>Your Name</label>
+                        <label className={'ui-custom-label'}>Subject</label>
                         <select className={'ui-custom-input'} placeholder={'Your Name'}>
                             <option>Select Subject</option>
                         </select>
