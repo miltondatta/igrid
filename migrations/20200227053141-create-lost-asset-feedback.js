@@ -9,10 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       lost_asset_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'lost_assets',
+          key: 'id'
+        }
       },
       feedback_by: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
       feedback_details: {
         type: Sequelize.STRING
