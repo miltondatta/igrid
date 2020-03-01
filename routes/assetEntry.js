@@ -257,7 +257,7 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
         if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
         if (product_id) queryText += ' and assets.product_id = ' + product_id;
         if (product_serial) queryText += ' and assets.product_serial = ' + "\'" + product_serial + "\'";
-        if (is_disposal) queryText += ' and assets.is_disposal = ' + !is_disposal;
+        if (typeof(is_disposal) === "boolean") queryText += ' and assets.is_disposal = ' + is_disposal;
 
         const data = await db.query(`select distinct on(assets.product_serial) product_serial, 
                                assets.id,

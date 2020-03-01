@@ -26,6 +26,13 @@ ClassicEditor.defaultConfig = {
     language: 'en'
 };
 
+const disabledRanges = [{
+    disabled: true,
+    start: moment().add(1, 'day'),
+    end: moment().add(50, 'year')
+}];
+moment.locale('en');
+
 class DocumentInputContainer extends Component {
     constructor(props) {
         super(props);
@@ -247,8 +254,6 @@ class DocumentInputContainer extends Component {
             display_notice: false,
             status: true,
             editId: null,
-            success: false,
-            error: false,
             errorDict: null
         });
     };
@@ -474,6 +479,7 @@ class DocumentInputContainer extends Component {
                                         className={`form-control`}
                                         inputFormat="DD/MM/YYYY"
                                         onChange={date => this.setState({document_date: date})}
+                                        ranges={disabledRanges}
                                         value={document_date}/>
                         </div>
                         <div className="px-1 mb-20p">

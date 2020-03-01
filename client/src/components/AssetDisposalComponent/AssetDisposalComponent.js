@@ -87,7 +87,7 @@ class AssetDisposalComponent extends Component {
                 .then(res => {
                     if (!res.data[0].length) return this.setState({
                         error: true,
-                        errorMessage: 'There is no asset for disposal!',
+                        errorMessage: 'There is no asset found for disposal!',
                         isLoading: false,
                         success: false
                     });
@@ -105,7 +105,7 @@ class AssetDisposalComponent extends Component {
                         let newDisposalArray = [newDisposal];
                         this.setState({
                             disposalCredential: [...disposalCredential, ...newDisposalArray]
-                        }, () => this.emptyStateValue())
+                        }, () => this.setState({disposal_reason: ''}))
                     })
                 })
                 .catch(err => {
@@ -163,7 +163,7 @@ class AssetDisposalComponent extends Component {
             product_id,
             product_serial,
             disposal_reason,
-            is_disposal: true
+            is_disposal: false
         }
     };
 

@@ -233,6 +233,7 @@ class MisInputContainer extends Component {
                 return (
                     <>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Indicator Category</label>
                             <input
                                 placeholder='Enter Indicator Category Name'
                                 type={'text'}
@@ -245,6 +246,7 @@ class MisInputContainer extends Component {
                         <span className="error">Indicator Category Name Field is required</span>
                         }
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Indicator Master Code</label>
                             <input
                                 placeholder='Enter Indicator Master Code'
                                 type={'text'}
@@ -257,6 +259,7 @@ class MisInputContainer extends Component {
                         <span className="error">Indicator Master Code Field is required</span>
                         }
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Description</label>
                             <textarea
                                 id={'enCh1'}
                                 className={'ui-custom-textarea'}
@@ -292,6 +295,7 @@ class MisInputContainer extends Component {
                 return (
                     <>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Indicator Category</label>
                             <select name={'indicatormaster_id'} value={indicatormaster_id} onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Indicator Category</option>
@@ -302,6 +306,7 @@ class MisInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Indicator Parent Location</label>
                             <select name={'parent_location_id'} value={parent_location_id} onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Indicator Parent Location</option>
@@ -312,6 +317,7 @@ class MisInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Indicator</label>
                             <input
                                 placeholder='Indicator Name'
                                 type={'text'}
@@ -324,6 +330,7 @@ class MisInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Item Number</label>
                             <input
                                 placeholder='Item No'
                                 type={'text'}
@@ -336,6 +343,7 @@ class MisInputContainer extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Order By</label>
                             <input
                                 placeholder='Order By'
                                 type={'text'}
