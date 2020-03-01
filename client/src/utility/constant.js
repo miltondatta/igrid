@@ -199,15 +199,15 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 3,
-                name: 'Models',
-                link: '/admin/model',
-                icon: ""
-            },
-            {
                 id: 4,
                 name: 'Brands',
                 link: '/admin/brand',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Models',
+                link: '/admin/model',
                 icon: ""
             },
             {
@@ -247,15 +247,15 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 15,
-                name: 'User Associate Role',
-                link: '/admin/user-associate-role',
-                icon: ""
-            },
-            {
                 id: 16,
                 name: 'Register User',
                 link: '/admin/register-user',
+                icon: ""
+            },
+            {
+                id: 15,
+                name: 'Assign User Role ',
+                link: '/admin/user-associate-role',
                 icon: ""
             },
         ]
@@ -274,7 +274,7 @@ export const systemAdmin = [
             },
             {
                 id: 2,
-                name: 'Indicator',
+                name: 'Indicator List',
                 link: '/mis-indicator',
                 icon: ""
             },
@@ -349,7 +349,7 @@ export const documentNav = [
             },
             {
                 id: 3,
-                name: 'New Document',
+                name: 'New Document/Circular',
                 link: '/documents/document-list',
                 icon: ""
             }
@@ -359,21 +359,21 @@ export const documentNav = [
 
 export const homeBanner = [
     {
-        title: "Manage your Business Easily",
+        title: "Manage Your Business Easily",
         btnText: "MIS Report",
         link: "/",
         img: "/media/banner/b_1.png"
     },
     {
-        title: "Manage your asset quickly",
+        title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/stock-reg",
+        link: "/request-history",
         img: "/media/banner/b_2.png"
     },
     {
-        title: "Manage your Documents Easily",
+        title: "Manage Your Documents Easily",
         btnText: "Document Management",
-        link: "/documents",
+        link: "/document-list-search",
         img: "/media/banner/b_3.png"
     },
     {

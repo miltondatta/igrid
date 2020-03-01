@@ -59,7 +59,7 @@ const HomeComponent = () => {
                             <p>LOCATION FINDER</p>
                         </div>
                     </Link>
-                    <Link to={'/stock-reg'}>
+                    <Link to={'/request-history'}>
                         <div className={'ui-cards ui-asset'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/asset.png'} alt="document_management"/>
