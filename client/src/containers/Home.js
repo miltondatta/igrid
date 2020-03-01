@@ -12,7 +12,7 @@ const Home = () => {
         )
     } else{
         return(
-            <div className={'p-4 bg-white h-100'}>
+            <div className={'p-4 bg-white'}>
                  <HomeComponent />
             </div>
         )

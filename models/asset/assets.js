@@ -136,6 +136,38 @@ const Assets = db.define('assets', {
     },
     disposal_reason: {
         type: Sequelize.STRING
+    },
+    is_amc: {
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
+    },
+    amc_type: {
+        defaultValue: null,
+        type: Sequelize.STRING
+    },
+    amc_expire_date: {
+        defaultValue: null,
+        type: Sequelize.DATEONLY
+    },
+    amc_charge: {
+        defaultValue: null,
+        type: Sequelize.INTEGER
+    },
+    insurance_value: {
+        defaultValue: null,
+        type: Sequelize.INTEGER
+    },
+    insurance_premium: {
+        defaultValue: null,
+        type: Sequelize.INTEGER
+    },
+    insurance_company: {
+        defaultValue: null,
+        type: Sequelize.STRING
+    },
+    insurance_expire_date: {
+        defaultValue: null,
+        type: Sequelize.DATEONLY
     }
 })
 

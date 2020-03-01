@@ -139,29 +139,47 @@ export const sidenav = [
             },
         ]
     },
+]
+
+export const systemAdmin = [
     {
-        id: 7,
-        name: 'MIS',
-        icon: 'fas fa-reply-all',
+        id: 10,
+        name: 'System Config',
+        icon: 'icofont-ui-settings',
         subCat: true,
         categories: [
             {
-                id: 1,
-                name: 'Indicator Category',
-                link: '/mis-indicator-category',
+                id: 14,
+                name: 'Modules',
+                link: '/admin/modules',
                 icon: ""
             },
             {
-                id: 2,
-                name: 'Indicator',
-                link: '/mis-indicator',
+                id: 12,
+                name: 'User Roles',
+                link: '/admin/user-roles',
+                icon: ""
+            },
+            {
+                id: 10,
+                name: 'Location Hierarchies',
+                link: '/admin/loc_hierarchies',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Approval Level',
+                link: '/admin/approval-level',
+                icon: ""
+            },
+            {
+                id: 7,
+                name: 'Depreciation Methods',
+                link: '/admin/depreciation-methods',
                 icon: ""
             },
         ]
     },
-]
-
-export const systemAdmin = [
     {
         id: 9,
         name: 'Setting',
@@ -181,15 +199,15 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 3,
-                name: 'Models',
-                link: '/admin/model',
-                icon: ""
-            },
-            {
                 id: 4,
                 name: 'Brands',
                 link: '/admin/brand',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Models',
+                link: '/admin/model',
                 icon: ""
             },
             {
@@ -229,53 +247,35 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 15,
-                name: 'User Associate Role',
-                link: '/admin/user-associate-role',
-                icon: ""
-            },
-            {
                 id: 16,
                 name: 'Register User',
                 link: '/admin/register-user',
                 icon: ""
             },
+            {
+                id: 15,
+                name: 'Assign User Role ',
+                link: '/admin/user-associate-role',
+                icon: ""
+            },
         ]
     },
     {
-        id: 10,
-        name: 'Configuration',
-        icon: 'icofont-ui-settings',
+        id: 7,
+        name: 'MIS Config',
+        icon: 'fas fa-reply-all',
         subCat: true,
         categories: [
             {
-                id: 14,
-                name: 'Modules',
-                link: '/admin/modules',
+                id: 1,
+                name: 'Indicator Category',
+                link: '/mis-indicator-category',
                 icon: ""
             },
             {
-                id: 12,
-                name: 'User Roles',
-                link: '/admin/user-roles',
-                icon: ""
-            },
-            {
-                id: 10,
-                name: 'Location Hierarchies',
-                link: '/admin/loc_hierarchies',
-                icon: ""
-            },
-            {
-                id: 17,
-                name: 'Approval Level',
-                link: '/admin/approval-level',
-                icon: ""
-            },
-            {
-                id: 7,
-                name: 'Depreciation Methods',
-                link: '/admin/depreciation-methods',
+                id: 2,
+                name: 'Indicator List',
+                link: '/mis-indicator',
                 icon: ""
             },
         ]
@@ -349,7 +349,7 @@ export const documentNav = [
             },
             {
                 id: 3,
-                name: 'New Document',
+                name: 'New Document/Circular',
                 link: '/documents/document-list',
                 icon: ""
             }
@@ -359,21 +359,21 @@ export const documentNav = [
 
 export const homeBanner = [
     {
-        title: "Manage your Business Easily",
+        title: "Manage Your Business Easily",
         btnText: "MIS Report",
         link: "/",
         img: "/media/banner/b_1.png"
     },
     {
-        title: "Manage your asset quickly",
+        title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/stock-reg",
+        link: "/request-history",
         img: "/media/banner/b_2.png"
     },
     {
-        title: "Manage your Documents Easily",
+        title: "Manage Your Documents Easily",
         btnText: "Document Management",
-        link: "/documents",
+        link: "/document-list-search",
         img: "/media/banner/b_3.png"
     },
     {
