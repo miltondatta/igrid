@@ -140,6 +140,7 @@ class Topnav extends Component {
         const {home} = this.props
         const {showUserOption, toggleNotification, notification} = this.state
         const moduleName = window.location.pathname.replace('/', '').split('/');
+        console.log(moduleName, 141)
         let breadCrumb = moduleName.map((item, index) => (
             <>
                 {item !== 'home' && <li className="breadcrumb-item active f-capitalize" aria-current="page">
@@ -148,15 +149,17 @@ class Topnav extends Component {
             </>
         ))
         const {userName, image, userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        if (home) {
+        if (home || moduleName[0] === 'contact' || moduleName[0] === 'about') {
             return (
                 <div className='ui-topnav w-100 px-4'>
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
                         <div className={'w-100 h-100 align-items-center d-flex'}>
-                            <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
-                            <span className={'text-white ui-nav-init-link ml-5 mr-2'}>Site Map</span>
-                            <span className={'text-white ui-nav-init-link mx-2'}>Contact Us</span>
-                            <span className={'text-white ui-nav-init-link mx-2'}>About Us</span>
+                            <Link to={'/'}>
+                                <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
+                            </Link>
+                            <span className={`text-white ui-nav-init-link ml-5 mr-2 `}>Site Map</span>
+                            <Link to={'/contact'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'contact' && 'link-active'}`}>Contact Us</span></Link>
+                            <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
                             <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
                         </div>
                         <div className={'text-white ui-user-nav d-flex align-items-center'}>

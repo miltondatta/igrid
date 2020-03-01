@@ -224,6 +224,14 @@ const AsyncLostAssetsStatus = Loadable({
     loader: () => import('../containers/LostAssetsStatus'),
     loading: Loading,
 });
+const AsyncAbout = Loadable({
+    loader: () => import('../containers/About'),
+    loading: Loading,
+});
+const AsyncContact = Loadable({
+    loader: () => import('../containers/Contact'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -256,11 +264,12 @@ class MasterRoute extends Component{
             } else {
                 return (
                     <div className={`ui-container h-100`}>
-                        <div>
                             <Topnav/>
                                 <Switch>
                                     <Route exact path='/mis' component={AsyncMIS}/>
                                     <Route exact path='/home' component={AsyncHomeLand}/>
+                                    <Route exact path='/about' component={AsyncAbout}/>
+                                    <Route exact path='/contact' component={AsyncContact}/>
                                     <Route exact path='/profile' component={AsyncProile}/>
                                     <Route exact path='/admin/modules' component={AsyncModules}/>
                                     <Route exact path='/challan' component={AsyncChallan}/>
@@ -312,8 +321,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/mis-indicator-category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/mis-indicator' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
-                            </Switch>
-                        </div>
+                        </Switch>
                     </div>
                 )
             }
