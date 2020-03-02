@@ -688,3 +688,7 @@ label:focus,
       top: 61px;
    }
 }
+
+.ui-document-search{
+   background-color: #9AC6E8 !important;
+}
