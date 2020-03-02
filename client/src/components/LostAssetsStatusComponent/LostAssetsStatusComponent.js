@@ -107,7 +107,7 @@ class LostAssetsStatusComponent extends Component {
                 </div>}
 
                 {/*Modal*/}
-                <div className="modal fade" id="lostAsset" tabIndex="-1" role="dialog"
+                <div className="modal fade lost-asset-modal" id="lostAsset" tabIndex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">

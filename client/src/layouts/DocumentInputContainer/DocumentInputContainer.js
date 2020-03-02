@@ -684,7 +684,7 @@ class DocumentInputContainer extends Component {
                         <td>{item.circular_no}</td>
                         <td>
                             <span
-                                className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
+                                className={`badge badge-${item.content_type == 1 ? 'error.css' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
                         </td>
                         <td>
                             <span

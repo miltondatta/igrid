@@ -91,8 +91,8 @@ select:focus{
    padding: 30px 9px 9px;
 }
 
+.ui-text{color: #fff}
 select,
-.ui-text,
 input[type=date],
 .ui-custom-input::placeholder,
 .ui-custom-textarea::placeholder{
@@ -183,6 +183,7 @@ input[type=date],
 
 .bg-red{background-color: #dc3545}
 .bg-pink{background-color: #e04a58}
+.bg-challan{background-color: #417ca8;}
 .bg-blue{background-color: #1c45ef}
 .bg-orange{background-color: #f7edde}
 .bg-project{background-color: #005da6}
@@ -203,6 +204,7 @@ input[type=date],
 .border-right-purple{border-right: 2px solid #7639ea}
 .border-right-primary{border-right: 2px solid #007bff}
 .border-bottom-gray{border-bottom: 1.2px solid #e5e4e4}
+.border-bottom-nav{padding: 10px 0;border-bottom: 1px solid #ffffff40;}
 
 ::-webkit-scrollbar-track{ background-color: #bbb}
 ::-webkit-scrollbar-thumb { background: #005da6; border-radius: 10px;}
@@ -585,13 +587,19 @@ label:focus,
 }
 
 .add-button{
-   background: #2184d0;
+   background: #9fb4c4;
    width: 42px;
    height: 55px;
    border: none;
    border-radius: 5px;
    color: white;
    font-size: 22px;
+}
+
+.asset-right{
+   height: 85.5vh;
+   overflow-y: auto;
+   overflow-x: hidden;
 }
 
 .input-grid{
@@ -668,7 +676,7 @@ label:focus,
    border-left: 5px solid #2384d0 !important;
 }
 
-.modal-dialog{
+.lost-asset-modal .modal-dialog{
    max-width: 1000px !important;
 }
 

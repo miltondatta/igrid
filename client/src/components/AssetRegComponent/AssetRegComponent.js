@@ -12,6 +12,8 @@ import {apiUrl} from "../../utility/constant";
 import ConditionOptions from "../../utility/component/conditionOptions";
 import ProductsOptions from "../../utility/component/productOptions";
 import InstaAdd from "../../module/insta-add/InstaAdd";
+import SuccessModal from "../../utility/success/successModal";
+import ErrorModal from "../../utility/error/errorModal";
 
 class AssetRegComponent extends Component {
 
@@ -151,6 +153,14 @@ class AssetRegComponent extends Component {
             Object.keys(stateHolder).forEach((item) => {
                 if (item === 'challan_id' ||
                     item === 'project_id' ||
+                    item === 'amc_charge' ||
+                    item === 'amc_type' ||
+                    item === 'is_amc' ||
+                    item === 'insurance_expire_date' ||
+                    item === 'insurance_company' ||
+                    item === 'insurance_premium' ||
+                    item === 'insurance_value' ||
+                    item === 'amc_expire_date' ||
                     item === 'asset_category' ||
                     item === 'asset_sub_category' ||
                     item === 'cost_of_purchase' ||
@@ -164,9 +174,7 @@ class AssetRegComponent extends Component {
                     item === 'book_value' ||
                     item === 'salvage_value' ||
                     item === 'useful_life' ||
-                    item === 'last_effective_date' ||
                     item === 'warranty' ||
-                    item === 'last_warranty_date' ||
                     item === 'condition' ||
                     item === 'comments' ||
                     item === 'barcode' ||
@@ -194,11 +202,23 @@ class AssetRegComponent extends Component {
                     this.setState({
                         success: true,
                         successMessage: resData.data.message,
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false,
+                            })
+                        }, 2300)
                     })
                 } else {
                     this.setState({
                         error: true,
                         errorMessage: resData.data.message,
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
                     })
                 }
             })
@@ -229,6 +249,14 @@ class AssetRegComponent extends Component {
                     successMessage: resData.data.message,
                     challan_id: resData.data.resId,
                     vendor_id: resData.data.vendorName
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false,
+                        }, () => {
+                            console.log(this.state.error, 211)
+                        })
+                    }, 2300)
                 })
             })
             .catch(err => {console.log(err)})
@@ -266,7 +294,7 @@ class AssetRegComponent extends Component {
         const {attachment, challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,
             challanComments,project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost,
             other_cost,asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,last_effective_date,warranty,
-            last_warranty_date,condition,comments,barcode} = this.state
+            last_warranty_date,condition,comments,barcode, amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
@@ -288,6 +316,13 @@ class AssetRegComponent extends Component {
         } else if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
+                amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
+                amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
+                amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
+                insurance_expire_date: typeof insurance_expire_date !== 'undefined' && insurance_expire_date !== '',
+                insurance_premium: typeof insurance_premium !== 'undefined' && insurance_premium !== '',
+                insurance_value: typeof insurance_value !== 'undefined' && insurance_value !== '',
+                insurance_company: typeof insurance_company !== 'undefined' && insurance_company !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
@@ -301,9 +336,7 @@ class AssetRegComponent extends Component {
                 book_value: typeof book_value !== 'undefined' && book_value !== '',
                 salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
                 useful_life: typeof useful_life !== 'undefined' && useful_life !== '',
-                last_effective_date: typeof last_effective_date !== 'undefined' && last_effective_date !== '',
                 warranty: typeof warranty !== 'undefined' && warranty !== '',
-                last_warranty_date: typeof last_warranty_date !== 'undefined' && last_warranty_date !== '',
                 condition: typeof condition !== 'undefined' && condition !== '',
                 comments: typeof comments !== 'undefined' && comments !== '',
                 barcode: typeof barcode !== 'undefined' && barcode !== '',
@@ -321,7 +354,8 @@ class AssetRegComponent extends Component {
         const {challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment, formType, getApi, headTitle, error,
             received_by, added_by, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,receivedByFocus, success, errorMessage,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id, recDropFoc, successMessage,
-            salvage_value, useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode, asset_quantity, receivedBy} = this.state
+            salvage_value, useful_life, warranty, condition, comments, barcode, asset_quantity, receivedBy,
+            amc_charge, amc_expire_date, amc_type, is_amc, insurance_expire_date, insurance_company, insurance_premium, insurance_value } = this.state
 
         const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         const prodSer = asset_quantity && prodArr.map((item, index) => {
@@ -338,21 +372,11 @@ class AssetRegComponent extends Component {
         return (
             <div>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({error: false})
-                }}></i>
-                </div>}
+                    <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                    <SuccessModal successMessage={successMessage} />
+                }
                 <InstaAdd
                     forceUp = {this.forceUp}
                     formType = {formType}
@@ -434,16 +458,16 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-                {challan_id !== '' && <div className=" p-3 ui-dataEntry">
-                    <div className="min-h-80vh bg-white rounded position-relative p-3">
-                        <nav className="navbar text-center mb-2 pl-1 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Challan Info</p>
+                {challan_id !== '' && <div className="ui-dataEntry">
+                    <div className="min-h-80vh bg-challan position-relative p-3">
+                        <nav className="navbar text-center mb-2 border-bottom-nav">
+                            <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>
                         </nav>
                         <div className={'row p-2 align-items-center mb-3'}>
                             <div className={'col-4 pl-2 ui-text'}>
                                 Challan No
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {challan_no}
                             </div>
                         </div>
@@ -451,7 +475,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Challan Date
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {challan_date}
                             </div>
                         </div>
@@ -459,7 +483,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Challan Description
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {challan_description}
                             </div>
                         </div>
@@ -467,7 +491,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Received By
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {received_by}
                             </div>
                         </div>
@@ -475,7 +499,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Added By
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {userName}
                             </div>
                         </div>
@@ -483,7 +507,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Vendor
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {vendor_id}
                             </div>
                         </div>
@@ -491,7 +515,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Comments
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {challanComments}
                             </div>
                         </div>
@@ -499,7 +523,7 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Purchase Order No
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {purchase_order_no}
                             </div>
                         </div>
@@ -507,113 +531,227 @@ class AssetRegComponent extends Component {
                             <div className={'col-4 pl-2 ui-text'}>
                                 Purchase Order Date
                             </div>
-                            <div className={'col-8 pr-2'}>
+                            <div className={'col-8 pr-2 ui-text'}>
                                 <span className={'ui-text mr-3'}>:</span> {purchase_order_date}
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div className={'bg-white rounded p-3'}>
-                            <nav className="navbar text-center mb-2 pl-1 rounded">
-                                <p className="text-blue f-weight-700 f-20px m-0">Add Asset Information</p>
-                            </nav>
+                    <div className={'asset-right'}>
+                        <div className={'rounded p-3'}>
                             <div className="row">
-                                <div className="col-md-6 pr-1">
-                                    <div className={'mb-1'}>
-                                        <div className="input-grid">
-                                            <label className={'ui-custom-label'}>Project</label>
-                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
-                                                <option>Select Project</option>
-                                                <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                <div className="col-md-6 pr-1 pl-0">
+                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                        <h5>Add Asset Information</h5>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Project</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                    <option>Select Project</option>
+                                                    <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Category</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
+                                                <option>Asset Category</option>
+                                                <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                             </select>
-                                            <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                <i className="fas fa-plus"></i>
-                                            </button>
+                                                <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={'mb-1'}>
-                                        <div className="input-grid">
-                                            <label className={'ui-custom-label'}>Category</label>
-                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
-                                            <option>Asset Category</option>
-                                            <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                        </select>
-                                            <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                <i className="fas fa-plus"></i>
-                                            </button>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Sub Category</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
+                                                    <option>Asset Sub Category</option>
+                                                    <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={'mb-1'}>
-                                        <div className="input-grid">
-                                            <label className={'ui-custom-label'}>Sub Category</label>
-                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
-                                                <option>Asset Sub Category</option>
-                                                <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Product</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
+                                                <option>Product</option>
+                                                <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                             </select>
-                                            <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                <i className="fas fa-plus"></i>
-                                            </button>
+                                                <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className={'mb-1'}>
-                                        <div className="input-grid">
-                                            <label className={'ui-custom-label'}>Product</label>
-                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
-                                            <option>Product</option>
-                                            <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                        </select>
-                                            <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                <i className="fas fa-plus"></i>
-                                            </button>
+                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                        <h5>Cost Information</h5>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Cost of Purchase</label>
+                                            <input type="number"
+                                                   value={cost_of_purchase}
+                                                   onChange={this.handleChange} name={'cost_of_purchase'}
+                                                   placeholder={'Cost of Purchase'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.cost_of_purchase && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Installation Cost</label>
+                                            <input type="number"
+                                                   value={installation_cost}
+                                                   onChange={this.handleChange} name={'installation_cost'}
+                                                   placeholder={'Installation Cost'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.installation_cost && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Carrying Cost</label>
+                                            <input type="number"
+                                                   value={carrying_cost}
+                                                   onChange={this.handleChange} name={'carrying_cost'}
+                                                   placeholder={'Carrying Cost'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.carrying_cost && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Other Cost</label>
+                                            <input type={'number'}
+                                                   value={other_cost}
+                                                   onChange={this.handleChange} name={'other_cost'}
+                                                   placeholder={'Other Cost'}
+                                                   className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>AMC Charge</label>
+                                            <input type={'number'}
+                                                   value={amc_charge}
+                                                   onChange={this.handleChange} name={'amc_charge'}
+                                                   placeholder={'AMC Charge'}
+                                                   className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>AMC Expire Date</label>
+                                            <input type="date"
+                                                   value={amc_expire_date}
+                                                   onChange={this.handleChange} name={'amc_expire_date'}
+                                                   placeholder={'AMC Expire Date'}
+                                                   className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>AMC Type</label>
+                                            <input type={'text'}
+                                                   value={amc_type}
+                                                   onChange={this.handleChange} name={'amc_type'}
+                                                   placeholder={'AMC Type'}
+                                                   className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
+                                            <div className="ui-custom-checkbox">
+                                                <input
+                                                    type={'checkbox'}
+                                                    checked={is_amc}
+                                                    id={'is_amc'}
+                                                    name={'is_amc'}
+                                                    onChange={this.handleChange} />
+                                                <label htmlFor="is_amc" className={'mb-0'}>IS AMC</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className={'mb-1'}>
-                                        <label className={'ui-custom-label'}>Cost of Purchase</label>
-                                        <input type="number"
-                                               value={cost_of_purchase}
-                                               onChange={this.handleChange} name={'cost_of_purchase'}
-                                               placeholder={'Cost of Purchase'}
-                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.cost_of_purchase && 'is-invalid'}`}/>
+
+                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Asset Quantity</label>
+                                            <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
+                                        </div>
+                                        {prodSer}
                                     </div>
-                                    <div className={'mb-1'}>
-                                        <label className={'ui-custom-label'}>Installation Cost</label>
-                                        <input type="number"
-                                               value={installation_cost}
-                                               onChange={this.handleChange} name={'installation_cost'}
-                                               placeholder={'Installation Cost'}
-                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.installation_cost && 'is-invalid'}`}/>
-                                    </div>
-                                    <div className={'mb-1'}>
-                                        <label className={'ui-custom-label'}>Carrying Cost</label>
-                                        <input type="number"
-                                               value={carrying_cost}
-                                               onChange={this.handleChange} name={'carrying_cost'}
-                                               placeholder={'Carrying Cost'}
-                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.carrying_cost && 'is-invalid'}`}/>
-                                    </div>
-                                    <div className={'mb-1'}>
-                                        <label className={'ui-custom-label'}>Other Cost</label>
-                                        <input type={'number'}
-                                               value={other_cost}
-                                               onChange={this.handleChange} name={'other_cost'}
-                                               placeholder={'Other Cost'}
-                                               className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
-                                    </div>
-                                    <div className={'mb-1'}>
-                                        <label className={'ui-custom-label'}>Rate</label>
-                                        <input type="number"
-                                               value={rate}
-                                               onChange={this.handleChange} name={'rate'}
-                                               placeholder={'Rate'}
-                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
-                                    </div>
-                                    <div className={'mb-1'}>
-                                        <label className={'ui-custom-label'}>Asset Quantity</label>
-                                        <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
-                                    </div>
-                                    {prodSer}
                                 </div>
                                 <div className="col-md-6 pl-1">
+                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                        <h5>Insurance Information</h5>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Value of Insurance</label>
+                                            <input type="number"
+                                                   value={insurance_value}
+                                                   onChange={this.handleChange} name={'insurance_value'}
+                                                   placeholder={'Value of Insurance'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_value && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Value of Premium</label>
+                                            <input type="number"
+                                                   value={insurance_premium}
+                                                   onChange={this.handleChange} name={'insurance_premium'}
+                                                   placeholder={'Value of Premium'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_premium && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Insurance Company</label>
+                                            <input type="text"
+                                                   value={insurance_company}
+                                                   onChange={this.handleChange} name={'insurance_company'}
+                                                   placeholder={'Insurance Company'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_company && 'is-invalid'}`}/>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Expire Date</label>
+                                            <input type="date"
+                                                   value={insurance_expire_date}
+                                                   onChange={this.handleChange} name={'insurance_expire_date'}
+                                                   placeholder={'Expire Date'}
+                                                   className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.insurance_expire_date && 'is-invalid'}`}/>
+                                        </div>
+                                    </div>
+                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                        <h5>Additional Information</h5>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Asset Type</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
+                                                    <option>Asset Type</option>
+                                                    <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Condition</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
+                                                    <option>Select Condition</option>
+                                                    <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <div className="input-grid">
+                                                <label className={'ui-custom-label'}>Depreciation Method</label>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
+                                                    <option>Select Depreciation Method</option>
+                                                    <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
+                                                <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <i className="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={'mb-1'}>
+                                            <label className={'ui-custom-label'}>Rate</label>
+                                            <input type="number"
+                                                   value={rate}
+                                                   onChange={this.handleChange} name={'rate'}
+                                                   placeholder={'Rate'}
+                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
+                                        </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Effective Date</label>
                                             <input type="date"
@@ -647,14 +785,6 @@ class AssetRegComponent extends Component {
                                                    className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
                                         </div>
                                         <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Last Effective Date</label>
-                                            <input type="date"
-                                                   value={last_effective_date}
-                                                   onChange={this.handleChange} name={'last_effective_date'}
-                                                   placeholder={'Effective Date'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.last_effective_date && 'is-invalid'}`}/>
-                                        </div>
-                                        <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Warranty</label>
                                             <input type="text"
                                                    value={warranty}
@@ -663,55 +793,12 @@ class AssetRegComponent extends Component {
                                                    className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.warranty && 'is-invalid'}`}/>
                                         </div>
                                         <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Last Warranty Date</label>
-                                            <input type="date"
-                                                   value={last_warranty_date}
-                                                   onChange={this.handleChange} name={'last_warranty_date'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.last_warranty_date && 'is-invalid'}`}/>
-                                        </div>
-                                        <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Comments</label>
                                             <textarea placeholder={'Comments'}
                                                       onChange={this.handleChange} name={'comments'}
                                                       value={comments}
                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
                                         </div>
-                                        <div className={'mb-1'}>
-                                            <div className="input-grid">
-                                                <label className={'ui-custom-label'}>Condition</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
-                                                    <option>Select Condition</option>
-                                                    <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                </select>
-                                                <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                    <i className="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <div className="input-grid">
-                                                <label className={'ui-custom-label'}>Asset Type</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
-                                                <option>Asset Type</option>
-                                                <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                            </select>
-                                                <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                    <i className="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <div className="input-grid">
-                                                <label className={'ui-custom-label'}>Depreciation Method</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
-                                                    <option>Select Depreciation Method</option>
-                                                    <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                </select>
-                                                <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                    <i className="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                    </div>
                                         <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
                                             <div className="ui-custom-checkbox">
                                                 <input
@@ -723,6 +810,7 @@ class AssetRegComponent extends Component {
                                                 <label htmlFor="customCheckbox" className={'mb-0'}>Barcode</label>
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

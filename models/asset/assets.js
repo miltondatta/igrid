@@ -90,12 +90,14 @@ const Assets = db.define('assets', {
         type: Sequelize.DOUBLE
     },
     last_effective_date: {
+        defaultValue: null,
         type: Sequelize.DATEONLY
     },
     warranty: {
         type: Sequelize.STRING
     },
     last_warranty_date: {
+        defaultValue: null,
         type: Sequelize.DATEONLY
     },
     condition: {

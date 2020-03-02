@@ -452,7 +452,7 @@ class DocumentListSearch extends Component {
                                             <td>{moment(item.document_date).format('YYYY-MM-DD')}</td>
                                             <td>
                                                 <span
-                                                    className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
+                                                    className={`badge badge-${item.content_type == 1 ? 'error.css' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
                                             </td>
                                             <td>
                                                 <a href="/"
