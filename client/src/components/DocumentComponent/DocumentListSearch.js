@@ -241,10 +241,10 @@ class DocumentListSearch extends Component {
         return (
             <>
                 <div className="px-2 my-2">
-                    <h3 className="pb-3">Document Search</h3>
                     <div className="p-2 my-2">
-                        <div className={`bg-white rounded p-2 my-2`}>
-                            <div className="rounded p-3 my-2">
+                        <div className={`bg-white rounded p-2 my-2 ui-document-search`}>
+                            <h3 className="text-center">Document Search</h3>
+                            <div className="">
                                 <div className="row px-2 my-3">
                                     <div className="col-md-6">
                                         <div className="row">
@@ -343,7 +343,7 @@ class DocumentListSearch extends Component {
                                             </div>
                                             <div className="col-md-8">
                                                 <div className={'mb-2 position-relative'}>
-                                                    <ul className={'d-flex flex-wrap mb-1'}>
+                                                    <ul className={'d-flex flex-wrap mb-1 list-unstyled'}>
                                                         {keywordHolder.length > 0 ? badgeKeyword : <p>Keywords</p>}
                                                     </ul>
                                                     <input onFocus={() => {
@@ -404,9 +404,9 @@ class DocumentListSearch extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="d-flex justify-content-end">
-                                    <button className="btn btn-outline-info"
-                                            onClick={this.handleSearch}>Search
+                                <div className="d-flex justify-content-center mt-2 mb-3">
+                                    <button className="submit-btn-normal"
+                                            onClick={this.handleSearch}>Search Document
                                     </button>
                                 </div>
                             </div>
@@ -466,7 +466,7 @@ class DocumentListSearch extends Component {
                                     ))}
                                     </tbody>
                                 </table>
-                            </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
+                            </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Content</h4>}
                         </div>
                     </div>
                 </div>

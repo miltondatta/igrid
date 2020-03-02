@@ -73,6 +73,10 @@ const AsyncAssetDisposal = Loadable({
     loader: () => import('../containers/AssetDisposal'),
     loading: Loading,
 });
+const AsyncDisposalAssetListContainer = Loadable({
+    loader: () => import('../containers/DisposalAssetListContainer'),
+    loading: Loading,
+});
 const AsyncAssetSale = Loadable({
     loader: () => import('../containers/AssetSale'),
     loading: Loading,
@@ -299,6 +303,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>
                                     <Route exact path='/admin/assign-locations' component={AsyncLocations}/>
                                     <Route exact path='/asset-disposal' component={AsyncAssetDisposal}/>
+                                    <Route exact path='/asset-disposal-list' component={AsyncDisposalAssetListContainer}/>
                                     <Route exact path='/admin/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/admin/asset-category' component={AsyncAssetCategory}/>
