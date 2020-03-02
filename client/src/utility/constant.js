@@ -269,13 +269,19 @@ export const systemAdmin = [
             {
                 id: 1,
                 name: 'Indicator Category',
-                link: '/mis-indicator-category',
+                link: '/admin/mis/indicator/category',
                 icon: ""
             },
             {
                 id: 2,
                 name: 'Indicator List',
-                link: '/mis-indicator',
+                link: '/admin/mis/indicator/list',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Import CSV Data',
+                link: '/admin/mis/import/csv',
                 icon: ""
             },
         ]

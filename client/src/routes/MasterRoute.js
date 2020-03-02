@@ -318,9 +318,10 @@ class MasterRoute extends Component{
                                     <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
                                     <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                                     <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
-                                    <Route exact path='/mis-indicator-category' component={AsyncIndicatorCategory}/>
-                                    <Route exact path='/mis-indicator' component={AsyncIndicatorSubCategory}/>
+                                    <Route exact path='/admin/mis/indicator/category' component={AsyncIndicatorCategory}/>
+                                    <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
+                                    <Route exact path='/admin/mis/import/csv' component={AsyncIndicatorSubCategory}/>
                         </Switch>
                     </div>
                 )
