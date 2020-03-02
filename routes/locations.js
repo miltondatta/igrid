@@ -18,6 +18,18 @@ route.get('/locations', async (req,res,next) => {
     }
 })
 
+// Read Branchs
+route.get('/locations/branch', async (req,res,next) => {
+    const [data, naster] = await db.query(`
+        SELECT * FROM "locations" WHERE "hierarchy" = (SELECT "max"(id) FROM location_hierarchies)
+    `)
+    if(data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json()
+    }
+})
+
 // Read Specific Location
 route.get('/locations/:id', (req,res,next) => {
     Locations.findAll({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy'], where: {parent_id: req.params.id}})
@@ -29,18 +41,31 @@ route.get('/locations/:id', (req,res,next) => {
         })
 })
 
+
+// Read Specific Location
+route.get('/locations/render/:id', (req,res,next) => {
+    Locations.findOne({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy'], where: {parent_id: req.params.id}})
+        .then(resData => {
+            res.status(200).json(resData)
+        })
+        .catch(err => {
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Update
 route.put('/locations/update/:id', (req,res,next) => {
-    const {location_name,parent_id,location_code,hierarchy} = req.body
+    const {location_name,parent_id,location_code,hierarchy, location_lat, location_long, address} = req.body
     if (parent_id !== '' && location_name !== '' && location_code !== '' && hierarchy !== '') {
         Locations.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if (resData[0].dataValues.location_code === location_code) {
-                    Locations.update({parent_id,location_name,location_code,hierarchy}, {where: {id: req.params.id}})
+                    Locations.update({parent_id,location_name,location_code,hierarchy, location_lat, location_long, address}, {where: {id: req.params.id}})
                         .then(resData => {
                             res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                         })
                         .catch(err => {
+                            console.log(err)
                             res.status(200).json({message: 'Something went wrong'})
                         })
                 } else {

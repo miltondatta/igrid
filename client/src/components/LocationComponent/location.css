@@ -24,6 +24,7 @@
     overflow: hidden;
     position: relative;
     border: 3px solid #17a2b8;
+    transition: all 0.3s cubic-bezier(0.01, 0.14, 0.89, 0.9);
 }
 
 .ui-location-finder .ui-location-card:hover::before{
