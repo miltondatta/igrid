@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import MisInputContainer from "../../layouts/MisInputContainer/MisInputContainer";
 
-class DocumentCategory extends Component {
+class IndicatorCategory extends Component {
     constructor(props) {
         super(props);
         this.table_header = ['Serial No', 'Category Name', 'Indicator Code', 'Description', 'Is Default', 'Action'];
@@ -22,4 +22,4 @@ class DocumentCategory extends Component {
     }
 }
 
-export default DocumentCategory;
+export default IndicatorCategory;
