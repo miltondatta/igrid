@@ -23,6 +23,14 @@ module.exports = {
       location_long: {
         type: Sequelize.DOUBLE
       },
+      location_image: {
+        defaultValue: 'default_place.png',
+        type: Sequelize.STRING
+      },
+      location_address: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       parent_id: {
         type: Sequelize.INTEGER
       },
