@@ -1,8 +1,8 @@
 const multer = require('multer')
 const express = require('express')
 const db = require('../config/db');
-const { Op } = require("sequelize");
-const Vendors  = require('../models/asset/vendors')
+const {Op} = require("sequelize");
+const Vendors = require('../models/asset/vendors')
 const Challan = require('../models/asset/challan')
 const Assets = require('../models/asset/assets')
 const AssetHistory = require('../models/asset/asset_history')
@@ -16,7 +16,7 @@ let storage = multer.diskStorage({
         cb(null, 'public/assets')
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' +file.originalname )
+        cb(null, Date.now() + '-' + file.originalname)
     }
 })
 let upload = multer({
@@ -32,7 +32,7 @@ let upload = multer({
 
 
 // Read challans
-route.get('/assets-entry/challan', async (req,res,next) => {
+route.get('/assets-entry/challan', async (req, res, next) => {
     const [results, metadata] = await db.query(`
         SELECT challans.id,challans.challan_no,challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
             JOIN vendors ON challans.vendor_id = vendors.id
@@ -42,8 +42,8 @@ route.get('/assets-entry/challan', async (req,res,next) => {
 })
 
 // Read Specific challans
-route.get('/assets-entry/specific-challan/:id', (req,res,next) => {
-    Challan.findAll({attributes: {exclude: ['createdAt','updatedAt']}})
+route.get('/assets-entry/specific-challan/:id', (req, res, next) => {
+    Challan.findAll({attributes: {exclude: ['createdAt', 'updatedAt']}})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -54,8 +54,8 @@ route.get('/assets-entry/specific-challan/:id', (req,res,next) => {
 })
 
 // Read Assets Of challans
-route.get('/assets-entry/assets/:id', async (req,res,next) => {
-    console.log(req.params.id , 38)
+route.get('/assets-entry/assets/:id', async (req, res, next) => {
+    console.log(req.params.id, 38)
     const [results, metadata] = await db.query(`
             SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name,asset_sub_categories.sub_category_name,projects.project_name From assets
             JOIN challans ON assets.challan_id = challans.id
@@ -72,8 +72,8 @@ route.get('/assets-entry/assets/:id', async (req,res,next) => {
 })
 
 // Read All Assets
-route.get('/assets-entry/specific-assets/:id', (req,res,next) => {
-    Assets.findAll({attributes: {exclude: ['createdAt','updatedAt', 'ChallanId']}, where: {id: req.params.id}})
+route.get('/assets-entry/specific-assets/:id', (req, res, next) => {
+    Assets.findAll({attributes: {exclude: ['createdAt', 'updatedAt', 'ChallanId']}, where: {id: req.params.id}})
         .then(resData => {
             res.status(200).json(resData)
         })
@@ -84,7 +84,7 @@ route.get('/assets-entry/specific-assets/:id', (req,res,next) => {
 })
 
 // Read All Assets
-route.get('/assets-entry/sub-assets/:id', async (req,res,next) => {
+route.get('/assets-entry/sub-assets/:id', async (req, res, next) => {
     const [data, metaData] = await db.query(`
         SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products, assets.assign_to, assets.asset_sub_category , assets.asset_category from assets
             JOIN products ON assets.product_id = products.id
@@ -98,7 +98,7 @@ route.get('/assets-entry/sub-assets/:id', async (req,res,next) => {
 })
 
 // Read All Assets By User Id
-route.get('/assets/user/options/:id', async (req,res,next) => {
+route.get('/assets/user/options/:id', async (req, res, next) => {
     const [data, metaData] = await db.query(`
         SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products from assets
             JOIN products ON assets.product_id = products.id
@@ -112,7 +112,7 @@ route.get('/assets/user/options/:id', async (req,res,next) => {
 })
 
 // Challan Entry
-route.post('/assets-entry/challan/entry', (req,res,next) => {
+route.post('/assets-entry/challan/entry', (req, res, next) => {
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
@@ -140,7 +140,11 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
                 .then(resData => {
                     Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
                         .then(resDataInner => {
-                            res.status(200).json({resId: resData.id, vendorName: resDataInner[0].dataValues.vendor_name, message: 'Challan Added Successfully!'})
+                            res.status(200).json({
+                                resId: resData.id,
+                                vendorName: resDataInner[0].dataValues.vendor_name,
+                                message: 'Challan Added Successfully!'
+                            })
                         })
                 })
                 .catch(err => {
@@ -152,7 +156,7 @@ route.post('/assets-entry/challan/entry', (req,res,next) => {
 })
 
 // Get Challan Receiver
-route.post('/challan-receiver', async (req,res,next) => {
+route.post('/challan-receiver', async (req, res, next) => {
     let {receiverName} = req.body
     if (receiverName.length >= 3) {
         Challan.findAll({
@@ -170,12 +174,12 @@ route.post('/challan-receiver', async (req,res,next) => {
 })
 
 // Asset Entry
-route.post('/assets-entry/entry', (req,res,next) => {
+route.post('/assets-entry/entry', (req, res, next) => {
     req.body.map(item => {
         Assets.create(item)
             .then(resData => {
                 if (item.product_serial === '') {
-                    Assets.update({product_serial: resData.id},{where: {id: resData.id}})
+                    Assets.update({product_serial: resData.id}, {where: {id: resData.id}})
                         .then(upd => {
                         })
                 }
@@ -193,20 +197,22 @@ route.post('/assets-entry/entry', (req,res,next) => {
 
 //Update Specific Asset
 route.put('/assets-entry/assets/update/:id', (req, res, next) => {
-    const {project_id, asset_category, asset_sub_category, cost_of_purchase, installation_cost, carrying_cost,
+    const {
+        project_id, asset_category, asset_sub_category, cost_of_purchase, installation_cost, carrying_cost,
         other_cost, asset_type, depreciation_method, rate, effective_date, book_value, salvage_value,
-        useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode} = req.body
+        useful_life, last_effective_date, warranty, last_warranty_date, condition, comments, barcode
+    } = req.body
 
     if (project_id !== '' && asset_category !== '' && asset_sub_category !== '' && cost_of_purchase !== '' && installation_cost !== '' && carrying_cost !== '',
-        other_cost !== '' && asset_type !== '' && depreciation_method !== '' && rate !== '' && effective_date !== '' && book_value !== '' && salvage_value !== '' &&
-        useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && comments !== '' && barcode !== '') {
-            Assets.update({...req.body}, {where: {id: req.params.id}})
-                .then(() => {
-                    res.status(200).json({message: 'Asset has been updated'})
-                })
-                .catch(err => {
-                    res.status(200).json({message: 'Something went wrong'})
-                })
+    other_cost !== '' && asset_type !== '' && depreciation_method !== '' && rate !== '' && effective_date !== '' && book_value !== '' && salvage_value !== '' &&
+    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && comments !== '' && barcode !== '') {
+        Assets.update({...req.body}, {where: {id: req.params.id}})
+            .then(() => {
+                res.status(200).json({message: 'Asset has been updated'})
+            })
+            .catch(err => {
+                res.status(200).json({message: 'Something went wrong'})
+            })
     } else {
         res.status(200).json({message: 'All fields required'})
     }
@@ -224,26 +230,26 @@ route.put('/assets-entry/challan-update/:id', (req, res, next) => {
             .catch(err => {
                 res.status(200).json({message: 'Something went wrong'})
             })
-    }  else {
+    } else {
         res.status(200).json({message: 'All fields required'})
     }
 })
 
 // Delete
-route.delete('/assets-entry/delete', (req,res,next) => {
+route.delete('/assets-entry/delete', (req, res, next) => {
     Assets.destroy({
         where: {
             id: req.body.id
         }
     })
-    .then(resData => {
+        .then(resData => {
 
-        res.status(200).json({message: 'Challan Has Been Deleted'})
-    })
-    .catch(err => {
-        console.log(err)
-        res.status(200).json({message: 'Something went wrong', err})
-    })
+            res.status(200).json({message: 'Challan Has Been Deleted'})
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(200).json({message: 'Something went wrong', err})
+        })
 })
 
 // Assets Entry Data By User ID
@@ -257,7 +263,7 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
         if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
         if (product_id) queryText += ' and assets.product_id = ' + product_id;
         if (product_serial) queryText += ' and assets.product_serial = ' + "\'" + product_serial + "\'";
-        if (typeof(is_disposal) === "boolean") queryText += ' and assets.is_disposal = ' + is_disposal;
+        if (typeof (is_disposal) === "boolean") queryText += ' and assets.is_disposal = ' + is_disposal;
 
         const data = await db.query(`select distinct on(assets.product_serial) product_serial, 
                                assets.id,
@@ -362,11 +368,14 @@ route.post('/get/assets/by/credentials', async (req, res) => {
 
 // Dispose Asset by Id List
 route.post('/asset-disposal/by/credentials', async (req, res) => {
-    try{
+    try {
         const {disposalCredential} = req.body;
         if (!disposalCredential.length) return res.status(400).json({error: true, msg: 'No credential found!'});
 
-        const user_associate_info = await UserAssociateRole.findOne({attributes: ["location_id", "role_id"], where: {user_id: disposalCredential[0].user_id}});
+        const user_associate_info = await UserAssociateRole.findOne({
+            attributes: ["location_id", "role_id"],
+            where: {user_id: disposalCredential[0].user_id}
+        });
         if (!user_associate_info) return res.status(400).json({error: true, msg: 'User Associate Info didn\'t found!'});
 
         disposalCredential.map((item, index) => {
@@ -381,15 +390,49 @@ route.post('/asset-disposal/by/credentials', async (req, res) => {
 
             Assets.update(updateAsset, {where: {id: item.id}})
                 .then(() => {
-                    if (disposalCredential.length === index + 1) return res.status(200).json({success: true, msg: 'Asset Disposal Info saved successfully!'});
+                    if (disposalCredential.length === index + 1) return res.status(200).json({
+                        success: true,
+                        msg: 'Asset Disposal Info saved successfully!'
+                    });
                 })
                 .catch(err => {
                     console.error(err.message);
                     return res.status(500).json(err);
                 })
         });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
     }
-    catch (err) {
+});
+
+// Transfer Asset by Id List
+route.post('/asset-transfer/by/credentials', async (req, res) => {
+    try {
+        const {transferCredential} = req.body;
+        if (!transferCredential.length) return res.status(400).json({error: true, msg: 'No credential found!'});
+
+        transferCredential.map((item, index) => {
+            Assets.update({assign_to: item.assign_to}, {where: {id: item.id}})
+                .then(() => {
+                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to})
+                        .then(() => {
+                            if (transferCredential.length === index + 1) return res.status(200).json({
+                                success: true,
+                                msg: 'Asset Transfer Info saved successfully!'
+                            });
+                        })
+                        .catch(err => {
+                            console.error(err.message);
+                            return res.status(500).json(err);
+                        });
+                })
+                .catch(err => {
+                    console.error(err.message);
+                    return res.status(500).json(err);
+                })
+        });
+    } catch (err) {
         console.error(err.message);
         return res.status(500).json(err);
     }

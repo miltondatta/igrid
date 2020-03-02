@@ -58,7 +58,7 @@ class AssetTransferComponent extends Component {
 
     handleChange = e => {
         const {name, value} = e.target;
-        let name_list = ['category_id', 'sub_category_id', 'product_id', 'product_serial'];
+        let name_list = ['category_id', 'sub_category_id', 'product_id', 'product_serial', 'parent_id'];
         if (name_list.includes(name) && value === '') return false;
 
         this.setState({
@@ -71,7 +71,7 @@ class AssetTransferComponent extends Component {
 
     addTransfer = () => {
         if (Object.values(this.validate()).includes(false)) return false;
-        const {transferData, transferCredential, category_id, sub_category_id, product_id, product_serial} = this.state;
+        const {transferData, transferCredential, category_id, sub_category_id, product_id, product_serial, user_id} = this.state;
         const newTransfer = this.getFormData();
 
         const isExistTransfer = transferCredential.filter(item => {
@@ -103,10 +103,15 @@ class AssetTransferComponent extends Component {
                             });
                         });
 
+                        if (user_id) Object.assign(newTransfer, {assign_to: user_id});
                         let newTransferArray = [newTransfer];
+
                         this.setState({
-                            transferCredential: [...transferCredential, ...newTransferArray]
-                        })
+                            transferCredential: [...transferCredential, ...newTransferArray],
+                            parent_id: 1,
+                            user_id: '',
+                            subLocation: []
+                        }, () => this.getSubLocation(this.state.parent_id))
                     })
                 })
                 .catch(err => {
@@ -136,6 +141,7 @@ class AssetTransferComponent extends Component {
                     success: success,
                     successMessage: success && msg
                 }, () => {
+                    window.location.reload();
                     this.emptyStateValue();
                 })
             })
@@ -169,7 +175,7 @@ class AssetTransferComponent extends Component {
 
     validate = () => {
         const {
-            category_id, sub_category_id, product_id, product_serial, parent_id
+            category_id, sub_category_id, product_id, product_serial, parent_id, user_id
         } = this.state;
 
         let errorDict = {
@@ -177,7 +183,8 @@ class AssetTransferComponent extends Component {
             sub_category_id: sub_category_id !== '',
             product_id: product_id !== '',
             product_serial: product_serial !== '',
-            parent_id: parent_id !== ''
+            parent_id: parent_id !== '',
+            user_id: user_id !== ''
         };
 
         this.setState({errorDict});
@@ -199,6 +206,7 @@ class AssetTransferComponent extends Component {
 
     getSubLocation = id => {
         const {subLocation} = this.state;
+        if (subLocation.filter(item => item.parent_id === parseInt(id)).length) return false;
         axios.get(apiUrl() + 'locations/' + id)
             .then(resData => {
                 this.setState({
@@ -212,7 +220,9 @@ class AssetTransferComponent extends Component {
             category_id: '',
             sub_category_id: '',
             product_id: '',
-            product_serial: ''
+            product_serial: '',
+            parent_id: '',
+            user_id: ''
         });
     };
 
@@ -327,18 +337,15 @@ class AssetTransferComponent extends Component {
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Parent Location</label>
-                            <select name={'parent_id'} value={parent_id}
+                            <select name={'parent_id'}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Parent</option>
                                 <LocationsOptions selectedId={0}/>
                             </select>
-                            {errorDict && !errorDict.parent_id &&
-                            <span className="error">Parent Location Field is required</span>
-                            }
                         </div>
                         {subLocationItem}
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <label className={'ui-custom-label'}>User</label>
                             <select name={'user_id'} value={user_id}
                                     onChange={this.handleChange}
@@ -346,11 +353,11 @@ class AssetTransferComponent extends Component {
                                 <option value="">Select User</option>
                                 <UserOptionsByLocation location_id={parent_id && parent_id - 1}/>
                             </select>
-                            {errorDict && !errorDict.parent_id &&
-                            <span className="error">Parent Location Field is required</span>
+                            {errorDict && !errorDict.user_id &&
+                            <span className="error">User Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addTransfer} className="btn btn-info">Add Transfer</button>
+                        <button onClick={this.addTransfer} className="submit-btn">Add Transfer</button>
                     </div>
                     <div className="rounded bg-white min-h-80vh p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -370,7 +377,35 @@ class AssetTransferComponent extends Component {
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Transfer Asset</h4>}
                         {transferData.length ?
-                            <button onClick={this.handleSubmit} className="submit-btn">Submit</button> : ''}
+                            <button className="submit-btn" data-toggle="modal"
+                                    data-target="#assetTransferModal">Submit</button> : ''}
+                    </div>
+                    <div className="modal fade" id="assetTransferModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="assetTransferModal" aria-hidden="true">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title"
+                                        id="exampleModalLabel">{transferData.length > 1 ? 'Assets' : 'Asset'} Transfer</h5>
+                                    <button type="button" className="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>Are you sure you want to
+                                        transfer {transferData.length > 1 ? 'these assets' : 'this asset'} ?</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary"
+                                            data-dismiss="modal">Cancel
+                                    </button>
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal"
+                                            onClick={this.handleSubmit}>Transfer Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </>
