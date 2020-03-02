@@ -328,6 +328,23 @@ export const systemAdmin = [
     },
 ];
 
+export const locationCategory = [
+    {
+        id: 10,
+        name: 'All Branches',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/location'
+    },
+    {
+        id: 9,
+        name: 'Find Location',
+        icon: 'fas fa-map-marked-alt',
+        subCat: false,
+        link: '/location/find'
+    },
+];
+
 export const documentNav = [
     {
         id: 11,

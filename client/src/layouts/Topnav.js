@@ -2,9 +2,10 @@ import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import {Link, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
-import {documentNav, sidenav, systemAdmin, misNav, apiUrl} from "../utility/constant";
+import {documentNav, sidenav, systemAdmin, misNav, apiUrl, locationCategory} from "../utility/constant";
 
 class Topnav extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -57,6 +58,8 @@ class Topnav extends Component {
             data = documentNav;
         } else if (moduleName === 'admin') {
             data = systemAdmin
+        } else if (moduleName === 'location') {
+            data = locationCategory
         } else {
             data = sidenav;
         }

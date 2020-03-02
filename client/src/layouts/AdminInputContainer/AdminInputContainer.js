@@ -15,6 +15,8 @@ import ApproveLevelOptions from "../../utility/component/approveLevelOptions";
 import ComCategoryOptions from "../../utility/component/comCategoryOption";
 import ComSubCategoryOptions from "../../utility/component/comSubCategoryOptions";
 import jwt from "jsonwebtoken";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -70,6 +72,12 @@ class AdminInputContainer extends Component {
                     this.setState({
                         error: true,
                         errorMessage: res.data.message
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
                     })
                 } else {
                     this.setState({
@@ -123,6 +131,12 @@ class AdminInputContainer extends Component {
                             error: true,
                             errorMessage: res.data.message,
                             isLoading: false
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false,
+                                })
+                            }, 2300)
                         })
                     } else {
                         this.setState({
@@ -349,6 +363,12 @@ class AdminInputContainer extends Component {
                     this.setState({
                         error: true,
                         errorMessage: resData.data.message
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
                     })
                 } else {
                     this.setState({
@@ -356,6 +376,12 @@ class AdminInputContainer extends Component {
                         successMessage: resData.data.message,
                         error: false,
                         allProjects: []
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false,
+                            })
+                        }, 2300)
                     })
                 }
             })
@@ -413,9 +439,10 @@ class AdminInputContainer extends Component {
 
     locationApi = (id) => {
         console.log(id, 232)
-        Axios.get(apiUrl() + 'locations/' + id)
+        Axios.get(apiUrl() + 'locations/render/' + id)
             .then(resData => {
                 if(resData.data.length > 0) {
+                    console.log(resData.data, 445)
                     this.setState({
                         locationHolder: [...this.state.locationHolder, ...resData.data]
                     })
@@ -429,7 +456,7 @@ class AdminInputContainer extends Component {
             category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code, order_by,
             brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name,
             module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id, location_heirarchy_id,complaint_status, complaint_name,
-            com_sub_category_name, com_category_id, com_sub_category_id, problem_details} = this.state
+            com_sub_category_name, com_category_id, com_sub_category_id, problem_details, location_lat, location_long ,address} = this.state
 
         switch (formType){
             case 'VENDOR':
@@ -1054,9 +1081,9 @@ class AdminInputContainer extends Component {
                     {
                         return(
                             <div className="px-1 mb-2">
-                                <label className={'ui-custom-label'}>Select Sub Location {item.location_name}</label>
+                                <label className={'ui-custom-label'}>Select Sub Location</label>
                                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
-                                    <option>Select Sub Location {item.location_name}</option>
+                                    <option>Select Sub Location</option>
                                     <LocationsOptions selectedId={item.parent_id} />
                                 </select>
                             </div>
@@ -1100,6 +1127,41 @@ class AdminInputContainer extends Component {
                                 </select>
                             </div>
                             {subLoc}
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Latitude</label>
+                                <input
+                                    placeholder='Latitude'
+                                    type={'text'}
+                                    name={'location_lat'}
+                                    value={location_lat}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input ${(errorDict && !errorDict.location_lat) && 'is-invalid'}`} />
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Longitude</label>
+                                <input
+                                    placeholder='Longitude'
+                                    type={'text'}
+                                    name={'location_long'}
+                                    value={location_long}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input ${(errorDict && !errorDict.location_long) && 'is-invalid'}`} />
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Location Address</label>
+                                <input
+                                    placeholder='Location Address'
+                                    type={'text'}
+                                    name={'address'}
+                                    value={address}
+                                    onChange={this.handleChange}
+                                    className={`ui-custom-input ${(errorDict && !errorDict.address) && 'is-invalid'}`} />
+                            </div>
+                            <div className="ui-custom-file w-50 pl-1">
+                                <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
+                                       required />
+                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                            </div>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Location</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
@@ -1469,7 +1531,7 @@ class AdminInputContainer extends Component {
         const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name, module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id, image_name,
-            user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, com_sub_category_name, com_category_id, com_sub_category_id, problem_details} = this.state
+            user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, location_lat, location_long ,address, com_sub_category_name, com_category_id, com_sub_category_id, problem_details} = this.state
         switch (formType){
             case "USERROLES":
                 return ({role_desc, role_name, module_id})
@@ -1535,7 +1597,7 @@ class AdminInputContainer extends Component {
                     problemDetails: problem_details,
                 })
             case "LOCATIONS":
-                return({hierarchy, parent_id, location_code, location_name})
+                return({hierarchy, parent_id, location_code, location_name, location_lat, location_long ,address})
             case "ASSETCATEGORY":
                 return({category_code,category_name,description})
             case "USERASSOCIATE":
@@ -1560,16 +1622,12 @@ class AdminInputContainer extends Component {
         const {error, errorMessage, isLoading, allProjects, success, successMessage, dataTableData} = this.state
         return (
             <>
-                {error && <div className="alert alert-danger mx-2 my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
-                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
-                </div>}
+                {error &&
+                    <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div className="alert alert-success mx-2 my-2 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                    <SuccessModal successMessage={successMessage} />
+                }
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">

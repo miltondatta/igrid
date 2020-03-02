@@ -1,13 +1,18 @@
 import './location.css'
+import Axios from 'axios'
 import React, {Component} from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import {apiUrl} from "../../utility/constant";
 
 class LocationComponent extends Component {
     constructor(props){
         super(props)
         this.state={
+            branchs: [],
             zoom: 7.1,
-            showMap: false
+            showMap: false,
+            selectedLat: 23.6850,
+            selectedLong: 90.3563,
         }
     }
 
@@ -17,64 +22,59 @@ class LocationComponent extends Component {
         })
     }
 
-    handleMarker = () => {
-        let {zoom} = this.state
-        setInterval(() => {
-            if (zoom <= 12) {
-                zoom++
+    componentDidMount() {
+        Axios.get(apiUrl() + 'locations/branch')
+            .then(resData => {
                 this.setState({
-                    zoom,
+                    branchs: resData.data
                 })
-            } else {
-                clearInterval()
-            }
-        }, 200)
+            })
+    }
+
+    handleMarker = (lat, long) => {
+        let {zoom} = this.state
+        this.setState({
+            selectedLat: lat,
+            selectedLong: long
+        }, () => {
+            setInterval(() => {
+                if (zoom <= 12) {
+                    zoom++
+                    this.setState({
+                        zoom,
+                    })
+                } else {
+                    clearInterval()
+                }
+            }, 200)
+        })
     }
 
     render() {
-        const {showMap, zoom} = this.state
+        const {showMap, zoom, branchs, selectedLat, selectedLong} = this.state
+        console.log(selectedLat, selectedLong)
+        const bnc = branchs.length > 0 && branchs.map(item => (
+            <Marker
+                onClick={() => this.handleMarker(item.location_lat, item.location_long)}
+                title={item.location_name}
+                name={item.address}
+                position={{lat: item.location_lat, lng: item.location_long}} />
+        ))
         return (
             <div className={'ui-location-finder'}>
-                {!showMap ? <div className="ui-location-card" onClick={this.handleClick}>
-                    <img src={process.env.PUBLIC_URL + '/media/image/location.png'} alt="location"/>
-                    <p>Find Location</p>
-                </div> : <div className={'ui-map-div'}>
+                <div className={'ui-map-div'}>
                     <Map
                         google={this.props.google}
                         zoom={zoom}
-                        style={{width: '100%', height: '70vh'}}
+                        style={{width: '100%', height: '85.5vh'}}
                         initialCenter={{
-                            lat: 23.6850,
-                            lng: 90.3563
+                            lat: selectedLat,
+                            lng: selectedLong
                         }}
                     >
-                        <Marker
-                            onClick={this.handleMarker}
-                            title={'Dhaka'}
-                            name={'SOMA'}
-                            position={{lat: 23.8103, lng: 90.4125}} />
-                        <Marker
-                            title={'Slyhet'}
-                            name={'SOMA'}
-                            position={{lat: 24.8949, lng: 91.8687}} />
-                        <Marker
-                            title={'Chittagong'}
-                            name={'SOMA'}
-                            position={{lat: 22.3569, lng: 91.7832}} />
-                        <Marker
-                            title={'Satkhira'}
-                            name={'SOMA'}
-                            position={{lat: 23.1778, lng: 89.1801}} />
-                        <Marker
-                            title={'Rajhshahi'}
-                            name={'SOMA'}
-                            position={{lat: 24.3745, lng: 88.6042}} />
-                        <Marker
-                            title={'Madaripur'}
-                            name={'SOMA'}
-                            position={{lat: 23.2393, lng: 90.1870}} />
+                        {bnc}
                     </Map>
-                </div>}
+                </div>
             </div>
         );
     }
