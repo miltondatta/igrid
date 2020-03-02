@@ -197,6 +197,10 @@ const AsyncIndicatorSubCategory = Loadable({
     loader: () => import('../containers/IndSubCategory'),
     loading: Loading,
 });
+const AsyncMisImportCSV = Loadable({
+    loader: () => import('../containers/Mis/ImportCSV'),
+    loading: Loading,
+});
 const AsyncOwnStockContainer = Loadable({
     loader: () => import('../containers/OwnStockContainer'),
     loading: Loading,
@@ -321,7 +325,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/mis/indicator/category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
-                                    <Route exact path='/admin/mis/import/csv' component={AsyncIndicatorSubCategory}/>
+                                    <Route exact path='/admin/mis/import/csv' component={AsyncMisImportCSV}/>
                         </Switch>
                     </div>
                 )
