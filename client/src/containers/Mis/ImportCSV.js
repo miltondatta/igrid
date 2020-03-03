@@ -5,7 +5,10 @@ import ImportCSVComponent from  "../../components/MisComponent/ImportCSVComponen
 const ImportCSVContainer = () => {
     return (
         <div>
-            <ImportCSVComponent/>
+            <ImportCSVComponent
+                title='Uploaded CSV File History'
+                headTitle='Upload CSV File For Indicator Data'
+            />
         </div>
     )
 };
