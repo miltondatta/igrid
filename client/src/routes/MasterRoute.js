@@ -241,6 +241,14 @@ const AsyncContact = Loadable({
     loader: () => import('../containers/Contact'),
     loading: Loading,
 });
+const AsyncLocationDetails = Loadable({
+    loader: () => import('../containers/LocationDetails'),
+    loading: Loading,
+});
+const AsyncDeliveryReport = Loadable({
+    loader: () => import('../containers/DeliveryReport'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -300,9 +308,11 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/conditions' component={AsyncConditions}/>
                                     <Route exact path='/admin/asset-types' component={AsyncAssetTypes}/>
                                     <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
+                                    <Route exact path='/delivery-report' component={AsyncDeliveryReport}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>
                                     <Route exact path='/asset-repair' component={AsyncRepairMaintenence}/>
+                                    <Route exact path='/location/details' component={AsyncLocationDetails}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>
                                     <Route exact path='/admin/assign-locations' component={AsyncLocations}/>

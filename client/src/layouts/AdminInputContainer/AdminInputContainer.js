@@ -441,10 +441,10 @@ class AdminInputContainer extends Component {
         console.log(id, 232)
         Axios.get(apiUrl() + 'locations/render/' + id)
             .then(resData => {
-                if(resData.data.length > 0) {
+                if(resData.data) {
                     console.log(resData.data, 445)
                     this.setState({
-                        locationHolder: [...this.state.locationHolder, ...resData.data]
+                        locationHolder: [...this.state.locationHolder,resData.data]
                     })
                 }
             })
@@ -1079,6 +1079,7 @@ class AdminInputContainer extends Component {
             case 'LOCATIONS':
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) =>
                     {
+                        console.log(item, 1080)
                         return(
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Select Sub Location</label>

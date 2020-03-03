@@ -1,0 +1,15 @@
+.ui-report-container .ui-report-header{
+    background: #547590;
+    padding: 15px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.ui-report-container .ui-report-btn-header {
+    padding: 18px;
+    display: flex;
+    background: #355570;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

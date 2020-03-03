@@ -38,6 +38,8 @@ const DocumentList = require('./routes/document/document_list');
 const IndicatorCategory = require('./routes/mis/indicator_category');
 const IndicatorSubCategory = require('./routes/mis/indicator_sub_category');
 const MisImportCSVRouter   = require('./routes/mis/import_csv');
+const AssetRepair = require('./routes/asset-repair');
+
 
 
 // Database Connection
@@ -67,6 +69,7 @@ app.use(express.static(path.join(__dirname, 'public/assets')));
 app.use(express.static(path.join(__dirname, 'public/vendor')));
 app.use(express.static(path.join(__dirname, 'public/modules')));
 app.use(express.static(path.join(__dirname, 'public/document')));
+app.use(express.static(path.join(__dirname, 'public/repair-assets')));
 
 
 // Route Defination
@@ -102,6 +105,8 @@ app.use('/api/v1/document/list', DocumentList);
 app.use('/api/v1/mis/indicator/category', IndicatorCategory);
 app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1', MisImportCSVRouter);
+app.use('/api/v1/asset-repair', AssetRepair);
+
 
 
 module.exports = app;

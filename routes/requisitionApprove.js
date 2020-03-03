@@ -145,6 +145,30 @@ route.post('/requisition-approve/delivery', (req,res,next) => {
     })
 })
 
+// Create
+route.post('/requisition-approve/delivery/between', async (req,res,next) => {
+    const {date_from, date_to, user_id} = req.body
+    const [data, masterData] = await db.query(`
+    SELECT requisition_approves.id, concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name, requisition_masters.delivery_date, requisition_approves.update_quantity as quantity, concat(users."firstName",' ',users."lastName") as delivery_to, user_roles.role_name as designation, locations.location_name as location FROM requisition_approves
+        JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
+        JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
+        JOIN users ON users.id = requisition_masters.request_by
+        JOIN user_associate_roles ON users.id = user_associate_roles.user_id
+        JOIN asset_sub_categories ON asset_sub_categories.id = requisition_details.asset_sub_category
+        JOIN user_roles ON user_roles.id = user_associate_roles.role_id
+        JOIN locations ON locations.id = requisition_approves.location_id
+             WHERE requisition_approves."createdAt" BETWEEN '${date_from}' AND '${date_to}' 
+               AND requisition_approves.delivery_to IS NOT NULL 
+               AND requisition_approves.update_by = ${user_id}
+    `)
+
+    if(data.length > 0) {
+        res.status(200).json({data, status: true})
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
+})
+
 // Delete
 route.delete('/requisition-approve/delete', (req,res,next) =>   {
     RequisitionApproves.destroy({

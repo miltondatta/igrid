@@ -69,10 +69,9 @@ class DocumentInputContainer extends Component {
     }
 
     handleSubmit = () => {
+        if (this.state.extError) return false;
+        if (Object.values(this.validate()).includes(false)) return false;
         const {getApi} = this.props;
-        if (Object.values(this.validate()).includes(false)) {
-            return
-        }
         Axios.post(apiUrl() + getApi + '/store', this.getApiData())
             .then(res => {
                 const {success, msg} = res.data;
@@ -568,7 +567,7 @@ class DocumentInputContainer extends Component {
                     title: title !== '',
                     circular_no: circular_no !== '',
                     description: description !== '',
-                    file_name: file_name.name ? file_name.name : file_name !== ''
+                    file_name: (file_name.name ? file_name.name : file_name) !== ''
                 };
                 this.setState({
                     errorDict

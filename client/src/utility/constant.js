@@ -120,7 +120,7 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'Delivery Report',
-                link: '/request-history',
+                link: '/delivery-report',
                 icon: ""
             },
             {
@@ -344,10 +344,10 @@ export const locationCategory = [
     },
     {
         id: 9,
-        name: 'Find Location',
+        name: 'Detailed Location',
         icon: 'fas fa-map-marked-alt',
         subCat: false,
-        link: '/location/find'
+        link: '/location/details'
     },
 ];
 
