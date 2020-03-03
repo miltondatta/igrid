@@ -327,7 +327,35 @@ class AssetDisposalComponent extends Component {
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Disposal Asset</h4>}
                         {disposalData.length ?
-                            <button onClick={this.handleSubmit} className="submit-btn">Submit</button> : ''}
+                            <button className="submit-btn" data-toggle="modal"
+                                    data-target="#assetDisposalModal">Submit</button> : ''}
+                    </div>
+                    <div className="modal fade" id="assetDisposalModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="assetDisposalModal" aria-hidden="true">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title"
+                                        id="exampleModalLabel">{disposalData.length > 1 ? 'Assets' : 'Asset'} Disposal</h5>
+                                    <button type="button" className="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>Are you sure you want to
+                                        disposal {disposalData.length > 1 ? 'these assets' : 'this asset'} ?</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary"
+                                            data-dismiss="modal">Cancel
+                                    </button>
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal"
+                                            onClick={this.handleSubmit}>Disposal Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </>

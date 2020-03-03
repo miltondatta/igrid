@@ -73,6 +73,10 @@ const AsyncAssetDisposal = Loadable({
     loader: () => import('../containers/AssetDisposal'),
     loading: Loading,
 });
+const AsyncDisposalAssetListContainer = Loadable({
+    loader: () => import('../containers/DisposalAssetListContainer'),
+    loading: Loading,
+});
 const AsyncAssetSale = Loadable({
     loader: () => import('../containers/AssetSale'),
     loading: Loading,
@@ -197,6 +201,10 @@ const AsyncIndicatorSubCategory = Loadable({
     loader: () => import('../containers/IndSubCategory'),
     loading: Loading,
 });
+const AsyncMisImportCSV = Loadable({
+    loader: () => import('../containers/Mis/ImportCSV'),
+    loading: Loading,
+});
 const AsyncOwnStockContainer = Loadable({
     loader: () => import('../containers/OwnStockContainer'),
     loading: Loading,
@@ -309,6 +317,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>
                                     <Route exact path='/admin/assign-locations' component={AsyncLocations}/>
                                     <Route exact path='/asset-disposal' component={AsyncAssetDisposal}/>
+                                    <Route exact path='/asset-disposal-list' component={AsyncDisposalAssetListContainer}/>
                                     <Route exact path='/admin/user-login-log' component={AsyncUserLoginLog}/>
                                     <Route exact path='/request-details/:id' component={AsyncRequestDetails}/>
                                     <Route exact path='/admin/asset-category' component={AsyncAssetCategory}/>
@@ -331,7 +340,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/mis/indicator/category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
-                                    <Route exact path='/admin/mis/import/csv' component={AsyncIndicatorSubCategory}/>
+                                    <Route exact path='/admin/mis/import/csv' component={AsyncMisImportCSV}/>
                         </Switch>
                     </div>
                 )
