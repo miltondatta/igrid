@@ -13,29 +13,17 @@ class ImportCSVComponent extends Component {
             successMessage: '',
             success: false
         };
-
-        this.import_data_files = [];
     }
 
     handleFileChange = (e) => {
         const {name, value, files} = e.target
         this.setState({import_data_file: files[0]})
-        
-        this.import_data_files.push(files[0]);
-        
     }
 
     handleSubmit = (e) => {
-        const { import_data_files } = this.state;
+        const { import_data_file } = this.state;
         const formData = new FormData();
-
-        for (const key of Object.keys(this.import_data_files)) {
-            formData.append('file', this.import_data_files[key])
-        }
-
-
-        //formData.append('file', import_data_files[0]);
-        //formData.append('file', import_data_files[0]);
+        formData.append('file', import_data_file)
 
         Axios.post(apiUrl() + 'mis/import/csv', formData)
             .then(resData => {

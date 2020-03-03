@@ -4,9 +4,10 @@ const multer = require('multer')
 const express = require('express')
 const csv     = require('csv-parser')
 const fs      = require('fs')
-const mis_imported_data     = require('../../models/mis_imported_data')
+const { uuid } = require('uuidv4');
+const mis_indicator_datas     = require('../../models/mis_imported_data')
 const mis_indicatordetail   = require('../../models/mis_indicatordetail')
-const locations             = require('../../models/locations')
+const Locations             = require('../../models/locations')
 
 const route = express.Router()
 
@@ -15,7 +16,7 @@ let storage = multer.diskStorage({
         cb(null, 'public/mis')
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '_' + file.originalname )
+        cb(null, uuid() + '-' + file.originalname )
     }
 })
 let upload =  multer({
@@ -27,50 +28,65 @@ let upload =  multer({
         }
         cb(null, true);
     }
-}).array('file')
-
-
-/*
-outer.post('/upload-images', upload.array('imgCollection', 6), (req, res, next) => {
-    const reqFiles = [];
-    const url = req.protocol + '://' + req.get('host')
-    for (var i = 0; i < req.files.length; i++) {
-        reqFiles.push(url + '/public/' + req.files[i].filename)
-    } */
-
+}).single('file')
 
 
 // Create
 route.post('/mis/import/csv', (req, res) => {
     upload(req, res, function (err) {
-
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
             return res.status(500).json(err)
         }
-
-        return;
         let uploaded_file_path = 'public/mis/' + req.file.filename;  
-        fs.createReadStream(uploaded_file_path)
-            .pipe(csv())
-            .on('data', (data) => results.push(data))
-            .on('end', () => {
-                console.log(results);
-                // [
-                //   { NAME: 'Daffy Duck', AGE: '24' },
-                //   { NAME: 'Bugs Bunny', AGE: '22' }
-                // ]
+
+        //Get location table data in code(key) and id(value) pair, similary indicator table data
+        let location_datas  = [];
+        let indicator_datas = [];
+        Locations.findAll({
+            attributes: ['id', 'location_code']
+          }).then(records => {
+            records.map(function (record) {
+                location_datas[record.location_code] = record.id;
             });
+            mis_indicatordetail.findAll({
+                attributes: ['id', 'item_no']
+            }).then(records => {
+                records.map(function (record) {
+                    indicator_datas[record.item_no] = record.id;    
+                });
+
+                let results = [];
+                let imported_datas = [];
+                fs.createReadStream(uploaded_file_path)
+                    .pipe(csv())
+                    .on('data', (data) => results.push(data))
+                    .on('end', () => {
+                        let insertedDatas = [];
+                        results.forEach((item, index) => {
+                            let item_row = Object.keys(item).map(key => item[key]);
+                            let single_row = {
+                                data_date: item_row[2],
+                                location_id: location_datas[item_row[0]] ? location_datas[item_row[0]] : '00',
+                                indicatordetails_id: indicator_datas[item_row[1]] ? indicator_datas[item_row[1]] : '00',
+                                data_value: item_row[3]
+                            };
+                            insertedDatas.push(single_row);
+                        });
+                        console.log(insertedDatas);
+                    });
+                return res.status(200).json({ message: 'Data Uploaded Successfully' })
+
+
+            });
+          });
 
         
-        
-        return res.status(200).json({ message: uploaded_file_path})
+
 
         
-    })
-
-    //return res.status(200).json({ message: 'success'})
+    });
 })
 
 module.exports = route
