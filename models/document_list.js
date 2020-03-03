@@ -29,7 +29,7 @@ const document_list = db.define('document_list', {
     status: Sequelize.BOOLEAN
 });
 
-document_list.belongsTo(document_category,{foreignKey: 'category_id'});
-document_list.belongsTo(document_sub_category,{foreignKey: 'sub_category_id'});
+document_list.belongsTo(document_category, {foreignKey: 'category_id'});
+document_list.belongsTo(document_sub_category, {foreignKey: 'sub_category_id'});
 
 module.exports = document_list;

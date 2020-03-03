@@ -693,3 +693,9 @@ label:focus,
 .ui-document-search{
    background-color: #9AC6E8 !important;
 }
+
+.ui-overflow{
+   height: 85.5vh;
+   overflow-y: auto;
+   overflow-x: hidden;
+}

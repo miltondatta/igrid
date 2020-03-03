@@ -6,6 +6,8 @@ import AssetProductByUserOptions from "../../utility/component/assetProductByUse
 import AssetListByUserOptions from "../../utility/component/assetListByUserOptions";
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import {getFileExtension} from "../../utility/custom";
+import {validateInput} from "../../utility/custom";
 
 class RepairMaintenenceComponent extends Component {
     constructor(props) {
@@ -22,6 +24,8 @@ class RepairMaintenenceComponent extends Component {
             estimated_cost: '',
             details: '',
             file_name: '',
+            is_disposal: false,
+            extError: false,
             success: false,
             successMessage: '',
             error: false,
@@ -41,9 +45,11 @@ class RepairMaintenenceComponent extends Component {
             "Book Value",
             "Salvage Value",
             "Useful Life",
-            "Disposal Reason",
+            "Estimated Cost",
+            "Details",
             "Action"
         ];
+        this.accepted_file_ext = ['png', 'jpg', 'jpeg', 'doc', 'docx', 'pdf', 'xlsx'];
     }
 
     componentDidMount() {
@@ -52,62 +58,55 @@ class RepairMaintenenceComponent extends Component {
     }
 
     handleChange = e => {
-        const {name, value} = e.target;
+        const {name, value, files} = e.target;
         let name_list = ['category_id', 'sub_category_id', 'product_id', 'product_serial'];
         if (name_list.includes(name) && value === '') return false;
 
-        this.setState({
-            [name]: value
-        }, () => {
-            if (name === 'category_id') this.setState({
-                sub_category_id: '',
-                product_id: '',
-                product_serial: ''
-            }, () => this.validate());
-            if (name === 'sub_category_id') this.setState({product_id: '', product_serial: ''}, () => this.validate());
-            if (name === 'product_id') this.setState({product_serial: ''}, () => this.validate());
-            this.validate()
-        })
+        switch (name) {
+            case 'estimated_cost':
+                let valid = validateInput(e);
+                if (valid || valid === '') this.setState({[name]: valid}, () => {this.validate()});
+                return;
+            case 'file_name':
+                const ext = getFileExtension(files[0].name);
+                if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
+                this.setState({file_name: files[0], extError: false}, () => {this.validate()});
+                return;
+            default:
+                this.setState({[name]: value}, () => {
+                    if (name === 'category_id') this.setState({sub_category_id: '', product_id: '', product_serial: ''}, () => this.validate());
+                    if (name === 'sub_category_id') this.setState({product_id: '', product_serial: ''}, () => this.validate());
+                    if (name === 'product_id') this.setState({product_serial: ''}, () => this.validate());
+                    this.validate();
+                });
+                return;
+        }
     };
 
-    addDisposal = () => {
+    addRepair = () => {
+        if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
-        const {repairData, repairCredential, category_id, sub_category_id, product_id, product_serial} = this.state;
-        const newDisposal = this.getFormData();
+        const {repairData, repairCredential, category_id, sub_category_id, product_id, product_serial, user, estimated_cost, details} = this.state;
 
-        const isExistDisposal = repairCredential.filter(item => {
-            return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id &&
-                item.product_serial === product_serial);
-        });
-        if (isExistDisposal.length) return this.setState({
-            error: true,
-            errorMessage: 'This Asset is already added in disposal list!'
-        });
+        const isExistRepair = repairCredential.filter(item => {return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id && item.product_serial === product_serial)});
+        if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'});
 
         this.setState({isLoading: true}, () => {
-            axios.post(apiUrl() + 'assets-entry/all/by/credentials', this.getFormData())
+            axios.post(apiUrl() + 'assets-entry/all/by/credentials', this.getApiData())
                 .then(res => {
-                    if (!res.data[0].length) return this.setState({
-                        error: true,
-                        errorMessage: 'There is no asset found for disposal!',
-                        isLoading: false,
-                        success: false
-                    });
-                    this.setState({
-                        repairData: [...repairData, ...res.data[0]],
-                        error: false,
-                        isLoading: false
-                    }, () => {
+                    if (!res.data[0].length) return this.setState({error: true, errorMessage: 'There is no asset found for Repair & Maintenance!', isLoading: false, success: false});
+                    this.setState({repairData: [...repairData, ...res.data[0]], error: false, isLoading: false}, () => {
+                        let newRepair = this.getApiData();
                         res.data[0].map(item => {
                             Object.keys(item).map(val => {
-                                if (val === 'id') Object.assign(newDisposal, {id: item[val]});
+                                if (val === 'id') Object.assign(newRepair, {id: item[val]});
                             });
                         });
 
-                        let newDisposalArray = [newDisposal];
+                        let newRepairArray = [newRepair];
                         this.setState({
-                            repairCredential: [...repairCredential, ...newDisposalArray]
-                        }, () => this.setState({disposal_reason: ''}))
+                            repairCredential: [...repairCredential, ...newRepairArray]
+                        }, () => this.setState({estimated_cost: '', details: '', file_name: ''}))
                     })
                 })
                 .catch(err => {
@@ -116,7 +115,7 @@ class RepairMaintenenceComponent extends Component {
         })
     };
 
-    cancelDisposal = index => {
+    cancelRepair = index => {
         const {repairData, repairCredential} = this.state;
         this.setState({
             repairData: repairData.filter((item, key) => key !== index),
@@ -125,9 +124,7 @@ class RepairMaintenenceComponent extends Component {
     };
 
     handleSubmit = () => {
-        const {repairCredential} = this.state;
-
-        axios.post(apiUrl() + 'asset-disposal/by/credentials', {repairCredential})
+        axios.post(apiUrl() + 'asset-repair/store', this.getFormData())
             .then(res => {
                 const {success, msg} = res.data;
                 this.setState({
@@ -136,42 +133,59 @@ class RepairMaintenenceComponent extends Component {
                     error: false,
                     success: success,
                     successMessage: success && msg
-                }, () => {
-                    this.emptyStateValue();
-                })
+                }, () => {this.emptyStateValue()})
             })
             .catch(err => {
                 const {error, msg} = err.response.data;
-                if (msg) {
-                    this.setState({
-                        success: false,
-                        error: error,
-                        errorMessage: error && msg
-                    })
-                }
+                if (msg) this.setState({success: false, error: error, errorMessage: error && msg});
                 console.log(err.response);
             })
     };
 
     getFormData = () => {
-        const {
-            category_id, sub_category_id, product_id, product_serial, disposal_reason, user: {id}
-        } = this.state;
+        const {repairCredential, user: {id, location_id, role_id}} = this.state;
+        let jsonData = [];
 
+        repairCredential.length && repairCredential.map(item => {
+            let data = {
+                location_id: location_id,
+                role_id: role_id,
+                user_id: id,
+                asset_id: item.id,
+                estimated_cost: item.estimated_cost,
+                details: item.details
+            };
+            jsonData.push(data);
+        });
+
+        let formData = new FormData();
+        formData.append('jsonData', JSON.stringify(jsonData));
+
+        repairCredential.length && repairCredential.map((item) => {
+            formData.append('file', item.file_name);
+        });
+
+        return formData;
+    };
+
+    getApiData = () => {
+        const {category_id, sub_category_id, product_id, product_serial, estimated_cost, details, file_name, is_disposal, user: {id}} = this.state;
         return {
             user_id: id,
             category_id,
             sub_category_id,
             product_id,
             product_serial,
-            disposal_reason,
-            is_disposal: false
+            estimated_cost,
+            details,
+            file_name,
+            is_disposal
         }
     };
 
     validate = () => {
         const {
-            category_id, sub_category_id, product_id, product_serial, disposal_reason
+            category_id, sub_category_id, product_id, product_serial, estimated_cost, details, file_name
         } = this.state;
 
         let errorDict = {
@@ -179,7 +193,9 @@ class RepairMaintenenceComponent extends Component {
             sub_category_id: sub_category_id !== '',
             product_id: product_id !== '',
             product_serial: product_serial !== '',
-            disposal_reason: disposal_reason !== ''
+            estimated_cost: estimated_cost !== '',
+            details: details !== '',
+            file_name: (file_name.name ? file_name.name : file_name) !== ''
         };
 
         this.setState({errorDict});
@@ -192,20 +208,24 @@ class RepairMaintenenceComponent extends Component {
             sub_category_id: '',
             product_id: '',
             product_serial: '',
-            disposal_reason: ''
+            estimated_cost: '',
+            details: '',
+            file_name: ''
         });
     };
 
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
-            errorDict, isLoading, repairData, repairCredential, estimated_cost, details, file_name
+            errorDict, isLoading, repairData, repairCredential, estimated_cost, details, file_name, extError
         } = this.state;
 
-        let disposal_reason_txt = [];
+        let estimated_cost_array = [];
+        let details_array = [];
         repairCredential.length && repairCredential.map(item => {
             Object.keys(item).map(val => {
-                if (val === 'disposal_reason') disposal_reason_txt.push(item[val]);
+                if (val === 'estimated_cost') estimated_cost_array.push(item[val]);
+                if (val === 'details') details_array.push(item[val]);
             });
         });
 
@@ -219,9 +239,10 @@ class RepairMaintenenceComponent extends Component {
                 <td>{item.book_value}</td>
                 <td>{item.salvage_value}</td>
                 <td>{item.useful_life}</td>
-                <td>{disposal_reason_txt[index]}</td>
+                <td>{estimated_cost_array[index]}</td>
+                <td>{details_array[index]}</td>
                 <td>
-                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelDisposal(index)}><i
+                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelRepair(index)}><i
                         className="fas fa-times"/></span>
                 </td>
             </tr>
@@ -246,7 +267,7 @@ class RepairMaintenenceComponent extends Component {
                     {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
                 </div>}
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 min-h-80vh position-relative ui-overflow`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Repair/Maintenance</p>
                         </nav>
@@ -306,6 +327,7 @@ class RepairMaintenenceComponent extends Component {
                                 placeholder='Estimated Cost'
                                 name={'estimated_cost'}
                                 value={estimated_cost}
+                                data-number={'float_only'}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                             {errorDict && !errorDict.estimated_cost &&
@@ -321,15 +343,24 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Repair Details Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-2 w-50">
+                        <div className="px-1 mb-20p w-50">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'}
                                        className="custom-file-input" id="validatedCustomFile"/>
                                 <label
                                     htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
                             </div>
+                            {errorDict && !errorDict.file_name &&
+                            <>
+                                <span className="error">File Name Field is required</span>
+                                <br/>
+                            </>
+                            }
+                            {extError &&
+                            <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
+                            }
                         </div>
-                        <button onClick={this.addDisposal} className="submit-btn">Add Repair-Maintenance</button>
+                        <button onClick={this.addRepair} className="submit-btn">Add Repair-Maintenance</button>
                     </div>
                     <div className="rounded bg-white min-h-80vh p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -350,10 +381,10 @@ class RepairMaintenenceComponent extends Component {
                             There are No Repair/Maintenance Asset</h4>}
                         {repairData.length ?
                             <button className="submit-btn" data-toggle="modal"
-                                    data-target="#assetDisposalModal">Submit</button> : ''}
+                                    data-target="#assetRepairModal">Submit</button> : ''}
                     </div>
-                    <div className="modal fade" id="assetDisposalModal" tabIndex="-1" role="dialog"
-                         aria-labelledby="assetDisposalModal" aria-hidden="true">
+                    <div className="modal fade" id="assetRepairModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="assetRepairModal" aria-hidden="true">
                         <div className="modal-dialog modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
