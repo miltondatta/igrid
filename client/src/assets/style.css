@@ -58,6 +58,7 @@ select:focus{
 }
 
 .ui-custom-input,
+.ui-custom-input-no-top,
 .ui-custom-keyInput,
 .ui-custom-textarea{
    width: 100%;
@@ -65,6 +66,9 @@ select:focus{
    border-radius: 5px;
    border: 1.2px solid #e7e7e7;
    -webkit-appearance: checkbox !important;
+}
+.ui-custom-input-no-top{
+   padding: 9px;
 }
 .ui-custom-label{
    position: absolute;

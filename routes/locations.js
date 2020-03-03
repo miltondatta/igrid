@@ -30,6 +30,30 @@ route.get('/locations/branch', async (req,res,next) => {
     }
 })
 
+// Read Top Level
+route.get('/locations/top', async (req,res,next) => {
+    const [data, naster] = await db.query(`
+        SELECT * FROM "locations" WHERE "hierarchy" = (SELECT "min"(id) FROM location_hierarchies)
+    `)
+    if(data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json()
+    }
+})
+
+// Read Parent Level
+route.get('/locations/child/:id', async (req,res,next) => {
+    const [data, naster] = await db.query(`
+        SELECT * FROM "locations" WHERE parent_id = ${req.params.id}
+    `)
+    if(data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json()
+    }
+})
+
 // Read Specific Location
 route.get('/locations/:id', (req,res,next) => {
     Locations.findAll({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy'], where: {parent_id: req.params.id}})
@@ -40,7 +64,6 @@ route.get('/locations/:id', (req,res,next) => {
             res.status(200).json({message: 'Something Went Wrong', err})
         })
 })
-
 
 // Read Specific Location
 route.get('/locations/render/:id', (req,res,next) => {
