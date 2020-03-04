@@ -5,7 +5,7 @@ const express = require('express')
 const csv     = require('csv-parser')
 const fs      = require('fs')
 const { uuid } = require('uuidv4');
-const mis_indicator_datas     = require('../../models/mis_imported_data')
+const mis_imported_data     = require('../../models/mis_imported_data')
 const mis_indicatordetail   = require('../../models/mis_indicatordetail')
 const Locations             = require('../../models/locations')
 
@@ -50,6 +50,7 @@ route.post('/mis/import/csv', (req, res) => {
             records.map(function (record) {
                 location_datas[record.location_code] = record.id;
             });
+            console.log(location_datas['01']);
             mis_indicatordetail.findAll({
                 attributes: ['id', 'item_no']
             }).then(records => {
@@ -74,10 +75,10 @@ route.post('/mis/import/csv', (req, res) => {
                             };
                             insertedDatas.push(single_row);
                         });
-                        console.log(insertedDatas);
+                        mis_imported_data.bulkCreate(insertedDatas).then(() => {
+                            return res.status(200).json({ message: 'Data Uploaded Successfully' })
+                        });
                     });
-                return res.status(200).json({ message: 'Data Uploaded Successfully' })
-
 
             });
           });
