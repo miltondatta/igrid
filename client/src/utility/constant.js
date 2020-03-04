@@ -109,6 +109,12 @@ export const sidenav = [
                 link: '/asset-repair',
                 icon: ""
             },
+            {
+                id: 16,
+                name: 'Repair & Maintenance List',
+                link: '/asset-repair-list',
+                icon: ""
+            },
         ]
     },
     {

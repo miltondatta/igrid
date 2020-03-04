@@ -72,6 +72,8 @@ class DocumentInputContainer extends Component {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
         const {getApi} = this.props;
+        let file = document.getElementById("validatedCustomFile");
+
         Axios.post(apiUrl() + getApi + '/store', this.getApiData())
             .then(res => {
                 const {success, msg} = res.data;
@@ -89,7 +91,7 @@ class DocumentInputContainer extends Component {
                     error: false,
                     success: success,
                     successMessage: success && msg
-                })
+                }, () => { return file.value = "";})
             })
             .then(() => {
                 this.setState({
@@ -261,6 +263,7 @@ class DocumentInputContainer extends Component {
         const {name, value, files, checked} = e.target;
         switch (name) {
             case "file_name":
+                if (!files.length) return;
                 const ext = getFileExtension(files[0].name);
                 if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
 
@@ -683,7 +686,7 @@ class DocumentInputContainer extends Component {
                         <td>{item.circular_no}</td>
                         <td>
                             <span
-                                className={`badge badge-${item.content_type == 1 ? 'error.css' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
+                                className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
                         </td>
                         <td>
                             <span

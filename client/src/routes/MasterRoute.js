@@ -89,8 +89,12 @@ const AsyncAssetTransfer = Loadable({
     loader: () => import('../containers/AssetTransfer'),
     loading: Loading,
 });
-const AsyncRepairMaintenence= Loadable({
-    loader: () => import('../containers/RepairMaintenence'),
+const AsyncRepairMaintenance= Loadable({
+    loader: () => import('../containers/RepairMaintenance'),
+    loading: Loading,
+});
+const AsyncRepairMaintenanceList= Loadable({
+    loader: () => import('../containers/RepairMaintenanceList'),
     loading: Loading,
 });
 const AsyncCreateProject = Loadable({
@@ -311,7 +315,8 @@ class MasterRoute extends Component{
                                     <Route exact path='/delivery-report' component={AsyncDeliveryReport}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>
-                                    <Route exact path='/asset-repair' component={AsyncRepairMaintenence}/>
+                                    <Route exact path='/asset-repair' component={AsyncRepairMaintenance}/>
+                                    <Route exact path='/asset-repair-list' component={AsyncRepairMaintenanceList}/>
                                     <Route exact path='/location/details' component={AsyncLocationDetails}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>

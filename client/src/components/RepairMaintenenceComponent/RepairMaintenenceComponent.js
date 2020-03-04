@@ -68,6 +68,7 @@ class RepairMaintenenceComponent extends Component {
                 if (valid || valid === '') this.setState({[name]: valid}, () => {this.validate()});
                 return;
             case 'file_name':
+                if (!files.length) return;
                 const ext = getFileExtension(files[0].name);
                 if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
                 this.setState({file_name: files[0], extError: false}, () => {this.validate()});
@@ -87,6 +88,7 @@ class RepairMaintenenceComponent extends Component {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
         const {repairData, repairCredential, category_id, sub_category_id, product_id, product_serial, user, estimated_cost, details} = this.state;
+        let file = document.getElementById("validatedCustomFile");
 
         const isExistRepair = repairCredential.filter(item => {return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id && item.product_serial === product_serial)});
         if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'});
@@ -106,7 +108,7 @@ class RepairMaintenenceComponent extends Component {
                         let newRepairArray = [newRepair];
                         this.setState({
                             repairCredential: [...repairCredential, ...newRepairArray]
-                        }, () => this.setState({estimated_cost: '', details: '', file_name: ''}))
+                        }, () => this.setState({estimated_cost: '', details: '', file_name: ''}, () => { return file.value = "";}))
                     })
                 })
                 .catch(err => {
