@@ -24,7 +24,6 @@ let upload =  multer({
     fileFilter: (req, file, cb) => {
         if (!file.originalname.match(/\.(csv)$/)) {
             return cb(new Error('Only .csv format allowed!'));
-
         }
         cb(null, true);
     }
@@ -34,10 +33,11 @@ let upload =  multer({
 // Create
 route.post('/mis/import/csv', (req, res) => {
     upload(req, res, function (err) {
+        console.log(err);
         if (err instanceof multer.MulterError) {
-            return res.status(500).json(err)
+            return res.status(500).json({ message: "Internal file upload error!" })
         } else if (err) {
-            return res.status(500).json(err)
+            return res.status(500).json({ message: "Please check your file format, Only CSV file allowed here!" })
         }
         let uploaded_file_path = 'public/mis/' + req.file.filename;  
 
