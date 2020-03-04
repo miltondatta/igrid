@@ -16,6 +16,7 @@ import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 
 class ChallanComponent extends Component {
+
     constructor(props){
         super(props)
         this.state={
@@ -25,6 +26,7 @@ class ChallanComponent extends Component {
             receivedBy: [],
             assetId: '',
             forceUpdate: false,
+            is_closed: false,
             challan_no: '',
             receivedByFocus: false,
             recDropFoc: false,
@@ -164,6 +166,8 @@ class ChallanComponent extends Component {
             })
         } else if (name === 'attachment') {
             this.setState({attachment: files[0]})
+        } else if (name === 'is_closed') {
+            this.setState({is_closed: checked})
         } else if (name === 'asset_quantity') {
             for(let i = 0; i < value; i++) {
                 let lebel = `product_serial_${i + 1}`
@@ -219,8 +223,8 @@ class ChallanComponent extends Component {
     }
 
     updateChallan = () => {
-        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = this.state
-            const data = {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, comments: challanComments, added_by}
+        const {challan_no, is_closed, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = this.state
+            const data = {challan_no, is_closed, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, comments: challanComments, added_by}
             Axios.put(apiUrl() + 'assets-entry/challan-update/' + this.state.challan_id, data)
                 .then(resData => {
                     if (resData.data.status) {
@@ -382,9 +386,9 @@ class ChallanComponent extends Component {
         const {challans, assets, product_id, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr, error,
             received_by, challanComments, project_id, asset_category, asset_sub_category, cost_of_purchase,errorDictAsset, errorMessage, addAssets, asset_quantity,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, targetAsset, targetChallan,
-            salvage_value, useful_life, warranty, condition, comments, barcode, challan_date, receivedBy, receivedByFocus,
+            salvage_value, useful_life, warranty, condition, comments, barcode, challan_date, receivedBy, receivedByFocus, is_closed,
             recDropFoc, success, successMessage, amc_charge, amc_expire_date, amc_type, is_amc, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
-        console.log(receivedBy, 334)
+
         const prodSer = asset_quantity && prodArr.map((item, index) => {
             return(
                 <div className={'mb-1'}>
@@ -481,6 +485,21 @@ class ChallanComponent extends Component {
                                         placeholder={'Write Comments'}
                                         className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
                                     />
+                                </div>
+                                <div className={'mb-2'}>
+                                    <nav className="navbar text-center mb-2 pl-1 rounded">
+                                        <p className="text-blue f-weight-700 f-20px m-0">Close Challan</p>
+                                    </nav>
+                                    <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                                        <input
+                                            type={'checkbox'}
+                                            checked={is_closed}
+                                            id={'customCheckbox'}
+                                            name={'is_closed'}
+                                            value={is_closed}
+                                            onChange={this.handleChange} />
+                                        <label htmlFor="customCheckbox" className={'mb-0'}>Close Challan</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
