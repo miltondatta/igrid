@@ -204,7 +204,7 @@ class RequestHistoryComponent extends Component {
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </> : <>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
-                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
                         </nav>
 
                         <div className={'reactDataTable mb-20p'}>

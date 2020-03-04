@@ -407,7 +407,7 @@ class ChallanComponent extends Component {
                 <div className="rounded">
                     {targetChallan.length > 0 ? <>
                         <nav className="navbar text-center mb-0 mx-1 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({targetChallan: []})}}>
-                            <p className="text-blue f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
+                            <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
                         </nav>
                         <div className=" p-1 ui-dataEntry">
                             <div className={'min-h-80vh bg-white rounded position-relative p-3'}>
@@ -506,7 +506,7 @@ class ChallanComponent extends Component {
                         /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
                     </div> </div> : <div className={'p-2'}>
                         <nav className="navbar text-center mb-0 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({    targetAsset: [], addAssets: false })}}>
-                            <p className="text-blue f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
+                            <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
                         </nav>
                         <div>
                             <div className={'rounded pl-3 pt-1'}>

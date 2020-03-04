@@ -13,3 +13,31 @@
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
+.ui-report-container .ui-dropdown-btn{
+    position: absolute;
+    width: 92%;
+    left: 7px;
+    border-radius: 5px;
+    overflow: hidden;
+    bottom: -84px;
+    z-index: 5;
+}
+
+.ui-report-container .ui-dropdown-btn button{
+    width: 100%;
+    padding: 8px;
+    border: none;
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 0 2px white;
+    border-bottom: 1px solid #fff;
+}
+
+.ui-report-container .ui-dropdown-btn button:first-child{
+    background: #398ae1;
+}
+
+.ui-report-container .ui-dropdown-btn button:last-child{
+    background: #ed4555;
+}

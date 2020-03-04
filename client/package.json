@@ -5,6 +5,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@react-pdf/renderer": "^1.6.8",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
@@ -15,15 +16,19 @@
     "qrcode.react": "^1.0.0",
     "react": "^16.12.0",
     "react-barcode": "^1.4.0",
+    "react-data-export": "^0.6.0",
     "react-data-table-component": "^6.2.0",
     "react-datepicker2": "^3.0.15",
     "react-dom": "^16.12.0",
+    "react-export-excel": "^0.5.3",
     "react-loadable": "^5.5.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
+    "react-scripts": "^3.4.0",
     "react-slick": "^0.25.2",
     "slick-carousel": "^1.8.1",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "xlsx": "^0.15.5",
+    "xlsx-style": "^0.8.13"
   },
   "scripts": {
     "start": "react-scripts start",
