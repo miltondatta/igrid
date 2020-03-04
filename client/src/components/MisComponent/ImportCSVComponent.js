@@ -8,10 +8,8 @@ class ImportCSVComponent extends Component {
         super(props);
         this.state = {
             import_data_file: null,
-            error: false,
-            errorMessage: '',
-            successMessage: '',
-            success: false
+            success: null,
+            message: ''
         };
     }
 
@@ -21,37 +19,56 @@ class ImportCSVComponent extends Component {
     }
 
     handleSubmit = (e) => {
-        const { import_data_file } = this.state;
+        const { import_data_file } = this.state;    
+        if(!import_data_file) {
+            this.setState({
+                success: false,
+                message: "Please upload a csv file to submit"
+            });
+            return;
+        }
         const formData = new FormData();
         formData.append('file', import_data_file)
-
         Axios.post(apiUrl() + 'mis/import/csv', formData)
             .then(resData => {
-                if (resData.data.status) {
-                    console.log(resData, 31)
                     this.setState({
                         success: true,
-                        successMessage: resData.data.message
-                    }, () => {
-                        window.location.reload()
-                    })
-                } else {
-                    this.setState({
-                        error: true,
-                        errorMessage: resData.data.message
-                    })
-                }
+                        message: resData.data.message,
+                        import_data_file: null
+                    });                
+            }).catch(err => {
+                this.setState({
+                    success: false,
+                    message: err.response.data.message
+                })
             })
-            .catch(err => {console.log(err)})
 
     }
 
 
     render() {
         const {title, headTitle} = this.props;
-        const { import_data_file, errorMessage, successMessage, success, error }  = this.state;
+        const { import_data_file, success, message }  = this.state;
         return (
             <>
+                {typeof success === "boolean" && !success &&
+                <div
+                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
+                    role="alert">
+                    {message} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: null})
+                }}></i>
+                </div>}
+                {success &&
+                <div
+                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
+                    role="alert">
+                    {message} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: null})
+                }}></i>
+                </div>}
+
+
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">

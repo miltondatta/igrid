@@ -526,7 +526,7 @@ class DocumentInputContainer extends Component {
                             <button className="submit-btn mr-2" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal  mt-3" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>

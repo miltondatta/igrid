@@ -1,0 +1,28 @@
+.ui-pdf{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    background: rgba(0,0,0,.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ui-pdf iframe{
+    background: transparent;
+    width: 55%;
+    height: 95%;
+}
+
+.ui-pdf .ui-close{
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    text-shadow: 0 0 3px white;
+}

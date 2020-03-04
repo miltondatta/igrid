@@ -1,13 +1,11 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const mis_indicator_datas = sequelize.define('mis_imported_data', {
-    location_id: DataTypes.INTEGER,
-    indicatordetails_id: DataTypes.INTEGER,
-    data_date: DataTypes.DATEONLY,
-    data_value: DataTypes.DOUBLE
-  }, {});
-  mis_indicator_datas.associate = function(models) {
-    // associations can be defined here
-  };
-  return mis_indicator_datas;
-};
+const db = require('../config/db');
+const Sequelize = require('sequelize');
+
+const mis_imported_data = db.define('mis_imported_datas', {
+  location_id: Sequelize.INTEGER,
+  indicatordetails_id: Sequelize.INTEGER,
+  data_date: Sequelize.DATEONLY,
+  data_value: Sequelize.DOUBLE
+});
+
+module.exports = mis_imported_data;

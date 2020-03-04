@@ -130,6 +130,12 @@ class AssetRegComponent extends Component {
                         this.setState({
                             error: true,
                             errorMsg: res.message
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false,
+                                })
+                            }, 2300)
                         })
                     } else {
                         this.setState({
@@ -243,7 +249,7 @@ class AssetRegComponent extends Component {
         data.append('challanComments', challanComments)
         Axios.post(apiUrl() + 'assets-entry/challan/entry', data)
             .then(resData => {
-                console.log(resData, 186)
+                if (resData.data.status) {
                 this.setState({
                     success: true,
                     successMessage: resData.data.message,
@@ -253,11 +259,21 @@ class AssetRegComponent extends Component {
                     setTimeout(() => {
                         this.setState({
                             success: false,
-                        }, () => {
-                            console.log(this.state.error, 211)
                         })
                     }, 2300)
                 })
+                } else {
+                    this.setState({
+                        error: true,
+                        errorMsg: resData.message
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
+                    })
+                }
             })
             .catch(err => {console.log(err)})
     }
@@ -294,7 +310,7 @@ class AssetRegComponent extends Component {
         const {attachment, challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,
             challanComments,project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost,
             other_cost,asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,last_effective_date,warranty,
-            last_warranty_date,condition,comments,barcode, amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
+            is_amc,condition,comments,barcode, amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
@@ -316,9 +332,9 @@ class AssetRegComponent extends Component {
         } else if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
-                amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
-                amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
-                amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
+                amc_charge: is_amc && typeof amc_charge !== 'undefined' && amc_charge !== '',
+                amc_expire_date: is_amc && typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
+                amc_type: is_amc && typeof amc_type !== 'undefined' && amc_type !== '',
                 insurance_expire_date: typeof insurance_expire_date !== 'undefined' && insurance_expire_date !== '',
                 insurance_premium: typeof insurance_premium !== 'undefined' && insurance_premium !== '',
                 insurance_value: typeof insurance_value !== 'undefined' && insurance_value !== '',
@@ -625,7 +641,7 @@ class AssetRegComponent extends Component {
                                                    placeholder={'Other Cost'}
                                                    className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
                                         </div>
-                                        <div className={'mb-1'}>
+                                       {is_amc && <> <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>AMC Charge</label>
                                             <input type={'number'}
                                                    value={amc_charge}
@@ -648,7 +664,7 @@ class AssetRegComponent extends Component {
                                                    onChange={this.handleChange} name={'amc_type'}
                                                    placeholder={'AMC Type'}
                                                    className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}/>
-                                        </div>
+                                        </div></>}
                                         <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
                                             <div className="ui-custom-checkbox">
                                                 <input

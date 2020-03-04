@@ -1,10 +1,12 @@
 import Axios from 'axios'
-import React, {Component} from 'react';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
-import {apiUrl} from "../../utility/constant";
 import jwt from "jsonwebtoken";
+import React, {Component} from 'react';
+import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
+import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
 
 class DeliveryReportComponent extends Component {
 
@@ -12,9 +14,11 @@ class DeliveryReportComponent extends Component {
         super(props)
         this.state = {
             date_to: '',
+            pdf: false,
             error: false,
             date_from: '',
             errorMessage: '',
+            optionDropDown: false,
             deliveryReportData: []
         }
     }
@@ -43,6 +47,7 @@ class DeliveryReportComponent extends Component {
                 } else {
                     this.setState({
                         error: true,
+                        deliveryReportData: [],
                         errorMessage: resData.message
                     }, () => {
                         setTimeout(() => {
@@ -55,8 +60,14 @@ class DeliveryReportComponent extends Component {
             })
     }
 
+    pdfViewr = () => {
+        const {deliveryReportData} = this.state
+        deliveryReportData.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
+    }
+
     render() {
-        const {error, success, successMessage, errorMessage, date_from, date_to, errorDictAsset, deliveryReportData} = this.state
+        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, errorDictAsset, deliveryReportData, pdf} = this.state
+        console.log(deliveryReportData, 72)
         return (
             <>
                 {error &&
@@ -92,15 +103,23 @@ class DeliveryReportComponent extends Component {
                                 <div className="ui-report-btn-header rounded p-2">
                                     <button onClick={this.handleSubmit} className={'mx-2 submit-btn-normal'}>Submit</button>
                                     <button className={'mx-2 reset-btn-normal'}>Reset</button>
-                                    <button className={'mx-2 new-btn-normal'}>Export PSD/XSL</button>
-                                </div>
+                                        <div className={'position-relative'}>
+                                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export PDF/XSL</button>
+                                            {optionDropDown && <div className={'ui-dropdown-btn'}>
+                                                <button className={`${typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? 'p-0' : null)}`}>{typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? <ReactExcelExport excelData={deliveryReportData} /> : 'Excel')}</button>
+                                                <button onClick={this.pdfViewr}>PDF</button>
+                                            </div>}
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
-                    {deliveryReportData.length > 0 ? <ReactDataTable
+                    {typeof deliveryReportData !== 'undefined' && deliveryReportData.length > 0 ? <ReactDataTable
                         tableData={deliveryReportData}
-                    /> :  <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    /> :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
+
+                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={deliveryReportData} />}
             </>
         );
     }

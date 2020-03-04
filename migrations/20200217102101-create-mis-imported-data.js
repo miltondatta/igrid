@@ -12,18 +12,10 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       location_id: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'locations',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       indicatordetails_id: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'mis_indicatordetails',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       data_value: {
         type: Sequelize.DOUBLE

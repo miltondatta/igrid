@@ -37,6 +37,7 @@ route.get('/assets-entry/challan', async (req, res, next) => {
         SELECT challans.id,challans.challan_no,challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
             JOIN vendors ON challans.vendor_id = vendors.id
             JOIN users ON challans.added_by = users.id
+                WHERE challans.is_closed = FALSE
     `)
     res.status(200).json(results)
 })
@@ -136,20 +137,29 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
                 added_by,
                 comments: challanComments,
             }
-            Challan.create(data)
-                .then(resData => {
-                    Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
-                        .then(resDataInner => {
-                            res.status(200).json({
-                                resId: resData.id,
-                                vendorName: resDataInner[0].dataValues.vendor_name,
-                                message: 'Challan Added Successfully!'
+            console.log(data, 229)
+            Challan.findAll({where: {vendor_id, challan_no}})
+                .then(resChallan => {
+                    if (resChallan.length > 0) {
+                        res.status(200).json({message: 'Challan No Exists', err})
+                    } else {
+                        Challan.create(data)
+                            .then(resData => {
+                                Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
+                                    .then(resDataInner => {
+                                        res.status(200).json({
+                                            resId: resData.id,
+                                            status: true,
+                                            vendorName: resDataInner[0].dataValues.vendor_name,
+                                            message: 'Challan Added Successfully!'
+                                        })
+                                    })
                             })
-                        })
-                })
-                .catch(err => {
-                    console.log(err)
-                    res.status(200).json({message: 'Something went wrong', err})
+                            .catch(err => {
+                                console.log(err)
+                                res.status(200).json({message: 'Something went wrong', err})
+                            })
+                    }
                 })
         }
     })
