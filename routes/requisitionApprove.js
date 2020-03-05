@@ -45,9 +45,12 @@ route.get('/requisition-approve/specific', async (req,res,next) => {
     let location_id = req.query.location_id;
 
     const [results, metadata] = await db.query(`
-        SELECT requisition_approves.id, CONCAT(users."firstName", ' ', users."lastName") as username, requisition_details.brand, requisition_details.model, requisition_approves.requisition_id, requisition_masters.requisition_no, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
-               requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
-               user_roles.role_name, locations.location_name,requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
+        SELECT requisition_approves.id, CONCAT(users."firstName", ' ', users."lastName") as username, requisition_details.brand, 
+               requisition_details.model, requisition_approves.requisition_id, requisition_masters.requisition_no, 
+               requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
+               requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, 
+               asset_categories.category_name, asset_sub_categories.sub_category_name, user_roles.role_name, locations.location_name,
+               requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
             JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
             JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id
             JOIN asset_categories ON requisition_details.asset_category = asset_categories.id

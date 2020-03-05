@@ -7,6 +7,8 @@ import {apiUrl} from "../../utility/constant";
 import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class AssetComponent extends Component{
 
@@ -110,11 +112,23 @@ class AssetComponent extends Component{
                         this.setState({
                             error: true,
                             errorMessage: resData.data.message
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false,
+                                })
+                            }, 2300)
                         })
                     } else {
                         this.setState({
                             success: true,
                             successMessage: resData.data.message,
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    success: false,
+                                })
+                            }, 2300)
                         })
                     }
                 })
@@ -164,16 +178,12 @@ class AssetComponent extends Component{
         console.log(arrayData, 154)
         return(
             <>
-                {error && <div className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center  " role="alert">
-                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
-                </div>}
+                {error &&
+                    <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                     role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                    <SuccessModal successMessage={successMessage} />
+                }
                 <div className={'ui-dataEntry p-3'}>
                     <div className={'bg-white rounded p-2 min-h-80vh position-relative'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">

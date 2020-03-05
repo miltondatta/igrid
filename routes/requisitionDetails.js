@@ -141,7 +141,7 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
     let reqId = [];
 
     const [results, metadata] = await db.query(`SELECT DISTINCT ON
-        (requisition_approves.requisition_id) requisition_approves.requisition_details_id,
+        (requisition_approves.requisition_id)
         concat(location_hierarchies.hierarchy_name, '-', locations.location_name) as location_name,
         Concat ( users."firstName", ' ', users."lastName" ) AS request_by,
         user_roles.role_name as role_name,

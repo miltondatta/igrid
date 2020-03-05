@@ -7,6 +7,7 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import PrintDelivery from "./PrintDelivery";
 
 class DeliveryRequestComponent extends Component {
+
     constructor(props){
         super(props)
         this.state = {
@@ -160,11 +161,9 @@ class DeliveryRequestComponent extends Component {
             )
         })
 
-        console.log({delivery: resData, products: assetsList})
-
         return (
             <div className={'bg-white p-3 rounded m-3 min-h-80vh'}>
-                {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
+                {printDelivery && window.open(<PrintDelivery resData={resData} comeBack={this.comeBack} />)}
                 {showDetails ?  <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
@@ -179,7 +178,7 @@ class DeliveryRequestComponent extends Component {
                                     <p>Role</p>
                                     <p>Location</p>
                                     <p>Quantity</p>
-                                    <p>Product</p>
+                                    <p style={{width: 350}}>Product</p>
                                 </div>
                             </div>
                             <div className={'tbody'}>

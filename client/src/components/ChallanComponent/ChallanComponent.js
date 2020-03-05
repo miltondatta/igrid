@@ -29,6 +29,8 @@ class ChallanComponent extends Component {
             forceUpdate: false,
             is_closed: false,
             challan_no: '',
+            error: false,
+            errorMessage: '',
             receivedByFocus: false,
             recDropFoc: false,
             challan_description: '',
@@ -99,9 +101,22 @@ class ChallanComponent extends Component {
         console.log(id)
         Axios.get(apiUrl() + 'assets-entry/assets/' + id)
             .then(resData => {
-                this.setState({
-                    assets: resData.data
-                })
+                if (resData.data.status) {
+                    this.setState({
+                        assets: resData.data.results
+                    })
+                } else {
+                    this.setState({
+                        error: true,
+                        errorMessage: resData.data.message,
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
+                    })
+                }
             })
     }
 
@@ -402,7 +417,7 @@ class ChallanComponent extends Component {
         return (
             <div className={'w-100 p-2'}>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                    <ErrorModal ops errorMessage={errorMessage} />
                 }
                 {success &&
                     <SuccessModal successMessage={successMessage} />
