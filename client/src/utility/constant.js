@@ -18,6 +18,18 @@ export const sidenav = [
         subCat: true,
         categories: [
             {
+                id: 4,
+                name: 'New Requisition',
+                link: '/requisition',
+                icon: "far fa-keyboard"
+            },
+            {
+                id: 5,
+                name: 'My Requisition Status',
+                link: '/requisition-status',
+                icon: "far fa-keyboard"
+            },
+            {
                 id: 1,
                 name: 'Requisition List',
                 link: '/request-history',
@@ -31,20 +43,14 @@ export const sidenav = [
             },
             {
                 id: 3,
-                name: 'Approved Delivery',
+                name: 'My Delivery',
                 link: '/approved-delivery',
                 icon: "far fa-keyboard"
             },
             {
-                id: 4,
-                name: 'Material Requisition',
-                link: '/requisition',
-                icon: "far fa-keyboard"
-            },
-            {
-                id: 5,
-                name: 'Requisition Status',
-                link: '/requisition-status',
+                id: 6,
+                name: 'Delivery Received',
+                link: '/approved-delivery',
                 icon: "far fa-keyboard"
             },
         ]
@@ -63,7 +69,7 @@ export const sidenav = [
             },
             {
                 id: 1,
-                name: 'Open Challan',
+                name: 'Open Challan List',
                 link: '/challan',
                 icon: ""
             },
