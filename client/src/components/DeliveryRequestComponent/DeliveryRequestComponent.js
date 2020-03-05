@@ -122,6 +122,13 @@ class DeliveryRequestComponent extends Component {
         return selectAsset
     }
 
+    availableAssets = (cat, sub, dev_to) => {
+        const {products} = this.state
+        const filteredCategory = products.length > 0 && products.filter(item => (item.asset_category === parseInt(cat, 10) && item.asset_sub_category === parseInt(sub, 10)))
+        const selectAsset = filteredCategory.length > 0 ? filteredCategory.length : 0
+        return selectAsset
+    }
+
     handleChange = (e, assign_to) => {
         let assetsList = this.state.assetsList.filter(item => item.assetId !== e.target.value)
         let assets = {
@@ -151,6 +158,9 @@ class DeliveryRequestComponent extends Component {
                         <p>{item.role_name}</p>
                         <p>{item.location_name}</p>
                         <p>{item.update_quantity}</p>
+                        <p>
+                            {this.availableAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
+                        </p>
                         <p style={{width: 350, overflow: "visible"}}>
                             <div className={'ui-multiselect'}>
                                 {this.subAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
@@ -178,6 +188,7 @@ class DeliveryRequestComponent extends Component {
                                     <p>Role</p>
                                     <p>Location</p>
                                     <p>Quantity</p>
+                                    <p>Av. Quantity</p>
                                     <p style={{width: 350}}>Product</p>
                                 </div>
                             </div>

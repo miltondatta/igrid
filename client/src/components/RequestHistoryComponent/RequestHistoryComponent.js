@@ -154,6 +154,7 @@ class RequestHistoryComponent extends Component {
                         <p>{item.brand}</p>
                         <p>{item.model}</p>
                         <p>{item.reason}</p>
+                        <p>{item.av_assets}</p>
                         <p>
                             {this.state[item.id] ? <input
                                     className={'ui-transparent-input'}
@@ -219,6 +220,7 @@ class RequestHistoryComponent extends Component {
                                         <p>Brand</p>
                                         <p>Model</p>
                                         <p>Reasons</p>
+                                        <p>Av. Assets</p>
                                         <p>Quantity</p>
                                         <p>Comment</p>
                                     </div>

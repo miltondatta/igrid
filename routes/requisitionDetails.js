@@ -188,6 +188,27 @@ route.get('/requisition-details/status/:id', async (req,res,next) => {
 route.get('/requisition-details/details', async (req,res,next) => {
     const {id, requisition_id}= req.query;
     let reqId = []
+
+
+    const [ress, Metares] = await db.query(`
+                SELECT asset_categories.id as assId, asset_sub_categories.id as subAssId FROM requisition_details
+                 Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
+                 Join users ON requisition_masters.request_by = users.id
+                 Join asset_categories ON requisition_details.asset_category = asset_categories.id
+                 Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
+                    WHERE requisition_details.requisition_id = ${requisition_id}
+    `)
+
+    console.log(ress[0].assId,ress[0].subassid, 202)
+
+    const [av_assets, metaData] = await db.query(`
+        SELECT COUNT(assets.id) as av_assets from assets
+            WHERE assets.assign_to = ${id} AND assets.asset_category = ${ress[0].assid} AND assets.asset_sub_category = ${ress[0].subassid}
+    `)
+
+    console.log(av_assets, 208)
+
+
     const [resultsMain, metadataMain] = await db.query(`
         SELECT requisition_approves.requisition_details_id from requisition_approves
             WHERE requisition_approves.delivery_to IS NOT NULL
@@ -197,7 +218,7 @@ route.get('/requisition-details/details', async (req,res,next) => {
     })
     const [results, metadata] = await db.query(`
         SELECT requisition_details.id, asset_categories.category_name, asset_sub_categories.sub_category_name,requisition_details.brand, requisition_details.model,
-               requisition_details.reason,requisition_details.quantity
+               requisition_details.reason, requisition_details.quantity
         FROM requisition_details
                  Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
                  Join users ON requisition_masters.request_by = users.id
@@ -206,6 +227,8 @@ route.get('/requisition-details/details', async (req,res,next) => {
                     WHERE requisition_details.requisition_id = ${requisition_id}`)
 
         let payLoad = results.filter(item => !reqId.includes(item.id))
+        payLoad[0]['av_assets'] = av_assets[0].av_assets
+    console.log(payLoad, 231)
         if (results.length > 0) {
             res.status(200).json(payLoad)
         } else {
