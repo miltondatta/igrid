@@ -4,6 +4,7 @@ import DocumentCategoryOptions from "../../utility/component/documentCategoryOpt
 import Axios from "axios";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
+import Spinner from "../../layouts/Spinner";
 
 moment.locale('en');
 
@@ -426,7 +427,7 @@ class DocumentListSearch extends Component {
                         </div>
                         }
                         <div className="rounded p-3 bg-white shadow">
-                            {isLoading ? <h2>Loading</h2> : searchData.length > 0 ? <>
+                            {isLoading ? <Spinner/> : searchData.length > 0 ? <>
                                 <nav className="navbar text-center mb-2 pl-2 rounded">
                                     <p className="text-dark f-weight-500 f-20px m-0">Document Search</p>
                                 </nav>

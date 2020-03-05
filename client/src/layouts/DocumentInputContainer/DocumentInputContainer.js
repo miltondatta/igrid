@@ -7,6 +7,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {getFileExtension} from "../../utility/custom";
+import Spinner from "../Spinner";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -71,7 +72,7 @@ class DocumentInputContainer extends Component {
     handleSubmit = () => {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
-        const {getApi} = this.props;
+        const {getApi, formType} = this.props;
         let file = document.getElementById("validatedCustomFile");
 
         Axios.post(apiUrl() + getApi + '/store', this.getApiData())
@@ -91,7 +92,7 @@ class DocumentInputContainer extends Component {
                     error: false,
                     success: success,
                     successMessage: success && msg
-                }, () => { return file.value = "";})
+                }, () => {if (formType === 'DOCUMENTLIST') return file.value = ""; else return true;})
             })
             .then(() => {
                 this.setState({
@@ -763,7 +764,7 @@ class DocumentInputContainer extends Component {
                         <nav className="navbar text-center mb-2 pl-0 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
+                        {isLoading ? <Spinner/> : allProjects.length > 0 ? <>
                             <table className="table table-bordered table-striped table-hover text-center">
                                 <thead>
                                 <tr>

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
+import Spinner from "../../layouts/Spinner";
 
 class OwnStock extends Component {
     constructor(props) {
@@ -145,7 +146,7 @@ class OwnStock extends Component {
                         <button type="button" onClick={this.handleSearch} className="submit-btn-normal">Search</button>
                     </div>
                 </div>
-                {isLoading ? <h2>Loading</h2> : allData.length > 0 ? <>
+                {isLoading ? <Spinner/> : allData.length > 0 ? <>
                         <ReactDataTable
                             dataDisplay
                             footer

@@ -4,6 +4,7 @@ import {apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
+import Spinner from "../../layouts/Spinner";
 
 class AssetDetails extends Component {
     constructor(props) {
@@ -172,7 +173,7 @@ class AssetDetails extends Component {
                         <button type="button" onClick={this.handleSearch} className="submit-btn-normal">Search</button>
                     </div>
                 </div>
-                {isLoading ? <h2>Loading</h2> : allData.length > 0 ? <>
+                {isLoading ? <Spinner/> : allData.length > 0 ? <>
                         {/*<ReactDataTable
                             dataDisplay
                             footer
