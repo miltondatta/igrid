@@ -324,16 +324,16 @@ class RepairMaintenenceComponent extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
-                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Estimated Cost</label>
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Cost</label>
                             <input
-                                placeholder='Estimated Cost'
+                                placeholder='Cost'
                                 name={'estimated_cost'}
                                 value={estimated_cost}
                                 data-number={'float_only'}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                             {errorDict && !errorDict.estimated_cost &&
-                            <span className="error">Estimated Cost Field is required</span>
+                            <span className="error">Cost Field is required</span>
                             }
                         </div>
                         <div className="px-1 mb-2">
@@ -362,7 +362,7 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
                             }
                         </div>
-                        <button onClick={this.addRepair} className="submit-btn">Add Repair-Maintenance</button>
+                        <button onClick={this.addRepair} className="submit-btn">Add Into List</button>
                     </div>
                     <div className="rounded bg-white min-h-80vh p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -406,7 +406,7 @@ class RepairMaintenenceComponent extends Component {
                                             data-dismiss="modal">Cancel
                                     </button>
                                     <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                            onClick={this.handleSubmit}>Repair Now
+                                            onClick={this.handleSubmit}>Confirm
                                     </button>
                                 </div>
                             </div>

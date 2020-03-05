@@ -213,6 +213,10 @@ const AsyncOwnStockContainer = Loadable({
     loader: () => import('../containers/OwnStockContainer'),
     loading: Loading,
 });
+const AsyncAssetDetailsContainer = Loadable({
+    loader: () => import('../containers/AssetDetailsContainer'),
+    loading: Loading,
+});
 const AsyncComplaintCategory = Loadable({
     loader: () => import('../containers/Complaints/ComplaintsCategory'),
     loading: Loading,
@@ -345,6 +349,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/mis/indicator/category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
+                                    <Route exact path='/asset-details' component={AsyncAssetDetailsContainer}/>
                                     <Route exact path='/admin/mis/import/csv' component={AsyncMisImportCSV}/>
                         </Switch>
                     </div>

@@ -275,7 +275,7 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
         if (product_serial) queryText += ' and assets.product_serial = ' + "\'" + product_serial + "\'";
         if (typeof (is_disposal) === "boolean") queryText += ' and assets.is_disposal = ' + is_disposal;
 
-        const data = await db.query(`select distinct on(assets.product_serial) product_serial, 
+        const data = await db.query(`select 
                                assets.id,
                                products.product_name,
                                asset_categories.category_name,
@@ -301,7 +301,7 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
                                  join conditions on assets.condition = conditions.id
-                        ${queryText} order by assets.product_serial`);
+                        ${queryText}`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -394,9 +394,9 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
 route.post('/get/assets/by/credentials', async (req, res) => {
     try {
         const {user_id, category_id, sub_category_id, product_id} = req.body;
-        const data = await db.query(`select distinct on (product_serial) product_serial, * from assets
+        const data = await db.query(`select * from assets
                         where assign_to = ${user_id} and asset_category = ${category_id} 
-                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} and assets.is_disposal = false order by product_serial`);
+                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} and assets.is_disposal = false`);
 
         return res.status(200).json(data);
     } catch (err) {
