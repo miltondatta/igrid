@@ -104,7 +104,7 @@ class DeliveryReportComponent extends Component {
                                     <button onClick={this.handleSubmit} className={'mx-2 submit-btn-normal'}>Submit</button>
                                     <button className={'mx-2 reset-btn-normal'}>Reset</button>
                                         <div className={'position-relative'}>
-                                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export PDF/XSL</button>
+                                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export</button>
                                             {optionDropDown && <div className={'ui-dropdown-btn'}>
                                                 <button className={`${typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? 'p-0' : null)}`}>{typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? <ReactExcelExport excelData={deliveryReportData} /> : 'Excel')}</button>
                                                 <button onClick={this.pdfViewr}>PDF</button>
