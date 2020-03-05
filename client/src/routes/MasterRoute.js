@@ -89,8 +89,12 @@ const AsyncAssetTransfer = Loadable({
     loader: () => import('../containers/AssetTransfer'),
     loading: Loading,
 });
-const AsyncRepairMaintenence= Loadable({
-    loader: () => import('../containers/RepairMaintenence'),
+const AsyncRepairMaintenance= Loadable({
+    loader: () => import('../containers/RepairMaintenance'),
+    loading: Loading,
+});
+const AsyncRepairMaintenanceList= Loadable({
+    loader: () => import('../containers/RepairMaintenanceList'),
     loading: Loading,
 });
 const AsyncCreateProject = Loadable({
@@ -209,6 +213,10 @@ const AsyncOwnStockContainer = Loadable({
     loader: () => import('../containers/OwnStockContainer'),
     loading: Loading,
 });
+const AsyncAssetDetailsContainer = Loadable({
+    loader: () => import('../containers/AssetDetailsContainer'),
+    loading: Loading,
+});
 const AsyncComplaintCategory = Loadable({
     loader: () => import('../containers/Complaints/ComplaintsCategory'),
     loading: Loading,
@@ -316,7 +324,8 @@ class MasterRoute extends Component{
                                     <Route exact path='/delivery-report' component={AsyncDeliveryReport}/>
                                     <Route exact path='/request-history' component={AsyncRequestHistory}/>
                                     <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>
-                                    <Route exact path='/asset-repair' component={AsyncRepairMaintenence}/>
+                                    <Route exact path='/asset-repair' component={AsyncRepairMaintenance}/>
+                                    <Route exact path='/asset-repair-list' component={AsyncRepairMaintenanceList}/>
                                     <Route exact path='/location/details' component={AsyncLocationDetails}/>
                                     <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                                     <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>
@@ -345,6 +354,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/mis/indicator/category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
+                                    <Route exact path='/asset-details' component={AsyncAssetDetailsContainer}/>
                                     <Route exact path='/admin/mis/import/csv' component={AsyncMisImportCSV}/>
                         </Switch>
                     </div>

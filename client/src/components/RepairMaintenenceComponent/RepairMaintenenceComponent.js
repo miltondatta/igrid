@@ -68,6 +68,7 @@ class RepairMaintenenceComponent extends Component {
                 if (valid || valid === '') this.setState({[name]: valid}, () => {this.validate()});
                 return;
             case 'file_name':
+                if (!files.length) return;
                 const ext = getFileExtension(files[0].name);
                 if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
                 this.setState({file_name: files[0], extError: false}, () => {this.validate()});
@@ -87,6 +88,7 @@ class RepairMaintenenceComponent extends Component {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
         const {repairData, repairCredential, category_id, sub_category_id, product_id, product_serial, user, estimated_cost, details} = this.state;
+        let file = document.getElementById("validatedCustomFile");
 
         const isExistRepair = repairCredential.filter(item => {return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id && item.product_serial === product_serial)});
         if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'});
@@ -106,7 +108,7 @@ class RepairMaintenenceComponent extends Component {
                         let newRepairArray = [newRepair];
                         this.setState({
                             repairCredential: [...repairCredential, ...newRepairArray]
-                        }, () => this.setState({estimated_cost: '', details: '', file_name: ''}))
+                        }, () => this.setState({estimated_cost: '', details: '', file_name: ''}, () => { return file.value = "";}))
                     })
                 })
                 .catch(err => {
@@ -322,16 +324,16 @@ class RepairMaintenenceComponent extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
-                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Estimated Cost</label>
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Cost</label>
                             <input
-                                placeholder='Estimated Cost'
+                                placeholder='Cost'
                                 name={'estimated_cost'}
                                 value={estimated_cost}
                                 data-number={'float_only'}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                             {errorDict && !errorDict.estimated_cost &&
-                            <span className="error">Estimated Cost Field is required</span>
+                            <span className="error">Cost Field is required</span>
                             }
                         </div>
                         <div className="px-1 mb-2">
@@ -360,7 +362,7 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
                             }
                         </div>
-                        <button onClick={this.addRepair} className="submit-btn">Add Repair-Maintenance</button>
+                        <button onClick={this.addRepair} className="submit-btn">Add Into List</button>
                     </div>
                     <div className="rounded bg-white min-h-80vh p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -404,7 +406,7 @@ class RepairMaintenenceComponent extends Component {
                                             data-dismiss="modal">Cancel
                                     </button>
                                     <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                            onClick={this.handleSubmit}>Repair Now
+                                            onClick={this.handleSubmit}>Confirm
                                     </button>
                                 </div>
                             </div>

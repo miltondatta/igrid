@@ -135,7 +135,7 @@ class AssetDisposalComponent extends Component {
                     success: success,
                     successMessage: success && msg
                 }, () => {
-                    this.emptyStateValue();
+                    window.location.reload();
                 })
             })
             .catch(err => {
@@ -351,7 +351,7 @@ class AssetDisposalComponent extends Component {
                                             data-dismiss="modal">Cancel
                                     </button>
                                     <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                            onClick={this.handleSubmit}>Disposal Now
+                                            onClick={this.handleSubmit}>Confirm
                                     </button>
                                 </div>
                             </div>

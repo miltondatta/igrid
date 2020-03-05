@@ -13,7 +13,7 @@ class AssetCategoryByUserOption extends Component {
 
     componentDidMount() {
         const {id} = jwt.decode(localStorage.getItem('user')).data;
-        this.getData(id)
+        id && this.getData(id);
     }
 
     getData = (id) => {

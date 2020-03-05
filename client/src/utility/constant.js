@@ -74,6 +74,12 @@ export const sidenav = [
                 icon: ""
             },
             {
+                id: 17,
+                name: 'Asset Details',
+                link: '/asset-details',
+                icon: ""
+            },
+            {
                 id: 14,
                 name: 'Asset Transfer',
                 link: '/asset-transfer',
@@ -107,6 +113,12 @@ export const sidenav = [
                 id: 15,
                 name: 'Repair & Maintenance',
                 link: '/asset-repair',
+                icon: ""
+            },
+            {
+                id: 16,
+                name: 'Repair & Maintenance List',
+                link: '/asset-repair-list',
                 icon: ""
             },
         ]
