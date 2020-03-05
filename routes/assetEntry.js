@@ -325,9 +325,9 @@ route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
                                        products.product_name,
                                        count(distinct assets.id) as quantity
                                 from assets
-                                         inner join asset_categories on assets.asset_category = asset_categories.id
-                                         inner join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                         inner join products on assets.product_id = products.id
+                                         join asset_categories on assets.asset_category = asset_categories.id
+                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         join products on assets.product_id = products.id
                                 ${queryText} 
                                 group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name`);
 
