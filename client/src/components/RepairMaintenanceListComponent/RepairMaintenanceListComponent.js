@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from "axios";
 import {apiUrl, apiBaseUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
+import Spinner from "../../layouts/Spinner";
 
 class RepairMaintenanceListComponent extends Component {
     constructor(props) {
@@ -79,7 +80,7 @@ class RepairMaintenanceListComponent extends Component {
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-20px m-0">Repair & Maintenance Asset - Repair & Maintenance Asset in my stock</p>
                 </nav>
-                {isLoading ? <h2>Loading</h2> : allData.length > 0 ? <>
+                {isLoading ? <Spinner/> : allData.length > 0 ? <>
                         <table className="table table-bordered table-responsive">
                             <thead>
                             <tr>

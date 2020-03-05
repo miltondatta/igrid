@@ -185,7 +185,8 @@ route.get('/requisition-details/status/:id', async (req,res,next) => {
 })
 
 // Read
-route.get('/requisition-details/details/:id', async (req,res,next) => {
+route.get('/requisition-details/details', async (req,res,next) => {
+    const {id, requisition_id}= req.query;
     let reqId = []
     const [resultsMain, metadataMain] = await db.query(`
         SELECT requisition_approves.requisition_details_id from requisition_approves
@@ -202,7 +203,7 @@ route.get('/requisition-details/details/:id', async (req,res,next) => {
                  Join users ON requisition_masters.request_by = users.id
                  Join asset_categories ON requisition_details.asset_category = asset_categories.id
                  Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
-                    WHERE requisition_details.requisition_id = ${req.params.id}`)
+                    WHERE requisition_details.requisition_id = ${requisition_id}`)
 
         let payLoad = results.filter(item => !reqId.includes(item.id))
         if (results.length > 0) {

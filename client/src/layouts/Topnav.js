@@ -71,7 +71,7 @@ class Topnav extends Component {
                 {data.map((items, index) => {
                     return (
                         <>
-                            {(userType !== 1 && items.id === 1) ? null : items.subCat ? <div key={index + 20}
+                            {(userType !== 1 && (items.id === 1 || items.id === 12 )) ? null : items.subCat ? <div key={index + 20}
                                                                                              className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
                                                                                              onMouseOut={() => {
                                                                                                  this.setState({currentHover: ''})
@@ -86,7 +86,7 @@ class Topnav extends Component {
                                                           style={{display: currentHover !== items.id && 'none'}}>
                                         {items.categories.map((subItems, key) => (
                                             <>
-                                                {items.id === 4 && (userType === 2 || userType === 6) ? ((subItems.id === 4 || subItems.id === 5) ? <a key={subItems.id} href={subItems.link}>
+                                                {(items.id === 4) && (userType === 2 || userType === 6) ? ((subItems.id === 4 || subItems.id === 5) ? <a key={subItems.id} href={subItems.link}>
                                                     <p key={key + 10}
                                                        className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
                                                         {subItems.name}

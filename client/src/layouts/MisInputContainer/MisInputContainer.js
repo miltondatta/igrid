@@ -4,6 +4,7 @@ import {apiUrl} from "../../utility/constant";
 import IndicatorCategoryOptions from "../../utility/component/indicatorCategoryOptions";
 import LocationsOptions from "../../utility/component/locationOptions";
 import {validateInput} from "../../utility/custom";
+import Spinner from "../Spinner";
 
 class MisInputContainer extends Component {
     constructor(props) {
@@ -573,7 +574,7 @@ class MisInputContainer extends Component {
                         <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : allData.length > 0 ? <>
+                        {isLoading ? <Spinner/> : allData.length > 0 ? <>
                             <table className="table table-bordered table-striped table-hover text-center">
                                 <thead>
                                 <tr>

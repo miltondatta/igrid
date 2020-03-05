@@ -63,7 +63,7 @@ export const sidenav = [
             },
             {
                 id: 1,
-                name: 'Existing Assets',
+                name: 'Open Challan',
                 link: '/challan',
                 icon: ""
             },
@@ -71,6 +71,12 @@ export const sidenav = [
                 id: 2,
                 name: 'Own Stock',
                 link: '/own-stock',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Asset Details',
+                link: '/asset-details',
                 icon: ""
             },
             {
@@ -268,6 +274,12 @@ export const systemAdmin = [
                 id: 15,
                 name: 'Assign User Role ',
                 link: '/admin/user-associate-role',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'AMC Types',
+                link: '/admin/amc-types',
                 icon: ""
             },
         ]

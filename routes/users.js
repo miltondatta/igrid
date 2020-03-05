@@ -141,9 +141,9 @@ router.post('/users/login', (req,res,next) => {
                             }, 'secret');
                             const userLogs = {user_ip, user_id: data[0].dataValues.id, time, date}
                             UserLoginLogs.create(userLogs)
-                            res.status(200).json({token: token})
+                            res.status(200).json({token: token, status: true, message: 'Login Success!'})
                         } else {
-                            res.status(400).json({message: "Password Didn't Match"})
+                            res.status(200).json({message: "Password Didn't Match"})
                         }
                     }
                 });

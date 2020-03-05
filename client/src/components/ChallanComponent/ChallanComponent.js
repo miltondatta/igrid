@@ -14,6 +14,7 @@ import VendorOptions from "../../utility/component/vendorOptions";
 import ProductsOptions from "../../utility/component/productOptions";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import AMCTypeOptions from "../../utility/component/amcTypeOptions";
 
 class ChallanComponent extends Component {
 
@@ -160,14 +161,12 @@ class ChallanComponent extends Component {
 
     handleChange = (e) => {
         const {name, value, checked, files} = e.target
-        if(name === 'barcode'){
+        if(name === 'barcode' || name === 'is_amc' || name === 'is_closed'){
             this.setState({
-                barcode: checked
+                [name]: checked
             })
         } else if (name === 'attachment') {
             this.setState({attachment: files[0]})
-        } else if (name === 'is_closed') {
-            this.setState({is_closed: checked})
         } else if (name === 'asset_quantity') {
             for(let i = 0; i < value; i++) {
                 let lebel = `product_serial_${i + 1}`
@@ -535,18 +534,6 @@ class ChallanComponent extends Component {
                                             <h5>Add Asset Information</h5>
                                             <div className={'mb-1'}>
                                                 <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Project</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
-                                                        <option>Select Project</option>
-                                                        <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
                                                     <label className={'ui-custom-label'}>Category</label>
                                                     <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
                                                         <option>Asset Category</option>
@@ -565,6 +552,18 @@ class ChallanComponent extends Component {
                                                         <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                     </select>
                                                     <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                        <i className="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className={'mb-1'}>
+                                                <div className="input-grid">
+                                                    <label className={'ui-custom-label'}>Project</label>
+                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                        <option>Select Project</option>
+                                                        <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                    </select>
+                                                    <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
                                                         <i className="fas fa-plus"></i>
                                                     </button>
                                                 </div>
@@ -616,31 +615,7 @@ class ChallanComponent extends Component {
                                                        placeholder={'Other Cost'}
                                                        className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
                                             </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Charge</label>
-                                                <input type={'number'}
-                                                       value={amc_charge}
-                                                       onChange={this.handleChange} name={'amc_charge'}
-                                                       placeholder={'AMC Charge'}
-                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Expire Date</label>
-                                                <input type="date"
-                                                       value={amc_expire_date}
-                                                       onChange={this.handleChange} name={'amc_expire_date'}
-                                                       placeholder={'AMC Expire Date'}
-                                                       className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Type</label>
-                                                <input type={'text'}
-                                                       value={amc_type}
-                                                       onChange={this.handleChange} name={'amc_type'}
-                                                       placeholder={'AMC Type'}
-                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
+                                            <div className="mb-2 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
                                                 <div className="ui-custom-checkbox">
                                                     <input
                                                         type={'checkbox'}
@@ -651,6 +626,30 @@ class ChallanComponent extends Component {
                                                     <label htmlFor="is_amc" className={'mb-0'}>IS AMC</label>
                                                 </div>
                                             </div>
+                                            {is_amc && <>
+                                                <div className={'mb-1'}>
+                                                    <label className={'ui-custom-label'}>AMC Type</label>
+                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'amc_type'} value={amc_type}>
+                                                        <option>AMC Types</option>
+                                                        <AMCTypeOptions />
+                                                    </select>
+                                                </div>
+                                                <div className={'mb-1'}>
+                                                    <label className={'ui-custom-label'}>AMC Charge</label>
+                                                    <input type={'number'}
+                                                           value={amc_charge}
+                                                           onChange={this.handleChange} name={'amc_charge'}
+                                                           placeholder={'AMC Charge'}
+                                                           className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
+                                                </div>
+                                                <div className={'mb-1'}>
+                                                    <label className={'ui-custom-label'}>AMC Expire Date</label>
+                                                    <input type="date"
+                                                           value={amc_expire_date}
+                                                           onChange={this.handleChange} name={'amc_expire_date'}
+                                                           placeholder={'AMC Expire Date'}
+                                                           className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
+                                                </div></>}
                                         </div>
 
                                         <div className={'bg-white p-2 rounded mb-2'}>
@@ -698,7 +697,7 @@ class ChallanComponent extends Component {
                                             </div>
                                         </div>
                                         <div className={'bg-white p-2 rounded mb-2'}>
-                                            <h5>Additional Information</h5>
+                                            <h5>Depreciation & Others</h5>
                                             <div className={'mb-1'}>
                                                 <div className="input-grid">
                                                     <label className={'ui-custom-label'}>Asset Type</label>

@@ -213,6 +213,10 @@ const AsyncOwnStockContainer = Loadable({
     loader: () => import('../containers/OwnStockContainer'),
     loading: Loading,
 });
+const AsyncAssetDetailsContainer = Loadable({
+    loader: () => import('../containers/AssetDetailsContainer'),
+    loading: Loading,
+});
 const AsyncComplaintCategory = Loadable({
     loader: () => import('../containers/Complaints/ComplaintsCategory'),
     loading: Loading,
@@ -251,6 +255,10 @@ const AsyncLocationDetails = Loadable({
 });
 const AsyncDeliveryReport = Loadable({
     loader: () => import('../containers/DeliveryReport'),
+    loading: Loading,
+});
+const AsyncAmcTypes = Loadable({
+    loader: () => import('../containers/AmcTypes'),
     loading: Loading,
 });
 
@@ -300,6 +308,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/admin/vendor' component={AsyncVendor}/>
                                     <Route exact path='/requisition' component={AsyncAsset}/>
+                                    <Route exact path='/admin/amc-types' component={AsyncAmcTypes}/>
                                     <Route exact path='/admin/complaint' component={AsyncComplainList}/>
                                     <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>
@@ -345,6 +354,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/mis/indicator/category' component={AsyncIndicatorCategory}/>
                                     <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                                     <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
+                                    <Route exact path='/asset-details' component={AsyncAssetDetailsContainer}/>
                                     <Route exact path='/admin/mis/import/csv' component={AsyncMisImportCSV}/>
                         </Switch>
                     </div>
