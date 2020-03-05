@@ -249,6 +249,10 @@ const AsyncDeliveryReport = Loadable({
     loader: () => import('../containers/DeliveryReport'),
     loading: Loading,
 });
+const AsyncAmcTypes = Loadable({
+    loader: () => import('../containers/AmcTypes'),
+    loading: Loading,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -296,6 +300,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/stock-reg' component={AsyncAssetReg}/>
                                     <Route exact path='/admin/vendor' component={AsyncVendor}/>
                                     <Route exact path='/requisition' component={AsyncAsset}/>
+                                    <Route exact path='/admin/amc-types' component={AsyncAmcTypes}/>
                                     <Route exact path='/admin/complaint' component={AsyncComplainList}/>
                                     <Route exact path='/asset-sale' component={AsyncAssetSale}/>
                                     <Route exact path='/asset-list' component={AsyncAssetList}/>

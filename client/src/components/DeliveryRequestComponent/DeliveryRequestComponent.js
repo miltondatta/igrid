@@ -87,14 +87,14 @@ class DeliveryRequestComponent extends Component {
 
         console.log(payload, 88)
 
-        if (products.length === resData.length) {
+        // if (products.length === resData.length) {
             Axios.post(apiUrl() + 'requisition-approve/delivery', payload)
                 .then(res => {
                     this.setState({
                         printDelivery: true
                     })
                 })
-        }
+        // }
     }
 
     comeBack = () => {

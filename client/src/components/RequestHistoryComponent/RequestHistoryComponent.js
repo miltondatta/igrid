@@ -54,7 +54,9 @@ class RequestHistoryComponent extends Component {
         this.setState({
             requisition_id: id
         })
-        Axios.get(apiUrl() + 'requisition-details/details/' + id)
+        let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        user_data['requisition_id'] = id
+        Axios.get(apiUrl() + 'requisition-details/details', {params: user_data})
             .then(res => {
                 if(res.data.length > 0) {
                     this.setState({
