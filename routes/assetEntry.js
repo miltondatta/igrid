@@ -310,6 +310,34 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
     }
 });
 
+// Assets Own Stock Data By User ID
+route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+
+        const data = await db.query(`select asset_categories.category_name,
+                                       asset_sub_categories.sub_category_name,
+                                       products.product_name,
+                                       count(distinct assets.id) as quantity
+                                from assets
+                                         inner join asset_categories on assets.asset_category = asset_categories.id
+                                         inner join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         inner join products on assets.product_id = products.id
+                                ${queryText} 
+                                group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
 // Assets Category List By User Id
 route.get('/assets-category/all/:user_id', async (req, res) => {
     try {
