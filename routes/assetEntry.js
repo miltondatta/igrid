@@ -345,7 +345,7 @@ route.get('/assets-category/all/:user_id', async (req, res) => {
         const data = await db.query(`select distinct asset_categories.id, asset_categories.category_name
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
-                        where assign_to = ${user_id} and assets.is_disposal = false`);
+                        where assign_to = ${user_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -362,7 +362,7 @@ route.get('/assets-sub-category/all/:user_id/:category_id', async (req, res) => 
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                        where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} and assets.is_disposal = false`);
+                        where assets.assign_to = ${user_id} and assets.asset_category = ${category_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -381,7 +381,7 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
                                  join products on asset_categories.id = products.category_id
                         where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} 
-                        and assets.asset_sub_category = ${sub_category_id} and assets.is_disposal = false`);
+                        and assets.asset_sub_category = ${sub_category_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
