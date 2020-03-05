@@ -90,7 +90,7 @@ class AssetRegComponent extends Component {
         const {name, value, checked, files} = e.target
         if(name === 'barcode' || name === 'is_amc' || name === 'is_closed'){
             this.setState({
-                barcode: checked
+                [name]: checked
             })
         } else if (name === 'attachment') {
             this.setState({attachment: files[0]})

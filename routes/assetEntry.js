@@ -69,7 +69,12 @@ route.get('/assets-entry/assets/:id', async (req, res, next) => {
             WHERE assets.challan_id = ${req.params.id}  
             ORDER BY asset_categories.category_name
         `)
-    res.status(200).json(results)
+
+    if (results.length > 0) {
+        res.status(200).json({results, status: true})
+    } else {
+        res.status(200).json({message: 'No Assets Found'})
+    }
 })
 
 // Read All Assets
