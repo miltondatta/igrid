@@ -11,6 +11,18 @@ module.exports = {
       data_date: {
         type: Sequelize.DATEONLY
       },
+      year: {
+        defaultValue: 0,
+        type: Sequelize.STRING
+      },
+      month: {
+        defaultValue: 0,
+        type: Sequelize.STRING
+      },
+      day: {
+        defaultValue: 0,
+        type: Sequelize.STRING
+      },
       location_id: {
         type: Sequelize.INTEGER
       },
