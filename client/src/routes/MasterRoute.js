@@ -273,6 +273,10 @@ const AsyncMaintenanceReport = Loadable({
     loader: () => import('../containers/Report/MaintenanceReport'),
     loading: Loader,
 });
+const AsyncDailyReport = Loadable({
+    loader: () => import('../containers/MISReport/DailyReport.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -332,6 +336,7 @@ class MasterRoute extends Component{
                             <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
                             <Route exact path='/admin/conditions' component={AsyncConditions}/>
                             <Route exact path='/admin/asset-types' component={AsyncAssetTypes}/>
+                            <Route exact path='/mis/daily-report' component={AsyncDailyReport}/>
                             <Route exact path='/asset-disposal' component={AsyncAssetDisposal}/>
                             <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
                             <Route exact path='/admin/complaint' component={AsyncComplainList}/>

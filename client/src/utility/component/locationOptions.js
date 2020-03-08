@@ -16,12 +16,15 @@ class LocationsOptions extends Component {
 
     getData = () => {
         const {selectedId} = this.props
-        Axios.get(apiUrl() + 'locations/' + selectedId)
-            .then(resData => {
-                this.setState({
-                    data: resData.data
+        console.log(selectedId)
+        if (typeof selectedId !== 'undefined') {
+            Axios.get(apiUrl() + 'locations/' + selectedId)
+                .then(resData => {
+                    this.setState({
+                        data: resData.data
+                    })
                 })
-            })
+        }
     }
 
     render() {

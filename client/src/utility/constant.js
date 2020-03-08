@@ -387,6 +387,48 @@ export const locationCategory = [
     },
 ];
 
+export const misCategory = [
+    {
+        id: 10,
+        name: 'Dashboard',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/mis'
+    },
+    {
+        id: 11,
+        name: 'Basic Reports',
+        icon: 'fas fa-map-marked-alt',
+        subCat: true,
+        categories: [
+            {
+                id: 3,
+                name: 'Daily',
+                link: '/mis/daily-report',
+                icon: ""
+            },
+            {
+                id: 1,
+                name: 'Weekly',
+                link: '/mis/weekly-report',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Fortnightly',
+                link: '/mis/fortnightly-report',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Monthly',
+                link: '/mis/monthly-report',
+                icon: ""
+            }
+        ]
+    },
+];
+
 export const documentNav = [
     {
         id: 11,
