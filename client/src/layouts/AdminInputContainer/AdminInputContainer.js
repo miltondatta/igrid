@@ -617,7 +617,7 @@ class AdminInputContainer extends Component {
                 return(
                     <>
                         <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Location Hierarchy</label>
+                            <label className={'ui-custom-label'}>Location Type</label>
                             <select name={'location_heirarchy_id'} value={location_heirarchy_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_heirarchy_id) && 'is-invalid'}`}>
                                 <option>Select Location</option>
                                 <HierarchiesOptions />
@@ -1167,9 +1167,9 @@ class AdminInputContainer extends Component {
                                     className={`ui-custom-input ${(errorDict && !errorDict.location_code) && 'is-invalid'}`} />
                             </div>
                             <div className="px-1 mb-2">
-                                <label className={'ui-custom-label'}>Location Hierarchy</label>
+                                <label className={'ui-custom-label'}>Location Type</label>
                                 <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
-                                    <option>Select Hierarchy</option>
+                                    <option>Select Type</option>
                                     <HierarchiesOptions />
                                 </select>
                             </div>
@@ -1472,8 +1472,6 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "COMPLAINT":
                 errorDict = {
-                    com_category_id: com_category_id !== '',
-                    com_sub_category_id: com_sub_category_id !== '',
                     problem_details: problem_details !== '',
                 }
                 this.setState({

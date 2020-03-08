@@ -143,8 +143,20 @@ export const sidenav = [
             },
             {
                 id: 2,
-                name: 'Stock Report',
-                link: '/branch-requesition',
+                name: 'Lost Assets Report',
+                link: '/lost-assets-report',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Asset Disposal Report',
+                link: '/asset-disposal-report',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Maintenance Report',
+                link: '/maintenance-report',
                 icon: ""
             }
         ]

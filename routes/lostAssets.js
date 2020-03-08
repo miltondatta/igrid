@@ -90,6 +90,26 @@ route.post('/lost-assets/feedback', (req,res,next) => {
     }
 });
 
+// Lost Assets Report
+route.post('/lost-assets/report', async (req,res,next) => {
+    const {date_from, date_to, user_id} = req.body
+    const [data, metaData] = await db.query(`
+        SELECT lost_assets.id, CONCAT(users."firstName", ' ', users."lastName") as reported_by, user_roles.role_name as designation,
+               locations.location_name as location, lost_assets.incident_type, lost_assets.incident_date, lost_assets.incident_time, lost_assets.police_station,
+               lost_assets.gd_no, lost_assets.gd_date FROM lost_assets
+        JOIN user_roles ON user_roles.id = lost_assets.role_id
+        JOIN users ON users.id = lost_assets.added_by
+        JOIN locations ON locations.id = lost_assets.location_id
+        WHERE lost_assets."createdAt" BETWEEN '${date_from}' AND '${date_to}' AND lost_assets.added_by = ${user_id}
+    `)
+
+    if(data.length > 0) {
+        res.status(200).json({data, status: true})
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
+});
+
 // Create
 route.post('/lost-assets/entry', (req,res,next) => {
     upload(req, res, function (err) {

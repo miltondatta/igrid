@@ -19,6 +19,7 @@ module.exports = {
         },
         complaint_category:{
             type: Sequelize.INTEGER,
+            defaultValue: 0,
             references: {
                 model: "comCategories",
                 key: 'id'
@@ -26,6 +27,7 @@ module.exports = {
         },
         complaint_sub_category:{
             type: Sequelize.INTEGER,
+            defaultValue: 0,
             references: {
                 model: "comSubCategories",
                 key: 'id'

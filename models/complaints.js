@@ -15,6 +15,7 @@ const Complaints = db.define('complaints', {
   },
   complaint_category:{
     type: Sequelize.INTEGER,
+    defaultValue: 0,
     references: {
       model: ComCategory,
       key: 'id'
@@ -22,6 +23,7 @@ const Complaints = db.define('complaints', {
   },
   complaint_sub_category:{
     type: Sequelize.INTEGER,
+    defaultValue: 0,
     references: {
       model: ComSubCategory,
       key: 'id'

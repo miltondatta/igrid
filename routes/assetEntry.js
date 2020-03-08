@@ -210,6 +210,26 @@ route.post('/assets-entry/entry', (req, res, next) => {
     })
 })
 
+// Asset Disposal Report
+route.post('/assets-disposal/report', async (req, res, next) => {
+    const {date_from, date_to, user_id} = req.body
+    const [data, metaData] = await db.query(`
+        SELECT assets.id, assets."createdAt"::timestamp::date as date, CONCAT(users."firstName", ' ', users."lastName") as disposal_by, user_roles.role_name as designation,
+               locations.location_name as location, products.product_name, assets.product_serial, assets.disposal_date::timestamp::date, assets.disposal_reason FROM assets
+        JOIN user_roles ON user_roles.id = assets.disposal_by_role_id
+        JOIN users ON users.id = assets.disposal_by
+        JOIN products ON products.id = assets.product_id
+        JOIN locations ON locations.id = assets.disposal_by_location
+        WHERE assets."createdAt" BETWEEN '${date_from}' AND '${date_to}'  AND assets.disposal_by = ${user_id}
+    `)
+
+    if(data.length > 0) {
+        res.status(200).json({data, status: true})
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
+})
+
 //Update Specific Asset
 route.put('/assets-entry/assets/update/:id', (req, res, next) => {
     const {

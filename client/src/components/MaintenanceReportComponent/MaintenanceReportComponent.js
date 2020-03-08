@@ -1,14 +1,14 @@
-import Axios from 'axios'
-import jwt from "jsonwebtoken";
 import React, {Component} from 'react';
+import jwt from "jsonwebtoken";
+import Axios from "../AssetDisposalReportComponent/AssetDisposalReportComponent";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
-import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
 
-class DeliveryReportComponent extends Component {
+class MaintenanceReportComponent extends Component {
 
     constructor(props){
         super(props)
@@ -31,14 +31,14 @@ class DeliveryReportComponent extends Component {
     }
 
     handleSubmit = () => {
-        const {date_from, date_to, errorDictAsset} = this.state
+        const {date_from, date_to} = this.state
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         let data = {
             date_from,
             date_to,
             user_id: id
-        }   
-        Axios.post(apiUrl() + 'requisition-approve/delivery/between', data)
+        }
+        Axios.post(apiUrl() + 'asset-maintenance/report', data)
             .then(resData => {
                 if (resData.status) {
                     this.setState({
@@ -67,18 +67,18 @@ class DeliveryReportComponent extends Component {
 
     render() {
         const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, errorDictAsset, deliveryReportData, pdf} = this.state
-        console.log(deliveryReportData, 72)
+
         return (
             <>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                <ErrorModal errorMessage={errorMessage} />
                 }
                 {success &&
-                    <SuccessModal successMessage={successMessage} />
+                <SuccessModal successMessage={successMessage} />
                 }
                 <div className={'rounded m-2 bg-white min-h-80vh ui-report-container px-3'}>
                     <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0">Delivery Report</p>
+                        <p className="text-blue f-weight-700 f-20px m-0">Assets Disposal Report</p>
                     </nav>
                     <div className="ui-report-header rounded">
                         <div className="row">
@@ -106,14 +106,14 @@ class DeliveryReportComponent extends Component {
                                 <div className="ui-report-btn-header rounded p-2">
                                     <button onClick={this.handleSubmit} className={'mx-2 submit-btn-normal'}>Submit</button>
                                     <button className={'mx-2 reset-btn-normal'}>Reset</button>
-                                        <div className={'position-relative'}>
-                                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export</button>
-                                            {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                                <button className={`${typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? 'p-0' : null)}`}>{typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? <ReactExcelExport excelData={deliveryReportData} /> : 'Excel')}</button>
-                                                <button onClick={this.pdfViewr}>PDF</button>
-                                            </div>}
-                                        </div>
+                                    <div className={'position-relative'}>
+                                        <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export</button>
+                                        {optionDropDown && <div className={'ui-dropdown-btn'}>
+                                            <button className={`${typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? 'p-0' : null)}`}>{typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? <ReactExcelExport excelData={deliveryReportData} /> : 'Excel')}</button>
+                                            <button onClick={this.pdfViewr}>PDF</button>
+                                        </div>}
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,4 +128,4 @@ class DeliveryReportComponent extends Component {
     }
 }
 
-export default DeliveryReportComponent;
+export default MaintenanceReportComponent;

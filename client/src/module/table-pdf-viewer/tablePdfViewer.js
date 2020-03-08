@@ -23,20 +23,22 @@ class TablePdfViewer extends Component {
             },
             headerText: {
                 fontSize: 11,
-                width: 75,
-                paddingVertical: 5,
+                width: 45,
+                paddingVertical: 2,
                 borderBottomWidth: 1,
                 marginHorizontal: 3,
+                wordWrap: 'break-word',
                 textTransform: 'capitalize',
             },
             bodyText: {
                 color: '#444',
                 fontSize: 10,
-                width: 75,
-                paddingVertical: 5,
+                width: 45,
+                paddingVertical: 2,
                 borderBottomWidth: 1,
                 marginHorizontal: 3,
                 borderBottomColor: '#888',
+                wordWrap: 'break-word',
                 textTransform: 'capitalize',
             }
         });
@@ -55,7 +57,7 @@ class TablePdfViewer extends Component {
                     {Object.keys(tableData[0]).map((item, index) => (
                         <>
                             {item !== 'id' && <Text key={index + 10} style={styles.bodyText}>
-                                {items[item]}
+                                {items[item].replace('T', 'T')}
                             </Text>}
                         </>
                     ))}
