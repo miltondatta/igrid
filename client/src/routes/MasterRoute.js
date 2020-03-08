@@ -49,8 +49,8 @@ const AsyncRequestDetails = Loadable({
     loader: () => import('../containers/RequestDetails'),
     loading: Loading,
 });
-const AsyncBranchRequesition = Loadable({
-    loader: () => import('../containers/BranchRequesition'),
+const AsyncBranchRequisition = Loadable({
+    loader: () => import('../containers/BranchRequisition'),
     loading: Loading,
 });
 const AsyncDeliveryRequest = Loadable({
@@ -342,7 +342,7 @@ class MasterRoute extends Component{
                                     <Route exact path='/admin/depreciation-methods' component={AsyncDepMethod}/>
                                     <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>
                                     <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
-                                    <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
+                                    <Route exact path='/approved-delivery' component={AsyncBranchRequisition}/>
                                     <Route exact path='/admin/complain-category' component={AsyncComplaintCategory}/>
                                     <Route exact path='/admin/complain-sub-category' component={AsyncComplaintSubCategory}/>
                                     <Route exact path='/admin/user-associate-role' component={AsyncUserAssociateRole}/>

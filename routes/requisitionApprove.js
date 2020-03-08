@@ -188,4 +188,33 @@ route.delete('/requisition-approve/delete', (req,res,next) =>   {
         })
 })
 
+// Get Logged User Requisition List
+route.post('/my-requisition/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
+
+        const data = await db.query(`select requisition_masters.id,
+                                     requisition_masters.requisition_no,
+                                     locations.location_name, 
+                                     requisition_masters.request_date,
+                                     user_roles.role_name,
+                                     concat(users."firstName", ' ',  users."lastName") request_by
+                                    from requisition_masters
+                                             inner join requisition_approves on requisition_masters.id = requisition_approves.requisition_id
+                                             inner join locations on requisition_masters.location_id = locations.id
+                                             inner join user_roles on requisition_masters.role_id = user_roles.id
+                                             inner join users on requisition_masters.request_by = users.id
+                                    where requisition_approves.delivery_to is not null
+                                      ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
 module.exports = route
