@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import jwt from "jsonwebtoken";
-import Axios from "../AssetDisposalReportComponent/AssetDisposalReportComponent";
+import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
@@ -38,7 +38,7 @@ class MaintenanceReportComponent extends Component {
             date_to,
             user_id: id
         }
-        Axios.post(apiUrl() + 'asset-maintenance/report', data)
+        Axios.post(apiUrl() + 'asset-repair/asset-maintenance/report', data)
             .then(resData => {
                 if (resData.status) {
                     this.setState({

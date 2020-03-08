@@ -72,6 +72,31 @@ exports.index = async (req, res) => {
     }
 };
 
+exports.report = async (req, res) => {
+    try {
+        const {date_from, date_to, user_id} = req.body
+        const [ data, metaData] = await db.query(`
+            SELECT repair_maintenances.id, CONCAT(users."firstName", ' ', users."lastName") as disposal_by, user_roles.role_name as designation,
+                   locations.location_name as location, products.product_name, assets.product_serial, repair_maintenances.estimated_cost, repair_maintenances.details FROM repair_maintenances
+            JOIN user_roles ON user_roles.id = repair_maintenances.role_id
+            JOIN users ON users.id = repair_maintenances.added_by
+            JOIN assets ON assets.id = repair_maintenances.asset_id
+            JOIN products ON products.id = assets.product_id
+            JOIN locations ON locations.id = repair_maintenances.location_id
+            WHERE assets."createdAt" BETWEEN '${date_from}' AND '${date_to}' 
+              AND repair_maintenances.added_by = ${user_id}
+    `)
+        if(data.length > 0) {
+            res.status(200).json({data, status: true})
+        } else {
+            res.status(200).json({message: 'No Data Found'})
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+};
+
 exports.store = (req, res) => {
     try {
         upload(req, res, (err) => {

@@ -18,11 +18,6 @@ router.post('/store', AssetRepairController.store);
 
 
 // Maintenance Report
-router.post('/asset-maintenance/report' , async (req, res, next) => {
-    const {date_from, date_to, user_id} = req.body
-    const [ data, metaData] = await db.query(`
-        
-    `)
-})
+router.post('/asset-maintenance/report' , AssetRepairController.report)
 
 module.exports = router;
