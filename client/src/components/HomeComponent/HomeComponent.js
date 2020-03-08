@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoticeBoardComponent from "./NoticeBoardComponent";
 import {homeBanner} from "../../utility/constant";
+import Loader from "../../utility/loader/Loader";
 
 const HomeComponent = () => {
     let settings = {

@@ -671,7 +671,7 @@ class InstaAdd extends Component {
                         {subLoc}
                         <div className="px-1 mb-20p">
                             <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
-                                <option>Select Hierarchy</option>
+                                <option>Select Type</option>
                                 <HierarchiesOptions />
                             </select>
                         </div>

@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import jwt from "jsonwebtoken";
-import {Link, withRouter} from 'react-router-dom'
+import {Link, Redirect, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
 import {documentNav, sidenav, systemAdmin, misNav, apiUrl, locationCategory} from "../utility/constant";
 
@@ -143,7 +143,6 @@ class Topnav extends Component {
         const {home} = this.props
         const {showUserOption, toggleNotification, notification} = this.state
         const moduleName = window.location.pathname.replace('/', '').split('/');
-        console.log(moduleName, 141)
         let breadCrumb = moduleName.map((item, index) => (
             <>
                 {item !== 'home' && <li className="breadcrumb-item active f-capitalize" aria-current="page">
@@ -151,7 +150,16 @@ class Topnav extends Component {
                 </li>}
             </>
         ))
-        const {userName, image, userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        const {userName, image, userType, id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+
+        if (moduleName[0] === 'admin' && id !== 1) {
+            return(
+                <Redirect
+                    to={'/'}
+                />
+            )
+        }
+
         if (home || moduleName[0] === 'contact' || moduleName[0] === 'about') {
             return (
                 <div className='ui-topnav w-100 px-4'>
