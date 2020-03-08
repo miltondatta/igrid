@@ -2,7 +2,7 @@ import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import {Link, Redirect, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
-import {documentNav, sidenav, systemAdmin, misNav, apiUrl, locationCategory} from "../utility/constant";
+import {documentNav, sidenav, systemAdmin, misNav, apiUrl, locationCategory, misCategory} from "../utility/constant";
 
 class Topnav extends Component {
 
@@ -60,6 +60,8 @@ class Topnav extends Component {
             data = systemAdmin
         } else if (moduleName === 'location') {
             data = locationCategory
+        } else if (moduleName === 'mis') {
+            data = misCategory
         } else {
             data = sidenav;
         }

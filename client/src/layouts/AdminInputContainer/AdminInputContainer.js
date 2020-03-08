@@ -441,21 +441,34 @@ class AdminInputContainer extends Component {
         }
     }
 
+    handleChangeLocation = (e, nameField) => {
+        const {name, value} = e.target
+        if(name === 'parent_id') {
+            this.setState({
+                [name]: value
+            }, () => {
+                this.locationApi(value)
+            })
+        }
+    }
+
     componentDidMount = () => {
         this.getData()
     }
 
     locationApi = (id) => {
-        console.log(id, 232)
-        Axios.get(apiUrl() + 'locations/render/' + id)
-            .then(resData => {
-                if(resData.data) {
-                    console.log(resData.data, 445)
-                    this.setState({
-                        locationHolder: [...this.state.locationHolder, ...resData.data]
-                    })
-                }
-            })
+        const {hierarchy, parent_id} = this.state
+        if (parent_id < hierarchy) {
+            Axios.get(apiUrl() + 'locations/render/' + id)
+                .then(resData => {
+                    if(resData.data) {
+                        console.log(resData.data, 445)
+                        this.setState({
+                            locationHolder: [...this.state.locationHolder, ...resData.data]
+                        })
+                    }
+                })
+        }
     }
 
     renderForm = () => {
@@ -1136,7 +1149,7 @@ class AdminInputContainer extends Component {
                         return(
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>{item.hierarchy_name}</label>
-                                <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
+                                <select name={'parent_id'} onChange={(e) => this.handleChangeLocation(e, item.hierarchy_name)} className={`ui-custom-input`}>
                                     <option>Select {item.hierarchy_name}</option>
                                     <LocationsOptions selectedId={item.parent_id} />
                                 </select>
@@ -1175,7 +1188,7 @@ class AdminInputContainer extends Component {
                             </div>
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Parent</label>
-                                <select name={'parent_id'} value={parent_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
+                                <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
                                     <option value={0}>Select Parent</option>
                                     <LocationsOptions selectedId={parent_id} />
                                 </select>
