@@ -23,28 +23,17 @@ route.get('/mis/basic/report/daily', async(req, res) => {
     }
 
     let columnsString = "";
-    let dateString  =   "";
     dateArray.forEach((item) => {
-        columnsString += moment(item).format('MMM_Do') + " FLOAT,";
-        dateString    += "'" + item + "',";     
+        columnsString += moment(item).format('MMM_Do') + " FLOAT,";    
     });
     columnsString      =   columnsString.slice(0, -1);
-    dateString         =   dateString.slice(0, -1);  
-
-
-
-
-
-    console.log(dateString); 
-
-
 
     const [results, metadata] = await db.query(`SELECT * FROM
         crosstab ( 
         $$
         SELECT mis_indicatordetails.indicator_name, data_date, SUM(data_value) as data_value
         FROM mis_indicatordetails LEFT JOIN mis_imported_datas ON mis_indicatordetails.id = mis_imported_datas.indicatordetails_id 
-        WHERE data_date IN (${dateString})
+        WHERE (data_date BETWEEN '${date_from}' AND '${date_to}')
         GROUP BY mis_indicatordetails.indicator_name, data_date order by 1,2 
         $$
         ) AS ct ( Indicator VARCHAR, ${columnsString})`)
