@@ -26,11 +26,10 @@ route.get('/mis/basic/report/daily', async(req, res) => {
     let dateString  =   "";
     dateArray.forEach((item) => {
         columnsString += moment(item).format('MMM_Do') + " FLOAT,";
-        dateString    += " data_date = '" + item + "' OR";     
+        dateString    += "'" + item + "',";     
     });
     columnsString      =   columnsString.slice(0, -1);
-    dateString         =   dateString.slice(0, -2);  
-    dateString         += " (" + dateString + ") ";  
+    dateString         =   dateString.slice(0, -1);  
 
 
 
@@ -41,10 +40,14 @@ route.get('/mis/basic/report/daily', async(req, res) => {
 
 
     const [results, metadata] = await db.query(`SELECT * FROM
-        crosstab ('SELECT mis_indicatordetails.indicator_name, data_date, SUM(data_value) as data_value
+        crosstab ( 
+        $$
+        SELECT mis_indicatordetails.indicator_name, data_date, SUM(data_value) as data_value
         FROM mis_indicatordetails LEFT JOIN mis_imported_datas ON mis_indicatordetails.id = mis_imported_datas.indicatordetails_id 
-        WHERE ${dateString}
-        GROUP BY mis_indicatordetails.indicator_name, data_date order by 1,2' ) AS ct ( Indicator VARCHAR, ${columnsString})`)
+        WHERE data_date IN (${dateString})
+        GROUP BY mis_indicatordetails.indicator_name, data_date order by 1,2 
+        $$
+        ) AS ct ( Indicator VARCHAR, ${columnsString})`)
         if (results.length > 0) {
             res.status(200).json(results)
         } else {
