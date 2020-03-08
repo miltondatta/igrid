@@ -148,7 +148,7 @@ route.post('/requisition-approve/delivery', (req,res,next) => {
     })
 })
 
-// Create
+// Delivery Report
 route.post('/requisition-approve/delivery/between', async (req,res,next) => {
     const {date_from, date_to, user_id} = req.body
     const [data, masterData] = await db.query(`

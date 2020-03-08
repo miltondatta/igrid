@@ -16,4 +16,8 @@ router.post('/all/by/credentials', AssetRepairController.index);
  */
 router.post('/store', AssetRepairController.store);
 
+
+// Maintenance Report
+router.post('/asset-maintenance/report' , AssetRepairController.report)
+
 module.exports = router;

@@ -23,8 +23,8 @@ class TablePdfViewer extends Component {
             },
             headerText: {
                 fontSize: 11,
-                width: 75,
-                paddingVertical: 5,
+                width: 45,
+                paddingVertical: 2,
                 borderBottomWidth: 1,
                 marginHorizontal: 3,
                 textTransform: 'capitalize',
@@ -32,8 +32,8 @@ class TablePdfViewer extends Component {
             bodyText: {
                 color: '#444',
                 fontSize: 10,
-                width: 75,
-                paddingVertical: 5,
+                width: 45,
+                paddingVertical: 2,
                 borderBottomWidth: 1,
                 marginHorizontal: 3,
                 borderBottomColor: '#888',
