@@ -452,7 +452,7 @@ class AdminInputContainer extends Component {
                 if(resData.data) {
                     console.log(resData.data, 445)
                     this.setState({
-                        locationHolder: [...this.state.locationHolder,resData.data]
+                        locationHolder: [...this.state.locationHolder, ...resData.data]
                     })
                 }
             })
@@ -1132,12 +1132,12 @@ class AdminInputContainer extends Component {
             case 'LOCATIONS':
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) =>
                     {
-                        console.log(item, 1080)
+                        console.log(locationHolder, 1080)
                         return(
                             <div className="px-1 mb-2">
-                                <label className={'ui-custom-label'}>Select Sub Location</label>
+                                <label className={'ui-custom-label'}>{item.hierarchy_name}</label>
                                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
-                                    <option>Select Sub Location</option>
+                                    <option>Select {item.hierarchy_name}</option>
                                     <LocationsOptions selectedId={item.parent_id} />
                                 </select>
                             </div>
