@@ -86,8 +86,6 @@ class MonthlyReportComponent extends Component {
                 </div>
             )})
 
-        console.log(reportBody, 87)
-
         return (
             <>
                 <div className="ui-mis-report">
@@ -95,7 +93,7 @@ class MonthlyReportComponent extends Component {
                         <div className={'ui-selects-container'}>
                             {locations}
                             <div>
-                                <label className={'ui-custom-label'}>Date From</label>
+                                <label className={'ui-custom-label'}>Month From</label>
                                 <input type="month"
                                        name={'date_from'}
                                        value={date_from}
@@ -103,7 +101,7 @@ class MonthlyReportComponent extends Component {
                                        className={`ui-custom-input w-100`}/>
                             </div>
                             <div>
-                                <label className={'ui-custom-label'}>Date To</label>
+                                <label className={'ui-custom-label'}>Month To</label>
                                 <input type="month"
                                        name={'date_to'}
                                        value={date_to}
@@ -123,7 +121,6 @@ class MonthlyReportComponent extends Component {
                             </div>
                         </div>
                     </div>
-
                     <div className="ui-report-container">
                         <div className="ui-report-header">
                             {reportHeader}
