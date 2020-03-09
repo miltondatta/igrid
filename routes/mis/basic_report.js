@@ -42,50 +42,19 @@ route.get('/mis/basic/report/daily', async(req, res) => {
        let detailsComponents    =  await getDetailsComponent(); 
 
        let finalResults = {};
-     /*  masterComponents.forEach((item) => {
-            finalResults.push(item.indicatormaster_name);
-       });
+       masterComponents.forEach((item) => {
+        finalResults[item.indicatormaster_name] = [];
+       })     
 
-       array['name'][0,1]
-       array['name1'][0,1]
-
-       console.log(finalResults); */
 
         if (results.length > 0) {
             results.forEach((item, index) => {
                 let detailsObj = detailsComponents.find(d => d.id === item.indicatordetails_id);
                 let masterObj  = masterComponents.find(m => m.id === detailsObj.indicatormaster_id);
-
-
-
-
-               // item.indicatordetails_id = detailsObj.indicator_name;
-
-               //console.log(masterObj.indicatormaster_name);
-
-               //console.log(finalResults, 64);
-
-               finalResults[masterObj.indicatormaster_name] = []; 
-
-               finalResults[masterObj.indicatormaster_name].push(item);
-
-               //console.log(finalResults[masterObj.indicatormaster_name], "line 66");
-
-                //finalResults[masterObj[['indicatormaster_name']]].push(item); 
-                //console.log(masterObj.indicatormaster_name);
-                //finalResults[0].push(item);
-                //finalResults[masterObj.indicatormaster_name].push(item);
-
-                
-
-             /*   if(detailsComponents.includes(item.indicator)) {
-                    item.group = true;
-                } else {
-                    item.group = false;
-                } */
+                item.indicatordetails_id = detailsObj.indicator_name;
+                finalResults[masterObj.indicatormaster_name].push(item);
             }); 
-            console.log(finalResults);
-            return res.status(200).json(results)
+            return res.status(200).json(finalResults);
         } else {
             return res.status(200).json({message: "No Data Found"})
         }
