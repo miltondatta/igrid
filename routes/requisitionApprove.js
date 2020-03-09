@@ -294,8 +294,12 @@ route.post('/my-received-requisition-details/by/credentials', async (req,res) =>
                                 asset_sub_categories.sub_category_name,
                                 user_roles.role_name,
                                 locations.location_name,
-                                requisition_approves.update_quantity
+                                requisition_approves.update_quantity,
+                                requisition_masters.requisition_no,
+                                requisition_details.brand,
+                                requisition_details.model
                             from requisition_approves
+                                     inner join requisition_masters on requisition_approves.requisition_id = requisition_masters.id
                                      inner join requisition_details on requisition_approves.requisition_details_id = requisition_details.id
                                      inner join asset_categories on requisition_details.asset_category = asset_categories.id
                                      inner join asset_sub_categories on requisition_details.asset_sub_category = asset_sub_categories.id
