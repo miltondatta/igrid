@@ -1,11 +1,11 @@
-import Axios from "axios";
 import React, {Component} from 'react';
+import Axios from "axios";
 import {apiUrl} from "../../../utility/constant";
 import LocationsWithHOptions from "../../../utility/component/locationWithHierarchy";
-import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
 import ReactExcelExport from "../../../module/react-excel-export/reactExcelExport";
+import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
 
-class DailyReportComponent extends Component {
+class MonthlyReportComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -84,9 +84,7 @@ class DailyReportComponent extends Component {
                             </div>
                         ))}
                 </div>
-        )})
-
-        console.log(reportBody, 87)
+            )})
 
         return (
             <>
@@ -95,16 +93,16 @@ class DailyReportComponent extends Component {
                         <div className={'ui-selects-container'}>
                             {locations}
                             <div>
-                                <label className={'ui-custom-label'}>Date From</label>
-                                <input type="date"
+                                <label className={'ui-custom-label'}>Month From</label>
+                                <input type="month"
                                        name={'date_from'}
                                        value={date_from}
                                        onChange={this.handleChange}
                                        className={`ui-custom-input w-100`}/>
                             </div>
                             <div>
-                                <label className={'ui-custom-label'}>Date To</label>
-                                <input type="date"
+                                <label className={'ui-custom-label'}>Month To</label>
+                                <input type="month"
                                        name={'date_to'}
                                        value={date_to}
                                        onChange={this.handleChange}
@@ -112,18 +110,17 @@ class DailyReportComponent extends Component {
                             </div>
                         </div>
                         <div className="ui-btn-container rounded">
-                        <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
-                        <button className={'mx-2 report-reset-btn'}>Reset</button>
-                        <div className={'position-relative'}>
-                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
-                            {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                <button className={`${typeof dailyReport !== 'undefined' && (dailyReport.length > 0 ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport.length > 0) ? <ReactExcelExport excelData={dailyReport} /> : 'Excel')}</button>
-                                <button onClick={this.pdfViewr}>PDF</button>
-                            </div>}
+                            <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
+                            <button className={'mx-2 report-reset-btn'}>Reset</button>
+                            <div className={'position-relative'}>
+                                <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
+                                {optionDropDown && <div className={'ui-dropdown-btn'}>
+                                    <button className={`${typeof dailyReport !== 'undefined' && (dailyReport.length > 0 ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport.length > 0) ? <ReactExcelExport excelData={dailyReport} /> : 'Excel')}</button>
+                                    <button onClick={this.pdfViewr}>PDF</button>
+                                </div>}
+                            </div>
                         </div>
                     </div>
-                    </div>
-
                     <div className="ui-report-container">
                         <div className="ui-report-header">
                             {reportHeader}
@@ -131,11 +128,11 @@ class DailyReportComponent extends Component {
                         {reportBody}
                     </div>
                 </div>
-                
+
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={dailyReport} />}
             </>
         );
     }
 }
 
-export default DailyReportComponent;
+export default MonthlyReportComponent;

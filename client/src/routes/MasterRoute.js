@@ -49,8 +49,8 @@ const AsyncRequestDetails = Loadable({
     loader: () => import('../containers/RequestDetails'),
     loading: Loader,
 });
-const AsyncBranchRequesition = Loadable({
-    loader: () => import('../containers/BranchRequesition'),
+const AsyncBranchRequisition = Loadable({
+    loader: () => import('../containers/BranchRequisition'),
     loading: Loader,
 });
 const AsyncDeliveryRequest = Loadable({
@@ -277,6 +277,22 @@ const AsyncDailyReport = Loadable({
     loader: () => import('../containers/MISReport/DailyReport.js'),
     loading: Loader,
 });
+const AsyncWeeklyReport = Loadable({
+    loader: () => import('../containers/MISReport/WeeklyReport.js'),
+    loading: Loader,
+});
+const AsyncFortnightlyReport = Loadable({
+    loader: () => import('../containers/MISReport/FortnightlyReport.js'),
+    loading: Loader,
+});
+const AsyncMonthlyReport = Loadable({
+    loader: () => import('../containers/MISReport/MonthlyReport.js'),
+    loading: Loader,
+});
+const AsyncDeliveryReceivedContainer = Loadable({
+    loader: () => import('../containers/DeliveryReceivedContainer'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -340,10 +356,12 @@ class MasterRoute extends Component{
                             <Route exact path='/asset-disposal' component={AsyncAssetDisposal}/>
                             <Route exact path='/asset-transfer' component={AsyncAssetTransfer}/>
                             <Route exact path='/admin/complaint' component={AsyncComplainList}/>
+                            <Route exact path='/mis/weekly-report' component={AsyncWeeklyReport}/>
                             <Route exact path='/delivery-report' component={AsyncDeliveryReport}/>
                             <Route exact path='/request-history' component={AsyncRequestHistory}/>
                             <Route exact path='/support-hisotry' component={AsyncSupportHistory}/>
                             <Route exact path='/asset-repair' component={AsyncRepairMaintenance}/>
+                            <Route exact path='/mis/monthly-report' component={AsyncMonthlyReport}/>
                             <Route exact path='/location/details' component={AsyncLocationDetails}/>
                             <Route exact path='/delivery-request' component={AsyncDeliveryRequest}/>
                             <Route exact path='/admin/register-user' component={AsyncRegisterUser}/>
@@ -355,7 +373,7 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/approval-level' component={AsyncApprovalLevel}/>
                             <Route exact path='/lost-assets-status' component={AsyncLostAssetsStatus}/>
                             <Route exact path='/lost-assets-report' component={AsyncLostAssetsReport}/>
-                            <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
+                            <Route exact path='/approved-delivery' component={AsyncBranchRequisition}/>
                             <Route exact path='/asset-details' component={AsyncAssetDetailsContainer}/>
                             <Route exact path='/maintenance-report' component={AsyncMaintenanceReport}/>
                             <Route exact path='/requisition-status' component={AsyncRequisitionStatus}/>
@@ -364,6 +382,7 @@ class MasterRoute extends Component{
                             <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                             <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
                             <Route exact path='/asset-repair-list' component={AsyncRepairMaintenanceList}/>
+                            <Route exact path='/mis/fortnightly-report' component={AsyncFortnightlyReport}/>
                             <Route exact path='/admin/complain-category' component={AsyncComplaintCategory}/>
                             <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>
                             <Route exact path='/asset-disposal-report' component={AsyncAssetDisposalReport}/>
@@ -376,6 +395,7 @@ class MasterRoute extends Component{
                             <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                             <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
                             <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
+                            <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                 </Switch>
                     </div>
                 )

@@ -1,0 +1,91 @@
+.ui-mis-report{
+    height: 68.6%;
+}
+
+.ui-mis-report .ui-top-container{
+    background: #01a4b7;
+}
+
+.ui-mis-report .ui-top-container .ui-selects-container{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container{
+    width: 100%;
+    display: flex;
+    padding: 0 0 12px;
+    justify-content: center;
+}
+
+.ui-mis-report .ui-report-container {
+    height: 100%;
+    overflow-y: auto;
+    background: white;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header{
+    background: white;
+    display: flex;
+    margin: 0;
+    color: #656565;
+    padding: 0 10px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header:first-child div{
+    font-size: 16px;
+    font-weight: 600;
+    text-shadow: 0 0 5px #b0e6ec;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header:first-child{
+    color: #01a4b7;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header div{
+    flex-basis: 150px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-left: 1.2px solid #b0e6ec;
+    border-bottom: 1.2px solid #b0e6ec;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header div:first-child{
+    flex-basis: 200px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-left: 1px solid transparent;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container button,
+.ui-mis-report .ui-top-container .ui-selects-container div{
+    width: 240px;
+    margin: 0 7px;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn {
+    position: absolute;
+    width: 94%;
+    left: 7px;
+    border-radius: 5px;
+    overflow: hidden;
+    bottom: -90px;
+    z-index: 5;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button,
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button{
+    padding: 10px;
+    width: 100%;
+    border: none;
+    margin: 0;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button:last-child{background: #2274b4; color: white; font-weight: 600;}
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button:first-child{background: #ecd67b; color: #4a4a4a; font-weight: 600;}
