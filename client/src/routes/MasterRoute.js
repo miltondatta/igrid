@@ -49,8 +49,8 @@ const AsyncRequestDetails = Loadable({
     loader: () => import('../containers/RequestDetails'),
     loading: Loader,
 });
-const AsyncBranchRequesition = Loadable({
-    loader: () => import('../containers/BranchRequesition'),
+const AsyncBranchRequisition = Loadable({
+    loader: () => import('../containers/BranchRequisition'),
     loading: Loader,
 });
 const AsyncDeliveryRequest = Loadable({
@@ -289,6 +289,10 @@ const AsyncMonthlyReport = Loadable({
     loader: () => import('../containers/MISReport/MonthlyReport.js'),
     loading: Loader,
 });
+const AsyncDeliveryReceivedContainer = Loadable({
+    loader: () => import('../containers/DeliveryReceivedContainer'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -369,7 +373,7 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/approval-level' component={AsyncApprovalLevel}/>
                             <Route exact path='/lost-assets-status' component={AsyncLostAssetsStatus}/>
                             <Route exact path='/lost-assets-report' component={AsyncLostAssetsReport}/>
-                            <Route exact path='/approved-delivery' component={AsyncBranchRequesition}/>
+                            <Route exact path='/approved-delivery' component={AsyncBranchRequisition}/>
                             <Route exact path='/asset-details' component={AsyncAssetDetailsContainer}/>
                             <Route exact path='/maintenance-report' component={AsyncMaintenanceReport}/>
                             <Route exact path='/requisition-status' component={AsyncRequisitionStatus}/>
@@ -391,6 +395,7 @@ class MasterRoute extends Component{
                             <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                             <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
                             <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
+                            <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                 </Switch>
                     </div>
                 )

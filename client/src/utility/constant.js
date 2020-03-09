@@ -50,7 +50,7 @@ export const sidenav = [
             {
                 id: 6,
                 name: 'Delivery Received',
-                link: '/approved-delivery',
+                link: '/delivery-received',
                 icon: "far fa-keyboard"
             },
         ]

@@ -188,4 +188,132 @@ route.delete('/requisition-approve/delete', (req,res,next) =>   {
         })
 })
 
+// Get Logged User Requisition List
+route.post('/my-requisition/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
+
+        const data = await db.query(`select requisition_masters.id,
+                                     requisition_masters.requisition_no,
+                                     locations.location_name, 
+                                     requisition_masters.request_date,
+                                     user_roles.role_name,
+                                     concat(users."firstName", ' ',  users."lastName") request_by
+                                    from requisition_masters
+                                             inner join requisition_approves on requisition_masters.id = requisition_approves.requisition_id
+                                             inner join locations on requisition_masters.location_id = locations.id
+                                             inner join user_roles on requisition_masters.role_id = user_roles.id
+                                             inner join users on requisition_masters.request_by = users.id
+                                    where requisition_approves.delivery_to is not null
+                                      ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+
+// Get Logged User Requisition Details List
+route.post('/my-requisition-details/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
+
+        const data = await db.query(`select
+                    asset_categories.category_name,
+                    asset_sub_categories.sub_category_name,
+                    user_roles.role_name,
+                    locations.location_name,
+                    requisition_approves.update_quantity,
+                    requisition_masters.requisition_no,
+                    requisition_details.brand,
+                    requisition_details.model
+                from requisition_approves
+                         inner join requisition_masters on requisition_approves.requisition_id = requisition_masters.id
+                         inner join requisition_details on requisition_approves.requisition_details_id = requisition_details.id
+                         inner join asset_categories on requisition_details.asset_category = asset_categories.id
+                         inner join asset_sub_categories on requisition_details.asset_sub_category = asset_sub_categories.id
+                         inner join users on requisition_approves.update_by = users.id
+                         inner join user_roles on requisition_approves.role_id = user_roles.id
+                         inner join locations on requisition_approves.location_id = locations.id
+                where delivery_to is not null
+                  ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Get Logged User Delivery Received List
+route.post('/my-received-requisition/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where requisition_approves.delivery_to = ' + user_id;
+
+        const data = await db.query(`select requisition_masters.id,
+                                     requisition_masters.requisition_no,
+                                     locations.location_name, 
+                                     requisition_masters.request_date,
+                                     user_roles.role_name,
+                                     concat(users."firstName", ' ',  users."lastName") request_by
+                                    from requisition_masters
+                                             inner join requisition_approves on requisition_masters.id = requisition_approves.requisition_id
+                                             inner join locations on requisition_masters.location_id = locations.id
+                                             inner join user_roles on requisition_masters.role_id = user_roles.id
+                                             inner join users on requisition_masters.request_by = users.id
+                                      ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Get Logged User Delivery Received Details List
+route.post('/my-received-requisition-details/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where requisition_approves.delivery_to = ' + user_id;
+
+        const data = await db.query(`select
+                                asset_categories.category_name,
+                                asset_sub_categories.sub_category_name,
+                                user_roles.role_name,
+                                locations.location_name,
+                                requisition_approves.update_quantity,
+                                requisition_masters.requisition_no,
+                                requisition_details.brand,
+                                requisition_details.model
+                            from requisition_approves
+                                     inner join requisition_masters on requisition_approves.requisition_id = requisition_masters.id
+                                     inner join requisition_details on requisition_approves.requisition_details_id = requisition_details.id
+                                     inner join asset_categories on requisition_details.asset_category = asset_categories.id
+                                     inner join asset_sub_categories on requisition_details.asset_sub_category = asset_sub_categories.id
+                                     inner join users on requisition_approves.update_by = users.id
+                                     inner join user_roles on requisition_approves.role_id = user_roles.id
+                                     inner join locations on requisition_approves.location_id = locations.id
+                              ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+
 module.exports = route
