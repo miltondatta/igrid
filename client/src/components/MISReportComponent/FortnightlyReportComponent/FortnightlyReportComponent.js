@@ -1,11 +1,11 @@
-import Axios from "axios";
 import React, {Component} from 'react';
+import Axios from "axios";
 import {apiUrl} from "../../../utility/constant";
 import LocationsWithHOptions from "../../../utility/component/locationWithHierarchy";
-import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
 import ReactExcelExport from "../../../module/react-excel-export/reactExcelExport";
+import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
 
-class DailyReportComponent extends Component {
+class FortnightlyReportComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -84,7 +84,7 @@ class DailyReportComponent extends Component {
                             </div>
                         ))}
                 </div>
-        )})
+            )})
 
         console.log(reportBody, 87)
 
@@ -112,16 +112,16 @@ class DailyReportComponent extends Component {
                             </div>
                         </div>
                         <div className="ui-btn-container rounded">
-                        <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
-                        <button className={'mx-2 report-reset-btn'}>Reset</button>
-                        <div className={'position-relative'}>
-                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
-                            {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                <button className={`${typeof dailyReport !== 'undefined' && (dailyReport.length > 0 ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport.length > 0) ? <ReactExcelExport excelData={dailyReport} /> : 'Excel')}</button>
-                                <button onClick={this.pdfViewr}>PDF</button>
-                            </div>}
+                            <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
+                            <button className={'mx-2 report-reset-btn'}>Reset</button>
+                            <div className={'position-relative'}>
+                                <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
+                                {optionDropDown && <div className={'ui-dropdown-btn'}>
+                                    <button className={`${typeof dailyReport !== 'undefined' && (dailyReport.length > 0 ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport.length > 0) ? <ReactExcelExport excelData={dailyReport} /> : 'Excel')}</button>
+                                    <button onClick={this.pdfViewr}>PDF</button>
+                                </div>}
+                            </div>
                         </div>
-                    </div>
                     </div>
 
                     <div className="ui-report-container">
@@ -131,11 +131,11 @@ class DailyReportComponent extends Component {
                         {reportBody}
                     </div>
                 </div>
-                
+
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={dailyReport} />}
             </>
         );
     }
 }
 
-export default DailyReportComponent;
+export default FortnightlyReportComponent;

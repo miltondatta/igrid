@@ -1,5 +1,5 @@
 .ui-mis-report{
-    height: 68%;
+    height: 68.6%;
 }
 
 .ui-mis-report .ui-top-container{
@@ -10,7 +10,7 @@
     width: 100%;
     display: flex;
     padding: 10px;
-    overflow-y: auto;
+    overflow-x: auto;
 }
 
 .ui-mis-report .ui-top-container .ui-btn-container{
@@ -22,11 +22,45 @@
 
 .ui-mis-report .ui-report-container {
     height: 100%;
+    overflow-y: auto;
+    background: white;
 }
 
 .ui-mis-report .ui-report-container .ui-report-header{
-    height: 100%;
     background: white;
+    display: flex;
+    margin: 0;
+    color: #656565;
+    padding: 0 10px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header:first-child div{
+    font-size: 16px;
+    font-weight: 600;
+    text-shadow: 0 0 5px #b0e6ec;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header:first-child{
+    color: #01a4b7;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header div{
+    flex-basis: 150px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-left: 1.2px solid #b0e6ec;
+    border-bottom: 1.2px solid #b0e6ec;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header div:first-child{
+    flex-basis: 200px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-left: 1px solid transparent;
 }
 
 .ui-mis-report .ui-top-container .ui-btn-container button,

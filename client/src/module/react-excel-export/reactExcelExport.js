@@ -10,8 +10,9 @@ class ReactExcelExport extends Component {
         const {excelData} = this.props
         const filterData = Object.keys(excelData[0]).filter(item => item !== 'id')
         const exclCol = filterData.length > 0 && filterData.map((item, index) => {
+            console.log(item)
             return(
-                    <ExcelColumn label={item.replace('_', ' ').toUpperCase()} value={item}/>
+                    <ExcelColumn label={item.replace('_', ' ').toUpperCase()} value={(col) => col[item] !== null ? col[item] : '0'}/>
             )
         })
 
