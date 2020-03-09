@@ -173,7 +173,7 @@ class DeliveryRequestComponent extends Component {
 
         return (
             <div className={'bg-white p-3 rounded m-3 min-h-80vh'}>
-                {printDelivery && window.open(<PrintDelivery resData={resData} comeBack={this.comeBack} />)}
+                {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
                 {showDetails ?  <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>

@@ -1,3 +1,57 @@
 .ui-mis-report{
-
+    height: 68%;
 }
+
+.ui-mis-report .ui-top-container{
+    background: #01a4b7;
+}
+
+.ui-mis-report .ui-top-container .ui-selects-container{
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container{
+    width: 100%;
+    display: flex;
+    padding: 0 0 12px;
+    justify-content: center;
+}
+
+.ui-mis-report .ui-report-container {
+    height: 100%;
+}
+
+.ui-mis-report .ui-report-container .ui-report-header{
+    height: 100%;
+    background: white;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container button,
+.ui-mis-report .ui-top-container .ui-selects-container div{
+    width: 240px;
+    margin: 0 7px;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn {
+    position: absolute;
+    width: 94%;
+    left: 7px;
+    border-radius: 5px;
+    overflow: hidden;
+    bottom: -90px;
+    z-index: 5;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button,
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button{
+    padding: 10px;
+    width: 100%;
+    border: none;
+    margin: 0;
+}
+
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button:last-child{background: #2274b4; color: white; font-weight: 600;}
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button:first-child{background: #ecd67b; color: #4a4a4a; font-weight: 600;}
