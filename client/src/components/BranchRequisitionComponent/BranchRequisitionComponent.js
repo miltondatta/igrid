@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import {FrontEnd_BaseUrl} from "../../config/private";
 
 class BranchRequisitionComponent extends Component {
     constructor(props) {
@@ -78,21 +79,24 @@ class BranchRequisitionComponent extends Component {
     };
 
     printTable = (divName) => {
-        /*let printContents = document.getElementById(divName).innerHTML;
-        let originalContents = document.body.innerHTML;
+        let winPrint = window.open('', '', 'width=1024,height=768');
+        let css1 = 'https://' + FrontEnd_BaseUrl + '/multiselect.css';
+        var full_page = '<html><head><link rel="stylesheet" type="text/css" href="' + css1 + '"  media="all"></head> <body> </body></html>';
+        winPrint.document.write(full_page);
+        var print_area = document.getElementById(divName).innerHTML;
+        winPrint.document.body.innerHTML = print_area;
+        winPrint.document.close();
+        setTimeout(function () {
+            winPrint.focus();
+            winPrint.print();
+            winPrint.close();
+        }, 1000);
 
-        document.body.innerHTML = printContents;
-        window.open();
-        window.print();
-        document.body.innerHTML = originalContents;
-        window.close();*/
-        const {pdf_show} = this.state;
-
-        document.getElementById(divName).style.display = "block";
+        /*document.getElementById(divName).style.display = "block";
         let winPrint = window.open('', '', 'width=1024,height=768');
 
-        let full_page = '<html id="ui-print"><head><link rel="stylesheet" type="text/css" href="" media="all"></head> <body> </body></html>';
-        winPrint.document.write(full_page);
+        /!*let full_page = '<html id="ui-print"><head><link rel="stylesheet" type="text/css" href="'+ print_url +'" media="all"></head> <body> </body></html>';
+        winPrint.document.write(full_page);*!/
         winPrint.document.body.innerHTML = document.getElementById(divName).innerHTML;
         document.getElementById(divName).style.display = "none";
         winPrint.document.close();
@@ -101,7 +105,7 @@ class BranchRequisitionComponent extends Component {
             winPrint.focus();
             winPrint.print();
             winPrint.close();
-        }, 1000);
+        }, 1000);*/
 
     };
 
@@ -174,7 +178,6 @@ class BranchRequisitionComponent extends Component {
                         <p>Name of Automation Staff:</p>
                     </div>
                 </div>
-
             </div>
         );
     }
