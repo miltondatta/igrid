@@ -136,7 +136,7 @@ router.post('/users/login', (req,res,next) => {
                             payload = {id, userName, email, phone_number, pin, address, image, userType, role_id: results[0].role_id, location_id}
 
                             const token = jwt.sign({
-                                exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                                exp: Math.floor(Date.now() / 1000) + (8 * 60 * 60),
                                 data: payload
                             }, 'secret');
                             const userLogs = {user_ip, user_id: data[0].dataValues.id, time, date}
