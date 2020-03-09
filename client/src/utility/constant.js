@@ -1,6 +1,6 @@
-import {devBaseUrl, prodBaseUrl} from "../config/private";
+import {devBaseUrl, prodBaseUrl, BackEnd_BaseUrl} from "../config/private";
 import React from "react";
-export const apiBaseUrl =  'http://localhost:5000/';
+export const apiBaseUrl =  BackEnd_BaseUrl;
 
 export const apiUrl = () => {
     if(process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

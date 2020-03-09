@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import {Link, Redirect, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
 import {documentNav, sidenav, systemAdmin, misNav, apiUrl, locationCategory, misCategory} from "../utility/constant";
+import {BackEnd_BaseUrl} from "../config/private";
 
 class Topnav extends Component {
 
@@ -73,7 +74,7 @@ class Topnav extends Component {
                 {data.map((items, index) => {
                     return (
                         <>
-                            {(userType !== 1 && (items.id === 1 || items.id === 12 )) ? null : items.subCat ? <div key={index + 20}
+                            {items.subCat ? <div key={index + 20}
                                                                                              className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
                                                                                              onMouseOut={() => {
                                                                                                  this.setState({currentHover: ''})
@@ -194,7 +195,7 @@ class Topnav extends Component {
                             {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-1'}>{userName}</span></Link> :
                                 <span onClick={this.handleUserOptions}>{userName}</span>}
                             <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
-                                 src={'http://localhost:5000/images/' + image} alt={'user'}/>
+                                 src={ BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
                             {showUserOption && <div className={'ui-user-dropdown'}>
                                 <Link onClick={() => {
                                     this.setState((prevState) => ({
@@ -248,7 +249,7 @@ class Topnav extends Component {
                                 </i>
                                 {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-1'}>{userName}</span></Link> : <span onClick={this.handleUserOptions}>{userName}</span>}
                                 <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
-                                     src={'http://localhost:5000/images/' + image} alt={'user'}/>
+                                     src={BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
                                 {showUserOption && <div className={'ui-user-dropdown'}>
                                     <p><Link onClick={() => {
                                         this.setState((prevState) => ({

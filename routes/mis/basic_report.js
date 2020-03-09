@@ -26,17 +26,40 @@ route.get('/mis/basic/report/daily', async(req, res) => {
     dateArray.forEach((item) => {
         columnsString += moment(item).format('MMM_Do') + " FLOAT,";    
     });
-    columnsString      =   columnsString.slice(0, -1);
+    columnsString       =   columnsString.slice(0, -1);
+    let child_locations = [];
+
+    //Get all last child of this location, including this id
+    const [locations, metadata_location] = await db.query(`with recursive cte (id, hierarchy, parent_id) as (
+        SELECT     id,
+                   hierarchy,
+                   parent_id
+        FROM       locations
+        WHERE      id = ${location_id}
+        UNION ALL
+        SELECT     l.id,
+                   l.hierarchy,	
+                   l.parent_id
+        FROM       locations l
+        INNER JOIN cte
+                ON l.parent_id = cte.id			
+      )
+      select id from cte WHERE hierarchy = (SELECT MAX(location_hierarchies.id) FROM location_hierarchies)`);
+
+      locations.forEach((item, index) => {
+          child_locations.push(item.id);
+      });  
+      child_locations   =   child_locations.join(",");
 
     const [results, metadata] = await db.query(`SELECT * FROM
         crosstab ( 
         $$
         SELECT mis_indicatordetails.indicator_name, data_date, SUM(data_value) as data_value
         FROM mis_indicatordetails LEFT JOIN mis_imported_datas ON mis_indicatordetails.id = mis_imported_datas.indicatordetails_id 
-        WHERE (data_date BETWEEN '${date_from}' AND '${date_to}')
+        WHERE (data_date BETWEEN '${date_from}' AND '${date_to}') AND location_id IN (${child_locations})  OR data_date IS NULL
         GROUP BY mis_indicatordetails.indicator_name, data_date order by 1,2 
         $$
-        ) AS ct ( Indicator VARCHAR, ${columnsString})`)
+        ) AS ct ( indicator VARCHAR, ${columnsString})`)
         if (results.length > 0) {
             res.status(200).json(results)
         } else {
