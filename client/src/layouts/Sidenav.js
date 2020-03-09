@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import React, {Component} from 'react'
 import {withRouter} from 'react-router-dom'
 import {sidenav} from '../utility/constant'
+import {BackEnd_BaseUrl} from "../config/private";
 
 class Sidenav extends Component {
 
@@ -61,7 +62,7 @@ class Sidenav extends Component {
             <div className='h-100 ui-sidenav'>
                 <div className='ui-user-details' style={{justifyContent: sideNav && 'center'}}>
                     {!sideNav && <div>
-                    <img className={'ui-user-avatar'} src={'http://localhost:5000/images/' + image} alt={'user'} />{userName}
+                    <img className={'ui-user-avatar'} src={BackEnd_BaseUrl +'images/' + image} alt={'user'} />{userName}
                     </div>}
                     <i onClick={this.props.handleSideNav} className="fas fa-bars"></i>
                 </div>
