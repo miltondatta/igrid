@@ -387,6 +387,11 @@ input[type=date],
    right: 25px;
 }
 
+.slick-slider img,
+.slick-slider div{
+   height: 100%
+}
+
 .ui-slider-modal .ui-char-splitting{
    text-align: center;
    border-radius: 10px;
