@@ -6,13 +6,16 @@ const mis_imported_data = db.define('mis_imported_datas', {
   indicatordetails_id: Sequelize.INTEGER,
   data_date: Sequelize.DATEONLY,
   year: {
-    type: Sequelize.INTEGER
+    defaultValue: 0,
+    type: Sequelize.STRING
   },
   month: {
-    type: Sequelize.INTEGER
+    defaultValue: 0,
+    type: Sequelize.STRING
   },
   day: {
-    type: Sequelize.INTEGER
+    defaultValue: 0,
+    type: Sequelize.STRING
   },
   data_value: Sequelize.DOUBLE
 });
