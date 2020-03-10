@@ -127,7 +127,7 @@ class MonthlyReportComponent extends Component {
                             {main}
                         </div>
                         {
-                            Object.keys(dailyReport[main][0]).map((data, index2) => {
+                          dailyReport[main].length &&  Object.keys(dailyReport[main][0]).map((data, index2) => {
                                 return(
                                     <div key={index2}>
 
@@ -136,6 +136,7 @@ class MonthlyReportComponent extends Component {
                             })
                         }
                     </div>
+                    
                     {dailyReport[main].map((mainData, index3) => {
                         return (
                             <div key={index} className="ui-report-header">

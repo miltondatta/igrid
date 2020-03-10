@@ -85,7 +85,7 @@ route.get('/mis/basic/report/daily', async(req, res) => {
         let columnsString   = "";
         let dateIn          = "";
         weekArray.forEach((item, index) => {
-            columnsString += "Week_" + index + " FLOAT,";   
+            columnsString += "Week_" + index + "_" + moment(item).format('MMM')  + " FLOAT,";   
             dateIn        += "'" + item + "',";     
         });
         columnsString      =  columnsString.slice(0, -1);
