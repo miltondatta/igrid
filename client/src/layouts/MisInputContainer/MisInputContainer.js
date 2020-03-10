@@ -5,6 +5,8 @@ import IndicatorCategoryOptions from "../../utility/component/indicatorCategoryO
 import LocationsOptions from "../../utility/component/locationOptions";
 import {validateInput} from "../../utility/custom";
 import Spinner from "../Spinner";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class MisInputContainer extends Component {
     constructor(props) {
@@ -547,21 +549,11 @@ class MisInputContainer extends Component {
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({error: false})
-                }}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage} />
+                }
 
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>

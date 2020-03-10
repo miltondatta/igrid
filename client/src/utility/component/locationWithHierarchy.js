@@ -2,7 +2,8 @@ import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../constant";
 
-class LocationsWithHOptions extends Component {
+class
+LocationsWithHOptions extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -12,7 +13,7 @@ class LocationsWithHOptions extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.parentID !== prevProps.parentID && this.props.parentID !== 0) {
+        if (this.props.parentID !== prevProps.parentID && this.props.parentID !== 0 && this.props.hierarchyID) {
             this.getData()
         }
     }
@@ -27,7 +28,7 @@ class LocationsWithHOptions extends Component {
             parentID,
             hierarchyID
         }
-        if (typeof parentID !== 'undefined' && typeof hierarchyID !== 'undefined') {
+        if (typeof parentID !== 'undefined' && hierarchyID) {
             Axios.post(apiUrl() + 'locations/witHierarchy', payLoad)
                 .then(resData => {
                     this.setState({

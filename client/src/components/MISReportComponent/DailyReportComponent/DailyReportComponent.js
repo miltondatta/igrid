@@ -4,6 +4,8 @@ import {apiUrl} from "../../../utility/constant";
 import LocationsWithHOptions from "../../../utility/component/locationWithHierarchy";
 import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
 import ReactExcelExport from "../../../module/react-excel-export/reactExcelExport";
+import ErrorModal from "../../../utility/error/errorModal";
+import SuccessModal from "../../../utility/success/successModal";
 
 class DailyReportComponent extends Component {
 
@@ -12,8 +14,12 @@ class DailyReportComponent extends Component {
         this.state = {
             parentID: 0,
             date_to: '',
+            error: false,
             date_from: '',
+            haveData: false,
+            errorMessage: '',
             dailyReport: {},
+            selectData: [],
             hierarchies: [],
         }
     }
@@ -31,51 +37,90 @@ class DailyReportComponent extends Component {
             })
     }
 
-    handleChange = (e, nam) => {
+    handleChange = (e, nam, hierarchies) => {
         const {name, value} = e.target
-        this.setState({
-            [name]: value,
-            [nam]: value
-        })
+        if (name === 'parentID') {
+            this.setState({
+                [name]: value,
+                [nam]: value
+            }, () => {
+                this.validate()
+            })
+        } else {
+            this.setState({
+                [name]: value,
+                [nam]: value
+            }, () => {
+                this.validate()
+            })
+        }
     }
 
     handleSubmit = () => {
+        console.log(this.validate(), 48)
         const {parentID, date_to, date_from} = this.state
         const data = {
             date_to,
             date_from,
             location_id: parentID,
         }
-        Axios.get(apiUrl() + 'mis/basic/report/daily' , {params: data})
-            .then(res => {
-                console.log(res.data)
-                this.setState({
-                    dailyReport: res.data
+        if (date_from !== '' && date_to !== '' && parentID !== 0) {
+            Axios.get(apiUrl() + 'mis/basic/report/daily' , {params: data})
+                .then(res => {
+                    if (res.data.message) {
+                        this.setState({
+                            haveData: false,
+                            error: true,
+                            errorMessage: res.data.message
+                        })
+                    } else {
+                        this.setState({
+                            haveData: true,
+                            dailyReport: res.data
+                        })
+                    }
                 })
-            })
+        }
+    }
+
+    validate = () => {
+        const {date_from, date_to, parentID} = this.state
+        let errorDict = {
+            date_from: typeof date_from !== 'undefined' && date_from !== '' ,
+            date_to: typeof date_to !== 'undefined' && date_to !== '' ,
+            parentID: typeof parentID !== 'undefined' && parentID !== 0
+        }
+        this.setState({
+            errorDict
+        })
+        return errorDict
     }
 
     render() {
-        const {hierarchies, parentID, date_from, date_to, dailyReport, pdf, optionDropDown} = this.state
+        const {hierarchies, selectData, parentID, date_from, date_to, dailyReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict} = this.state
+
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return(
                 <div className={'position-relative'}>
                     <label htmlFor="" className={'ui-custom-label'}>{item.hierarchy_name}</label>
-                    <select name={'parentID'} value={this.state[item.hierarchy_name]} onChange={(e) => this.handleChange(e, item.hierarchy_name)} className={'ui-custom-input'}>
+                    <select
+                        name={'parentID'}
+                        onChange={(e) => this.handleChange(e, item.hierarchy_name, item.id)}
+                        className={`ui-custom-input ${errorDict && !errorDict.parentID && 'border-red'}`}>
                         <option>{item.hierarchy_name}</option>
-                        <LocationsWithHOptions parentID={parentID} hierarchyID={item.id} />
+                        <LocationsWithHOptions parentID={parentID} hierarchyID={item.id === parseInt(parentID, 10) + 1 ? item.id : null} />
                     </select>
                 </div>
             )
         })
-        const reportHeader = dailyReport[Object.keys(dailyReport)[0]] && (dailyReport[Object.keys(dailyReport)[0]].length > 0 && Object.keys(dailyReport[Object.keys(dailyReport)[0]][0]).map(item => {
+        const reportHeader = haveData && (dailyReport[Object.keys(dailyReport)[0]].length > 0 && Object.keys(dailyReport[Object.keys(dailyReport)[0]][0]).map(item => {
             return(
                 <div>
                     {item.replace('_', ' ')}
                 </div>
             )
         }))
-        const reportBody = dailyReport[Object.keys(dailyReport)[0]] && Object.keys(dailyReport).map((main, index) => {
+        const reportBody = haveData && Object.keys(dailyReport).map((main, index) => {
             return (
                 <>
                     <div className={'ui-report-title'}>
@@ -109,10 +154,11 @@ class DailyReportComponent extends Component {
                 </>
             )})
 
-        console.log(dailyReport, 101)
-
         return (
             <>
+                {error &&
+                <ErrorModal ops errorMessage={errorMessage} />
+                }
                 <div className="ui-mis-report">
                     <div className="ui-top-container">
                         <div className={'ui-selects-container'}>
@@ -123,7 +169,7 @@ class DailyReportComponent extends Component {
                                        name={'date_from'}
                                        value={date_from}
                                        onChange={this.handleChange}
-                                       className={`ui-custom-input w-100`}/>
+                                       className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'border-red'}`}/>
                             </div>
                             <div>
                                 <label className={'ui-custom-label'}>Date To</label>
@@ -131,7 +177,7 @@ class DailyReportComponent extends Component {
                                        name={'date_to'}
                                        value={date_to}
                                        onChange={this.handleChange}
-                                       className={`ui-custom-input w-100`}/>
+                                       className={`ui-custom-input w-100 ${errorDict && !errorDict.to && 'border-red'}`}/>
                             </div>
                         </div>
                         <div className="ui-btn-container rounded">
@@ -147,12 +193,12 @@ class DailyReportComponent extends Component {
                         </div>
                     </div>
 
-                    <div className="ui-report-container">
+                    {!haveData ? <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4> : <div className="ui-report-container">
                         <div className="ui-report-header">
                             {reportHeader}
                         </div>
                         {reportBody}
-                    </div>
+                    </div>}
                 </div>
 
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={dailyReport} />}
