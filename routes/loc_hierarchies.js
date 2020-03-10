@@ -5,7 +5,14 @@ const route = express.Router()
 
 // Read
 route.get('/locHierarchies', (req,res,next) => {
-    Location_hierarchies.findAll({attributes: ['id', 'hierarchy_name']})
+    Location_hierarchies.findAll(
+        {
+            attributes: ['id', 'hierarchy_name'],
+            order: [
+                ['id', 'ASC'],
+            ],
+        },      
+        )
         .then(resData => {
             res.status(200).json(resData)
         })

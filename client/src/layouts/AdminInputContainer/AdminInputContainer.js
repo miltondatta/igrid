@@ -650,7 +650,7 @@ class AdminInputContainer extends Component {
                                 <ApproveLevelOptions />
                             </select>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Level</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
