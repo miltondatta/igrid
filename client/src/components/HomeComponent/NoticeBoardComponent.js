@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import moment from "moment";
+import Spinner from "../../layouts/Spinner";
+
 moment.locale('en');
 
 class NoticeBoardComponent extends Component {
@@ -11,6 +13,7 @@ class NoticeBoardComponent extends Component {
             noticeAndCircular: true,
             notice: false,
             circular: false,
+            isLoading: false,
             allData: []
         };
     }
@@ -35,26 +38,32 @@ class NoticeBoardComponent extends Component {
         let apiText = '';
         apiText = (noticeAndCircular && 'document/list/active') || (notice && 'document/list/by/notice') || (circular && 'document/list/by/circular');
 
-        Axios.get(apiUrl() + apiText)
-            .then(res => {
-                this.setState({
-                    allData: res.data
+        this.setState({
+            isLoading: true
+        }, () => {
+            Axios.get(apiUrl() + apiText)
+                .then(res => {
+                    this.setState({
+                        allData: res.data,
+                        isLoading: false
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err);
-            })
+                .catch(err => {
+                    console.log(err);
+                })
+        });
     };
 
     render() {
-        const {allData, noticeAndCircular, notice, circular} = this.state;
-        let allNotice = allData.length > 0 ? allData.map((item, index) => (
+        const {allData, noticeAndCircular, notice, circular, isLoading} = this.state;
+        let allNotice = isLoading ? <Spinner/> : allData.length > 0 ? allData.map((item, index) => (
             <div key={index}>
                 <i className="fas fa-angle-right mr-1"></i>
-                <a href={`/documents/document-list-search/notice/id/${item.id}`} className="mb-0" target="_blank">{item.title}</a>
-                <p className="mb-2 noticeDate">{moment(item.document_date).format('dddd MM, YYYY hh:mm a')}</p>
+                <a href={`/documents/document-list-search/notice/id/${item.id}`} className="mb-0"
+                   target="_blank">{item.title}</a>
+                <p className="mb-2 noticeDate">{moment(item.document_date).format('MMMM Do YYYY, hh:mm a')}</p>
             </div>
-        )) : <p>There is empty notice board</p>;
+        )) : <p>No Data to Display</p>;
 
         return (
             <div className={'ui-noticeboard'}>
