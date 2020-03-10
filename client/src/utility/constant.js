@@ -414,12 +414,6 @@ export const misCategory = [
                 icon: ""
             },
             {
-                id: 2,
-                name: 'Fortnightly',
-                link: '/mis/fortnightly-report',
-                icon: ""
-            },
-            {
                 id: 4,
                 name: 'Monthly',
                 link: '/mis/monthly-report',

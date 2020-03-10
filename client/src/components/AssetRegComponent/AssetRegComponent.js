@@ -404,7 +404,7 @@ class AssetRegComponent extends Component {
                     headTitle = {headTitle}
                 />
                 {challan_id === '' && <div className=" p-3 ui-dataEntry">
-                    <div className={'min-h-80vh bg-white rounded position-relative p-3'}>
+                    <div className={'max-h-80vh bg-white rounded position-relative p-3'}>
                         <nav className="navbar text-center mb-2 pl-1 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
                         </nav>
@@ -451,7 +451,7 @@ class AssetRegComponent extends Component {
                         </div>
                         <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
                     </div>
-                    <div className="min-h-80vh bg-white rounded p-3">
+                    <div className="max-h-80vh bg-white rounded p-3">
                         <div className={'mb-2'}>
                             <nav className="navbar text-center mb-2 pl-1 rounded">
                                 <p className="text-blue f-weight-700 f-20px m-0">Challan Description</p>
@@ -479,7 +479,7 @@ class AssetRegComponent extends Component {
                     </div>
                 </div>}
                 {challan_id !== '' && <div className="ui-dataEntry">
-                    <div className="min-h-80vh bg-challan position-relative p-3">
+                    <div className="max-h-80vh bg-challan position-relative p-3">
                         <nav className="navbar text-center mb-2 border-bottom-nav">
                             <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>
                         </nav>

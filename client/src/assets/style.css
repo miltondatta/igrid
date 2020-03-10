@@ -32,6 +32,11 @@ a:hover{text-decoration: none}
 .min-h-80vh{
    min-height: 80.5vh;
 }
+.max-h-80vh{
+   max-height: 80vh;
+   overflow-y: auto;
+   overflow-x: auto;
+}
 .min-h-50vh{
    min-height: 50vh;
 }
@@ -213,7 +218,7 @@ input[type=date],
 
 ::-webkit-scrollbar-track{ background-color: #bbb; width: 2px}
 ::-webkit-scrollbar-thumb { background: #005da6; border-radius: 10px;}
-::-webkit-scrollbar {width: 5px;}
+::-webkit-scrollbar {width: 5px; height: 5px}
 
 .grid-2{
    display: grid;

@@ -434,7 +434,7 @@ class ChallanComponent extends Component {
                             <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
                         </nav>
                         <div className=" p-1 ui-dataEntry">
-                            <div className={'min-h-80vh bg-white rounded position-relative p-3'}>
+                            <div className={'max-h-80vh bg-white rounded position-relative p-3'}>
                                 <nav className="navbar text-center mb-2 pl-1 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
                                 </nav>
@@ -481,7 +481,7 @@ class ChallanComponent extends Component {
                                 </div>
                                 <button onClick={this.updateChallan} className="submit-btn">Add Challan</button>
                             </div>
-                            <div className="min-h-80vh bg-white rounded p-3">
+                            <div className="max-h-80vh bg-white rounded p-3">
                                 <div className={'mb-2'}>
                                     <nav className="navbar text-center mb-2 pl-1 rounded">
                                         <p className="text-blue f-weight-700 f-20px m-0">Challan Description</p>

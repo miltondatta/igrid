@@ -185,7 +185,7 @@ class AssetComponent extends Component{
                     <SuccessModal successMessage={successMessage} />
                 }
                 <div className={'ui-dataEntry p-3'}>
-                    <div className={'bg-white rounded p-2 min-h-80vh position-relative'}>
+                    <div className={'bg-white rounded p-2 max-h-80vh position-relative'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Requisition</p>
                         </nav>
@@ -233,7 +233,7 @@ class AssetComponent extends Component{
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
                     </div>
-                    <div className={'rounded bg-white min-h-80vh p-2'}>
+                    <div className={'rounded bg-white max-h-80vh p-2'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Submit Requisition</p>
                         </nav>
