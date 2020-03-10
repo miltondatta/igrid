@@ -32,7 +32,7 @@ module.exports = {
                 type: Sequelize.STRING(127)
             },
             description: {
-                type: Sequelize.STRING(1024)
+                type: Sequelize.STRING(3000)
             },
             keyword: {
                 type: Sequelize.STRING(1024)

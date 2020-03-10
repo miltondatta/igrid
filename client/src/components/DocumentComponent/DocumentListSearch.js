@@ -25,7 +25,7 @@ class DocumentListSearch extends Component {
             title: '',
             circular_no: '',
             activeSuggestion: 0,
-            from_date: moment().subtract(15, 'days'),
+            from_date: moment(),
             to_date: moment(),
             error: false,
             receivedByFocus: false,
@@ -47,7 +47,7 @@ class DocumentListSearch extends Component {
 
     componentDidMount() {
         const {from_date, to_date} = this.state;
-        this.getData({from_date, to_date});
+        this.getData({from_date: from_date.subtract(1, 'day'), to_date});
     }
 
     handleChange = (e) => {
@@ -117,7 +117,7 @@ class DocumentListSearch extends Component {
             content_type,
             title,
             circular_no,
-            from_date,
+            from_date: from_date.subtract(1, 'day'),
             to_date,
             keyword: keywordHolder
         };
@@ -125,16 +125,25 @@ class DocumentListSearch extends Component {
     };
 
     getData = (data) => {
-        Axios.post(apiUrl() + 'document/list/search', data)
-            .then(res => {
-                this.setState({
-                    searchData: res.data[0],
-                    error: false
+        this.setState({
+            isLoading: true
+        }, () => {
+            Axios.post(apiUrl() + 'document/list/search', data)
+                .then(res => {
+                    this.setState({
+                        searchData: res.data[0],
+                        error: false,
+                        isLoading: false
+                    }, () => {
+                        this.setState({
+                            from_date: this.state.from_date.add(1, 'day')
+                        })
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err.response);
-            })
+                .catch(err => {
+                    console.log(err.response);
+                })
+        });
     };
 
     getKeyword = (data) => {
@@ -364,7 +373,7 @@ class DocumentListSearch extends Component {
                                                     }}
                                                          onMouseLeave={() => {
                                                              this.setState({recDropFoc: false})
-                                                         }} className={'ui-received-by-keyword'} > {keywordList}
+                                                         }} className={'ui-received-by-keyword'}> {keywordList}
                                                     </div>}
                                                 </div>
                                             </div>
@@ -467,7 +476,8 @@ class DocumentListSearch extends Component {
                                     ))}
                                     </tbody>
                                 </table>
-                            </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Content</h4>}
+                            </> : <h4 className={'no-project px-2'}><i
+                                className="icofont-exclamation-circle"></i> Currently There are No Content</h4>}
                         </div>
                     </div>
                 </div>
