@@ -78,7 +78,6 @@
 }
 
 .ui-topnav .ui-user-dropdown{
-    bottom: -186px;
     text-align: left;
     background: #fff;
     box-shadow: 0 5px 10px #4b4b4b5c;
@@ -212,16 +211,6 @@
 .ui-hover-option:hover i{
     transition: 0s !important;
     color: #2384d0 !important;
-}
-
-@keyframes user-dropdown{
-    from{
-        bottom: -166px;
-        opacity: 0;
-    } to{
-        bottom: -186px;
-        opacity: 1;
-    }
 }
 
 
