@@ -32,6 +32,11 @@ a:hover{text-decoration: none}
 .min-h-80vh{
    min-height: 80.5vh;
 }
+.max-h-80vh{
+   max-height: 80vh;
+   overflow-y: auto;
+   overflow-x: hidden;
+}
 .min-h-50vh{
    min-height: 50vh;
 }

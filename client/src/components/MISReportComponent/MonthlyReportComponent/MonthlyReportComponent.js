@@ -13,7 +13,7 @@ class MonthlyReportComponent extends Component {
             parentID: 0,
             date_to: '',
             date_from: '',
-            dailyReport: [],
+            dailyReport: {},
             hierarchies: [],
         }
     }
@@ -48,6 +48,7 @@ class MonthlyReportComponent extends Component {
         }
         Axios.get(apiUrl() + 'mis/basic/report/daily' , {params: data})
             .then(res => {
+                console.log(res.data)
                 this.setState({
                     dailyReport: res.data
                 })
@@ -67,24 +68,48 @@ class MonthlyReportComponent extends Component {
                 </div>
             )
         })
-        const reportHeader = dailyReport.length > 0 && Object.keys(dailyReport[0]).map(item => {
+        const reportHeader = dailyReport[Object.keys(dailyReport)[0]] && (dailyReport[Object.keys(dailyReport)[0]].length > 0 && Object.keys(dailyReport[Object.keys(dailyReport)[0]][0]).map(item => {
             return(
                 <div>
                     {item.replace('_', ' ')}
                 </div>
             )
-        })
-        const reportBody = dailyReport.length > 0 && dailyReport.map((main, index) => {
+        }))
+        const reportBody = dailyReport[Object.keys(dailyReport)[0]] && Object.keys(dailyReport).map((main, index) => {
             return (
-                <div key={'index'} className="ui-report-header">
-                    {Object.keys(main).map((data, index2) =>
-                        (
-                            <div key={index2}>
-                                {main[data] ? main[data] : '0'}
+                <>
+                    <div className={'ui-report-title'}>
+                        <div>
+                            {main}
+                        </div>
+                        {
+                            Object.keys(dailyReport[main][0]).map((data, index2) => {
+                                return(
+                                    <div key={index2}>
+
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    {dailyReport[main].map((mainData, index3) => {
+                        return (
+                            <div key={index} className="ui-report-header">
+                                {
+                                    Object.keys(dailyReport[main][0]).map((data, index2) => {
+                                        return(
+                                            <div key={index2}>
+                                                {mainData[data] ? mainData[data] : '0'}
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
-                        ))}
-                </div>
+                        )})}
+                </>
             )})
+
+        console.log(dailyReport, 101)
 
         return (
             <>
@@ -93,16 +118,16 @@ class MonthlyReportComponent extends Component {
                         <div className={'ui-selects-container'}>
                             {locations}
                             <div>
-                                <label className={'ui-custom-label'}>Month From</label>
-                                <input type="month"
+                                <label className={'ui-custom-label'}>Date From</label>
+                                <input type="date"
                                        name={'date_from'}
                                        value={date_from}
                                        onChange={this.handleChange}
                                        className={`ui-custom-input w-100`}/>
                             </div>
                             <div>
-                                <label className={'ui-custom-label'}>Month To</label>
-                                <input type="month"
+                                <label className={'ui-custom-label'}>Date To</label>
+                                <input type="date"
                                        name={'date_to'}
                                        value={date_to}
                                        onChange={this.handleChange}
@@ -115,12 +140,13 @@ class MonthlyReportComponent extends Component {
                             <div className={'position-relative'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                    <button className={`${typeof dailyReport !== 'undefined' && (dailyReport.length > 0 ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport.length > 0) ? <ReactExcelExport excelData={dailyReport} /> : 'Excel')}</button>
+                                    <button className={`${typeof dailyReport !== 'undefined' && (dailyReport[Object.keys(dailyReport)[0]] ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport[Object.keys(dailyReport)[0]]) ? <ReactExcelExport misReport excelData={dailyReport} /> : 'Excel')}</button>
                                     <button onClick={this.pdfViewr}>PDF</button>
                                 </div>}
                             </div>
                         </div>
                     </div>
+
                     <div className="ui-report-container">
                         <div className="ui-report-header">
                             {reportHeader}
