@@ -46,7 +46,7 @@ class MonthlyReportComponent extends Component {
             date_from,
             location_id: parentID,
         }
-        Axios.get(apiUrl() + 'mis/basic/report/daily' , {params: data})
+        Axios.get(apiUrl() + 'mis/basic/report/monthly' , {params: data})
             .then(res => {
                 console.log(res.data)
                 this.setState({
