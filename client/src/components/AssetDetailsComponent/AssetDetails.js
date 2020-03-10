@@ -5,39 +5,20 @@ import jwt from 'jsonwebtoken';
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
 import Spinner from "../../layouts/Spinner";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class AssetDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
             allData: [],
+            allDetailsTableData: [],
             user: {},
             category_id: '',
             sub_category_id: '',
             errorObj: null,
             isLoading: false
         };
-
-        this.table_header = [
-            "Product Serial",
-            "Product",
-            "Category",
-            "Sub Category",
-            "Cost of Purchase",
-            "Installation Cost",
-            "Carrying Cost",
-            "Other Cost",
-            "Rate",
-            "Effective Date",
-            "Last Effective Date",
-            "Book Value",
-            "Salvage Value",
-            "Useful Life",
-            "Warranty",
-            "Last Warranty Date",
-            "Comments",
-            "Condition Type"
-        ];
     }
 
     componentDidMount() {
@@ -55,6 +36,32 @@ class AssetDetails extends Component {
                     this.setState({
                         allData: res.data[0],
                         isLoading: false
+                    }, () => {
+                        let allDetailsTableData = [];
+                        res.data[0].map(item => {
+                            let newObj = {
+                                product_serial: item.product_serial,
+                                product_name: item.product_name,
+                                category_name: item.category_name,
+                                sub_category_name: item.sub_category_name,
+                                cost_of_purchase: item.cost_of_purchase,
+                                installation_cost: item.installation_cost,
+                                carrying_cost: item.carrying_cost,
+                                other_cost: item.other_cost,
+                                rate: item.rate,
+                                effective_date: item.effective_date,
+                                last_effective_date: item.last_effective_date,
+                                book_value: item.book_value,
+                                salvage_value: item.salvage_value,
+                                useful_life: item.useful_life,
+                                warranty: item.warranty,
+                                last_warranty_date: item.last_warranty_date,
+                                comments: item.comments,
+                                condition_type: item.condition_type
+                            };
+                            allDetailsTableData.push(newObj);
+                        });
+                        this.setState({allDetailsTableData});
                     })
                 })
                 .catch(err => {
@@ -79,7 +86,8 @@ class AssetDetails extends Component {
         const {category_id, sub_category_id, user: {id}} = this.state;
 
         this.setState({
-            isLoading: true
+            isLoading: true,
+            allDetailsTableData: []
         }, () => {
             axios.post(apiUrl() + 'assets-entry/all/by/credentials', {
                 user_id: id,
@@ -90,6 +98,32 @@ class AssetDetails extends Component {
                     this.setState({
                         allData: res.data[0],
                         isLoading: false
+                    }, () => {
+                        let allDetailsTableData = [];
+                        res.data[0].map(item => {
+                            let newObj = {
+                                product_serial: item.product_serial,
+                                product_name: item.product_name,
+                                category_name: item.category_name,
+                                sub_category_name: item.sub_category_name,
+                                cost_of_purchase: item.cost_of_purchase,
+                                installation_cost: item.installation_cost,
+                                carrying_cost: item.carrying_cost,
+                                other_cost: item.other_cost,
+                                rate: item.rate,
+                                effective_date: item.effective_date,
+                                last_effective_date: item.last_effective_date,
+                                book_value: item.book_value,
+                                salvage_value: item.salvage_value,
+                                useful_life: item.useful_life,
+                                warranty: item.warranty,
+                                last_warranty_date: item.last_warranty_date,
+                                comments: item.comments,
+                                condition_type: item.condition_type
+                            };
+                            allDetailsTableData.push(newObj);
+                        });
+                        this.setState({allDetailsTableData});
                     })
                 })
                 .catch(err => {
@@ -109,36 +143,10 @@ class AssetDetails extends Component {
     };
 
     render() {
-        const {allData, isLoading, category_id, sub_category_id, errorObj} = this.state;
-        const table_body = allData.length && allData.map((item, index) => (
-            <tr key={index}>
-                <td>{item.product_serial}</td>
-                <td>{item.product_name}</td>
-                <td>{item.category_name}</td>
-                <td>{item.sub_category_name}</td>
-                <td>{item.cost_of_purchase}</td>
-                <td>{item.installation_cost}</td>
-                <td>{item.carrying_cost}</td>
-                <td>{item.other_cost}</td>
-                <td>{item.rate}</td>
-                <td>{item.effective_date}</td>
-                <td>{item.last_effective_date}</td>
-                <td>{item.book_value}</td>
-                <td>{item.salvage_value}</td>
-                <td>{item.useful_life}</td>
-                <td>{item.warranty}</td>
-                <td>{item.last_warranty_date}</td>
-                <td>{item.comments}</td>
-                <td>{item.condition_type}</td>
-            </tr>
-        ));
-
-        const table_header = this.table_header.length && this.table_header.map((item, index) => (
-            <th key={index} scope="col">{item}</th>
-        ));
+        const {isLoading, category_id, sub_category_id, errorObj, allDetailsTableData} = this.state;
 
         return (
-            <div className="rounded bg-white max-h-80vh p-2">
+            <div className="rounded bg-white p-2">
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-20px m-0">Asset Details</p>
                 </nav>
@@ -173,28 +181,31 @@ class AssetDetails extends Component {
                         <button type="button" onClick={this.handleSearch} className="submit-btn-normal">Search</button>
                     </div>
                 </div>
-                {isLoading ? <Spinner/> : allData.length > 0 ? <>
-                        {/*<ReactDataTable
+                {isLoading ? <Spinner/> : <>
+                    {allDetailsTableData.length > 0 ?
+                        <ReactDataTable
                             dataDisplay
                             footer
                             isLoading
                             pagination
                             searchable
-                            tableData={allData}
-                        />*/}
-                        <table className="table table-bordered table-responsive">
-                            <thead>
-                            <tr>
-                                {table_header}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {table_body}
-                            </tbody>
-                        </table>
+                            tableData={allDetailsTableData}
+                        />
+                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i>
+                        Currently There are No Own Stock</h4>}
+                </>}
+                {/*{isLoading ? <Spinner/> : allDetailsTableData.length > 0 ? <>
+                        <ReactDataTable
+                            dataDisplay
+                            footer
+                            isLoading
+                            pagination
+                            searchable
+                            tableData={allDetailsTableData}
+                        />
                     </> :
-                    <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are
-                        No Own Stock</h4>}
+                    <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i>
+                        Currently There are No Own Stock</h4>}*/}
             </div>
         );
     }
