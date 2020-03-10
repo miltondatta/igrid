@@ -209,6 +209,7 @@ input[type=date],
 .bg-purple-primary{background: linear-gradient(to right, #479fff, #2486ef, #009eff)}
 .bg-purple-gradient{background: linear-gradient(to right, #9158ff, #7639ea, #6312ff)}
 
+.border-red{border: 1.2px solid red !important;}
 .border-right-red{border-right: 2px solid #dc3545}
 .border-right-orange{border-right: 2px solid #fdbc00}
 .border-right-purple{border-right: 2px solid #7639ea}
@@ -384,6 +385,11 @@ input[type=date],
    position: absolute;
    top: 25px;
    right: 25px;
+}
+
+.slick-slider img,
+.slick-slider div{
+   height: 100%
 }
 
 .ui-slider-modal .ui-char-splitting{
@@ -616,7 +622,7 @@ label:focus,
 }
 
 .asset-right{
-   height: 85.5vh;
+   height: 81.5vh;
    overflow-y: auto;
    overflow-x: hidden;
 }

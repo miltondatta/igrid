@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import AssetListOptions from "../../utility/component/assetsByUserOptions";
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class LostAssetsComponent extends Component {
 
@@ -140,21 +142,11 @@ class LostAssetsComponent extends Component {
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({error: false})
-                }}></i>
-                </div>}
+                    <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                    <SuccessModal successMessage={successMessage} />
+                }
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-3 max-h-80vh position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">

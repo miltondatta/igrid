@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import jwt from "jsonwebtoken";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class LostAssetsStatusComponent extends Component {
 
@@ -90,21 +92,11 @@ class LostAssetsStatusComponent extends Component {
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({error: false})
-                }}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage} />
+                }
 
                 {/*Modal*/}
                 <div className="modal fade lost-asset-modal" id="lostAsset" tabIndex="-1" role="dialog"

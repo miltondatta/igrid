@@ -218,7 +218,7 @@ export const systemAdmin = [
     },
     {
         id: 9,
-        name: 'Setting',
+        name: 'Settings',
         icon: 'fas fa-user-shield',
         subCat: true,
         categories: [

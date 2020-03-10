@@ -497,6 +497,51 @@ class InstaAdd extends Component {
                         </>}
                     </>
                 )
+            case 'AMCTYPES':
+                return(
+                    <>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Type Name</label>
+                            <input
+                                placeholder='Type Name'
+                                type={'text'}
+                                name={'type_name'}
+                                value={type_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.type_name) && 'is-invalid'}`} />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Description</label>
+                            <textarea
+                                placeholder={'Description'}
+                                id={'enCh1'}
+                                name={'description'}
+                                value={description}
+                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
+                                onChange={this.handleChange} />
+                        </div>
+                        <div className="px-1 mb-20p grid-2">
+                            <div className="ui-custom-file">
+                                <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
+                                       required />
+                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                            </div>
+                        </div>
+                        {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-3" onClick={() => {
+                                this.setState({
+                                    editId: null,
+                                    vendor_name: '',
+                                    file_name: '',
+                                    description: '',
+                                    enlisted: false,
+                                }, () => {
+                                    this.validate()
+                                })}}>Go Back</button>
+                        </>}
+                    </>
+                )
             case 'ASSETTYPES':
                 return(
                     <>
@@ -930,6 +975,15 @@ class InstaAdd extends Component {
                     errorDict
                 })
                 return errorDict
+            case "AMCTYPES":
+                errorDict = {
+                    type_name: type_name !== '',
+                    description: description !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
             case "CONDITIONS":
                 errorDict = {
                     condition_type: condition_type !== '',
@@ -1028,6 +1082,12 @@ class InstaAdd extends Component {
                 data.append('vendor_name', vendor_name)
                 data.append('description', description)
                 data.append('enlisted', enlisted)
+                return data
+            case "AMCTYPES":
+                data = new FormData()
+                data.append('file', file_name)
+                data.append('type_name', type_name)
+                data.append('description', description)
                 return data
             case "PROJECT":
                 return({
