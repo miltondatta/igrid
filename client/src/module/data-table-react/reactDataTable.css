@@ -5,7 +5,12 @@
     border-radius: 5px;
     margin: 0 auto;
 }
-
+.reactDataTable .table{
+    width: 98.4vw;
+    margin-bottom: 1rem;
+    color: #212529;
+    overflow-x: auto;
+}
 .reactDataTable select{
     color: #666666;
     font-weight: 600;
@@ -14,22 +19,22 @@
 .reactDataTable .thead p{
     color: #0f88e7;
     font-size: 18px;
-    width: 200px;
+    flex-basis: 189px;
     padding: 12px 5px;
     font-weight: 600;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     text-transform: capitalize;
-    background-color: transparent !important;
     border-color: transparent !important;
+    flex-shrink: 0;
+}
+.reactDataTable .thead p{
+    background: #c6e4f9;
 }
 
 .reactDataTable .tbody p{color: #555; font-size: 16px;}
 
 .reactDataTable td{
-    width: 130px;
+    width: 200px;
     padding: 12px;
     vertical-align: middle;
 }
@@ -38,13 +43,17 @@
     font-size: 20px;
 }
 
-.tbody p:nth-child(even){
-    background: #eafffc;
+.tbody .ui-tbody-child p{
+    height: 55px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+.tbody .ui-tbody-child{
+    background: #e2f1fc;
+}
 .tbody .ui-tbody-child,
 .thead{
-    background: #c6e4f9;
     display: grid;
     grid-template-columns: 80% 20%;
     justify-content: space-between;
@@ -55,7 +64,9 @@
     border-radius: 5px;
     align-items: center;
 }
-
+.thead{
+    background: #c6e4f9;
+}
 .reactDataTable .custom-search div{
     color: white;
     background: #329df0;
@@ -66,8 +77,13 @@
 .tbody .ui-tbody-child:nth-child(even){
     background: white;
 }
-.tbody .ui-tbody-child:nth-child(odd){
+.tbody .ui-tbody-child:nth-child(odd) p{
     background: #e2f1fc;
+}
+
+.thead p:first-child,
+.tbody .ui-tbody-child p:first-child{
+    flex-basis: 60px;
 }
 
 .thead p:nth-child(1) {

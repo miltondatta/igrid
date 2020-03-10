@@ -7,6 +7,6 @@ const RepairMaintenance = () => {
             <RepairMaintenenceComponent />
         </div>
     )
-}
+};
 
 export default RepairMaintenance
