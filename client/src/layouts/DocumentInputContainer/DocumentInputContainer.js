@@ -8,6 +8,8 @@ import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {getFileExtension} from "../../utility/custom";
 import Spinner from "../Spinner";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -737,30 +739,20 @@ class DocumentInputContainer extends Component {
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({error: false})
-                }}></i>
-                </div>}
+                    <ErrorModal errorMessage={errorMessage} />
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                    <SuccessModal successMessage={successMessage} />
+                }
 
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white p-3 min-h-80vh">
+                    <div className="rounded bg-white p-3 max-h-80vh">
                         <nav className="navbar text-center mb-2 pl-0 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>

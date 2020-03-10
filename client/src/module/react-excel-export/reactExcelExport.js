@@ -7,24 +7,51 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 class ReactExcelExport extends Component {
     render() {
-        const {excelData} = this.props
-        const filterData = Object.keys(excelData[0]).filter(item => item !== 'id')
-        const exclCol = filterData.length > 0 && filterData.map((item, index) => {
-            console.log(item)
-            return(
-                    <ExcelColumn label={item.replace('_', ' ').toUpperCase()} value={(col) => col[item] !== null ? col[item] : '0'}/>
-            )
-        })
+        const {excelData, misReport} = this.props
+        const filterData = misReport ? Object.keys(excelData[Object.keys(excelData)][0]).filter(item => item !== 'id') : Object.keys(excelData[0]).filter(item => item !== 'id')
+        let exclCol = null
 
-        return (
-            <div>
-                <ExcelFile element={<button className={'bg-transparent'}>Excel</button>}>
-                    <ExcelSheet data={excelData} name="Employees">
-                        {exclCol}
-                    </ExcelSheet>
-                </ExcelFile>
-            </div>
-        );
+        if (misReport) {
+            let processedData = []
+            Object.keys(excelData).map(item => {
+                processedData = [{indicatordetails_id: item}, ...excelData[item]]
+            })
+            console.log(processedData, 20)
+            exclCol = filterData.length > 0 && filterData.map((item, index) => {
+                console.log(item, 21)
+                return (
+                    <ExcelColumn label={item.replace('_', ' ').toUpperCase()}
+                                 value={(col) => col[item] !== null ? col[item] : '0'}/>
+                )
+            })
+            return (
+                <div>
+                    <ExcelFile element={<button className={'bg-transparent'}>Excel</button>}>
+                        <ExcelSheet data={processedData} name="Employees">
+                            {exclCol}
+                        </ExcelSheet>
+                    </ExcelFile>
+                </div>
+            )
+        }
+        else {
+            exclCol = filterData.length > 0 && filterData.map((item, index) => {
+                return (
+                    <ExcelColumn label={item.replace('_', ' ').toUpperCase()}
+                                 value={(col) => col[item] !== null ? col[item] : '0'}/>
+                )
+            })
+            console.log(excelData, 36)
+            return (
+                <div>
+                    <ExcelFile element={<button className={'bg-transparent'}>Excel</button>}>
+                        <ExcelSheet data={excelData} name="Employees">
+                            {exclCol}
+                        </ExcelSheet>
+                    </ExcelFile>
+                </div>
+            )
+        }
     }
 }
 

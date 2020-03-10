@@ -76,7 +76,7 @@ class AssetDisposalReportComponent extends Component {
                 {success &&
                 <SuccessModal successMessage={successMessage} />
                 }
-                <div className={'rounded m-2 bg-white min-h-80vh ui-report-container px-3'}>
+                <div className={'rounded m-2 bg-white max-h-80vh ui-report-container px-3'}>
                     <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Assets Disposal Report</p>
                     </nav>
