@@ -259,14 +259,25 @@ exports.documentActiveListData = async (req, res) => {
 
 exports.documentListDataByNotice = async (req, res) => {
     try {
+        let queryObj = {
+            content_type: 1,
+            display_notice: true
+        };
+
+        if (req.params.date) {
+            const document_date = {
+                document_date: {
+                    [Op.gte]: req.params.date
+                }
+            };
+            Object.assign(queryObj, document_date);
+        }
+
         const data = await DocumentList.findAll(
             {
                 attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
                     "display_notice", "status"],
-                where: {
-                    content_type: 1,
-                    display_notice: true
-                },
+                where: queryObj,
                 order: [['id', 'DESC']]
             }
         );
