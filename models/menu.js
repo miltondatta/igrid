@@ -1,15 +1,15 @@
 const db          = require('../config/db');
 const Sequelize   = require('sequelize');
 
-const Menu = sequelize.define('Menu', {
-    name: DataTypes.STRING,
-    icon: DataTypes.STRING,
-    subCat: DataTypes.BOOLEAN,
-    link: DataTypes.STRING,
-    parent_id: DataTypes.INTEGER,
-    module_id: DataTypes.INTEGER,
-    visible: DataTypes.BOOLEAN,
-    order_by: DataTypes.INTEGER
+const Menu = db.define('Menu', {
+    name: Sequelize.STRING,
+    icon: Sequelize.STRING,
+    subCat: Sequelize.BOOLEAN,
+    link: Sequelize.STRING,
+    parent_id: Sequelize.INTEGER,
+    module_id: Sequelize.INTEGER,
+    visible: Sequelize.BOOLEAN,
+    order_by: Sequelize.INTEGER
 });
 
 module.exports = Menu;
