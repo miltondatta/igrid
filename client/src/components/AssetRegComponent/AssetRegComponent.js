@@ -318,16 +318,13 @@ class AssetRegComponent extends Component {
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
-                attachment: typeof attachment !== 'undefined' && attachment !== '',
                 challan_no: typeof challan_no !== 'undefined' && challan_no !== '',
                 challan_date: typeof challan_date !== 'undefined' && challan_date !== '',
-                challan_description: typeof challan_description !== 'undefined' && challan_description !== '',
                 purchase_order_no: typeof purchase_order_no !== 'undefined' && purchase_order_no !== '',
                 purchase_order_date: typeof purchase_order_date !== 'undefined' && purchase_order_date !== '',
                 vendor_id: typeof vendor_id !== 'undefined' && vendor_id !== '',
                 received_by: typeof received_by !== 'undefined' && received_by !== '',
-                added_by: typeof added_by !== 'undefined' && added_by !== '',
-                challanComments: typeof challanComments !== 'undefined' && challanComments !== '',
+                added_by: typeof added_by !== 'undefined' && added_by !== ''
             }
             this.setState({
                 errorDict
@@ -660,20 +657,25 @@ class AssetRegComponent extends Component {
                                         </div>
                                         {is_amc && <>
                                             <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Type</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'amc_type'} value={amc_type}>
-                                                    <option>AMC Types</option>
-                                                    <AMCTypeOptions />
-                                                </select>
+                                                <div className="input-grid">
+                                                    <label className={'ui-custom-label'}>AMC Type</label>
+                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'amc_type'} value={amc_type}>
+                                                        <option>AMC Types</option>
+                                                        <AMCTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd}/>
+                                                    </select>
+                                                    <button onClick={() => {this.setState({formType: 'AMCTYPES', getApi: 'amc_types', headTitle: 'AMC Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                        <i className="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>AMC Charge</label>
-                                            <input type={'number'}
-                                                   value={amc_charge}
-                                                   onChange={this.handleChange} name={'amc_charge'}
-                                                   placeholder={'AMC Charge'}
-                                                   className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
-                                        </div>
+                                            <div className={'mb-1'}>
+                                                <label className={'ui-custom-label'}>AMC Charge</label>
+                                                <input type={'number'}
+                                                       value={amc_charge}
+                                                       onChange={this.handleChange} name={'amc_charge'}
+                                                       placeholder={'AMC Charge'}
+                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
+                                            </div>
                                             <div className={'mb-1'}>
                                                 <label className={'ui-custom-label'}>AMC Expire Date</label>
                                                 <input type="date"
@@ -799,7 +801,7 @@ class AssetRegComponent extends Component {
                                                    className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.salvage_value && 'is-invalid'}`}/>
                                         </div>
                                         <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Useful Life</label>
+                                            <label className={'ui-custom-label'}>Useful Life (in month)</label>
                                             <input type="text"
                                                    value={useful_life}
                                                    onChange={this.handleChange} name={'useful_life'}
@@ -807,7 +809,7 @@ class AssetRegComponent extends Component {
                                                    className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
                                         </div>
                                         <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Warranty</label>
+                                            <label className={'ui-custom-label'}>Warranty (in month)</label>
                                             <input type="text"
                                                    value={warranty}
                                                    onChange={this.handleChange} name={'warranty'}

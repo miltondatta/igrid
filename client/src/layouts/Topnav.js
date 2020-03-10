@@ -163,7 +163,8 @@ class Topnav extends Component {
             )
         }
 
-        if (home || moduleName[0] === 'contact' || moduleName[0] === 'about') {
+        if (home || moduleName[0] === 'contact' || moduleName[0] === 'about')
+        {
             return (
                 <div className='ui-topnav w-100 px-4'>
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
@@ -192,11 +193,15 @@ class Topnav extends Component {
                             <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
                                 {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
                             </i>
-                            {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-1'}>{userName}</span></Link> :
-                                <span onClick={this.handleUserOptions}>{userName}</span>}
+                            <span onClick={this.handleUserOptions}>{userName}</span>
                             <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                  src={ BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
-                            {showUserOption && <div className={'ui-user-dropdown'}>
+                            {showUserOption && <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -235 : -186}}>
+                                {userType === 0 && <p><Link onClick={() => {
+                                    this.setState((prevState) => ({
+                                        showUserOption: false
+                                    }))
+                                }} to={'/admin/user-login-log'}>Admin</Link></p>}
                                 <Link onClick={() => {
                                     this.setState((prevState) => ({
                                         showUserOption: false
@@ -247,10 +252,15 @@ class Topnav extends Component {
                                 <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
                                     {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
                                 </i>
-                                {userType === 0 ? <Link to={'/admin/user-login-log'}><span className={'text-white ui-nav-init-link mr-1'}>{userName}</span></Link> : <span onClick={this.handleUserOptions}>{userName}</span>}
+                                <span onClick={this.handleUserOptions}>{userName}</span>
                                 <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                      src={BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
-                                {showUserOption && <div className={'ui-user-dropdown'}>
+                                {showUserOption && <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -235 : -186}}>
+                                    {userType === 0 && <p><Link onClick={() => {
+                                        this.setState((prevState) => ({
+                                            showUserOption: false
+                                        }))
+                                    }} to={'/admin/user-login-log'}>Admin</Link></p>}
                                     <p><Link onClick={() => {
                                         this.setState((prevState) => ({
                                             showUserOption: false

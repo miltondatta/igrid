@@ -18,13 +18,6 @@ class OwnStock extends Component {
             errorObj: null,
             isLoading: false
         };
-
-        this.table_header = [
-            "Category Name",
-            "Sub Category Name",
-            "Product Name",
-            "Quantity",
-        ];
     }
 
     componentDidMount() {
@@ -66,7 +59,8 @@ class OwnStock extends Component {
         const {category_id, sub_category_id, user: {id}} = this.state;
 
         this.setState({
-            isLoading: true
+            isLoading: true,
+            allData: []
         }, () => {
             axios.post(apiUrl() + 'assets-own-stock/all/by/credentials', {
                 user_id: id,
@@ -97,19 +91,6 @@ class OwnStock extends Component {
 
     render() {
         const {allData, isLoading, category_id, sub_category_id, errorObj} = this.state;
-        const table_body = allData.length && allData.map((item, index) => (
-            <tr key={index}>
-                <td>{item.category_name}</td>
-                <td>{item.sub_category_name}</td>
-                <td>{item.product_name}</td>
-                <td>{item.quantity}</td>
-            </tr>
-        ));
-
-        const table_header = this.table_header.length && this.table_header.map((item, index) => (
-            <th key={index} scope="col">{item}</th>
-        ));
-
         return (
             <div className="rounded bg-white max-h-80vh p-2">
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -155,16 +136,6 @@ class OwnStock extends Component {
                             searchable
                             tableData={allData}
                         />
-                        {/*<table className="table table-bordered table-responsive">
-                            <thead>
-                            <tr>
-                                {table_header}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {table_body}
-                            </tbody>
-                        </table>*/}
                     </> :
                     <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are
                         No Own Stock</h4>}

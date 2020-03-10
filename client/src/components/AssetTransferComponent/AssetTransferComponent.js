@@ -8,6 +8,9 @@ import LocationsOptions from "../../utility/component/locationOptions";
 import UserOptionsByLocation from "../../utility/component/userOptionsByLocation";
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import '../../module/data-table-react/reactDataTable.css';
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import Spinner from "../../layouts/Spinner";
 
 class AssetTransferComponent extends Component {
     constructor(props) {
@@ -31,24 +34,9 @@ class AssetTransferComponent extends Component {
             isLoading: false,
             transferData: [],
             transferCredential: [],
+            transferTableData: [],
             subLocation: []
         };
-
-        this.table_header = [
-            "Product Serial",
-            "Product",
-            "Category",
-            "Sub Category",
-            "Cost of Purchase",
-            "Book Value",
-            "Salvage Value",
-            "Useful Life",
-            "Warranty",
-            "Last Warranty Date",
-            "Last Effective Date",
-            "Condition Type",
-            "Action"
-        ];
     }
 
     componentDidMount() {
@@ -111,7 +99,24 @@ class AssetTransferComponent extends Component {
                             parent_id: 1,
                             user_id: '',
                             subLocation: []
-                        }, () => this.getSubLocation(this.state.parent_id))
+                        }, () => {
+                            let newTransferObj = {};
+                            this.state.transferData.length > 0 && this.state.transferData.map(item => {
+                                const newObj = {
+                                    id: item.id,
+                                    product_serial: item.product_serial,
+                                    category_name: item.category_name,
+                                    sub_category_name: item.sub_category_name,
+                                    product_name: item.product_name
+                                };
+                                Object.assign(newTransferObj, newObj);
+                            });
+
+                            let transferTableData = [newTransferObj];
+                            this.setState({
+                                transferTableData: [...this.state.transferTableData, ...transferTableData]
+                            }, () => this.getSubLocation(this.state.parent_id))
+                        })
                     })
                 })
                 .catch(err => {
@@ -120,11 +125,12 @@ class AssetTransferComponent extends Component {
         })
     };
 
-    cancelTransfer = index => {
-        const {transferData, transferCredential} = this.state;
+    cancelTransfer = id => {
+        const {transferData, transferCredential, transferTableData} = this.state;
         this.setState({
-            transferData: transferData.filter((item, key) => key !== index),
-            transferCredential: transferCredential.filter((item, key) => key !== index)
+            transferData: transferData.filter(item => item.id !== id),
+            transferCredential: transferCredential.filter(item => item.id !== id),
+            transferTableData: transferTableData.filter(item => item.id !== id)
         });
     };
 
@@ -229,33 +235,8 @@ class AssetTransferComponent extends Component {
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
-            errorDict, isLoading, transferData, parent_id, subLocation, user_id
+            errorDict, isLoading, transferData, parent_id, subLocation, user_id, transferTableData
         } = this.state;
-
-        const table_body = transferData.length && transferData.map((item, index) => (
-            <tr key={index}>
-                <td>{item.product_serial}</td>
-                <td>{item.product_name}</td>
-                <td>{item.category_name}</td>
-                <td>{item.sub_category_name}</td>
-                <td>{item.cost_of_purchase}</td>
-                <td>{item.book_value}</td>
-                <td>{item.salvage_value}</td>
-                <td>{item.useful_life}</td>
-                <td>{item.warranty}</td>
-                <td>{item.last_warranty_date}</td>
-                <td>{item.last_effective_date}</td>
-                <td>{item.condition_type}</td>
-                <td>
-                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelTransfer(index)}><i
-                        className="fas fa-times"/></span>
-                </td>
-            </tr>
-        ));
-
-        const table_header = this.table_header.length && this.table_header.map((item, index) => (
-            <th key={index} scope="col">{item}</th>
-        ));
 
         let subLocationItem = subLocation.length > 0 && subLocation.map((item, index) => (
             <div className="px-1 mb-2" key={index}>
@@ -357,26 +338,20 @@ class AssetTransferComponent extends Component {
                             <span className="error">User Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addTransfer} className="submit-btn">Add Transfer</button>
+                        <button onClick={this.addTransfer} className="submit-btn-normal">Add Transfer</button>
                     </div>
                     <div className="rounded bg-white max-h-80vh p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : transferData.length ? <>
-                            <table className="table table-bordered table-responsive">
-                                <thead>
-                                <tr>
-                                    {table_header}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {table_body}
-                                </tbody>
-                            </table>
+                        {isLoading ? <Spinner/> : transferTableData.length > 0 ? <>
+                            <ReactDataTable
+                                remove={this.cancelTransfer}
+                                tableData={transferTableData}
+                            />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Transfer Asset</h4>}
-                        {transferData.length ?
+                        {transferTableData.length ?
                             <button className="submit-btn" data-toggle="modal"
                                     data-target="#assetTransferModal">Submit</button> : ''}
                     </div>

@@ -126,11 +126,11 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
             return res.status(500).json(err)
         }
         const {challan_no, challan_date, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments} = req.body
-        if (challan_no === '' || challan_date === '' || challan_name === '' || challan_description === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '' || challanComments === '') {
+        if (challan_no === '' || challan_date === '' || challan_name === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             let data = {
-                attachment: req.file.filename,
+                attachment: req.file ? req.file.filename : null,
                 challan_no,
                 challan_date,
                 challan_name,
@@ -256,8 +256,7 @@ route.put('/assets-entry/assets/update/:id', (req, res, next) => {
 //Update Specific Asset
 route.put('/assets-entry/challan-update/:id', (req, res, next) => {
     const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = req.body
-    if (challan_no !== '' && challan_name !== '' && challan_description !== '' && purchase_order_no !== '' && purchase_order_date !== '' && vendor_id !== '' &&
-        attachment !== '' && received_by !== '' && challanComments !== '' && added_by !== '') {
+    if (challan_no !== '' && challan_name !== '' && purchase_order_no !== '' && purchase_order_date !== '' && vendor_id !== '' && received_by !== '' && added_by !== '') {
         Challan.update({...req.body}, {where: {id: req.params.id}})
             .then(() => {
                 res.status(200).json({message: 'Challan has been updated', status: true})

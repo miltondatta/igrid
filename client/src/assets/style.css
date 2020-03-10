@@ -387,6 +387,12 @@ input[type=date],
    right: 25px;
 }
 
+.slick-slider,
+.slick-slider img,
+.slick-slider div{
+   height: 100%
+}
+
 .ui-slider-modal .ui-char-splitting{
    text-align: center;
    border-radius: 10px;
@@ -617,7 +623,7 @@ label:focus,
 }
 
 .asset-right{
-   height: 85.5vh;
+   height: 81.5vh;
    overflow-y: auto;
    overflow-x: hidden;
 }
