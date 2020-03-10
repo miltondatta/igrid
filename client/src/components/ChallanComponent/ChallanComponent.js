@@ -15,6 +15,7 @@ import ProductsOptions from "../../utility/component/productOptions";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import AMCTypeOptions from "../../utility/component/amcTypeOptions";
+import InstaAdd from "../../module/insta-add/InstaAdd";
 
 class ChallanComponent extends Component {
 
@@ -26,7 +27,7 @@ class ChallanComponent extends Component {
             challan_date: '',
             receivedBy: [],
             assetId: '',
-            forceUpdate: false,
+            forceUpd: false,
             is_closed: false,
             challan_no: '',
             error: false,
@@ -93,7 +94,7 @@ class ChallanComponent extends Component {
 
     forceUp = () => {
         this.setState({
-            forceUpdate: !this.state.forceUpdate
+            forceUpd: !this.state.forceUpd
         })
     }
 
@@ -167,8 +168,7 @@ class ChallanComponent extends Component {
                         condition: data.condition,
                         comments: data.comments,
                     })
-                }
-                setTimeout(() => {
+                } setTimeout(() => {
                     this.forceUpdate()
                 }, 100)
             })
@@ -397,7 +397,7 @@ class ChallanComponent extends Component {
     }
 
     render() {
-        const {challans, assets, product_id, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr, error,
+        const {challans, assets, product_id, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr, error, formType, getApi, headTitle,
             received_by, challanComments, project_id, asset_category, asset_sub_category, cost_of_purchase,errorDictAsset, errorMessage, addAssets, asset_quantity,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, targetAsset, targetChallan,
             salvage_value, useful_life, warranty, condition, comments, barcode, challan_date, receivedBy, receivedByFocus, is_closed,
@@ -422,6 +422,12 @@ class ChallanComponent extends Component {
                 {success &&
                     <SuccessModal successMessage={successMessage} />
                 }
+                <InstaAdd
+                    forceUp = {this.forceUp}
+                    formType = {formType}
+                    getApi = {getApi}
+                    headTitle = {headTitle}
+                />
                 <div className="rounded">
                     {targetChallan.length > 0 ? <>
                         <nav className="navbar text-center mb-0 mx-1 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({targetChallan: []})}}>
@@ -519,7 +525,11 @@ class ChallanComponent extends Component {
                         </div>
                     </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white m-1 rounded'}>
                     <nav className="navbar text-center mb-0 pl-3 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ? <p className={'cursor-pointer mb-0'} onClick={() => {this.setState({assets: []})}}><i className="fas fa-angle-left"></i> Challan Details</p> : 'Challan Information'}</p>
+                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ?
+                            <p className={'cursor-pointer mb-0'}
+                               onClick={() => {this.setState({assets: []})}}>
+                                <i className="fas fa-angle-left"></i> Challan Details
+                            </p> : 'Challan Information'}</p>
                     </nav>
                     <div className="px-2">
                         {assets.length > 0 ? <ReactDataTable
@@ -550,7 +560,9 @@ class ChallanComponent extends Component {
                                             <div className={'mb-1'}>
                                                 <div className="input-grid">
                                                     <label className={'ui-custom-label'}>Category</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
+                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} 
+                                                            onChange={this.handleChange} name={'asset_category'} 
+                                                            value={asset_category}>
                                                         <option>Asset Category</option>
                                                         <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                     </select>

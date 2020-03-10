@@ -565,7 +565,9 @@ class AssetRegComponent extends Component {
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Category</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
+                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`}
+                                                        onChange={this.handleChange} name={'asset_category'}
+                                                        value={asset_category}>
                                                 <option>Asset Category</option>
                                                 <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                             </select>
