@@ -209,6 +209,7 @@ input[type=date],
 .bg-purple-primary{background: linear-gradient(to right, #479fff, #2486ef, #009eff)}
 .bg-purple-gradient{background: linear-gradient(to right, #9158ff, #7639ea, #6312ff)}
 
+.border-red{border: 1.2px solid red !important;}
 .border-right-red{border-right: 2px solid #dc3545}
 .border-right-orange{border-right: 2px solid #fdbc00}
 .border-right-purple{border-right: 2px solid #7639ea}
