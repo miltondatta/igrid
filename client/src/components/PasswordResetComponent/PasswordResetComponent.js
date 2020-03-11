@@ -23,7 +23,7 @@ class PasswordResetComponent extends Component {
 
     componentDidMount() {
         const {id} = jwt.decode(localStorage.getItem('user')).data;
-        if(id) this.setState({user_id: id});
+        if (id) this.setState({user_id: id});
     }
 
     handleChange = (e) => {
@@ -59,14 +59,14 @@ class PasswordResetComponent extends Component {
 
         Axios.put(apiUrl() + 'users/password-reset/' + user_id, payload)
             .then(resData => {
-                this.setState({
+                const {message} = resData.data;
+                if (message) this.setState({
+                    success: true,
+                    successMessage: message,
                     oldPassword: '',
                     newPassword: '',
-                    confirmPassword: '',
-                    error: false
-                });
-                const {message} = resData.data;
-                if (message) this.setState({success: true, successMessage: message}, () => {
+                    confirmPassword: ''
+                }, () => {
                     setTimeout(() => {
                         this.setState({
                             success: false
