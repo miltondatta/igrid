@@ -254,7 +254,7 @@ class ReactDataTable extends Component {
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <div id={'__table_react'} className={'table'} style={{width: shortWidth ? '60vw' : '98.4vw'}}>
+                {tableData.length > 0 ? <div id={'__table_react'} className={'table'} style={{width: shortWidth ? '60vw' : '96.4vw'}}>
                     <div className={'thead'}>
                         <div className={'d-flex align-items-center'}>
                             <p className={'w-60px'}>
@@ -294,7 +294,7 @@ class ReactDataTable extends Component {
                         <p>Showing {dataCount + 1} to {dataCount + tableData.length} of {actualData.length} entries</p>
                     </div>}
                     <div className={' col-md-7 align-items-center'}>
-                        {pagination && <nav aria-label="Page navigation example">
+                        {tableData.length > 0 && pagination && <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-end">
                                 <li className="page-item">
                                     <a className="page-link" href="#" aria-label="Previous" onClick={this.handleDec}>

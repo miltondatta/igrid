@@ -949,7 +949,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.complaint_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox mb-20p">
                             <input
                                 type={'checkbox'}
                                 checked={complaint_status}
@@ -959,7 +959,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Display</label>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -993,7 +993,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.com_sub_category_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox mb-20p">
                             <input
                                 type={'checkbox'}
                                 checked={complaint_status}
@@ -1003,7 +1003,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Status</label>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -1044,7 +1044,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.problem_details) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -1170,7 +1170,7 @@ class AdminInputContainer extends Component {
                                     disabled={this.state[item.hierarchy_name] && (parseInt(hierarchy, 10) !== item.hierarchy)}
                                     onChange={(e) => this.handleChangeLocation(e, item.hierarchy_name)}
                                     className={`ui-custom-input ${this.state[item.hierarchy_name] ? null : 'border-red'}`}>
-                                    <option>Select {item.hierarchy_name}</option>
+                                    <option disabled={true} selected={true}>Select {item.hierarchy_name}</option>
                                     <LocationsOptions selectedId={item.parent_id} />
                                 </select>
                             </div>
@@ -1207,9 +1207,11 @@ class AdminInputContainer extends Component {
                                 </select>
                             </div>
                             {hierarchy && <div className="px-1 mb-2">
-                                <label className={'ui-custom-label'}>Parent</label>
-                                <select name={'parent_id'} disabled={locationHolder.length > 0 && (parseInt(hierarchy, 10) !== 1)} onChange={(e) => this.handleChangeLocation(e, 'Program')} className={`ui-custom-input ${!this.state['Program'] && 'is-invalid'}`}>
-                                    <option value={0}>Select Parent</option>
+                                <label className={'ui-custom-label'}>Program</label>
+                                <select name={'parent_id'} disabled={locationHolder.length > 0 && (parseInt(hierarchy, 10) !== 1)}
+                                        onChange={(e) => this.handleChangeLocation(e, 'Program')}
+                                        className={`ui-custom-input ${!this.state['Program'] && 'is-invalid'}`}>
+                                    <option disabled={true} selected={true} value={0}>Select Parent</option>
                                     <LocationsOptions selectedId={parent_id} />
                                 </select>
                             </div>}
@@ -1250,10 +1252,22 @@ class AdminInputContainer extends Component {
                                 <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
                             </div>
                         </div>
-                        {editId === null ? <button
+                        {editId === null ? <><button
                             className="submit-btn-normal"
                             disabled={errorDict && Object.values(errorDict).includes(false)}
-                            onClick={this.handleSubmit}>Submit Location</button> : <>
+                            onClick={this.handleSubmit}>Submit Location</button>
+                            {parent_id !== 0 && <button
+                                className="submit-btn-normal bg-warning ml-2"
+                                disabled={errorDict && Object.values(errorDict).includes(false)}
+                                onClick={() => {this.setState({
+                                    locationHolder: [],
+                                    parent_id: 0,
+                                    hierarchy: false,
+                                    Program: null,
+                                    Division: null,
+                                    Branch: null,
+                                    Area: null,
+                                    Region: null})}}>Reset Locations</button>}</> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
