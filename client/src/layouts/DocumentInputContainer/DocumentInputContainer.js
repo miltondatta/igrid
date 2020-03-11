@@ -781,7 +781,7 @@ class DocumentInputContainer extends Component {
                 }
 
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 max-h-80vh overflow-x-hidden position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
