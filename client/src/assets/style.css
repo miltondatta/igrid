@@ -28,6 +28,8 @@ a:hover{text-decoration: none}
 
 .overflow-y-auto{overflow-y: auto;}
 .overflow-x-auto{overflow-x: auto;}
+.overflow-y-hidden{overflow-y: hidden;}
+.overflow-x-hidden{overflow-x: hidden;}
 
 .min-h-80vh{
    min-height: 80.5vh;
