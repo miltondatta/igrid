@@ -6,7 +6,6 @@ import {
     documentNav,
     sidenav,
     systemAdmin,
-    misNav,
     apiUrl,
     locationCategory,
     misCategory,
