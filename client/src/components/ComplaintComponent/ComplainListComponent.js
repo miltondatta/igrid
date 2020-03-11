@@ -17,9 +17,13 @@ class ComplainListComponent extends Component {
     componentDidMount() {
         Axios.get(apiUrl() + 'complaints/list')
             .then(res => {
-                this.setState({
-                    data: res.data
-                })
+                if(res.data.message) {
+
+                } else {
+                    this.setState({
+                        data: res.data
+                    })
+                }
             })
     }
 

@@ -30,7 +30,7 @@ route.get('/complaints/list', async (req,res,next) => {
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json()
+        res.status(200).json({message: 'No Data Available'})
     }
 })
 
