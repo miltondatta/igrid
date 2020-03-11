@@ -18,6 +18,7 @@ import jwt from "jsonwebtoken";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import {getFileExtension} from "../../utility/custom";
+import Spinner from "../Spinner";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -1740,7 +1741,7 @@ class AdminInputContainer extends Component {
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : dataTableData.length > 0 ? <>
+                        {isLoading ? <Spinner/> : dataTableData.length > 0 ? <>
                             <ReactDataTable
                                 edit = {formType !== 'COMPLAINT'}
                                 dataDisplay = {formType !== 'COMPLAINT'}
