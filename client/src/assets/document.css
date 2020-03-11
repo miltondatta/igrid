@@ -29,3 +29,29 @@
     transition: .25s;
     background: rgba(255,255,255,.25);
 }
+
+.ui-document-details-container .ui-document-preview{
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ui-document-details-container .ui-document-preview h3{
+    color: #969ca2;
+    font-size: 19px;
+    margin-top: 40px;
+    display: flex;
+    letter-spacing: .5px;
+}
+
+.ui-document-details-container .ui-document-preview h3 p{
+    color: #01a3b7;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.ui-document-details-container .ui-document-preview img{
+    width: 210px;
+}

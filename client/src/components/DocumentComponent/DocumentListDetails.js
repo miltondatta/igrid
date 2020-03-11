@@ -109,46 +109,46 @@ class DocumentListDetails extends Component {
                     {fileErrorMessage}
                 </div>
                 }
-                <div className="ui-document-details-container">
+                <div className="ui-document-details-container min-h-86p">
                     <div className="bg-project-blue p-3">
                         <div className="row">
                             <div className="col-md-12 p-0">
                                 <table className="table text-white border-less-table">
                                     <tbody>
-                                    <tr className={'border border-bottom'}>
-                                        <th>Category</th>
-                                        <th>:</th>
-                                        <td>{item.document_category && item.document_category.category_name}</td>
+                                    <tr>
+                                        <th className={'border-bottom-light'}>Category</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.document_category && item.document_category.category_name}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th>Sub Category</th>
-                                        <th>:</th>
-                                        <td>{item.document_sub_category && item.document_sub_category.sub_category_name}</td>
+                                        <th className={'border-bottom-light'}>Sub Category</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.document_sub_category && item.document_sub_category.sub_category_name}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th>Title</th>
-                                        <th>:</th>
-                                        <td>{item.title}</td>
+                                        <th className={'border-bottom-light'}>Title</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.title}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th>Content Type</th>
-                                        <th>:</th>
-                                        <td>{item.content_type ? 'Notice' : 'Circular'}</td>
+                                        <th className={'border-bottom-light'}>Content Type</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.content_type ? 'Notice' : 'Circular'}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th>Circular Number</th>
-                                        <th>:</th>
-                                        <td>{item.circular_no}</td>
+                                        <th className={'border-bottom-light'}>Circular Number</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.circular_no}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th>Display Notice</th>
-                                        <th>:</th>
-                                        <td>{item.display_notice ? 'On' : 'Off'}</td>
+                                        <th className={'border-bottom-light'}>Display Notice</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.display_notice ? 'On' : 'Off'}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th>Status</th>
-                                        <th>:</th>
-                                        <td>{item.status ? 'Active' : 'Inactive'}</td>
+                                        <th className={'border-bottom-light'}>Status</th>
+                                        <th className={'border-bottom-light'}>:</th>
+                                        <td className={'border-bottom-light'}>{item.status ? 'Active' : 'Inactive'}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -211,7 +211,7 @@ class DocumentListDetails extends Component {
                         {item.file_name && !fileError &&
                         <div className="row">
                             <div className="col-md-12">
-                                {(ext === 'pdf') &&
+                                {(ext === 'pdf') ?
                                 <div className="ui-docDetailsFile">
                                     <iframe id="inlineFrameExample"
                                             title="Inline Frame Example"
@@ -220,13 +220,16 @@ class DocumentListDetails extends Component {
                                             src={fileUrl}>
                                     </iframe>
                                 </div>
-                                }
-
-                                {(images.includes(ext)) &&
+                                : (images.includes(ext)) ?
                                 <div className="ui-docDetailsFile">
                                     <img src={`${apiBaseUrl}document/${item.file_name}`} alt="" width="100%"
                                          height="100%"/>
                                 </div>
+                                :
+                                    <div className="ui-document-preview">
+                                        <img src={process.env.PUBLIC_URL + '/media/image/preview.png'} alt="Preview"/>
+                                        <h3>Document Is Not Viewable! <p onClick={e => this.downloadFile(e, item.file_name)}>Download Here</p></h3>
+                                    </div>
                                 }
                             </div>
                         </div>
