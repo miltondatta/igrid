@@ -3,9 +3,9 @@ import DocumentListDetails from "../components/DocumentComponent/DocumentListDet
 
 const DocListDetails = () => {
     return (
-        <div>
+        <>
             <DocumentListDetails/>
-        </div>
+        </>
     )
 };
 
