@@ -11,6 +11,7 @@ import ModelIdOptions from "../../utility/component/modelIdOptions";
 import LocationsOptions from "../../utility/component/locationOptions";
 import ModuleOptions from "../../utility/component/moduleOptions";
 import UserOptions from "../../utility/component/userOptions";
+import {getFileExtension} from "../../utility/custom";
 
 class InstaAdd extends Component {
 
@@ -121,9 +122,22 @@ class InstaAdd extends Component {
                 [name]: checked
             })
         } else if (name === 'file_name') {
-            this.setState({
-                [name]: files[0],
-            })
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if(name === 'location_id'){
             this.setState({
                 [name]: value

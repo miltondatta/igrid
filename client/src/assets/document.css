@@ -1,0 +1,31 @@
+.ui-document-details-container{
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.ui-document-details-right{
+    max-height: 86vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.ui-document-details-header {
+    background: #01a3b7;
+    color: white;
+}
+
+.ui-document-details-container .ui-document-btn{
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 8px;
+    width: 195px;
+    height: 50px;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0 0 2px #f3f3f3;
+}
+
+.ui-document-details-container .ui-document-btn:hover{
+    transition: .25s;
+    background: rgba(255,255,255,.25);
+}

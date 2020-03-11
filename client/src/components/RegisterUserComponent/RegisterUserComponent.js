@@ -1,6 +1,7 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
+import {getFileExtension} from "../../utility/custom";
 
 class RegisterUserComponent extends Component {
     constructor(props){
@@ -13,9 +14,22 @@ class RegisterUserComponent extends Component {
     handleChange = (e) => {
         const {name, value, files} = e.target
         if (name === 'filename') {
-            this.setState({
-                [name]: files[0]
-            })
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else{
             this.setState({
                 [name]: value
