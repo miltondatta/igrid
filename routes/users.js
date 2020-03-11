@@ -204,13 +204,13 @@ router.put('/users/update/:id', (req,res,next) => {
 })
 
 // Update Password
-router.put('/users/password-reset/:id', (req,res,next) => {
-    const {oldPassword, newPassword,confirmPassword} = req.body
+router.put('/users/password-reset/:id', (req,res) => {
+    const {oldPassword, newPassword,confirmPassword} = req.body;
     Users.findAll({where: {id: req.params.id}})
         .then(data => {
             if(data.length === 0){res.status(400).json({message: `User Doesn't exist`})}
             else {
-                const passFromDB = data[0].dataValues.password.toString()
+                const passFromDB = data[0].dataValues.password.toString();
                 bcrypt.compare(oldPassword.toString(), passFromDB, function(err, resData) {
                     if(err){console.log(err)}
                     else{
@@ -231,10 +231,10 @@ router.put('/users/password-reset/:id', (req,res,next) => {
                                     }
                                 })
                             } else{
-                                res.status(400).json({message: `Password Didn't Match`})
+                                res.status(400).json({message: `New Password and Confirm Password Didn\'t Match`})
                             }
                         } else {
-                            res.status(400).json({message: "Wrong Password"})
+                            res.status(400).json({message: "Old Password Didn't Match"})
                         }
                     }
                 })}

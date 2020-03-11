@@ -7,7 +7,7 @@ const route = express.Router()
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/amcType')
+        cb(null, 'public/amc-type')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' +file.originalname )
@@ -16,7 +16,7 @@ let storage = multer.diskStorage({
 let upload =  multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf|xlsx)$/)) {
             return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
 
         }
