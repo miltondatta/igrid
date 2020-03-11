@@ -150,9 +150,13 @@ route.post('/requisition-approve/delivery', (req,res,next) => {
 
 // Delivery Report
 route.post('/requisition-approve/delivery/between', async (req,res,next) => {
-    const {date_from, date_to, user_id} = req.body
-    const [data, masterData] = await db.query(`
-    SELECT requisition_approves.id, concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name, requisition_masters.delivery_date, requisition_approves.update_quantity as quantity, concat(users."firstName",' ',users."lastName") as delivery_to, user_roles.role_name as designation, locations.location_name as location FROM requisition_approves
+    try{
+        const {date_from, date_to, user_id} = req.body
+        const [data, masterData] = await db.query(`
+    SELECT requisition_approves.id, concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name,
+     requisition_masters.delivery_date, requisition_approves.update_quantity as quantity,
+      concat(users."firstName",' ',users."lastName") as delivery_to, user_roles.role_name as designation,
+       locations.location_name as location, requisition_approves."createdAt" as delivery_date FROM requisition_approves
         JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
         JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
         JOIN users ON users.id = requisition_masters.request_by
@@ -165,10 +169,13 @@ route.post('/requisition-approve/delivery/between', async (req,res,next) => {
                AND requisition_approves.update_by = ${user_id}
     `)
 
-    if(data.length > 0) {
-        res.status(200).json({data, status: true})
-    } else {
-        res.status(200).json({message: 'No Data Found'})
+        if(data.length > 0) {
+            res.status(200).json({data, status: true})
+        } else {
+            res.status(200).json({message: 'No Data Found'})
+        }
+    } catch(err) {
+        console.log(err, 178)
     }
 })
 

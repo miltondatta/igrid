@@ -15,6 +15,7 @@ import InstaAdd from "../../module/insta-add/InstaAdd";
 import SuccessModal from "../../utility/success/successModal";
 import ErrorModal from "../../utility/error/errorModal";
 import AMCTypeOptions from "../../utility/component/amcTypeOptions";
+import {getFileExtension} from "../../utility/custom";
 
 class AssetRegComponent extends Component {
 
@@ -93,7 +94,22 @@ class AssetRegComponent extends Component {
                 [name]: checked
             })
         } else if (name === 'attachment') {
-            this.setState({attachment: files[0]})
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if (name === 'asset_quantity') {
             for(let i = 0; i < value; i++) {
                 let lebel = `product_serial_${i + 1}`
@@ -387,7 +403,7 @@ class AssetRegComponent extends Component {
             <p key={index} onClick={() => {this.setState({received_by: item.received_by, receivedBy: []})}}>{item.received_by}</p>
         ))
         return (
-            <div>
+            <>
                 {error &&
                     <ErrorModal errorMessage={errorMessage} />
                 }
@@ -475,7 +491,7 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-                {challan_id !== '' && <div className="ui-dataEntry">
+                {challan_id !== '' && <div className="ui-dataEntry h-100">
                     <div className="max-h-80vh bg-challan position-relative p-3">
                         <nav className="navbar text-center mb-2 border-bottom-nav">
                             <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>
@@ -846,7 +862,7 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-            </div>
+            </>
         );
     }
 }

@@ -1737,7 +1737,7 @@ class AdminInputContainer extends Component {
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white max-h-80vh p-2">
+                    <div className={`rounded bg-white max-h-80vh p-2 ${(formType !== 'ASSETSUBCATEGORY')&& 'overflow-x-hidden'}`}>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
@@ -1749,7 +1749,8 @@ class AdminInputContainer extends Component {
                                 isLoading = {formType !== 'COMPLAINT'}
                                 pagination = {formType !== 'COMPLAINT'}
                                 searchable = {formType !== 'COMPLAINT'}
-
+                                shortWidth = {formType !== 'ASSETSUBCATEGORY'}
+                                bigTable = {formType === 'PRODUCTS'}
                                 deleteModalTitle={title}
                                 del={formType !== 'COMPLAINT' ? getApi : false}
                                 tableData={dataTableData}
