@@ -130,38 +130,6 @@ export const sidenav = [
         ]
     },
     {
-        id: 6,
-        name: 'Report',
-        icon: 'icofont-chart-histogram',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Delivery Report',
-                link: '/delivery-report',
-                icon: ""
-            },
-            {
-                id: 2,
-                name: 'Lost Assets Report',
-                link: '/lost-assets-report',
-                icon: ""
-            },
-            {
-                id: 3,
-                name: 'Asset Disposal Report',
-                link: '/asset-disposal-report',
-                icon: ""
-            },
-            {
-                id: 4,
-                name: 'Maintenance Report',
-                link: '/maintenance-report',
-                icon: ""
-            }
-        ]
-    },
-    {
         id: 8,
         name: 'Complaints',
         icon: 'fas fa-book-dead',
@@ -173,6 +141,41 @@ export const sidenav = [
                 link: '/complain',
                 icon: ""
             },
+        ]
+    },
+]
+
+export const report = [
+    {
+        id: 6,
+        name: 'Report',
+        icon: 'icofont-chart-histogram',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Delivery Report',
+                link: '/report/delivery-report',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Lost Assets Report',
+                link: '/report/lost-assets-report',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Asset Disposal Report',
+                link: '/report/asset-disposal-report',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Maintenance Report',
+                link: '/report/maintenance-report',
+                icon: ""
+            }
         ]
     },
 ]
@@ -298,32 +301,6 @@ export const systemAdmin = [
                 id: 17,
                 name: 'AMC Types',
                 link: '/admin/amc-types',
-                icon: ""
-            },
-        ]
-    },
-    {
-        id: 7,
-        name: 'MIS Config',
-        icon: 'fas fa-reply-all',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Indicator Category',
-                link: '/admin/mis/indicator/category',
-                icon: ""
-            },
-            {
-                id: 2,
-                name: 'Indicator List',
-                link: '/admin/mis/indicator/list',
-                icon: ""
-            },
-            {
-                id: 3,
-                name: 'Import CSV Data',
-                link: '/admin/mis/import/csv',
                 icon: ""
             },
         ]
@@ -461,7 +438,7 @@ export const documentNav = [
 export const homeBanner = [
     {
         title: "Manage Your Business Easily",
-        btnText: "MIS Report",
+        btnText: "Report",
         link: "/",
         img: "/media/banner/b_1.png"
     },
