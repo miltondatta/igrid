@@ -91,10 +91,16 @@ class DocumentInputContainer extends Component {
                     description: '',
                     file_name: '',
                     document_date: '',
-                    error: false,
                     success: success,
                     successMessage: success && msg
-                }, () => {if (formType === 'DOCUMENTLIST') return file.value = ""; else return true;})
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
+                    if (formType === 'DOCUMENTLIST') return file.value = ""; else return true;
+                })
             })
             .then(() => {
                 this.setState({
@@ -106,9 +112,14 @@ class DocumentInputContainer extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -188,9 +199,14 @@ class DocumentInputContainer extends Component {
                 const {success, msg} = resData.data;
                 this.setState({
                     allProjects: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                 });
             })
             .then(() => {
@@ -200,9 +216,14 @@ class DocumentInputContainer extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -217,13 +238,17 @@ class DocumentInputContainer extends Component {
                 const {success, msg} = resData.data;
                 this.setState({
                     allProjects: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg,
                     deleteId: 0,
                     deleteContentName: '',
                     deleteModalTitle: ''
                 }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                     this.emptyStateValue();
                     this.getData();
                 });
@@ -233,9 +258,14 @@ class DocumentInputContainer extends Component {
                 if (fullError.name === 'SequelizeForeignKeyConstraintError') {
                     if (msg) {
                         this.setState({
-                            success: false,
                             error: error,
                             errorMessage: error && msg
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false
+                                })
+                            }, 2300);
                         })
                     }
                 }
@@ -350,10 +380,12 @@ class DocumentInputContainer extends Component {
                         }
                         {editId === null ? <button className="submit-btn"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
+                            <button className="submit-btn mr-2" onClick={this.updateData}
+                                    style={{position: 'absolute', bottom: 12}}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal"  onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal" onClick={this.emptyStateValue}
+                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -387,10 +419,12 @@ class DocumentInputContainer extends Component {
                         </div>
                         {editId === null ? <button className="submit-btn"
                                                    onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
+                            <button className="submit-btn mr-2" onClick={this.updateData}
+                                    style={{position: 'absolute', bottom: 12}}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal" onClick={this.emptyStateValue}
+                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -524,12 +558,13 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn"
+                        {editId === null ? <button className="submit-btn-normal"
                                                    onClick={this.handleSubmit}>Submit Documents</button> : <>
                             <button className="submit-btn mr-2" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue}
+                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
                             </button>
                         </>}
                     </>
@@ -739,10 +774,10 @@ class DocumentInputContainer extends Component {
         return (
             <>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                <ErrorModal errorMessage={errorMessage}/>
                 }
                 {success &&
-                    <SuccessModal successMessage={successMessage} />
+                <SuccessModal successMessage={successMessage}/>
                 }
 
                 <div className="px-2 my-2 ui-dataEntry">
@@ -794,7 +829,8 @@ class DocumentInputContainer extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
+                            There are No {title}</h4>}
                     </div>
                 </div>
             </>
