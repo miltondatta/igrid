@@ -17,6 +17,7 @@ import ComSubCategoryOptions from "../../utility/component/comSubCategoryOptions
 import jwt from "jsonwebtoken";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import {getFileExtension} from "../../utility/custom";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -416,9 +417,22 @@ class AdminInputContainer extends Component {
                 [name]: checked
             })
         } else if (name === 'file_name') {
-            this.setState({
-                [name]: files[0],
-            })
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if(name === 'location_id'){
             this.setState({
                 [name]: value
@@ -445,7 +459,8 @@ class AdminInputContainer extends Component {
         const {name, value} = e.target
         if(name === 'parent_id') {
             this.setState({
-                [name]: value
+                [name]: value,
+                [nameField]: value
             }, () => {
                 this.locationApi(value)
             })
@@ -1145,11 +1160,15 @@ class AdminInputContainer extends Component {
             case 'LOCATIONS':
                 let subLoc = locationHolder.length > 0 && locationHolder.map((item, index) =>
                     {
-                        console.log(locationHolder, 1080)
+                        console.log(item, hierarchy, item.hierarchy, 1148)
                         return(
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>{item.hierarchy_name}</label>
-                                <select name={'parent_id'} onChange={(e) => this.handleChangeLocation(e, item.hierarchy_name)} className={`ui-custom-input`}>
+                                <select
+                                    name={'parent_id'}
+                                    disabled={this.state[item.hierarchy_name] && (parseInt(hierarchy, 10) !== item.hierarchy)}
+                                    onChange={(e) => this.handleChangeLocation(e, item.hierarchy_name)}
+                                    className={`ui-custom-input ${this.state[item.hierarchy_name] ? null : 'border-red'}`}>
                                     <option>Select {item.hierarchy_name}</option>
                                     <LocationsOptions selectedId={item.parent_id} />
                                 </select>
@@ -1186,13 +1205,13 @@ class AdminInputContainer extends Component {
                                     <HierarchiesOptions />
                                 </select>
                             </div>
-                            <div className="px-1 mb-2">
+                            {hierarchy && <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Parent</label>
-                                <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.parent_id) && 'is-invalid'}`}>
+                                <select name={'parent_id'} disabled={locationHolder.length > 0 && (parseInt(hierarchy, 10) !== 1)} onChange={(e) => this.handleChangeLocation(e, 'Program')} className={`ui-custom-input ${!this.state['Program'] && 'is-invalid'}`}>
                                     <option value={0}>Select Parent</option>
                                     <LocationsOptions selectedId={parent_id} />
                                 </select>
-                            </div>
+                            </div>}
                             {subLoc}
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Latitude</label>
@@ -1230,8 +1249,11 @@ class AdminInputContainer extends Component {
                                 <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Location</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button
+                            className="submit-btn-normal"
+                            disabled={errorDict && Object.values(errorDict).includes(false)}
+                            onClick={this.handleSubmit}>Submit Location</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -1244,7 +1266,6 @@ class AdminInputContainer extends Component {
                                         this.validate()
                                     })}}>Go Back</button>
                             </>}
-
                     </>
                 )
             case 'USERROLES':

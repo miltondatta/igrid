@@ -46,6 +46,8 @@ a:hover{text-decoration: none}
 
 .mb-15p{margin-bottom: 15%;}
 .mb-20p{margin-bottom: 20% !important;}
+.my-20p{margin: 20px 0 !important;}
+.my-13p{margin: 13px 0 !important;}
 
 .w-90{width: 89%;}
 .w-76{width: 76%}
@@ -209,7 +211,7 @@ input[type=date],
 .bg-purple-primary{background: linear-gradient(to right, #479fff, #2486ef, #009eff)}
 .bg-purple-gradient{background: linear-gradient(to right, #9158ff, #7639ea, #6312ff)}
 
-.border-red{border: 1.2px solid red !important;}
+.border-red{border: 1px solid red !important;}
 .border-right-red{border-right: 2px solid #dc3545}
 .border-right-orange{border-right: 2px solid #fdbc00}
 .border-right-purple{border-right: 2px solid #7639ea}
@@ -226,6 +228,11 @@ input[type=date],
    grid-template-columns: repeat(2, 1fr);
    justify-content: center;
    align-items: center;
+}
+.grid-3{
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   grid-gap: 13px;
 }
 .grid-50-50{
    display: grid;
@@ -723,4 +730,13 @@ label:focus,
    height: 85.5vh;
    overflow-y: auto;
    overflow-x: hidden;
+}
+
+.ui-document-search-title{
+   margin-bottom: 20px;
+   font-weight: 500;
+   color: #454545;
+   text-align: center;
+   font-size: 22px;
+   text-shadow: 0 0 1px #212121;
 }
