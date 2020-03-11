@@ -8,6 +8,8 @@ import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import Spinner from "../../layouts/Spinner";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class AssetDisposalComponent extends Component {
     constructor(props) {
@@ -29,21 +31,9 @@ class AssetDisposalComponent extends Component {
             errorDict: null,
             isLoading: false,
             disposalData: [],
-            disposalCredential: []
+            disposalCredential: [],
+            assetDisposalTableData: []
         };
-
-        this.table_header = [
-            "Product Serial",
-            "Product",
-            "Category",
-            "Sub Category",
-            "Cost of Purchase",
-            "Book Value",
-            "Salvage Value",
-            "Useful Life",
-            "Disposal Reason",
-            "Action"
-        ];
     }
 
     componentDidMount() {
@@ -72,7 +62,7 @@ class AssetDisposalComponent extends Component {
 
     addDisposal = () => {
         if (Object.values(this.validate()).includes(false)) return false;
-        const {disposalData, disposalCredential, category_id, sub_category_id, product_id, product_serial} = this.state;
+        const {disposalData, disposalCredential, category_id, sub_category_id, product_id, product_serial, disposal_reason} = this.state;
         const newDisposal = this.getFormData();
 
         const isExistDisposal = disposalCredential.filter(item => {
@@ -82,6 +72,12 @@ class AssetDisposalComponent extends Component {
         if (isExistDisposal.length) return this.setState({
             error: true,
             errorMessage: 'This Asset is already added in disposal list!'
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300)
         });
 
         this.setState({isLoading: true}, () => {
@@ -92,6 +88,12 @@ class AssetDisposalComponent extends Component {
                         errorMessage: 'There is no asset found for disposal!',
                         isLoading: false,
                         success: false
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     });
                     this.setState({
                         disposalData: [...disposalData, ...res.data[0]],
@@ -107,7 +109,24 @@ class AssetDisposalComponent extends Component {
                         let newDisposalArray = [newDisposal];
                         this.setState({
                             disposalCredential: [...disposalCredential, ...newDisposalArray]
-                        }, () => this.setState({disposal_reason: ''}))
+                        }, () => {
+                            let newDisposalObj = {};
+                            this.state.disposalData.length > 0 && this.state.disposalData.map(item => {
+                                const newObj = {
+                                    id: item.id,
+                                    product_serial: item.product_serial,
+                                    category_name: item.category_name,
+                                    sub_category_name: item.sub_category_name,
+                                    product_name: item.product_name,
+                                    disposal_reason: disposal_reason
+                                };
+                                Object.assign(newDisposalObj, newObj);
+                            });
+                            let assetDisposalTableData = [newDisposalObj];
+                            this.setState({
+                                assetDisposalTableData: [...this.state.assetDisposalTableData, ...assetDisposalTableData]
+                            }, () => this.setState({disposal_reason: ''}))
+                        })
                     })
                 })
                 .catch(err => {
@@ -116,11 +135,12 @@ class AssetDisposalComponent extends Component {
         })
     };
 
-    cancelDisposal = index => {
-        const {disposalData, disposalCredential} = this.state;
+    cancelDisposal = id => {
+        const {disposalData, disposalCredential, assetDisposalTableData} = this.state;
         this.setState({
-            disposalData: disposalData.filter((item, key) => key !== index),
-            disposalCredential: disposalCredential.filter((item, key) => key !== index)
+            disposalData: disposalData.filter(item => item.id !== id),
+            disposalCredential: disposalCredential.filter(item => item.id !== id),
+            assetDisposalTableData: assetDisposalTableData.filter(item => item.id !== id)
         });
     };
 
@@ -199,45 +219,16 @@ class AssetDisposalComponent extends Component {
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, disposal_reason, success, successMessage, error, errorMessage,
-            errorDict, isLoading, disposalData, disposalCredential
+            errorDict, isLoading, disposalData, assetDisposalTableData
         } = this.state;
-
-        let disposal_reason_txt = [];
-        disposalCredential.length && disposalCredential.map(item => {
-            Object.keys(item).map(val => {
-                if (val === 'disposal_reason') disposal_reason_txt.push(item[val]);
-            });
-        });
-
-        const table_body = disposalData.length && disposalData.map((item, index) => (
-            <tr key={index}>
-                <td>{item.product_serial}</td>
-                <td>{item.product_name}</td>
-                <td>{item.category_name}</td>
-                <td>{item.sub_category_name}</td>
-                <td>{item.cost_of_purchase}</td>
-                <td>{item.book_value}</td>
-                <td>{item.salvage_value}</td>
-                <td>{item.useful_life}</td>
-                <td>{disposal_reason_txt[index]}</td>
-                <td>
-                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelDisposal(index)}><i
-                        className="fas fa-times"/></span>
-                </td>
-            </tr>
-        ));
-
-        const table_header = this.table_header.length && this.table_header.map((item, index) => (
-            <th key={index} scope="col">{item}</th>
-        ));
 
         return (
             <>
                 {error &&
-                <ErrorModal errorMessage={errorMessage} />
+                <ErrorModal errorMessage={errorMessage}/>
                 }
                 {success &&
-                <SuccessModal successMessage={successMessage} />
+                <SuccessModal successMessage={successMessage}/>
                 }
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>
@@ -294,7 +285,7 @@ class AssetDisposalComponent extends Component {
                             <span className="error">Product Serial Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-2">
+                        <div className="px-1 mb-20p">
                             <label className={'ui-custom-label'}>Disposal Reason</label>
                             <textarea onChange={this.handleChange} value={disposal_reason}
                                       className="ui-custom-input " name={'disposal_reason'}
@@ -303,23 +294,17 @@ class AssetDisposalComponent extends Component {
                             <span className="error">Disposal Reason Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addDisposal} className="submit-btn">Add Disposal</button>
+                        <button onClick={this.addDisposal} className="submit-btn-normal">Add Disposal</button>
                     </div>
                     <div className="rounded bg-white max-h-80vh p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Disposal List</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : disposalData.length ? <>
-                            <table className="table table-bordered table-responsive">
-                                <thead>
-                                <tr>
-                                    {table_header}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {table_body}
-                                </tbody>
-                            </table>
+                        {isLoading ? <Spinner/> : disposalData.length ? <>
+                            <ReactDataTable
+                                remove={this.cancelDisposal}
+                                tableData={assetDisposalTableData}
+                            />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Disposal Asset</h4>}
                         {disposalData.length ?
