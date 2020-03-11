@@ -109,43 +109,43 @@ class DocumentListDetails extends Component {
                     {fileErrorMessage}
                 </div>
                 }
-                <div className="ui-dataEntry">
-                    <div className="bg-white p-3">
+                <div className="ui-document-details-container">
+                    <div className="bg-project-blue p-3">
                         <div className="row">
-                            <div className="col-md-12">
-                                <table className="table border-less-table">
+                            <div className="col-md-12 p-0">
+                                <table className="table text-white border-less-table">
                                     <tbody>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Category</th>
                                         <th>:</th>
                                         <td>{item.document_category && item.document_category.category_name}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Sub Category</th>
                                         <th>:</th>
                                         <td>{item.document_sub_category && item.document_sub_category.sub_category_name}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Title</th>
                                         <th>:</th>
                                         <td>{item.title}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Content Type</th>
                                         <th>:</th>
                                         <td>{item.content_type ? 'Notice' : 'Circular'}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Circular Number</th>
                                         <th>:</th>
                                         <td>{item.circular_no}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Display Notice</th>
                                         <th>:</th>
                                         <td>{item.display_notice ? 'On' : 'Off'}</td>
                                     </tr>
-                                    <tr>
+                                    <tr className={'border border-bottom'}>
                                         <th>Status</th>
                                         <th>:</th>
                                         <td>{item.status ? 'Active' : 'Inactive'}</td>
@@ -155,48 +155,57 @@ class DocumentListDetails extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white p-3">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <ul className="list-unstyled pl-1"
-                                    style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>Document Date</li>
-                                    <li>Description</li>
-                                </ul>
+                    <div className="ui-document-details-right">
+                        <div className="ui-document-details-header  p-3">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <ul className="list-unstyled pl-1"
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        <li>Document Date</li>
+                                        <li>Description</li>
+                                    </ul>
+                                </div>
+                                <div className="col-md-1 pr-0">
+                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        <li>:</li>
+                                        <li>:</li>
+                                    </ul>
+                                </div>
+                                <div className="col-md-9 p-0">
+                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        <li>{moment(item.document_date).format('dddd MM, YYYY hh:mm a')}</li>
+                                        <li style={{fontWeight: 400}}
+                                            dangerouslySetInnerHTML={{__html: item.description}}></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div className="col-md-1">
-                                <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>:</li>
-                                    <li>:</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-7">
-                                <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>{moment(item.document_date).format('dddd MM, YYYY hh:mm a')}</li>
-                                    <li style={{fontWeight: 400}}
-                                        dangerouslySetInnerHTML={{__html: item.description}}></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-4">
-                                <ul className="list-unstyled pl-1"
-                                    style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>File Download</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-1">
-                                <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    <li>:</li>
-                                </ul>
-                            </div>
-                            <div className="col-md-7">
-                                <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                    {!fileError && <li>
-                                        <a href="/"
-                                           onClick={e => this.downloadFile(e, item.file_name)}>{item.file_name}</a>
-                                    </li>}
-                                </ul>
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <ul className="list-unstyled pl-1"
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        <li>File Download</li>
+                                    </ul>
+                                </div>
+                                <div className="col-md-1 pr-0">
+                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        <li>:</li>
+                                    </ul>
+                                </div>
+                                <div className="col-md-6 px-0">
+                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        {!fileError && <li>
+                                            <p className={'text-white'}>{item.file_name}</p>
+                                        </li>}
+                                    </ul>
+                                </div>
+                                <div className="col-md-3">
+                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        {!fileError && <li>
+                                            <button className={'ui-document-btn'} onClick={e => this.downloadFile(e, item.file_name)}><i
+                                                className="icofont-download"></i> Download File</button>
+                                        </li>}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         {item.file_name && !fileError &&

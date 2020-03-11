@@ -199,6 +199,7 @@ input[type=date],
 .bg-blue{background-color: #1c45ef}
 .bg-orange{background-color: #f7edde}
 .bg-project{background-color: #005da6}
+.bg-project-blue{background-color: #39719e}
 .bg-project-primary{background-color: #2384d0}
 .bg-purple{background-color: #7639ea}
 .bg-glass{background-color: #ffffff9e}
@@ -739,4 +740,8 @@ label:focus,
    text-align: center;
    font-size: 22px;
    text-shadow: 0 0 1px #212121;
+}
+
+.gg-0{
+   grid-gap: 0 !important;
 }
