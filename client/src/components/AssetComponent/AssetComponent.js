@@ -231,13 +231,14 @@ class AssetComponent extends Component{
                             <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
                             <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn-normal">Requisition</button>
                     </div>
                     <div className={'rounded bg-white max-h-80vh p-2'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Submit Requisition</p>
                         </nav>
                         {arrayData.length > 0 ? <ReactDataTable
+                            shortWidth
                             remove={this.removeItemFromList}
                             tableData={arrayData}
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}

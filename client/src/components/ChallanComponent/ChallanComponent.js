@@ -16,6 +16,7 @@ import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import AMCTypeOptions from "../../utility/component/amcTypeOptions";
 import InstaAdd from "../../module/insta-add/InstaAdd";
+import {getFileExtension} from "../../utility/custom";
 
 class ChallanComponent extends Component {
 
@@ -182,7 +183,22 @@ class ChallanComponent extends Component {
                 [name]: checked
             })
         } else if (name === 'attachment') {
-            this.setState({attachment: files[0]})
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if (name === 'asset_quantity') {
             for(let i = 0; i < value; i++) {
                 let lebel = `product_serial_${i + 1}`

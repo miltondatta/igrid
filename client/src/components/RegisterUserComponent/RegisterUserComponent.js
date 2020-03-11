@@ -95,7 +95,7 @@ class RegisterUserComponent extends Component {
                             <input type="password" className="ui-custom-input" id="inputEmail4" name='confirm_password'
                                    value={confirm_password} onChange={this.handleChange} placeholder="Confirm Password" />
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Register</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn-normal ml-3">Register</button>
                 </div>
             </div>
         );

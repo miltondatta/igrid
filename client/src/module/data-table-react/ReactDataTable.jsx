@@ -123,7 +123,7 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
+        const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
             feedback, file} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
@@ -254,7 +254,7 @@ class ReactDataTable extends Component {
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <div id={'__table_react'} className={'table'}>
+                {tableData.length > 0 ? <div id={'__table_react'} className={'table'} style={{width: shortWidth ? '60vw' : '98.4vw'}}>
                     <div className={'thead'}>
                         <div className={'d-flex align-items-center'}>
                             <p className={'w-60px'}>
