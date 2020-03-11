@@ -6,6 +6,7 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 
 class UserLoginLogComponent extends Component {
+
     constructor(props){
         super(props)
         this.state = {
@@ -35,7 +36,6 @@ class UserLoginLogComponent extends Component {
 
     render() {
         const {data, trackData, zoom} = this.state
-        console.log(data)
         return (
             <div className={'p-2 m-3 bg-white rounded'}>
                 <nav className="navbar text-center mb-2 pl-1 rounded">

@@ -949,7 +949,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.complaint_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox mb-20p">
                             <input
                                 type={'checkbox'}
                                 checked={complaint_status}
@@ -959,7 +959,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Display</label>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -993,7 +993,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.com_sub_category_name) && 'is-invalid'}`}  />
                         </div>
-                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                        <div className="d-flex ml-4 align-items-center ui-custom-checkbox mb-20p">
                             <input
                                 type={'checkbox'}
                                 checked={complaint_status}
@@ -1003,7 +1003,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Status</label>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -1044,7 +1044,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.problem_details) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
