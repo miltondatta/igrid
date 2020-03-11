@@ -12,7 +12,7 @@ class ErrorModal extends Component {
                     </div>
                     <div className={'ui-content'}>
                         <h4>{ops ? 'Opps!' : 'Error!'} <i className="icofont-sad"></i></h4>
-                        <p>{errorMessage}</p>
+                        <p className={'text-center'}>{errorMessage}</p>
                     </div>
                 </div>
             </div>
