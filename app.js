@@ -41,6 +41,7 @@ const IndicatorSubCategory = require('./routes/mis/indicator_sub_category');
 const MisImportCSVRouter   = require('./routes/mis/import_csv');
 const AssetRepair = require('./routes/asset-repair');
 const MisBasicReport = require('./routes/mis/basic_report');
+const MenuSubMenu       = require('./routes/menu');
 
 
 
@@ -111,6 +112,7 @@ app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1', MisImportCSVRouter);
 app.use('/api/v1', MisBasicReport);
 app.use('/api/v1/asset-repair', AssetRepair);
+app.use('/api/v1', MenuSubMenu);
 
 
 
