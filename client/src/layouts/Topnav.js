@@ -156,7 +156,7 @@ class Topnav extends Component {
     render() {
         const {home} = this.props
         const {showUserOption, toggleNotification, notification} = this.state;
-        const moduleName = window.location.pathname.replace('/', '').split('/');
+        const moduleName =window.location.pathname.replace('/', '').split('/');
         let breadCrumb = moduleName.map((item, index) => (
             <>
                 {item !== 'home' && <li className="breadcrumb-item active f-capitalize" aria-current="page">
