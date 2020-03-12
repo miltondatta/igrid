@@ -394,7 +394,7 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/complain-sub-category' component={AsyncComplaintSubCategory}/>
                             <Route exact path='/documents/document-list-search' component={AsyncDocumentListSearch}/>
                             <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
-                            <Route exact path='/documents/document-list-search/notice/id/:id' component={AsyncDocumentListDetails}/>
+                            <Route exact path='/documents/details/:id' component={AsyncDocumentListDetails}/>
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                 </Switch>
                     </div>

@@ -124,7 +124,7 @@ class ReactDataTable extends Component {
 
     render() {
         const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
-            feedback, file} = this.props
+            feedback, file, docDelete, docDetails} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -171,9 +171,13 @@ class ReactDataTable extends Component {
                             {remove && <p className="cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
                                 <i className="fas fa-times"></i>
                             </p>}
-                            {file && <p className="cursor-pointer w-125px text-success" onClick={ () => {this.props.file(item.file_name)}}>
+                            {file && <p className="cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
                                 <i className="fas fa-download"></i></p>
                             }
+                            {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDelete(item.id)}}>
+                                <i className="icofont-ui-delete"></i>
+                            </p>}
+                            {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
                         </>}
                     </div>
                     <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
@@ -201,30 +205,34 @@ class ReactDataTable extends Component {
                             </div>
                         </div>
                     </div>
-                    {!bigTable && <div className={'d-flex align-items-center justify-content-end'}>
-                        {edit && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                    {!bigTable && <div className={'d-flex text-right align-items-center justify-content-end ui-table-functions'}>
+                        {edit && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="pr-2 w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                             <i className="icofont-ui-edit"></i>
                         </p>}
-                        {feedback && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                        {feedback && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="pr-2 w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                             <i className="icofont-ui-edit"></i>
                         </p>}
-                        {del && <p onClick={() => {this.setState({delId: item.id})}} className="w-95px cursor-pointer text-danger" data-toggle="modal"
+                        {del && <p onClick={() => {this.setState({delId: item.id})}} className="pr-2 w-95px cursor-pointer text-danger" data-toggle="modal"
                                    data-target="#rowDeleteModal">
                             <i className="icofont-ui-delete"></i>
                         </p>}
-                        {add && <p className="w-95px cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>
+                        {add && <p className="pr-2 w-95px cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>
                             <i className="icofont-ui-add"></i></p>}
-                        {details && <p className="w-95px cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></p>}
-                        {approve && <p className="w-95px cursor-pointer text-danger">Approve</p>}
-                        {track && <p className="w-95px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
+                        {details && <p className="pr-2 w-95px cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></p>}
+                        {approve && <p className="pr-2 w-95px cursor-pointer text-danger">Approve</p>}
+                        {track && <p className="pr-2 w-95px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
                             <i className="icofont-location-pin"></i>
                         </p>}
-                        {remove && <p className="w-95px cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
+                        {remove && <p className="pr-2 w-95px cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
                             <i className="fas fa-times"></i>
                         </p>}
-                        {file && <p className="cursor-pointer w-125px text-success" onClick={ () => {this.props.file(item.file_name)}}>
+                        {file && <p className="pr-2 cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
                             <i className="fas fa-download"></i></p>
                         }
+                        {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDelete(item.id)}}>
+                            <i className="icofont-ui-delete"></i>
+                        </p>}
+                        {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
                     </div>}
                 </div>
             )})
@@ -254,7 +262,7 @@ class ReactDataTable extends Component {
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <div id={'__table_react'} className={'table'} style={{width: shortWidth ? '60vw' : '96.4vw'}}>
+                {tableData.length > 0 ? <div id={'__table_react'} className={'table'} style={{width: shortWidth ? '64vw' : '97.8vw'}}>
                     <div className={'thead'}>
                         <div className={'d-flex align-items-center'}>
                             <p className={'w-60px'}>
@@ -271,18 +279,22 @@ class ReactDataTable extends Component {
                                 {feedback && <p className={'w-95px'}>Feedback</p>}
                                 {remove && <p className={'w-95px'}>Remove</p>}
                                 {file && <p className={'w-125px'}>File Download</p>}
+                                {docDelete && <p className={'w-95px'}>Delete</p>}
+                                {docDetails && <p className={'w-95px'}>Details</p>}
                             </>}
                         </div>
-                        {!bigTable && <div className={'d-flex align-items-center justify-content-end'}>
-                            {edit && <p className={'w-95px'}>Edit</p>}
-                            {del && <p className={'w-95px'}>Delete</p>}
-                            {add && <p className={'w-95px'}>Add</p>}
-                            {details && <p className={'w-95px'}>Details</p>}
-                            {approve && <p className={'w-95px'}>Approve</p>}
-                            {track && <p className={'w-95px'}>Track</p>}
-                            {feedback && <p className={'w-95px'}>Feedback</p>}
-                            {remove && <p className={'w-95px'}>Remove</p>}
-                            {file && <p className={'w-125px'}>File Download</p>}
+                        {!bigTable && <div className={'d-flex text-right align-items-center justify-content-end ui-table-functions'}>
+                            {edit && <p className={'w-95px pr-2'}>Edit</p>}
+                            {del && <p className={'w-95px pr-2'}>Delete</p>}
+                            {add && <p className={'w-95px pr-2'}>Add</p>}
+                            {details && <p className={'w-95px pr-2'}>Details</p>}
+                            {approve && <p className={'w-95px pr-2'}>Approve</p>}
+                            {track && <p className={'w-95px pr-2'}>Track</p>}
+                            {feedback && <p className={'w-95px pr-2'}>Feedback</p>}
+                            {remove && <p className={'w-95px pr-2'}>Remove</p>}
+                            {file && <p className={'w-125px pr-2'}>File Download</p>}
+                            {docDelete && <p className={'w-95px pr-2'}>Delete</p>}
+                            {docDetails && <p className={'w-95px pr-2'}>Details</p>}
                         </div>}
                     </div>
                     <div className={'tbody'}>

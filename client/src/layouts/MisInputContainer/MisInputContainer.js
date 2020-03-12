@@ -57,6 +57,9 @@ class MisInputContainer extends Component {
                 })
                 .catch(err => {
                     console.log(err)
+                    this.setState({
+                        isLoading: false
+                    })
                 })
         })
     };
@@ -549,20 +552,20 @@ class MisInputContainer extends Component {
         return (
             <>
                 {error &&
-                <ErrorModal errorMessage={errorMessage} />
+                    <ErrorModal errorMessage={errorMessage} />
                 }
                 {success &&
-                <SuccessModal successMessage={successMessage} />
+                    <SuccessModal successMessage={successMessage} />
                 }
 
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height overflow-y-auto overflow-x-hidden position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white max-h-80vh">
+                    <div className="rounded bg-white admin-input-height">
                         <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>

@@ -262,7 +262,7 @@ class AssetTransferComponent extends Component {
                     {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
                 </div>}
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Transfer</p>
                         </nav>
@@ -338,9 +338,9 @@ class AssetTransferComponent extends Component {
                             <span className="error">User Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addTransfer} className="submit-btn-normal">Add Transfer</button>
+                        <button onClick={this.addTransfer} className="submit-btn">Add Transfer</button>
                     </div>
-                    <div className="rounded bg-white max-h-80vh p-2">
+                    <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
                         </nav>

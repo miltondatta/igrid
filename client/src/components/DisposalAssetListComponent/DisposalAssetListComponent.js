@@ -68,7 +68,7 @@ class DisposalAssetListComponent extends Component {
         const {isLoading, disposalListTableData} = this.state;
 
         return (
-            <div className="rounded bg-white p-2">
+            <div className="rounded bg-white admin-input-height p-2 m-2">
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-20px m-0">Disposal Asset - Asset disposed in my stock</p>
                 </nav>

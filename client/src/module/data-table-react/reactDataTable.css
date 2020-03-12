@@ -86,6 +86,10 @@
     flex-basis: 60px;
 }
 
+.ui-table-functions p{
+    flex-basis: 189px !important;
+}
+
 .thead p:nth-child(1) {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;

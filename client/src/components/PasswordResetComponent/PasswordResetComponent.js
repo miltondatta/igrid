@@ -23,7 +23,7 @@ class PasswordResetComponent extends Component {
 
     componentDidMount() {
         const {id} = jwt.decode(localStorage.getItem('user')).data;
-        if(id) this.setState({user_id: id});
+        if (id) this.setState({user_id: id});
     }
 
     handleChange = (e) => {
@@ -59,14 +59,14 @@ class PasswordResetComponent extends Component {
 
         Axios.put(apiUrl() + 'users/password-reset/' + user_id, payload)
             .then(resData => {
-                this.setState({
+                const {message} = resData.data;
+                if (message) this.setState({
+                    success: true,
+                    successMessage: message,
                     oldPassword: '',
                     newPassword: '',
-                    confirmPassword: '',
-                    error: false
-                });
-                const {message} = resData.data;
-                if (message) this.setState({success: true, successMessage: message}, () => {
+                    confirmPassword: ''
+                }, () => {
                     setTimeout(() => {
                         this.setState({
                             success: false
@@ -108,7 +108,7 @@ class PasswordResetComponent extends Component {
                 <div className={'ui-passwordUpdate'}>
                     <img src={process.env.PUBLIC_URL + '/media/image/passwordUpdate.png'} alt="Password Update"/>
                 </div>
-                <div className={'max-h-80vh position-relative'}>
+                <div className={'min-h-80vh position-relative'}>
                     <nav className="navbar text-center mb-2 pl-3 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Update Password</p>
                     </nav>
@@ -132,7 +132,7 @@ class PasswordResetComponent extends Component {
                                id="inputAddress"
                                placeholder="Confirm Password"/>
                     </div>
-                    <button type="submit" onClick={this.handleSubmit} className="submit-btn-normal ml-3">Update
+                    <button type="submit" onClick={this.handleSubmit} className="submit-btn ml-3">Update
                         Password
                     </button>
                 </div>

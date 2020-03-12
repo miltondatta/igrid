@@ -175,7 +175,7 @@ class AssetComponent extends Component{
 
     render(){
         const {asset_category, brand, error, success, successMessage, errorMessage, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
-        console.log(arrayData, 154)
+
         return(
             <>
                 {error &&
@@ -184,8 +184,8 @@ class AssetComponent extends Component{
                 {success &&
                     <SuccessModal successMessage={successMessage} />
                 }
-                <div className={'ui-dataEntry p-3'}>
-                    <div className={'bg-white rounded p-2 max-h-80vh position-relative'}>
+                <div className={'ui-dataEntry p-2'}>
+                    <div className={'bg-white rounded p-2 admin-input-height position-relative'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Requisition</p>
                         </nav>
@@ -231,9 +231,9 @@ class AssetComponent extends Component{
                             <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
                             <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn-normal">Requisition</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
                     </div>
-                    <div className={'rounded bg-white max-h-80vh p-2'}>
+                    <div className={'rounded bg-white admin-input-height p-2'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Submit Requisition</p>
                         </nav>

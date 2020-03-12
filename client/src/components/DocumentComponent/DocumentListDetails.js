@@ -173,7 +173,7 @@ class DocumentListDetails extends Component {
                                 </div>
                                 <div className="col-md-9 p-0">
                                     <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                        <li>{moment(item.document_date).format('dddd MM, YYYY hh:mm a')}</li>
+                                        <li>{moment(item.document_date).format('MMMM Do YYYY, hh:mm a')}</li>
                                         <li style={{fontWeight: 400}}
                                             dangerouslySetInnerHTML={{__html: item.description}}></li>
                                     </ul>

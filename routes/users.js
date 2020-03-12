@@ -163,14 +163,17 @@ router.put('/users/disable/:id', (req,res,next) => {
 })
 
 // Update Users
-router.put('/users/update/:id', (req,res,next) => {
+router.put('/users/update/:id', (req,res) => {
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
             return res.status(500).json(err)
         }
-        const {firstName, lastName, phone_number, email, pin, address} = req.body
+
+        const {firstName, lastName, phone_number, email, pin, address} = req.body;
+        const file_name = req.file ? req.file.filename : 'default.png';
+
         let sendData = {
             firstName,
             lastName,
@@ -178,30 +181,32 @@ router.put('/users/update/:id', (req,res,next) => {
             email,
             pin,
             address,
-            image: req.file.filename ? req.file.filename : 'default.png'
-        }
-        Users.findAll({where: {email: sendData.email}})
+            image: file_name
+        };
+
+        Users.findOne({where: {id: req.params.id}})
             .then(data => {
-                if (data.length > 1) {
-                    res.status(200).json({message: 'Email Taken'})
-                } else {
-                    if (fs.existsSync('public/images/' + data[0].dataValues.image && req.file.filename)) {
-                        fs.unlink('public/images/' + data[0].dataValues.image, (err) => {
-                            if (err) throw err;
-                            console.log('successfully deleted /tmp/hello');
-                        });
-                    }
-                    Users.update({...sendData}, {where: {id: req.params.id}})
-                        .then(data => {
-                            res.json(data)
-                        })
-                        .catch(err => {
-                            res.status(200).json({message: 'Something went wrong'})
-                        })
+                const {dataValues} = data;
+                if(Object.keys(dataValues).length < 1) return res.status(400).json({message: 'User Profile didn\'t found!'});
+
+                if (fs.existsSync('public/images/' + dataValues.image && dataValues.image !== file_name)) {
+                    fs.unlink('public/images/' + dataValues.dataValues.image, (err) => {
+                        if (err) throw err;
+                        console.log('successfully deleted /tmp/hello');
+                    });
                 }
+
+                Users.update(sendData, {where: {id: req.params.id}})
+                    .then(() => {
+                        return res.status(200).json({message: 'User Profile updated Successfully!'});
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.status(200).json({message: 'Something went wrong'});
+                    })
             })
     })
-})
+});
 
 // Update Password
 router.put('/users/password-reset/:id', (req,res) => {
@@ -245,6 +250,13 @@ router.put('/users/password-reset/:id', (req,res) => {
 router.get('/user-login-logs', async (req, res, next) => {
     const [results, metadata] = await db.query(`SELECT users.id, CONCAT(users."firstName", ' ' ,users."lastName") as name, users.email, user_login_logs.user_ip,user_login_logs.date,user_login_logs.time FROM user_login_logs  JOIN users ON user_login_logs.user_id = users."id"`)
     res.status(200).json(results)
-})
+});
 
-module.exports = router
+// Get All User By Id
+router.get('/user/:id', (req,res) => {
+    Users.findOne({attributes: ['address', 'firstName', 'lastName', 'email', 'phone_number', 'pin'], where: {id: req.params.id}})
+        .then(data => res.status(200).json(data))
+        .catch(err => {console.log(err); res.status(404).send(err)})
+});
+
+module.exports = router;

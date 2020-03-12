@@ -59,6 +59,7 @@ a:hover{text-decoration: none}
 .w-80{width: 80%;}
 .w-86{width: 86%;}
 .w-50{width: 50%;}
+.w-49{width: 49%;}
 .w-60px{width: 60px !important;}
 .w-80px{width: 80px !important;}
 .w-95px{width: 95px !important;}
@@ -93,8 +94,8 @@ select:focus{
    font-weight: 400;
    color: #2384d0;
 }
-.ui-custom-textarea{
-   height: 180px;
+.ui-custom-textarea {
+   height: 350px;
 }
 .ui-custom-badge{
    background: #2384d0;
@@ -115,7 +116,7 @@ input[type=date],
 .ui-custom-input::placeholder,
 .ui-custom-textarea::placeholder{
    color: #666666;
-   font-size: 17px;
+   font-size: 15px;
    font-weight: 600;
 }
 .ui-custom-file input,
@@ -191,8 +192,12 @@ input[type=date],
 .is-invalid{border: 1px solid red}
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
-.text-copyright{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;    width: 100%;
-   bottom: -34px;}
+.text-copyright{
+   color: #0da1cc;
+   width: 100%;
+   bottom: -34px;
+   font-weight: 500;
+   text-shadow: 0 0 2px #4ac1ed;}
 .text-grey{color: #5e6367 !important}
 .text-bold{color: #343434 !important;}
 .text-project{color: #0f5ea8 !important;}
@@ -211,7 +216,7 @@ input[type=date],
 .bg-glass{background-color: #ffffff9e}
 .bg-gray-pink{background-color: #de6f7e}
 
-.no-project{font-size: 18px; color: #727272;}
+.no-project{font-size: 17px; color: #727272;}
 
 .bg-purple-red{background: linear-gradient(to right, #ff5d6c, #ef2f40, #ff2a63)}
 .bg-purple-orange{background: linear-gradient(to right, #ffdf37, #ffc41b, #ffc507)}
@@ -219,6 +224,7 @@ input[type=date],
 .bg-purple-gradient{background: linear-gradient(to right, #9158ff, #7639ea, #6312ff)}
 
 .border-red{border: 1px solid red !important;}
+.border-blue{border: 1px solid #2384d0 !important;}
 .border-right-red{border-right: 2px solid #dc3545}
 .border-right-orange{border-right: 2px solid #fdbc00}
 .border-right-purple{border-right: 2px solid #7639ea}
@@ -265,6 +271,16 @@ input[type=date],
 
 .ui-grid-70{grid-template-columns: 70px auto;}
 
+.ui-top-category{
+   background: #71b3e8;
+   padding: 10px;
+   margin: 5px;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
 .ui-body-container{
    height: 92.5%;
 }
@@ -286,7 +302,7 @@ input[type=date],
 .ui-dataEntry{
    display: grid;
    grid-gap: 15px;
-   grid-template-columns: 36% 63%;
+   grid-template-columns: 33% 66%;
 }
 .submit-btn{
    font-weight: 700;

@@ -2,11 +2,7 @@ import React from 'react'
 import UserLoginLogComponent from "../../components/UserLoginLogComponent/UserLoginLogComponent";
 
 const UserLoginLog = () => {
-    return(
-        <div>
-            <UserLoginLogComponent />
-        </div>
-    )
+    return( <UserLoginLogComponent />)
 }
 
 export default UserLoginLog

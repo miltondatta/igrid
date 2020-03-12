@@ -255,7 +255,6 @@ class AdminInputContainer extends Component {
                 })
                 break;
             case 'ASSETCATEGORY':
-
                 dataTableData = allProjects
                 this.setState({
                     dataTableData,
@@ -959,7 +958,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Display</label>
                         </div>
-                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -1003,7 +1002,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Status</label>
                         </div>
-                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -1044,7 +1043,7 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.problem_details) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
                                 <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
@@ -1253,7 +1252,7 @@ class AdminInputContainer extends Component {
                             </div>
                         </div>
                         {editId === null ? <><button
-                            className="submit-btn-normal"
+                            className="submit-btn"
                             disabled={errorDict && Object.values(errorDict).includes(false)}
                             onClick={this.handleSubmit}>Submit Location</button>
                             {parent_id !== 0 && <button
@@ -1745,13 +1744,13 @@ class AdminInputContainer extends Component {
                     <SuccessModal successMessage={successMessage} />
                 }
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 max-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height overflow-y-auto overflow-x-hidden position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className={`rounded bg-white max-h-80vh p-2 ${(formType !== 'ASSETSUBCATEGORY')&& 'overflow-x-hidden'}`}>
+                    <div className={`rounded bg-white admin-input-height p-2 ${(formType !== 'ASSETSUBCATEGORY')&& 'overflow-x-hidden'}`}>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
