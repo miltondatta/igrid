@@ -158,16 +158,27 @@ class RepairMaintenenceComponent extends Component {
     getFormData = () => {
         const {repairCredential, user: {id, location_id, role_id}} = this.state;
         let jsonData = [];
+        let data;
 
         repairCredential.length && repairCredential.map(item => {
-            let data = {
-                location_id: location_id,
-                role_id: role_id,
-                user_id: id,
-                asset_id: item.id,
-                estimated_cost: item.estimated_cost,
-                details: item.details
-            };
+            if (location_id !== 0 && role_id !== 0) {
+                data = {
+                    location_id: location_id,
+                    role_id: role_id,
+                    user_id: id,
+                    asset_id: item.id,
+                    estimated_cost: item.estimated_cost,
+                    details: item.details
+                };
+            } else {
+                data = {
+                    user_id: id,
+                    asset_id: item.id,
+                    estimated_cost: item.estimated_cost,
+                    details: item.details
+                };
+            }
+
             jsonData.push(data);
         });
 

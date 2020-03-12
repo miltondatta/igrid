@@ -639,7 +639,7 @@ class DocumentInputContainer extends Component {
         const {formType} = this.props;
         const {
             category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
-            document_date, display_notice, status
+            document_date
         } = this.state;
 
         switch (formType) {
@@ -668,6 +668,7 @@ class DocumentInputContainer extends Component {
                     title: title !== '',
                     circular_no: circular_no !== '',
                     description: description !== '',
+                    document_date: document_date !== '',
                     file_name: (file_name.name ? file_name.name : file_name) !== ''
                 };
                 this.setState({
@@ -715,115 +716,6 @@ class DocumentInputContainer extends Component {
                 return data;
             default:
                 return data;
-        }
-    };
-
-    tableBody = () => {
-        const {formType} = this.props;
-        const {allProjects} = this.state;
-        let table_body = '';
-
-        switch (formType) {
-            case "DOCUMENTCATEGORY":
-                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.category_name}</td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#docDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.category_name,
-                                    deleteModalTitle: 'Delete Category'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            case "DOCUMENTSUBCATEGORY":
-                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.document_category.category_name}</td>
-                        <td>{item.sub_category_name}</td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#docDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.sub_category_name,
-                                    deleteModalTitle: 'Delete Sub Category'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            case "DOCUMENTLIST":
-                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.document_category.category_name}</td>
-                        <td>{item.document_sub_category.sub_category_name}</td>
-                        <td>{item.title}</td>
-                        <td className="document-description-limit">
-                            <div dangerouslySetInnerHTML={{__html: item.description}}/>
-                        </td>
-                        <td>{item.circular_no}</td>
-                        <td>
-                            <span
-                                className={`badge badge-${item.content_type == 1 ? 'success' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
-                        </td>
-                        <td>
-                            <span
-                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'on' : 'off'}</span>
-                        </td>
-                        <td>
-                            {item.status ?
-                                <>
-                                    <span className="badge badge-success">
-                                        <i className="far fa-check-circle"></i>
-                                    </span>
-                                </>
-                                :
-                                <>
-                                    <span className="badge badge-danger">
-                                        <i className="far fa-times-circle"></i>
-                                    </span>
-                                </>}
-                        </td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#docDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.title,
-                                    deleteModalTitle: 'Delete Document List'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            default:
-                return;
         }
     };
 
