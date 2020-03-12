@@ -5,6 +5,17 @@ const { getMenuByParent, getAllSubMenu }   = require('../dbHelper/admin');
 
 const route = express.Router();
 
+
+/* 
+    All Modules ID
+    0   =   Admin
+    1   =   Asset Requisition & Tracking
+    2   =   MIS Report
+    3   =   Document & Notice
+    4   =   Location Finder
+*/    
+
+
 route.get('/menu/get', async(req, res) => {
     let role_id = 1;
     
