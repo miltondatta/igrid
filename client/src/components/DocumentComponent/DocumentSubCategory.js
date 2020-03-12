@@ -4,7 +4,6 @@ import DocumentInputContainer from "../../layouts/DocumentInputContainer/Documen
 class DocumentSubCategory extends Component {
     constructor(props) {
         super(props);
-        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Action'];
     }
 
     render() {
@@ -13,7 +12,6 @@ class DocumentSubCategory extends Component {
                 <DocumentInputContainer
                     formType='DOCUMENTSUBCATEGORY'
                     getApi='document/sub/category'
-                    table_header={this.table_header}
                     title='Document Sub Category List'
                     headTitle='Document Sub Category Information'
                 />

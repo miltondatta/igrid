@@ -35,7 +35,7 @@ module.exports = {
                 type: Sequelize.STRING(3000)
             },
             keyword: {
-                type: Sequelize.STRING(1024)
+                type: Sequelize.STRING(3000)
             },
             file_name: {
                 type: Sequelize.STRING(127)

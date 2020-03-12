@@ -1,6 +1,6 @@
 import Axios from "axios";
 import React, {Component} from 'react';
-import {apiUrl} from "../../utility/constant";
+import {apiBaseUrl, apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -10,6 +10,7 @@ import {getFileExtension} from "../../utility/custom";
 import Spinner from "../Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -41,6 +42,7 @@ class DocumentInputContainer extends Component {
         super(props);
         this.state = {
             allProjects: [],
+            allProjectTableData: [],
             category_id: '',
             category_name: '',
             sub_category_id: '',
@@ -74,6 +76,16 @@ class DocumentInputContainer extends Component {
     handleSubmit = () => {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
+        if (this.state.description.length > 3000) return this.setState({
+            error: true,
+            errorMessage: 'Description Message length exceeds!'
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300);
+        });
         const {getApi, formType} = this.props;
         let file = document.getElementById("validatedCustomFile");
 
@@ -91,6 +103,7 @@ class DocumentInputContainer extends Component {
                     description: '',
                     file_name: '',
                     document_date: '',
+                    display_notice: false,
                     success: success,
                     successMessage: success && msg
                 }, () => {
@@ -127,23 +140,70 @@ class DocumentInputContainer extends Component {
     };
 
     getData = () => {
-        const {getApi} = this.props;
+        const {getApi, formType} = this.props;
         this.setState({
             isLoading: true
         }, () => {
             Axios.get(apiUrl() + getApi + '/all')
                 .then(res => {
                     this.setState({
-                        allProjects: res.data
-                    })
-                })
-                .then(res => {
-                    this.setState({
-                        isLoading: false
+                        allProjects: res.data,
+                        allProjectTableData: []
+                    }, () => {
+                        let allProjectTableData = [];
+                        switch (formType) {
+                            case "DOCUMENTCATEGORY":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category_name: item.category_name
+                                    };
+                                    allProjectTableData.push(newObj);
+                                });
+                                return this.setState({
+                                    allProjectTableData: allProjectTableData,
+                                    isLoading: false
+                                });
+                            case "DOCUMENTSUBCATEGORY":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category_name: item.document_category.category_name,
+                                        sub_category_name: item.sub_category_name
+                                    };
+                                    allProjectTableData.push(newObj);
+                                });
+                                return this.setState({
+                                    allProjectTableData: allProjectTableData,
+                                    isLoading: false
+                                });
+                            case "DOCUMENTLIST":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category_name: item.document_category.category_name,
+                                        sub_category_name: item.document_sub_category.sub_category_name,
+                                        title: item.title,
+                                        description: item.description,
+                                        document_date: moment(item.document_date).format('YYYY-MM-DD'),
+                                        circular_no: item.circular_no,
+                                        content_type: item.content_type,
+                                        display_notice: item.display_notice,
+                                        status: item.status
+                                    };
+                                    allProjectTableData.push(newObj);
+                                });
+                                return this.setState({
+                                    allProjectTableData: allProjectTableData,
+                                    isLoading: false
+                                });
+                            default:
+                                return;
+                        }
                     })
                 })
                 .catch(err => {
-                    console.log(err)
+                    console.log(err.response);
                 })
         })
     };
@@ -560,11 +620,11 @@ class DocumentInputContainer extends Component {
                         </div>
                         {editId === null ? <button className="submit-btn-normal"
                                                    onClick={this.handleSubmit}>Submit Documents</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData}>
+                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue}
-                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue}>Go
+                                Back
                             </button>
                         </>}
                     </>
@@ -675,7 +735,7 @@ class DocumentInputContainer extends Component {
                             }}>Edit
                             </button>
                             <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
+                                    data-target="#docDeleteModal" onClick={() => {
                                 this.setState({
                                     deleteId: item.id,
                                     deleteContentName: item.category_name,
@@ -699,7 +759,7 @@ class DocumentInputContainer extends Component {
                             }}>Edit
                             </button>
                             <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
+                                    data-target="#docDeleteModal" onClick={() => {
                                 this.setState({
                                     deleteId: item.id,
                                     deleteContentName: item.sub_category_name,
@@ -750,7 +810,7 @@ class DocumentInputContainer extends Component {
                             }}>Edit
                             </button>
                             <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
+                                    data-target="#docDeleteModal" onClick={() => {
                                 this.setState({
                                     deleteId: item.id,
                                     deleteContentName: item.title,
@@ -767,9 +827,28 @@ class DocumentInputContainer extends Component {
         }
     };
 
+    docDeleteModal = id => {
+        const {allProjectTableData} = this.state;
+        const {formType} = this.props;
+        allProjectTableData.length && allProjectTableData.find(item => {
+            if (item.id === id) {
+                let deleteContentName, deleteModalTitle;
+                if (formType === 'DOCUMENTCATEGORY') {deleteContentName = item.category_name; deleteModalTitle = 'Delete Category';}
+                if (formType === 'DOCUMENTSUBCATEGORY') {deleteContentName = item.sub_category_name; deleteModalTitle = 'Delete Sub Category';}
+                if (formType === 'DOCUMENTLIST') {deleteContentName = item.title; deleteModalTitle = 'Delete Document List';}
+
+                this.setState({
+                    deleteId: item.id,
+                    deleteContentName: deleteContentName,
+                    deleteModalTitle: deleteModalTitle
+                });
+            }
+        });
+    };
+
     render() {
-        const {title, table_header, headTitle} = this.props;
-        const {error, errorMessage, isLoading, allProjects, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
+        const {title, headTitle, formType} = this.props;
+        const {error, errorMessage, isLoading, allProjectTableData, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
 
         return (
             <>
@@ -791,21 +870,21 @@ class DocumentInputContainer extends Component {
                         <nav className="navbar text-center mb-2 pl-0 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <Spinner/> : allProjects.length > 0 ? <>
-                            <table className="table table-bordered table-striped table-hover text-center">
-                                <thead>
-                                <tr>
-                                    {table_header.map((item, index) => (
-                                        <th key={index}>{item}</th>
-                                    ))}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.tableBody()}
-                                </tbody>
-                            </table>
-                            <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
-                                 aria-labelledby="rowDeleteModal" aria-hidden="true">
+                        {isLoading ? <Spinner/> : allProjectTableData.length > 0 ? <>
+                            <ReactDataTable
+                                dataDisplay
+                                footer
+                                isLoading
+                                pagination
+                                searchable
+                                edit
+                                tableData={allProjectTableData}
+                                updateEdit={this.updateEdit}
+                                docDelete={this.docDeleteModal}
+                                bigTable={formType === 'DOCUMENTLIST'}
+                            />
+                            <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
+                                 aria-labelledby="docDeleteModal" aria-hidden="true">
                                 <div className="modal-dialog modal-lg" role="document">
                                     <div className="modal-content">
                                         <div className="modal-header">

@@ -124,7 +124,7 @@ class ReactDataTable extends Component {
 
     render() {
         const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
-            feedback, file} = this.props
+            feedback, file, docDelete} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -174,6 +174,9 @@ class ReactDataTable extends Component {
                             {file && <p className="cursor-pointer w-125px text-success" onClick={ () => {this.props.file(item.file_name)}}>
                                 <i className="fas fa-download"></i></p>
                             }
+                            {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDelete(item.id)}}>
+                                <i className="icofont-ui-delete"></i>
+                            </p>}
                         </>}
                     </div>
                     <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
@@ -225,6 +228,9 @@ class ReactDataTable extends Component {
                         {file && <p className="cursor-pointer w-125px text-success" onClick={ () => {this.props.file(item.file_name)}}>
                             <i className="fas fa-download"></i></p>
                         }
+                        {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDelete(item.id)}}>
+                            <i className="icofont-ui-delete"></i>
+                        </p>}
                     </div>}
                 </div>
             )})
@@ -271,6 +277,7 @@ class ReactDataTable extends Component {
                                 {feedback && <p className={'w-95px'}>Feedback</p>}
                                 {remove && <p className={'w-95px'}>Remove</p>}
                                 {file && <p className={'w-125px'}>File Download</p>}
+                                {docDelete && <p className={'w-95px'}>Delete</p>}
                             </>}
                         </div>
                         {!bigTable && <div className={'d-flex align-items-center justify-content-end'}>
@@ -283,6 +290,7 @@ class ReactDataTable extends Component {
                             {feedback && <p className={'w-95px'}>Feedback</p>}
                             {remove && <p className={'w-95px'}>Remove</p>}
                             {file && <p className={'w-125px'}>File Download</p>}
+                            {docDelete && <p className={'w-95px'}>Delete</p>}
                         </div>}
                     </div>
                     <div className={'tbody'}>
