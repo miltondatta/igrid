@@ -18,6 +18,13 @@ router.post('/store', AssetRepairController.store);
 
 
 // Maintenance Report
-router.post('/asset-maintenance/report' , AssetRepairController.report)
+router.post('/asset-maintenance/report' , AssetRepairController.report);
+
+/*
+    @route          GET api/v1/asset-repair/download/:file_name
+    @desc           Download Asset Repair File
+    @access         Private
+ */
+router.get('/download/:file_name', AssetRepairController.assetRepairFileDownload);
 
 module.exports = router;

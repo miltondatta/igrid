@@ -59,7 +59,7 @@ class NoticeBoardComponent extends Component {
         let allNotice = isLoading ? <Spinner/> : allData.length > 0 ? allData.map((item, index) => (
             <div key={index}>
                 <i className="fas fa-angle-right mr-1"></i>
-                <a href={`/documents/document-list-search/notice/id/${item.id}`} className="mb-0"
+                <a href={`/documents/details/${item.id}`} className="mb-0"
                    target="_blank">{item.title}</a>
                 <p className="mb-2 noticeDate">{moment(item.document_date).format('MMMM Do YYYY, hh:mm a')}</p>
             </div>

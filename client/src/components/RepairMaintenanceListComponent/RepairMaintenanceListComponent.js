@@ -4,6 +4,7 @@ import {apiBaseUrl, apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import ErrorModal from "../../utility/error/errorModal";
 
 class RepairMaintenanceListComponent extends Component {
     constructor(props) {
@@ -58,19 +59,37 @@ class RepairMaintenanceListComponent extends Component {
         })
     };
 
-    fileDownload = file_name => {
-        let a = document.createElement('a');
-        a.href = apiBaseUrl + file_name;
-        a.download = file_name;
-        a.target = '_blank';
-        a.click();
+    fileDownload = (e, file_name) => {
+        e.preventDefault();
+        axios.get(apiUrl() + 'asset-repair/download/' + file_name)
+            .then(() => {
+                const link = document.createElement('a');
+                link.href = apiUrl() + 'asset-repair/download/' + file_name;
+                link.setAttribute('download', file_name);
+                link.click();
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        fileError: error,
+                        fileErrorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({fileError: false});
+                        }, 2300);
+                    })
+                }
+                console.log(err.response);
+            })
     };
 
     render() {
-        const {repairMaintenanceTableData, isLoading} = this.state;
+        const {repairMaintenanceTableData, isLoading, fileError, fileErrorMessage} = this.state;
 
         return (
             <div className="rounded bg-white p-2">
+                {fileError && <ErrorModal errorMessage={fileErrorMessage} />}
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-20px m-0">Repair & Maintenance Asset - Repair & Maintenance Asset in my stock</p>
                 </nav>

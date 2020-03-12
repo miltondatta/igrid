@@ -1,6 +1,7 @@
 const {Op} = require("sequelize");
 const RepairMaintenance = require('../../models/repair_maintenance');
 const multer = require('multer');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -137,5 +138,20 @@ exports.store = (req, res) => {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err});
+    }
+};
+
+exports.assetRepairFileDownload = async (req, res) => {
+    try {
+        let file_path = 'public/repair-assets/' + req.params.file_name;
+        if (!fs.existsSync(file_path)) return res.status(400).json({
+            msg: `File didn\'t found!`,
+            error: true
+        });
+
+        return res.download(file_path);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: 'Server Error!'});
     }
 };

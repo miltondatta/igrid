@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {apiUrl} from "../../utility/constant";
+import {apiBaseUrl, apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
 import Axios from "axios";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import Spinner from "../../layouts/Spinner";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import ErrorModal from "../../utility/error/errorModal";
 
 moment.locale('en');
 
@@ -35,6 +37,7 @@ class DocumentListSearch extends Component {
             fileError: false,
             fileErrorMessage: '',
             searchData: [],
+            searchTableData: [],
             documentTitle: [],
             documentSubCategory: [],
             keyword: [],
@@ -134,10 +137,28 @@ class DocumentListSearch extends Component {
                     this.setState({
                         searchData: res.data[0],
                         error: false,
-                        isLoading: false
+                        isLoading: false,
+                        searchTableData: []
                     }, () => {
-                        this.setState({
-                            from_date: this.state.from_date.add(1, 'day')
+                        let searchTableData = [];
+                        res.data[0].length > 0 && res.data[0].map(item => {
+                            let newObj = {
+                                id: item.id,
+                                category_name: item.category_name,
+                                sub_category_name: item.sub_category_name,
+                                title: item.title,
+                                description: item.description,
+                                circular_no: item.circular_no,
+                                document_date: moment(item.document_date).format('YYYY-MM-DD'),
+                                content_type: item.content_type,
+                                file_name: item.file_name
+                            };
+                            searchTableData.push(newObj);
+                        });
+                        this.setState({searchTableData: searchTableData}, () => {
+                            this.setState({
+                                from_date: this.state.from_date.add(1, 'day')
+                            })
                         })
                     })
                 })
@@ -228,11 +249,43 @@ class DocumentListSearch extends Component {
         }
     };
 
+    fileDownload = (e, file_name) => {
+        e.preventDefault();
+        Axios.get(apiUrl() + 'document/list/download/' + file_name)
+            .then(() => {
+                const link = document.createElement('a');
+                link.href = apiUrl() + 'document/list/download/' + file_name;
+                link.setAttribute('download', file_name);
+                link.click();
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        fileError: error,
+                        fileErrorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({fileError: false});
+                        }, 2300);
+                    })
+                }
+                console.log(err.response);
+            })
+    };
+
+    docDetails = id => {
+      let a = document.createElement('a');
+      a.href = process.env.PUBLIC_URL + '/documents/details/' + id;
+      a.target = '_blank';
+      a.click();
+    };
+
     render() {
 
         const {
             category_id, keywordText, sub_category_id, content_type, title, circular_no, receivedByFocus, recDropFoc, from_date, to_date, documentTitle, keywordHolder,
-            documentSubCategory, error, errorMessage, fileError, fileErrorMessage, keyword, activeSuggestion, isLoading, searchData
+            documentSubCategory, error, errorMessage, fileError, fileErrorMessage, keyword, activeSuggestion, isLoading, searchData, searchTableData
         } = this.state;
         let filterKeys = keyword.length > 0 && keyword.filter(item => item.includes(keywordText));
         const keywordList = filterKeys.length > 0 && filterKeys.map((item, index) => (
@@ -370,59 +423,23 @@ class DocumentListSearch extends Component {
                         </div>
                     </div>
                     <div className={'p-2 my-2'}>
-                        {fileError &&
-                        <div className="row ml-1">
-                            <div
-                                className="col-md-4 alert alert-danger position-relative d-flex justify-content-between align-items-center"
-                                role="alert">
-                                {fileErrorMessage}
-                                <i className="fas fa-times " onClick={() => {
-                                    this.setState({fileError: !fileError})
-                                }}></i>
-                            </div>
-                        </div>
-                        }
-                        <div className="rounded p-3 bg-white">
-                            {isLoading ? <Spinner/> : searchData.length > 0 ? <>
+                        {fileError && <ErrorModal errorMessage={fileErrorMessage} />}
+                        <div className="rounded p-3 bg-white max-h-80vh">
+                            {isLoading ? <Spinner/> : searchTableData.length > 0 ? <>
                                 <nav className="navbar text-center mb-2 pl-2 rounded">
                                     <p className="text-dark f-weight-500 f-20px m-0">Document Search</p>
                                 </nav>
-                                <table className="table table-bordered table-striped table-hover text-center">
-                                    <thead>
-                                    <tr>
-                                        {this.table_header.map((item, index) => (
-                                            <th key={index}>{item}</th>
-                                        ))}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {searchData.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{item.category_name}</td>
-                                            <td>{item.sub_category_name}</td>
-                                            <td>{item.title}</td>
-                                            <td className="document-description-limit">
-                                                <div dangerouslySetInnerHTML={{__html: item.description}}/>
-                                            </td>
-                                            <td>{item.circular_no}</td>
-                                            <td>{moment(item.document_date).format('YYYY-MM-DD')}</td>
-                                            <td>
-                                                <span
-                                                    className={`badge badge-${item.content_type == 1 ? 'error.css' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
-                                            </td>
-                                            <td>
-                                                <a href="/"
-                                                   onClick={e => this.downloadFile(e, item.file_name)}>Download</a>
-                                            </td>
-                                            <td>
-                                                <a href={`/documents/document-list-search/notice/id/${item.doc_id}`}
-                                                   target="_blank">Details</a>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
+                                <ReactDataTable
+                                    dataDisplay
+                                    footer
+                                    isLoading
+                                    pagination
+                                    searchable
+                                    tableData={searchTableData}
+                                    bigTable
+                                    file={this.fileDownload}
+                                    docDetails={this.docDetails}
+                                />
                             </> : <h4 className={'no-project px-2'}><i
                                 className="icofont-exclamation-circle"></i> Currently There are No Content</h4>}
                         </div>
