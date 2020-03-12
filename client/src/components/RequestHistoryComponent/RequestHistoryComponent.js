@@ -4,6 +4,8 @@ import './RequestHistoryCom.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import SuccessModal from "../../utility/success/successModal";
+import ErrorModal from "../../utility/error/errorModal";
 
 class RequestHistoryComponent extends Component {
     constructor(props){
@@ -184,18 +186,10 @@ class RequestHistoryComponent extends Component {
         })
 
         return (
-            <div className={'m-3'}>
-                {error && <div className="alert alert-danger my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
-                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
-                </div>}
-                {success &&
-                <div className="alert alert-success my-2 position-relative d-flex justify-content-between align-items-center"
-                     role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
-                <div className={'bg-white p-3 rounded'}>
+            <div className={'m-2'}>
+                {success && <SuccessModal successMessage={successMessage}/>}
+                {error && <ErrorModal errorMessage={errorMessage}/>}
+                <div className={'bg-white p-1 admin-input-height rounded'}>
                     {!showDetails ? <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0" >Requisition History</p>

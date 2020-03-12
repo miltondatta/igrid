@@ -4,9 +4,9 @@ import RequestHistoryComponent from "../components/RequestHistoryComponent/Reque
 class RequestHistory extends Component{
     render(){
         return(
-            <div>
+            <>
                 <RequestHistoryComponent />
-            </div>
+            </>
         )
     }
 }

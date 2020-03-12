@@ -106,7 +106,7 @@ class ProfileComponent extends Component {
                 <div className={'ui-profile'}>
                     <img src={process.env.PUBLIC_URL + '/media/image/profile.png'} alt="Register"/>
                 </div>
-                <div className={'max-h-80vh position-relative'}>
+                <div className={'min-h-80vh position-relative'}>
                     <nav className="navbar text-center mb-2 pl-3 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Update Profile</p>
                     </nav>

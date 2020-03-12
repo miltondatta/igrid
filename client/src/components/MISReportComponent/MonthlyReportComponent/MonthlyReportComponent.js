@@ -71,6 +71,12 @@ class MonthlyReportComponent extends Component {
                             haveData: false,
                             error: true,
                             errorMessage: res.data.message
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false,
+                                })
+                            }, 2300)
                         })
                     } else {
                         this.setState({

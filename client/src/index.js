@@ -12,4 +12,6 @@ import ReactDOM from 'react-dom'
 import {BrowserRouter} from 'react-router-dom'
 
 import './assets/style.css'
+import './assets/responsive.css'
+
 ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));

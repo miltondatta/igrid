@@ -32,6 +32,7 @@ class AssetRegComponent extends Component {
             received_by: '',
             receivedByFocus: false,
             recDropFoc: false,
+            is_amc: true,
             addMoreProduct: false,
             success: false,
             error: false,
@@ -327,10 +328,8 @@ class AssetRegComponent extends Component {
     }
 
     validate = (forr) => {
-        const {attachment, challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,
-            challanComments,project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost,
-            other_cost,asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,last_effective_date,warranty,
-            is_amc,condition,comments,barcode, amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
+        const {challan_no, challan_date, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, project_id,asset_category,asset_sub_category,cost_of_purchase,
+            installation_cost,carrying_cost, other_cost, rate,book_value,salvage_value,  amc_charge, amc_expire_date, amc_type} = this.state
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
@@ -349,30 +348,18 @@ class AssetRegComponent extends Component {
         } else if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
-                amc_charge: is_amc && typeof amc_charge !== 'undefined' && amc_charge !== '',
-                amc_expire_date: is_amc && typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
-                amc_type: is_amc && typeof amc_type !== 'undefined' && amc_type !== '',
-                insurance_expire_date: typeof insurance_expire_date !== 'undefined' && insurance_expire_date !== '',
-                insurance_premium: typeof insurance_premium !== 'undefined' && insurance_premium !== '',
-                insurance_value: typeof insurance_value !== 'undefined' && insurance_value !== '',
-                insurance_company: typeof insurance_company !== 'undefined' && insurance_company !== '',
+                amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
+                amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
+                amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-                asset_type: typeof asset_type !== 'undefined' && asset_type !== '',
-                depreciation_method: typeof depreciation_method !== 'undefined' && depreciation_method !== '',
                 rate: typeof rate !== 'undefined' && rate !== '',
-                effective_date: typeof effective_date !== 'undefined' && effective_date !== '',
                 book_value: typeof book_value !== 'undefined' && book_value !== '',
                 salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
-                useful_life: typeof useful_life !== 'undefined' && useful_life !== '',
-                warranty: typeof warranty !== 'undefined' && warranty !== '',
-                condition: typeof condition !== 'undefined' && condition !== '',
-                comments: typeof comments !== 'undefined' && comments !== '',
-                barcode: typeof barcode !== 'undefined' && barcode !== '',
             }
             this.setState({
                 errorDictAsset: errorDict
@@ -386,9 +373,9 @@ class AssetRegComponent extends Component {
     render() {
         const {challan_no, challan_date, challan_description, purchase_order_no, purchase_order_date, vendor_id, challan_id, attachment, formType, getApi, headTitle, error,
             received_by, addMoreProduct, challanComments, project_id, asset_category, asset_sub_category, prodArr, cost_of_purchase,errorDictAsset,receivedByFocus, success, errorMessage,
-            installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id, recDropFoc, successMessage,
-            salvage_value, useful_life, warranty, condition, comments, barcode, asset_quantity, receivedBy,
-            amc_charge, amc_expire_date, amc_type, is_amc, insurance_expire_date, insurance_company, insurance_premium, insurance_value } = this.state
+            installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, product_id, recDropFoc, successMessage, is_amc,
+            salvage_value, useful_life, warranty, condition, comments, barcode, asset_quantity, receivedBy,  amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company,
+            insurance_premium, insurance_value } = this.state
 
         const {userName} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         const prodSer = asset_quantity && prodArr.map((item, index) => {
@@ -402,6 +389,7 @@ class AssetRegComponent extends Component {
         const receiverList = receivedBy.length > 0 && receivedBy.map((item, index) => (
             <p key={index} onClick={() => {this.setState({received_by: item.received_by, receivedBy: []})}}>{item.received_by}</p>
         ))
+
         return (
             <>
                 {error &&
@@ -416,8 +404,8 @@ class AssetRegComponent extends Component {
                     getApi = {getApi}
                     headTitle = {headTitle}
                 />
-                {challan_id === '' && <div className=" p-3 ui-dataEntry">
-                    <div className={'max-h-80vh bg-white rounded position-relative p-3'}>
+                {challan_id === '' && <div className=" p-2 ui-dataEntry">
+                    <div className={'admin-input-height bg-white rounded position-relative p-3'}>
                         <nav className="navbar text-center mb-2 pl-1 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
                         </nav>
@@ -464,7 +452,7 @@ class AssetRegComponent extends Component {
                         </div>
                         <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
                     </div>
-                    <div className="max-h-80vh bg-white rounded p-3">
+                    <div className="admin-input-height bg-white rounded p-3">
                         <div className={'mb-2'}>
                             <nav className="navbar text-center mb-2 pl-1 rounded">
                                 <p className="text-blue f-weight-700 f-20px m-0">Challan Description</p>
@@ -491,8 +479,8 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-                {challan_id !== '' && <div className="ui-dataEntry h-100">
-                    <div className="max-h-80vh bg-challan position-relative p-3">
+                {challan_id !== '' && <div className="ui-dataEntry">
+                    <div className="admin-input-height bg-challan position-relative rounded p-3 m-2">
                         <nav className="navbar text-center mb-2 border-bottom-nav">
                             <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>
                         </nav>
@@ -569,11 +557,11 @@ class AssetRegComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className={'asset-right'}>
+                    <div className={'asset-right admin-input-height'}>
                         <div className={'rounded p-3'}>
                             <div className="row">
                                 <div className="col-md-6 pr-1 pl-0">
-                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                    <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                         <h5>Add Asset Information</h5>
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
@@ -581,9 +569,9 @@ class AssetRegComponent extends Component {
                                                 <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`}
                                                         onChange={this.handleChange} name={'asset_category'}
                                                         value={asset_category}>
-                                                <option>Asset Category</option>
-                                                <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                            </select>
+                                                    <option>Asset Category</option>
+                                                    <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
                                                 <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
                                                     <i className="fas fa-plus"></i>
                                                 </button>
@@ -617,16 +605,16 @@ class AssetRegComponent extends Component {
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Product</label>
                                                 <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
-                                                <option>Product</option>
-                                                <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                            </select>
+                                                    <option>Product</option>
+                                                    <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                </select>
                                                 <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
                                                     <i className="fas fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                    <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                         <h5>Cost Information</h5>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Cost of Purchase</label>
@@ -664,14 +652,14 @@ class AssetRegComponent extends Component {
                                             <div className="ui-custom-checkbox">
                                                 <input
                                                     type={'checkbox'}
-                                                    checked={is_amc}
+                                                    checked={this.state.is_amc}
                                                     id={'is_amc'}
                                                     name={'is_amc'}
                                                     onChange={this.handleChange} />
                                                 <label htmlFor="is_amc" className={'mb-0'}>IS AMC</label>
                                             </div>
                                         </div>
-                                        {is_amc && <>
+                                        {this.state.is_amc && <>
                                             <div className={'mb-1'}>
                                                 <div className="input-grid">
                                                     <label className={'ui-custom-label'}>AMC Type</label>
@@ -701,17 +689,18 @@ class AssetRegComponent extends Component {
                                                        className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
                                             </div></>}
                                     </div>
-
-                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                    <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Asset Quantity</label>
                                             <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
                                         </div>
                                         {prodSer}
+                                        <button className="mt-3 submit-btn-normal w-49" onClick={this.addProduct} >Register Asset</button>
+                                        {addMoreProduct && <button className="reset-btn-normal ml-2 w-49" onClick={this.resetFields} >Add More Product</button>}
                                     </div>
                                 </div>
                                 <div className="col-md-6 pl-1">
-                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                    <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
                                         <h5>Insurance Information</h5>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Value of Insurance</label>
@@ -719,7 +708,7 @@ class AssetRegComponent extends Component {
                                                    value={insurance_value}
                                                    onChange={this.handleChange} name={'insurance_value'}
                                                    placeholder={'Value of Insurance'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_value && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Value of Premium</label>
@@ -727,7 +716,7 @@ class AssetRegComponent extends Component {
                                                    value={insurance_premium}
                                                    onChange={this.handleChange} name={'insurance_premium'}
                                                    placeholder={'Value of Premium'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_premium && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Insurance Company</label>
@@ -735,7 +724,7 @@ class AssetRegComponent extends Component {
                                                    value={insurance_company}
                                                    onChange={this.handleChange} name={'insurance_company'}
                                                    placeholder={'Insurance Company'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_company && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Expire Date</label>
@@ -743,15 +732,15 @@ class AssetRegComponent extends Component {
                                                    value={insurance_expire_date}
                                                    onChange={this.handleChange} name={'insurance_expire_date'}
                                                    placeholder={'Expire Date'}
-                                                   className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.insurance_expire_date && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input pb-6px w-100`}/>
                                         </div>
                                     </div>
-                                    <div className={'bg-white p-2 rounded mb-2'}>
+                                    <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
                                         <h5>Depreciation & Others</h5>
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Asset Type</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
+                                                <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
                                                     <option>Asset Type</option>
                                                     <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                 </select>
@@ -763,7 +752,7 @@ class AssetRegComponent extends Component {
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Condition</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
+                                                <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'condition'} value={condition}>
                                                     <option>Select Condition</option>
                                                     <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                 </select>
@@ -775,7 +764,7 @@ class AssetRegComponent extends Component {
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Depreciation Method</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
+                                                <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
                                                     <option>Select Depreciation Method</option>
                                                     <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                 </select>
@@ -790,7 +779,7 @@ class AssetRegComponent extends Component {
                                                    value={rate}
                                                    onChange={this.handleChange} name={'rate'}
                                                    placeholder={'Rate'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Effective Date</label>
@@ -798,7 +787,7 @@ class AssetRegComponent extends Component {
                                                    value={effective_date}
                                                    onChange={this.handleChange} name={'effective_date'}
                                                    placeholder={'Effective Date'}
-                                                   className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.effective_date && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input pb-6px w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Book Value</label>
@@ -806,7 +795,7 @@ class AssetRegComponent extends Component {
                                                    value={book_value}
                                                    onChange={this.handleChange} name={'book_value'}
                                                    placeholder={'Book Value'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.book_value && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Salvage Value</label>
@@ -814,7 +803,7 @@ class AssetRegComponent extends Component {
                                                    value={salvage_value}
                                                    onChange={this.handleChange} name={'salvage_value'}
                                                    placeholder={'Salvage Value'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.salvage_value && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Useful Life (in month)</label>
@@ -822,7 +811,7 @@ class AssetRegComponent extends Component {
                                                    value={useful_life}
                                                    onChange={this.handleChange} name={'useful_life'}
                                                    placeholder={'Useful Life'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Warranty (in month)</label>
@@ -830,14 +819,14 @@ class AssetRegComponent extends Component {
                                                    value={warranty}
                                                    onChange={this.handleChange} name={'warranty'}
                                                    placeholder={'Warranty'}
-                                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.warranty && 'is-invalid'}`}/>
+                                                   className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Comments</label>
                                             <textarea placeholder={'Comments'}
                                                       onChange={this.handleChange} name={'comments'}
                                                       value={comments}
-                                                      className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
+                                                      className={`ui-custom-input w-100`}/>
                                         </div>
                                         <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
                                             <div className="ui-custom-checkbox">
@@ -852,12 +841,6 @@ class AssetRegComponent extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className={'row p-2 align-items-center mt-1'}>
-                            <div className={'col-6 px-2 d-flex w-100'}>
-                                <button className="mr-3 submit-btn-normal" onClick={this.addProduct} >Submit Product</button>
-                                {addMoreProduct && <button className="mr-3 reset-btn-normal" onClick={this.resetFields} >Add More Product</button>}
                             </div>
                         </div>
                     </div>

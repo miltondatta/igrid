@@ -36,6 +36,7 @@ class ChallanComponent extends Component {
             errorMessage: '',
             receivedByFocus: false,
             recDropFoc: false,
+            is_amc: true,
             challan_description: '',
             purchase_order_no: '',
             purchase_order_date: '',
@@ -295,26 +296,15 @@ class ChallanComponent extends Component {
                 amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
                 amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
                 amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
-                insurance_expire_date: typeof insurance_expire_date !== 'undefined' && insurance_expire_date !== '',
-                insurance_premium: typeof insurance_premium !== 'undefined' && insurance_premium !== '',
-                insurance_value: typeof insurance_value !== 'undefined' && insurance_value !== '',
-                insurance_company: typeof insurance_company !== 'undefined' && insurance_company !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-                asset_type: typeof asset_type !== 'undefined' && asset_type !== '',
-                depreciation_method: typeof depreciation_method !== 'undefined' && depreciation_method !== '',
                 rate: typeof rate !== 'undefined' && rate !== '',
-                effective_date: typeof effective_date !== 'undefined' && effective_date !== '',
                 book_value: typeof book_value !== 'undefined' && book_value !== '',
                 salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
-                useful_life: typeof useful_life !== 'undefined' && useful_life !== '',
-                warranty: typeof warranty !== 'undefined' && warranty !== '',
-                condition: typeof condition !== 'undefined' && condition !== '',
-                barcode: typeof barcode !== 'undefined' && barcode !== '',
             }
             this.setState({
                 errorDictAsset: errorDict
@@ -567,7 +557,7 @@ class ChallanComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                    </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white m-1 rounded'}>
+                    </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white rounded admin-input-height'}>
                     <nav className="navbar text-center mb-0 pl-3 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ?
                             <p className={'cursor-pointer mb-0'}
@@ -594,9 +584,9 @@ class ChallanComponent extends Component {
                             tableData={challans}
                         /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
                     </div> </div> :
-                        <div className={'p-2'}>
+                        <div>
                             <div className="ui-dataEntry">
-                                <div className="min-h-80vh bg-challan position-relative rounded p-3">
+                                <div className="admin-input-height bg-challan position-relative rounded p-3">
                                     <nav className="navbar text-center mb-2 border-bottom-nav">
                                         <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>
                                     </nav>
@@ -657,14 +647,14 @@ class ChallanComponent extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={'asset-right'}>
-                                    <nav className="navbar text-center mb-0 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({    targetAsset: [], targetChallan: [], addAsst: false, addAssets: false })}}>
-                                        <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Add New Assets</p>
+                                <div className={'asset-right admin-input-height'}>
+                                    <nav className="navbar mr-1 border-blue text-center mb-0 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({    targetAsset: [], targetChallan: [], addAsst: false, addAssets: false })}}>
+                                        <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Assets Registration</p>
                                     </nav>
                                     <div className={'rounded pl-3 pt-1'}>
                                         <div className="row">
                                             <div className="col-md-6 pr-1 pl-0">
-                                                <div className={'bg-white p-2 rounded mb-2'}>
+                                                <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                                     <h5>Add Asset Information</h5>
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
@@ -717,7 +707,7 @@ class ChallanComponent extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className={'bg-white p-2 rounded mb-2'}>
+                                                <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                                     <h5>Cost Information</h5>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Cost of Purchase</label>
@@ -792,17 +782,17 @@ class ChallanComponent extends Component {
                                                                    className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
                                                         </div></>}
                                                 </div>
-
-                                                <div className={'bg-white p-2 rounded mb-2'}>
+                                                <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                                 <div className={'mb-1'}>
                                                     <label className={'ui-custom-label'}>Asset Quantity</label>
                                                     <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
                                                 </div>
                                                 {prodSer}
+                                                <button className="mt-3 submit-btn-normal w-50" onClick={this.addProduct} >Register Asset</button>
                                                 </div>
                                             </div>
                                             <div className="col-md-6 pl-1">
-                                                <div className={'bg-white p-2 rounded mb-2'}>
+                                                <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
                                                     <h5>Insurance Information</h5>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Value of Insurance</label>
@@ -810,7 +800,7 @@ class ChallanComponent extends Component {
                                                                value={insurance_value}
                                                                onChange={this.handleChange} name={'insurance_value'}
                                                                placeholder={'Value of Insurance'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_value && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Value of Premium</label>
@@ -818,7 +808,7 @@ class ChallanComponent extends Component {
                                                                value={insurance_premium}
                                                                onChange={this.handleChange} name={'insurance_premium'}
                                                                placeholder={'Value of Premium'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_premium && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Insurance Company</label>
@@ -826,7 +816,7 @@ class ChallanComponent extends Component {
                                                                value={insurance_company}
                                                                onChange={this.handleChange} name={'insurance_company'}
                                                                placeholder={'Insurance Company'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_company && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Expire Date</label>
@@ -834,15 +824,15 @@ class ChallanComponent extends Component {
                                                                value={insurance_expire_date}
                                                                onChange={this.handleChange} name={'insurance_expire_date'}
                                                                placeholder={'Expire Date'}
-                                                               className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.insurance_expire_date && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input pb-6px w-100`}/>
                                                     </div>
                                                 </div>
-                                                <div className={'bg-white p-2 rounded mb-2'}>
+                                                <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
                                                     <h5>Depreciation & Others</h5>
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
                                                             <label className={'ui-custom-label'}>Asset Type</label>
-                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
                                                                 <option>Asset Type</option>
                                                                 <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                             </select>
@@ -854,7 +844,7 @@ class ChallanComponent extends Component {
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
                                                             <label className={'ui-custom-label'}>Condition</label>
-                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'condition'} value={condition}>
                                                                 <option>Select Condition</option>
                                                                 <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                             </select>
@@ -866,7 +856,7 @@ class ChallanComponent extends Component {
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
                                                             <label className={'ui-custom-label'}>Depreciation Method</label>
-                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
                                                                 <option>Select Depreciation Method</option>
                                                                 <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                             </select>
@@ -881,7 +871,7 @@ class ChallanComponent extends Component {
                                                                value={rate}
                                                                onChange={this.handleChange} name={'rate'}
                                                                placeholder={'Rate'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Effective Date</label>
@@ -889,7 +879,7 @@ class ChallanComponent extends Component {
                                                                value={effective_date}
                                                                onChange={this.handleChange} name={'effective_date'}
                                                                placeholder={'Effective Date'}
-                                                               className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.effective_date && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input pb-6px w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Book Value</label>
@@ -897,7 +887,7 @@ class ChallanComponent extends Component {
                                                                value={book_value}
                                                                onChange={this.handleChange} name={'book_value'}
                                                                placeholder={'Book Value'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.book_value && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Salvage Value</label>
@@ -905,7 +895,7 @@ class ChallanComponent extends Component {
                                                                value={salvage_value}
                                                                onChange={this.handleChange} name={'salvage_value'}
                                                                placeholder={'Salvage Value'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.salvage_value && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Useful Life (in month)</label>
@@ -913,7 +903,7 @@ class ChallanComponent extends Component {
                                                                value={useful_life}
                                                                onChange={this.handleChange} name={'useful_life'}
                                                                placeholder={'Useful Life'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Warranty (in month)</label>
@@ -921,14 +911,14 @@ class ChallanComponent extends Component {
                                                                value={warranty}
                                                                onChange={this.handleChange} name={'warranty'}
                                                                placeholder={'Warranty'}
-                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.warranty && 'is-invalid'}`}/>
+                                                               className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Comments</label>
                                                         <textarea placeholder={'Comments'}
                                                                   onChange={this.handleChange} name={'comments'}
                                                                   value={comments}
-                                                                  className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
+                                                                  className={`ui-custom-input w-100`}/>
                                                     </div>
                                                     <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
                                                         <div className="ui-custom-checkbox">
@@ -943,11 +933,6 @@ class ChallanComponent extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div className={'row p-2 align-items-center mt-1'}>
-                                        <div className={'col-6 px-2 d-flex w-100'}>
-                                            <button className="mr-3 submit-btn-normal" onClick={this.addProduct} >Submit Product</button>
                                         </div>
                                     </div>
                                 </div>

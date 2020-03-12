@@ -618,7 +618,7 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn-normal"
+                        {editId === null ? <button className="submit-btn"
                                                    onClick={this.handleSubmit}>Submit Documents</button> : <>
                             <button className="submit-btn-normal mr-2" onClick={this.updateData}>
                                 Update
@@ -860,13 +860,13 @@ class DocumentInputContainer extends Component {
                 }
 
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 max-h-80vh overflow-x-hidden position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height overflow-x-hidden position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white p-3 max-h-80vh">
+                    <div className="rounded bg-white p-3 admin-input-height">
                         <nav className="navbar text-center mb-2 pl-0 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
@@ -875,6 +875,7 @@ class DocumentInputContainer extends Component {
                                 dataDisplay
                                 footer
                                 isLoading
+                                shortWidth
                                 pagination
                                 searchable
                                 edit

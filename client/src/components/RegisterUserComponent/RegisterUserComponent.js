@@ -57,7 +57,7 @@ class RegisterUserComponent extends Component {
                 <div className={'ui-register'}>
                     <img src={process.env.PUBLIC_URL + '/media/image/register.png'} alt="Register"/>
                 </div>
-                <div className={'max-h-80vh position-relative'}>
+                <div className={'min-h-80vh position-relative'}>
                         <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Register User</p>
                         </nav>
@@ -90,12 +90,12 @@ class RegisterUserComponent extends Component {
                             <input onChange={this.handleChange} name={'password'} value={password} type="password" className="ui-custom-input"
                                    id="inputAddress" placeholder="Password" />
                         </div>
-                        <div className="mb-2 ml-3">
+                        <div className="mb-20p ml-3">
                             <label htmlFor="inputEmail4" className={'ui-custom-label'}>Confirm Password</label>
                             <input type="password" className="ui-custom-input" id="inputEmail4" name='confirm_password'
                                    value={confirm_password} onChange={this.handleChange} placeholder="Confirm Password" />
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn-normal ml-3">Register</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Register</button>
                 </div>
             </div>
         );

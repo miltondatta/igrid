@@ -92,13 +92,13 @@ class OwnStock extends Component {
     render() {
         const {allData, isLoading, category_id, sub_category_id, errorObj} = this.state;
         return (
-            <div className="rounded bg-white max-h-80vh p-2">
+            <div className="rounded bg-white admin-input-height m-2 p-2">
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-20px m-0">Own Stock - Product available in my stock</p>
                 </nav>
-                <div className="row">
-                    <div className="col-md-4">
-                        <div className="px-1 mb-2">
+                <div className="row ui-top-category mb-4">
+                    <div className="col-md-5">
+                        <div className="px-1">
                             <label className={'ui-custom-label'}>Category</label>
                             <select name={'category_id'} value={category_id}
                                     onChange={this.handleChange}
@@ -111,8 +111,8 @@ class OwnStock extends Component {
                         <span className="error pl-2">Category Field is required</span>
                         }
                     </div>
-                    <div className="col-md-4">
-                        <div className="px-1 mb-2">
+                    <div className="col-md-5">
+                        <div className="px-1">
                             <label className={'ui-custom-label'}>Sub Category</label>
                             <select name={'sub_category_id'} value={sub_category_id}
                                     onChange={this.handleChange}
@@ -123,8 +123,8 @@ class OwnStock extends Component {
                             </select>
                         </div>
                     </div>
-                    <div className="col-md-4">
-                        <button type="button" onClick={this.handleSearch} className="submit-btn-normal">Search</button>
+                    <div className="col-md-2 h-100 m-0 d-flex">
+                        <button type="button" onClick={this.handleSearch} className="submit-btn-normal w-75 h-100">Search</button>
                     </div>
                 </div>
                 {isLoading ? <Spinner/> : allData.length > 0 ? <>

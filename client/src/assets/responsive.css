@@ -1,0 +1,47 @@
+@media only screen and (max-width: 2750px) {
+    .admin-input-height{
+        min-height: 87vh;
+    }
+    .min-h-80vh{min-height: 82.5vh}
+    .ui-user .ui-user-container {
+        width: 500px;
+        height: 420px;
+    }
+}
+
+@media only screen and (max-width: 1550px) {
+    .ui-hometop .ui-home-options .ui-cards p{
+        font-size: 14px;
+    }
+    .admin-input-height{
+        min-height: 84vh;
+    }
+    .ui-custom-textarea{
+        height: 260px;
+    }
+
+    .ui-user .ui-user-container {
+        width: 430px;
+        height: 390px;
+    }
+}
+
+@media only screen and (max-width: 1450px) {
+    .ui-hometop {
+         grid-template-columns: 30% 68.7%;
+     }
+    .ui-hometop .ui-home-options {
+        grid-template-columns: 49% 49%;
+    }
+    .ui-hometop .ui-home-options .ui-cards{
+        height: 230px
+    }
+    .ui-custom-textarea{
+        height: 220px;
+    }
+
+}
+
+@media only screen and (max-width: 1150px) {
+
+}

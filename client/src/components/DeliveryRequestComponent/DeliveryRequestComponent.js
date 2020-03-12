@@ -172,7 +172,7 @@ class DeliveryRequestComponent extends Component {
         })
 
         return (
-            <div className={'bg-white p-3 rounded m-3 max-h-80vh'}>
+            <div className={'bg-white p-3 rounded m-2 admin-input-height'}>
                 {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
                 {showDetails ?  <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">

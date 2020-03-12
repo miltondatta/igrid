@@ -117,7 +117,7 @@ class DeliveryReceivedComponent extends Component {
     render() {
         const {deliveryReceivedTableData, viewDetails, deliveryReceivedDetailsTableData, printDelivery, printData, isLoading} = this.state;
         return (
-            <div className={'bg-white rounded p-2 m-3'}>
+            <div className={'bg-white rounded admin-input-height p-2 m-2'}>
                 {printDelivery && <PrintDelivery resData={printData} comeBack={this.comeBack}/>}
                 <nav className="navbar text-center mb-2 ml-0 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-22px m-0">Delivery Received</p>
