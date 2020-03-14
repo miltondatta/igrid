@@ -150,7 +150,7 @@ class DocumentListSearch extends Component {
                                 description: item.description,
                                 circular_no: item.circular_no,
                                 document_date: moment(item.document_date).format('YYYY-MM-DD'),
-                                content_type: item.content_type,
+                                content_type: item.content_type === 1 ? 'notice' : 'circular',
                                 file_name: item.file_name
                             };
                             searchTableData.push(newObj);
