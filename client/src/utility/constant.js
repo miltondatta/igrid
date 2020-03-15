@@ -494,7 +494,7 @@ export const homeBanner = [
     {
         title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/request-history",
+        link: "/asset-dashboard",
         img: "/media/banner/b_2.png"
     },
     {

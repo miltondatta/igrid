@@ -150,7 +150,10 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
                     } else {
                         Challan.create(data)
                             .then(resData => {
-                                Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
+                                Vendors.findAll({
+                                    attributes: ['vendor_name'],
+                                    where: {id: resData.dataValues.vendor_id}
+                                })
                                     .then(resDataInner => {
                                         res.status(200).json({
                                             resId: resData.id,
@@ -223,7 +226,7 @@ route.post('/assets-disposal/report', async (req, res, next) => {
         WHERE assets."createdAt" BETWEEN '${date_from}' AND '${date_to}'  AND assets.disposal_by = ${user_id}
     `)
 
-    if(data.length > 0) {
+    if (data.length > 0) {
         res.status(200).json({data, status: true})
     } else {
         res.status(200).json({message: 'No Data Found'})
@@ -359,6 +362,66 @@ route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
     } catch (err) {
         console.error(err.message);
         return res.status(500).json(err);
+    }
+});
+
+// Assets Own Stock Data By User
+route.post('/assets-report/all', async (req, res) => {
+    try {
+        const [proData, proMetaData] = await db.query(`
+            SELECT distinct on (products.id) products.product_name FROM products
+        `)
+
+        let columnsString = "";
+        let dataSet = []
+
+        proData.length > 0 && proData.forEach(item => {
+            dataSet.push(item.product_name)
+        })
+
+        dataSet.forEach((item) => {
+            columnsString += '"' + item + '"' + " bigint,";
+        });
+
+        columnsString       =  columnsString.slice(0, -1);
+
+
+        const {location_id} = req.body;
+
+        const [data, metadata] = await db.query(`SELECT * FROM
+                crosstab ( 
+                $$
+                  select CONCAT(users."firstName", ' ',users."lastName") as user_name, products.id, count(distinct assets.id) as quantity from assets
+                                left join products on assets.product_id = products.id
+                                join users on users.id = assets.assign_to
+                                join user_associate_roles on users.id = user_associate_roles.user_id
+                                join locations on locations.id = user_associate_roles.location_id
+                        WHERE (locations.id = '${location_id}')
+                        GROUP BY products.id, user_name
+                        ORDER BY 1,2
+                $$
+                ) AS ct ( user_name text , ${columnsString})`);
+
+        console.log(data, 404)
+
+        // const [data, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ',users."lastName") as user_name,
+        //                                         asset_categories.category_name, asset_sub_categories.sub_category_name,
+        //                                          products.product_name, count(distinct assets.id) as quantity from assets
+        //                                     join asset_categories on assets.asset_category = asset_categories.id
+        //                                     join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+        //                                     join products on assets.product_id = products.id
+        //                                     join users on users.id = assets.assign_to
+        //                                     join user_associate_roles on users.id = user_associate_roles.user_id
+        //                                     join locations on locations.id = user_associate_roles.location_id
+        //                             where locations.id = ${location_id}
+        //                             group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name, users."firstName", users."lastName"`);
+
+        if (data.length > 0) {
+            return res.status(200).json({data, status: true});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(200).json({message: "Something Blew Up!"});
     }
 });
 
