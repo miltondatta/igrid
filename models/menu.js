@@ -1,7 +1,7 @@
 const db          = require('../config/db');
 const Sequelize   = require('sequelize');
 
-const Menu = db.define('Menu', {
+const menu = db.define('menus', {
     name: Sequelize.STRING,
     icon: Sequelize.STRING,
     subCat: Sequelize.BOOLEAN,
@@ -12,4 +12,4 @@ const Menu = db.define('Menu', {
     order_by: Sequelize.INTEGER
 });
 
-module.exports = Menu;
+module.exports = menu;
