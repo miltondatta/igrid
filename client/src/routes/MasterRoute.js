@@ -293,6 +293,10 @@ const AsyncDeliveryReceivedContainer = Loadable({
     loader: () => import('../containers/DeliveryReceivedContainer'),
     loading: Loader,
 });
+const AsyncMenuContainer = Loadable({
+    loader: () => import('../containers/MenuContainer'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -396,6 +400,7 @@ class MasterRoute extends Component{
                             <Route exact path='/documents/document-sub-category' component={AsyncDocumentSubCategory}/>
                             <Route exact path='/documents/details/:id' component={AsyncDocumentListDetails}/>
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
+                            <Route exact path='/admin/menu' component={AsyncMenuContainer}/>
                 </Switch>
                     </div>
                 )

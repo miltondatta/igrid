@@ -214,6 +214,12 @@ export const systemAdmin = [
                 link: '/admin/depreciation-methods',
                 icon: ""
             },
+            {
+                id: 8,
+                name: 'Menu',
+                link: '/admin/menu',
+                icon: ""
+            },
         ]
     },
     {
