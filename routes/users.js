@@ -248,8 +248,40 @@ router.put('/users/password-reset/:id', (req,res) => {
 
 // User Login Logs
 router.get('/user-login-logs', async (req, res, next) => {
-    const [results, metadata] = await db.query(`SELECT users.id, CONCAT(users."firstName", ' ' ,users."lastName") as name, users.email, user_login_logs.user_ip,user_login_logs.date,user_login_logs.time FROM user_login_logs  JOIN users ON user_login_logs.user_id = users."id"`)
-    res.status(200).json(results)
+    const [results] = await db.query(`SELECT users.id,
+                                               CONCAT(users."firstName", ' ', users."lastName") as name,
+                                               users.email,
+                                               users.address,
+                                               users.phone_number,
+                                               user_login_logs.user_ip,
+                                               user_login_logs.date,
+                                               user_login_logs.time
+                                        FROM user_login_logs
+                                                 JOIN users ON user_login_logs.user_id = users."id"`);
+    res.status(200).json(results);
+});
+
+// User Login Logs By Credential
+router.post('/user-login-logs/by/credential', async (req, res) => {
+    try{
+        const {from_date, to_date} = req.body;
+        const [results] = await db.query(`SELECT users.id,
+                                           CONCAT(users."firstName", ' ', users."lastName") as name,
+                                           users.email,
+                                           users.address, 
+                                           users.phone_number,
+                                           user_login_logs.user_ip,
+                                           user_login_logs.date,
+                                           user_login_logs.time
+                                    FROM user_login_logs
+                                             JOIN users ON user_login_logs.user_id = users.id
+                                    where user_login_logs.date between '${from_date}' and
+                                            '${to_date}'`);
+        res.status(200).json(results);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({err});
+    }
 });
 
 // Get All User By Id
