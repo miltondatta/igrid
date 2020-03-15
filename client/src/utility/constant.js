@@ -368,6 +368,26 @@ export const systemAdmin = [
             }
         ]
     },
+    {
+        id: 20,
+        name: 'Report',
+        icon: 'icofont-chart-histogram',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Delivery Report (All)',
+                link: '/admin/delivery-report/all',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Assets Report (All)',
+                link: '/admin/asset-report/all',
+                icon: ""
+            },
+        ]
+    },
 ];
 
 export const locationCategory = [
