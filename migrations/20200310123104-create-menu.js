@@ -14,7 +14,7 @@ module.exports = {
       icon: {
         type: Sequelize.STRING
       },
-      subCat: {
+      sub_menu: {
         type: Sequelize.BOOLEAN
       },
       link: {

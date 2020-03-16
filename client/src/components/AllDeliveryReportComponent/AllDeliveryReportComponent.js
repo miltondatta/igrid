@@ -1,13 +1,15 @@
-import Axios from "axios";
 import React, {Component} from 'react';
-import {apiUrl} from "../../../utility/constant";
-import LocationsWithHOptions from "../../../utility/component/locationWithHierarchy";
-import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
-import ReactExcelExport from "../../../module/react-excel-export/reactExcelExport";
-import ErrorModal from "../../../utility/error/errorModal";
-import SuccessModal from "../../../utility/success/successModal";
+import Axios from "axios";
+import {apiUrl} from "../../utility/constant";
+import ErrorModal from "../../utility/error/errorModal";
+import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
+import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
+import jwt from "jsonwebtoken";
+import SuccessModal from "../../utility/success/successModal";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 
-class DailyReportComponent extends Component {
+class AllDeliveryReportComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -18,7 +20,7 @@ class DailyReportComponent extends Component {
             date_from: '',
             haveData: false,
             errorMessage: '',
-            dailyReport: {},
+            assetReport: [],
             selectData: [],
             hierarchies: [],
         }
@@ -65,9 +67,9 @@ class DailyReportComponent extends Component {
             location_id: parentID,
         }
         if (date_from !== '' && date_to !== '' && parentID !== 0) {
-            Axios.get(apiUrl() + 'mis/basic/report/daily' , {params: data})
+            Axios.post(apiUrl() + 'requisition-approve/delivery/all' , data)
                 .then(res => {
-                    if (res.data.message) {
+                    if (!res.data.status) {
                         this.setState({
                             haveData: false,
                             error: true,
@@ -82,7 +84,7 @@ class DailyReportComponent extends Component {
                     } else {
                         this.setState({
                             haveData: true,
-                            dailyReport: res.data
+                            assetReport: res.data.data
                         })
                     }
                 })
@@ -103,7 +105,7 @@ class DailyReportComponent extends Component {
     }
 
     render() {
-        const {hierarchies, selectData, parentID, date_from, date_to, dailyReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict} = this.state
+        const {hierarchies, parentID, assetReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict, dailyReport, date_to, date_from} = this.state
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return(
@@ -119,45 +121,25 @@ class DailyReportComponent extends Component {
                 </div>
             )
         })
-        const reportHeader = haveData && (dailyReport[Object.keys(dailyReport)[0]].length > 0 && Object.keys(dailyReport[Object.keys(dailyReport)[0]][0]).map(item => {
+        const reportHeader = assetReport.length > 0 && Object.keys(assetReport[0]).map(item => {
             return(
-                <div>
-                    {item.replace('_', ' ')}
+                <div style={{flexBasis: '14.3%'}}>
+                    {item.replace('_', ' ').replace("_", ' ')}
                 </div>
             )
-        }))
-        const reportBody = haveData && Object.keys(dailyReport).map((main, index) => {
-            return (
-                <>
-                    <div className={'ui-report-title'}>
-                        <div>
-                            {main}
-                        </div>
-                        {
-                            Object.keys(dailyReport[main][0]).map((data, index2) => {
-                                return(
-                                    <div key={index2}>
+        })
 
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                    {dailyReport[main].map((mainData, index3) => {
-                        return (
-                            <div key={index} className="ui-report-header">
-                                {
-                                    Object.keys(dailyReport[main][0]).map((data, index2) => {
-                                        return(
-                                            <div key={index2}>
-                                                {mainData[data] ? mainData[data] : '0'}
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        )})}
-                </>
+        const reportBody = assetReport.length > 0 && assetReport.map((main, index) => {
+            return (
+                <div key={index} className="ui-report-header">
+                    <div style={{flexBasis: '14.3%'}}>{main.item_name}</div>
+                    <div style={{flexBasis: '14.3%'}}>{main.delivery_date}</div>
+                    <div style={{flexBasis: '14.3%'}}>{main.quantity}</div>
+                    <div style={{flexBasis: '14.3%'}}>{main.delivery_to}</div>
+                    <div style={{flexBasis: '14.3%'}}>{main.delivered_by}</div>
+                    <div style={{flexBasis: '14.3%'}}>{main.receivers_designation}</div>
+                    <div style={{flexBasis: '14.3%'}}>{main.location}</div>
+                </div>
             )})
 
         return (
@@ -188,7 +170,14 @@ class DailyReportComponent extends Component {
                         </div>
                         <div className="ui-btn-container rounded">
                             <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
-                            <button className={'mx-2 report-reset-btn'} onClick={() => {window.location.reload()}}>Reset</button>
+                            <button className={'mx-2 report-reset-btn'} onClick={() => {
+                                this.setState({
+                                    assetReport: [],
+                                    date_to: '',
+                                    date_from: '',
+                                    parentID: 0
+                                })
+                            }}>Reset</button>
                             <div className={'position-relative'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
@@ -213,4 +202,4 @@ class DailyReportComponent extends Component {
     }
 }
 
-export default DailyReportComponent;
+export default AllDeliveryReportComponent;

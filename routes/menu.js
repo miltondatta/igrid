@@ -42,12 +42,12 @@ route.get('/menu/get', async (req, res) => {
 
 route.post('/menu/entry', async (req, res) => {
     try {
-        const {name, icon, subCat, link, parent_id, module_id, visible, order_by} = req.body;
+        const {name, icon, sub_menu, link, parent_id, module_id, visible, order_by} = req.body;
 
         const newMenu = {
             name,
             icon,
-            subCat,
+            sub_menu,
             link,
             parent_id,
             module_id,
@@ -69,7 +69,7 @@ route.post('/menu/entry', async (req, res) => {
         });
 
         if (menus.length > 0) return res.status(400).json({
-            msg: 'This Menu is already exist!',
+            msg: 'This MenuComponent is already exist!',
             error: true
         });
 
@@ -79,7 +79,7 @@ route.post('/menu/entry', async (req, res) => {
             error: true
         });
 
-        return res.status(200).json({msg: 'New Menu saved successfully.', success: true});
+        return res.status(200).json({msg: 'New MenuComponent saved successfully.', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({err: err});
@@ -88,13 +88,13 @@ route.post('/menu/entry', async (req, res) => {
 
 route.post('/menu/update', async (req, res) => {
     try {
-        const {id, name, icon, subCat, link, parent_id, module_id, visible, order_by} = req.body;
+        const {id, name, icon, sub_menu, link, parent_id, module_id, visible, order_by} = req.body;
 
         const updateMenu = {
             id,
             name,
             icon,
-            subCat,
+            sub_menu,
             link,
             parent_id,
             module_id,
@@ -104,7 +104,7 @@ route.post('/menu/update', async (req, res) => {
 
         const status = await Menu.findOne({where: {id}});
         if (!status) return res.status(400).json({
-            msg: 'This Menu didn\'t found!',
+            msg: 'This MenuComponent didn\'t found!',
             error: true
         });
 
@@ -115,7 +115,7 @@ route.post('/menu/update', async (req, res) => {
         });
 
         return res.status(200).json({
-            msg: 'Menu Information updated successfully.',
+            msg: 'MenuComponent Information updated successfully.',
             success: true
         });
     } catch (err) {
@@ -129,14 +129,14 @@ route.delete('/menu/delete/:id', async (req, res) => {
         const id = req.params.id;
 
         const status = await Menu.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Menu didn\'t found!', error: true});
+        if (!status) return res.status(400).json({msg: 'This MenuComponent didn\'t found!', error: true});
 
         if (status.parent_id === 0) {
             const menus = await Menu.findAll({
                 where: {parent_id: id}
             });
             if (menus.length > 0) return res.status(400).json({
-                msg: 'This Menu has Sub Menu! So Delete First Sub Menu.',
+                msg: 'This MenuComponent has Sub MenuComponent! So Delete First Sub MenuComponent.',
                 error: true
             });
         }
@@ -144,7 +144,25 @@ route.delete('/menu/delete/:id', async (req, res) => {
         const menu = await Menu.destroy({where: {id}});
         if (!menu) return res.status(400).json({msg: 'Please try again!', error: true});
 
-        return res.status(200).json({msg: 'One Menu deleted successfully!', success: true});
+        return res.status(200).json({msg: 'One MenuComponent deleted successfully!', success: true});
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: err.message});
+    }
+});
+
+// Get Menu By Credential
+route.post('/menu/by/credential', async (req, res) => {
+    try {
+        const {module_id, parent_id, sub_menu} = req.body;
+
+        let queryText = '';
+        if (module_id || module_id === 0) queryText = 'where menus.module_id = ' + module_id;
+        if (parent_id || parent_id === 0) queryText += ' and menus.parent_id = ' + parent_id;
+        if (typeof (sub_menu) === "boolean") queryText += ' and menus.sub_menu = ' + sub_menu;
+
+        const [data] = await db.query(`select * from menus ${queryText}`);
+        return res.status(200).json(data);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err.message});

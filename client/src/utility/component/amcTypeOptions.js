@@ -6,7 +6,8 @@ class AMCTypeOptions extends Component {
     constructor(props){
         super(props)
         this.state = {
-            data: []
+            data: [],
+            run: false
         }
     }
 
@@ -17,7 +18,7 @@ class AMCTypeOptions extends Component {
     getData = () => {
         Axios.get(apiUrl() + 'amc_types/options')
             .then(resData => {
-                console.log(resData.data, 17)
+
                 this.setState({
                     data: resData.data
                 })

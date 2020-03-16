@@ -136,6 +136,12 @@ export const sidenav = [
         subCat: true,
         categories: [
             {
+                id: 5,
+                name: 'Stock Report',
+                link: '/stock-report',
+                icon: ""
+            },
+            {
                 id: 1,
                 name: 'Delivery Report',
                 link: '/delivery-report',
@@ -212,6 +218,12 @@ export const systemAdmin = [
                 id: 7,
                 name: 'Depreciation Methods',
                 link: '/admin/depreciation-methods',
+                icon: ""
+            },
+            {
+                id: 8,
+                name: 'Menu',
+                link: '/admin/menu',
                 icon: ""
             },
         ]
@@ -488,7 +500,7 @@ export const homeBanner = [
     {
         title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/request-history",
+        link: "/asset-dashboard",
         img: "/media/banner/b_2.png"
     },
     {
