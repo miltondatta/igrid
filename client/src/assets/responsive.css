@@ -2,6 +2,9 @@
     .admin-input-height{
         min-height: 87vh;
     }
+    .admin-input-height-max{
+        max-height: 87vh;
+    }
     .min-h-80vh{min-height: 82.5vh}
     .ui-user .ui-user-container {
         width: 500px;

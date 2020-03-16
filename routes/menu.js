@@ -42,12 +42,12 @@ route.get('/menu/get', async (req, res) => {
 
 route.post('/menu/entry', async (req, res) => {
     try {
-        const {name, icon, subCat, link, parent_id, module_id, visible, order_by} = req.body;
+        const {name, icon, sub_menu, link, parent_id, module_id, visible, order_by} = req.body;
 
         const newMenu = {
             name,
             icon,
-            subCat,
+            sub_menu,
             link,
             parent_id,
             module_id,
@@ -88,13 +88,13 @@ route.post('/menu/entry', async (req, res) => {
 
 route.post('/menu/update', async (req, res) => {
     try {
-        const {id, name, icon, subCat, link, parent_id, module_id, visible, order_by} = req.body;
+        const {id, name, icon, sub_menu, link, parent_id, module_id, visible, order_by} = req.body;
 
         const updateMenu = {
             id,
             name,
             icon,
-            subCat,
+            sub_menu,
             link,
             parent_id,
             module_id,
@@ -145,6 +145,24 @@ route.delete('/menu/delete/:id', async (req, res) => {
         if (!menu) return res.status(400).json({msg: 'Please try again!', error: true});
 
         return res.status(200).json({msg: 'One MenuComponent deleted successfully!', success: true});
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: err.message});
+    }
+});
+
+// Get Menu By Credential
+route.post('/menu/by/credential', async (req, res) => {
+    try {
+        const {module_id, parent_id, sub_menu} = req.body;
+
+        let queryText = '';
+        if (module_id || module_id === 0) queryText = 'where menus.module_id = ' + module_id;
+        if (parent_id || parent_id === 0) queryText += ' and menus.parent_id = ' + parent_id;
+        if (typeof (sub_menu) === "boolean") queryText += ' and menus.sub_menu = ' + sub_menu;
+
+        const [data] = await db.query(`select * from menus ${queryText}`);
+        return res.status(200).json(data);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err.message});
