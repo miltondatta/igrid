@@ -105,7 +105,11 @@ class AssetDisposalReportComponent extends Component {
                             <div className="col-md-4">
                                 <div className="ui-report-btn-header rounded p-2">
                                     <button onClick={this.handleSubmit} className={'mx-2 submit-btn-normal'}>Submit</button>
-                                    <button className={'mx-2 reset-btn-normal'}>Reset</button>
+                                    <button className={'mx-2 reset-btn-normal'} onClick={() => {
+                                        this.setState({
+                                            date_from: '', date_to: ''
+                                        })
+                                    }}>Reset</button>
                                     <div className={'position-relative'}>
                                         <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export</button>
                                         {optionDropDown && <div className={'ui-dropdown-btn'}>
