@@ -188,7 +188,7 @@ class DailyReportComponent extends Component {
                         </div>
                         <div className="ui-btn-container rounded">
                             <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
-                            <button className={'mx-2 report-reset-btn'}>Reset</button>
+                            <button className={'mx-2 report-reset-btn'} onClick={() => {window.location.reload()}}>Reset</button>
                             <div className={'position-relative'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
