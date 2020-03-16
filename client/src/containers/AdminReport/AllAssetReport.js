@@ -1,9 +1,9 @@
 import React from 'react'
-import AllAssetReportComponent from "../../components/AllAssetReportComponent/AllAssetReportComponent";
+import AllAssetReportCompoenent from "../../components/AllAssetReportCompoenent/AllAssetReportCompoenent";
 
 const AllAssetReport = () => {
     return(
-        <AllAssetReportComponent />
+        <AllAssetReportCompoenent />
     )
 }
 

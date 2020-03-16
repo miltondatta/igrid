@@ -217,6 +217,12 @@ export const systemAdmin = [
                 link: '/admin/depreciation-methods',
                 icon: ""
             },
+            {
+                id: 8,
+                name: 'Menu',
+                link: '/admin/menu',
+                icon: ""
+            },
         ]
     },
     {
@@ -465,7 +471,7 @@ export const homeBanner = [
     {
         title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/request-history",
+        link: "/asset-dashboard",
         img: "/media/banner/b_2.png"
     },
     {

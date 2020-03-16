@@ -46,7 +46,7 @@ const HomeComponent = () => {
                     <NoticeBoardComponent />
                 </div>
                 <div className={'ui-home-options'}>
-                    <Link to={'/request-history'}>
+                    <Link to={'/asset-dashboard'}>
                         <div className={'ui-cards ui-asset'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/asset.png'} alt="document_management"/>

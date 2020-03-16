@@ -187,9 +187,9 @@ class DocumentInputContainer extends Component {
                                         description: item.description,
                                         document_date: moment(item.document_date).format('YYYY-MM-DD'),
                                         circular_no: item.circular_no,
-                                        content_type: item.content_type,
-                                        display_notice: item.display_notice,
-                                        status: item.status
+                                        content_type: item.content_type === 1 ? 'notice' : 'circular',
+                                        display_notice: item.display_notice ? 'on' : 'off',
+                                        current_status: item.status ? 'active' : 'inactive'
                                     };
                                     allProjectTableData.push(newObj);
                                 });
@@ -741,7 +741,6 @@ class DocumentInputContainer extends Component {
     render() {
         const {title, headTitle, formType} = this.props;
         const {error, errorMessage, isLoading, allProjectTableData, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
-
         return (
             <>
                 {error &&

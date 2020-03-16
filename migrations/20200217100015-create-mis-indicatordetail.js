@@ -15,7 +15,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       indicatormaster_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'mis_indicatormasters',
+          key: 'id'
+        }
       },
       parent_location_id: {
         type: Sequelize.INTEGER,

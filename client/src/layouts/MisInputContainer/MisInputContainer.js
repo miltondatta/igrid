@@ -7,12 +7,15 @@ import {validateInput} from "../../utility/custom";
 import Spinner from "../Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import moment from "moment";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class MisInputContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
             allData: [],
+            tableData: [],
             indicatormaster_id: '',
             indicatormaster_name: '',
             indicatormaster_code: '',
@@ -40,26 +43,58 @@ class MisInputContainer extends Component {
     };
 
     getData = () => {
-        const {getApi} = this.props;
+        const {getApi, formType} = this.props;
         this.setState({
             isLoading: true
         }, () => {
             Axios.get(apiUrl() + getApi + '/all')
                 .then(res => {
                     this.setState({
-                        allData: res.data
-                    })
-                })
-                .then(res => {
-                    this.setState({
-                        isLoading: false
+                        allData: res.data,
+                        isLoading: false,
+                        tableData: []
+                    }, () => {
+                        let tableData = [];
+                        switch (formType) {
+                            case "INDICATORCATEGORY":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category_name: item.indicatormaster_name,
+                                        indicator_code: item.indicatormaster_code,
+                                        description: item.description,
+                                        is_default: item.is_default ? 'On' : 'Off'
+                                    };
+                                    tableData.push(newObj);
+                                });
+                                return this.setState({
+                                    tableData: tableData,
+                                    isLoading: false
+                                });
+                            case "INDICATORSUBCATEGORY":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category_name: item.mis_indicatormaster.indicatormaster_name,
+                                        indicator: item.indicator_name,
+                                        location: item.location.location_name,
+                                        item_no: item.item_no,
+                                        order_by: item.order_by,
+                                        is_default: item.is_default ? 'On' : 'Off'
+                                    };
+                                    tableData.push(newObj);
+                                });
+                                return this.setState({
+                                    tableData: tableData,
+                                    isLoading: false
+                                });
+                            default:
+                                return;
+                        }
                     })
                 })
                 .catch(err => {
-                    console.log(err)
-                    this.setState({
-                        isLoading: false
-                    })
+                    console.log(err.response);
                 })
         })
     };
@@ -96,18 +131,20 @@ class MisInputContainer extends Component {
 
     handleSubmit = () => {
         const {getApi} = this.props;
-        if (Object.values(this.validate()).includes(false)) {
-            return
-        }
+        if (Object.values(this.validate()).includes(false)) return;
         Axios.post(apiUrl() + getApi + '/store', this.getApiData())
             .then(res => {
                 const {success, msg} = res.data;
                 this.setState({
                     allData: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
                 }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                     this.emptyStateValue();
                 })
             })
@@ -118,9 +155,14 @@ class MisInputContainer extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -148,17 +190,20 @@ class MisInputContainer extends Component {
 
     updateData = () => {
         const {getApi} = this.props;
-        if (Object.values(this.validate()).includes(false)) {
-            return
-        }
+        if (Object.values(this.validate()).includes(false)) return;
         Axios.post(apiUrl() + getApi + '/update', this.getApiData())
             .then(resData => {
                 const {success, msg} = resData.data;
                 this.setState({
                     allData: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                 });
             })
             .then(() => {
@@ -168,9 +213,14 @@ class MisInputContainer extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -185,10 +235,14 @@ class MisInputContainer extends Component {
                 const {success, msg} = resData.data;
                 this.setState({
                     allData: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
                 }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                     this.emptyStateValue();
                     this.getData();
                 });
@@ -198,9 +252,14 @@ class MisInputContainer extends Component {
                 if (fullError.name === 'SequelizeForeignKeyConstraintError') {
                     if (msg) {
                         this.setState({
-                            success: false,
                             error: error,
                             errorMessage: error && msg
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false
+                                })
+                            }, 2300);
                         })
                     }
                 }
@@ -454,100 +513,27 @@ class MisInputContainer extends Component {
         }
     };
 
-    tableBody = () => {
+    docDeleteModal = id => {
+        const {tableData} = this.state;
         const {formType} = this.props;
-        const {allData} = this.state;
-        let table_body = '';
+        tableData.length && tableData.find(item => {
+            if (item.id === id) {
+                let deleteContentName, deleteModalTitle;
+                if (formType === 'INDICATORCATEGORY') {deleteContentName = item.category_name; deleteModalTitle = 'Delete Indicator Category';}
+                if (formType === 'INDICATORSUBCATEGORY') {deleteContentName = item.indicator; deleteModalTitle = 'Delete Indicator';}
 
-        switch (formType) {
-            case "INDICATORCATEGORY":
-                table_body = allData.length > 0 && allData.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.indicatormaster_name}</td>
-                        <td>{item.indicatormaster_code}</td>
-                        <td>{item.description.substring(0, 20)}{item.description.length > 20 ? ' ...' : ''}</td>
-                        <td>
-                            {item.is_default ?
-                                <>
-                                    <span className="badge badge-success">
-                                        <i className="far fa-check-circle"></i>
-                                    </span>
-                                </>
-                                :
-                                <>
-                                    <span className="badge badge-danger">
-                                        <i className="far fa-times-circle"></i>
-                                    </span>
-                                </>}
-                        </td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.indicatormaster_name,
-                                    deleteModalTitle: 'Delete Indicator Category'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            case "INDICATORSUBCATEGORY":
-                table_body = allData.length > 0 && allData.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.mis_indicatormaster.indicatormaster_name}</td>
-                        <td>{item.location.location_name}</td>
-                        <td>{item.indicator_name}</td>
-                        <td>{item.item_no}</td>
-                        <td>{item.order_by}</td>
-                        <td>
-                            {item.is_default ?
-                                <>
-                                    <span className="badge badge-success">
-                                        <i className="far fa-check-circle"></i>
-                                    </span>
-                                </>
-                                :
-                                <>
-                                    <span className="badge badge-danger">
-                                        <i className="far fa-times-circle"></i>
-                                    </span>
-                                </>}
-                        </td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.indicator_name,
-                                    deleteModalTitle: 'Delete Indicator'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            default:
-                return;
-        }
+                this.setState({
+                    deleteId: item.id,
+                    deleteContentName: deleteContentName,
+                    deleteModalTitle: deleteModalTitle
+                });
+            }
+        });
     };
 
     render() {
-        const {title, table_header, headTitle} = this.props;
-        const {error, errorMessage, isLoading, allData, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
+        const {title, headTitle} = this.props;
+        const {error, errorMessage, isLoading, success, successMessage, deleteId, deleteContentName, deleteModalTitle, tableData} = this.state;
 
         return (
             <>
@@ -569,21 +555,22 @@ class MisInputContainer extends Component {
                         <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <Spinner/> : allData.length > 0 ? <>
-                            <table className="table table-bordered table-striped table-hover text-center">
-                                <thead>
-                                <tr>
-                                    {table_header.map((item, index) => (
-                                        <th key={index}>{item}</th>
-                                    ))}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.tableBody()}
-                                </tbody>
-                            </table>
-                            <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
-                                 aria-labelledby="rowDeleteModal" aria-hidden="true">
+                        {isLoading ? <Spinner/> : tableData.length > 0 ? <>
+                            <ReactDataTable
+                                dataDisplay
+                                footer
+                                isLoading
+                                shortWidth
+                                pagination
+                                searchable
+                                edit
+                                tableData={tableData}
+                                updateEdit={this.updateEdit}
+                                docDelete={this.docDeleteModal}
+                                bigTable
+                            />
+                            <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
+                                 aria-labelledby="docDeleteModal" aria-hidden="true">
                                 <div className="modal-dialog modal-lg" role="document">
                                     <div className="modal-content">
                                         <div className="modal-header">

@@ -150,7 +150,7 @@ class DocumentListSearch extends Component {
                                 description: item.description,
                                 circular_no: item.circular_no,
                                 document_date: moment(item.document_date).format('YYYY-MM-DD'),
-                                content_type: item.content_type,
+                                content_type: item.content_type === 1 ? 'notice' : 'circular',
                                 file_name: item.file_name
                             };
                             searchTableData.push(newObj);
@@ -185,32 +185,6 @@ class DocumentListSearch extends Component {
             .catch(err => {
                 console.log(err.response);
             });
-    };
-
-    downloadFile = (e, file_name) => {
-        e.preventDefault();
-
-        Axios.get(apiUrl() + 'document/list/download/' + file_name)
-            .then(() => {
-                const link = document.createElement('a');
-                link.href = apiUrl() + 'document/list/download/' + file_name;
-                link.setAttribute('download', file_name);
-                link.click();
-
-                this.setState({
-                    fileError: false
-                })
-            })
-            .catch(err => {
-                const {error, msg} = err.response.data;
-                if (msg) {
-                    this.setState({
-                        fileError: error,
-                        fileErrorMessage: error && msg
-                    })
-                }
-                console.log(err.response);
-            })
     };
 
     deleteKey = (index) => {
@@ -308,9 +282,9 @@ class DocumentListSearch extends Component {
                     <div className="px-2 py-1 my-1">
                         <div className={`bg-white rounded p-3 my-1 ui-document-search`}>
                             <h5 className="ui-document-search-title">Document Search</h5>
-                            <div className="">
+                            <div>
                                 <div className="grid-3">
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>Category</label>
                                         <select name={'category_id'} value={category_id}
                                                 onChange={this.handleChange}
@@ -322,7 +296,7 @@ class DocumentListSearch extends Component {
                                         <span className="error">{errorMessage}</span>
                                         }
                                     </div>
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>Sub Category</label>
                                         <select name={'sub_category_id'} value={sub_category_id}
                                                 onChange={this.handleChange}
@@ -334,7 +308,7 @@ class DocumentListSearch extends Component {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>Title</label>
                                         <select name={'title'} value={title}
                                                 onChange={this.handleChange}
@@ -348,7 +322,7 @@ class DocumentListSearch extends Component {
                                     </div>
                                 </div>
                                 <div className="grid-3 my-13p">
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>Content Type</label>
                                         <select name={'content_type'} value={content_type}
                                                 onChange={this.handleChange}
@@ -359,7 +333,7 @@ class DocumentListSearch extends Component {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>Circular No</label>
                                         <input
                                             placeholder='Circular No'
@@ -368,7 +342,7 @@ class DocumentListSearch extends Component {
                                             onChange={this.handleChange}
                                             className={`ui-custom-input`}/>
                                     </div>
-                                    <div className="">
+                                    <div>
                                         <div className={'position-relative'}>
                                             <input onFocus={() => {
                                                 this.setState({receivedByFocus: true})
@@ -393,7 +367,7 @@ class DocumentListSearch extends Component {
                                     </div>
                                 </div>
                                 <div className="grid-3">
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>From Date</label>
                                         <DatePicker timePicker={false}
                                                     name={'document_date'}
@@ -403,7 +377,7 @@ class DocumentListSearch extends Component {
                                                     ranges={disabledRanges}
                                                     value={from_date}/>
                                     </div>
-                                    <div className="">
+                                    <div>
                                         <label className={'ui-custom-label'}>To Date</label>
                                         <DatePicker timePicker={false}
                                                     name={'document_date'}
