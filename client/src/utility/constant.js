@@ -155,7 +155,7 @@ export const report = [
             {
                 id: 5,
                 name: 'Stock Report',
-                link: '/stock-report',
+                link: '/report/stock-report',
                 icon: ""
             },
             {
