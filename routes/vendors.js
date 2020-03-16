@@ -18,7 +18,6 @@ let upload =  multer({
     fileFilter: (req, file, cb) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
             return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
-
         }
         cb(null, true);
     }
