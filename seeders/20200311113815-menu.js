@@ -5,7 +5,7 @@ module.exports = {
       return queryInterface.bulkInsert('menus', [{
         name: 'System Config',
         icon: 'icofont-ui-settings',
-        subCat: true,
+        sub_menu: true,
         link: '',
         parent_id: 0,
         module_id: 0,
@@ -17,7 +17,7 @@ module.exports = {
       {
         name: 'Modules',
         icon: '',
-        subCat: false,
+        sub_menu: false,
         link: '/admin/modules',
         parent_id: 1,
         module_id: 0,
@@ -29,7 +29,7 @@ module.exports = {
       {
         name: 'Requisition',
         icon: 'fas fa-history',
-        subCat: true,
+        sub_menu: true,
         link: '',
         parent_id: 0,
         module_id: 1,
@@ -41,7 +41,7 @@ module.exports = {
       {
         name: 'New Requisition',
         icon: '',
-        subCat: false,
+        sub_menu: false,
         link: '/requisition',
         parent_id: 3,
         module_id: 1,
