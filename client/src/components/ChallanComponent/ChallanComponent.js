@@ -287,15 +287,12 @@ class ChallanComponent extends Component {
 
     validate = (forr) => {
         const {project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,
-            asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,warranty, condition,comments,barcode,
-            amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
+            rate,is_amc,book_value,salvage_value,
+            amc_charge, amc_expire_date, amc_type} = this.state
         let errorDict = null
         if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
-                amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
-                amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
-                amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
@@ -305,6 +302,15 @@ class ChallanComponent extends Component {
                 rate: typeof rate !== 'undefined' && rate !== '',
                 book_value: typeof book_value !== 'undefined' && book_value !== '',
                 salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
+            }
+            if (is_amc){
+                 errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
+                 errorDict['amc_expire_date'] =  typeof amc_expire_date !== 'undefined' && amc_expire_date !== ''
+                 errorDict['amc_type'] =  typeof amc_type !== 'undefined' && amc_type !== ''
+            } else {
+                errorDict['amc_charge'] = true
+                errorDict['amc_expire_date'] = true
+                errorDict['amc_type'] = true
             }
             this.setState({
                 errorDictAsset: errorDict
@@ -346,6 +352,7 @@ class ChallanComponent extends Component {
     }
 
     addProduct = () => {
+        console.log(this.validate('assets'), 349)
         if (Object.values(this.validate('assets')).includes(false)) {
             return
         }

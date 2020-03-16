@@ -329,7 +329,7 @@ class AssetRegComponent extends Component {
 
     validate = (forr) => {
         const {challan_no, challan_date, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, project_id,asset_category,asset_sub_category,cost_of_purchase,
-            installation_cost,carrying_cost, other_cost, rate,book_value,salvage_value,  amc_charge, amc_expire_date, amc_type} = this.state
+            installation_cost,carrying_cost, other_cost, rate,book_value,salvage_value,  amc_charge, amc_expire_date, amc_type, is_amc} = this.state
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
@@ -348,9 +348,9 @@ class AssetRegComponent extends Component {
         } else if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
-                amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
-                amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
-                amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
+                amc_charge: is_amc && typeof amc_charge !== 'undefined' && amc_charge !== '',
+                amc_expire_date: is_amc && typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
+                amc_type: is_amc && typeof amc_type !== 'undefined' && amc_type !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
@@ -360,6 +360,15 @@ class AssetRegComponent extends Component {
                 rate: typeof rate !== 'undefined' && rate !== '',
                 book_value: typeof book_value !== 'undefined' && book_value !== '',
                 salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
+            }
+            if (is_amc){
+                errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
+                errorDict['amc_expire_date'] =  typeof amc_expire_date !== 'undefined' && amc_expire_date !== ''
+                errorDict['amc_type'] =  typeof amc_type !== 'undefined' && amc_type !== ''
+            } else {
+                errorDict['amc_charge'] = true
+                errorDict['amc_expire_date'] = true
+                errorDict['amc_type'] = true
             }
             this.setState({
                 errorDictAsset: errorDict

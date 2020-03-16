@@ -365,11 +365,65 @@ route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
     }
 });
 
+// Assets Own Stock And Details
+route.post('/assets/all/by/id', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+
+        const [data, metadata] = await db.query(`select
+                                       assets.id,
+                                       products.product_name,
+                                       asset_categories.category_name,
+                                       asset_sub_categories.sub_category_name,
+                                       assets.product_serial,
+                                       assets.cost_of_purchase,
+                                       assets.installation_cost,
+                                       assets.carrying_cost,
+                                       assets.other_cost,
+                                       assets.rate,
+                                       assets.effective_date,
+                                       assets.book_value,
+                                       assets.salvage_value,
+                                       assets.useful_life,
+                                       assets.last_effective_date,
+                                       assets.warranty,
+                                       assets.last_warranty_date,
+                                       conditions.condition_type,
+                                       assets.comments,
+                                       assets.disposal_reason,
+                                       asset_categories.category_name,
+                                       asset_sub_categories.sub_category_name,
+                                       products.product_name,
+                                       count(distinct assets.id) as quantity
+                                from assets
+                                         join asset_categories on assets.asset_category = asset_categories.id
+                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         join products on assets.product_id = products.id
+                                         join conditions on assets.condition = conditions.id
+                                ${queryText} 
+                                group by assets.id, conditions.condition_type, products.product_name, asset_categories.category_name,
+                                            asset_sub_categories.sub_category_name`);
+
+        if (data.length > 0) {
+            return res.status(200).json({response: data, status: true });
+        } else {
+            return res.status(200).json({message: "No Data Found"});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(200).json({message: err.message});
+    }
+});
+
 // Assets Own Stock Data By User
 route.post('/assets-report/all', async (req, res) => {
     try {
         const {location_id} = req.body;
-
         const [data, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ',users."lastName") as user_name,
                                                 asset_categories.category_name, asset_sub_categories.sub_category_name,
                                                  products.product_name, count(distinct assets.id) as quantity from assets

@@ -305,6 +305,14 @@ const AsyncAssetRequisition = Loadable({
     loader: () => import('../containers/AssetReqHome'),
     loading: Loader,
 });
+const AsyncAllDeliveryReport = Loadable({
+    loader: () => import('../containers/AdminReport/AllDeliveryReport.js'),
+    loading: Loader,
+});
+const AsyncStockReport = Loadable({
+    loader: () => import('../containers/Report/StockReport.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -357,6 +365,7 @@ class MasterRoute extends Component{
                             <Route exact path='/lost-assets' component={AsyncLostAssets}/>
                             <Route exact path='/documents' component={AsyncDocManagement}/>
                             <Route exact path='/location' component={AsyncLocationFinder}/>
+                            <Route exact path='/stock-report' component={AsyncStockReport}/>
                             <Route exact path='/admin/amc-types' component={AsyncAmcTypes}/>
                             <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
                             <Route exact path='/admin/user-roles' component={AsyncUserRoles}/>
@@ -403,6 +412,7 @@ class MasterRoute extends Component{
                             <Route exact path='/documents/details/:id' component={AsyncDocumentListDetails}/>
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                             <Route exact path='/admin/user-associate-role' component={AsyncUserAssociateRole}/>
+                            <Route exact path='/admin/delivery-report/all' component={AsyncAllDeliveryReport}/>
                             <Route exact path='/documents/document-category' component={AsyncDocumentCategory}/>
                             <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                             <Route exact path='/asset-disposal-list' component={AsyncDisposalAssetListContainer}/>

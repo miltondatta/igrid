@@ -153,6 +153,12 @@ export const report = [
         subCat: true,
         categories: [
             {
+                id: 5,
+                name: 'Stock Report',
+                link: '/stock-report',
+                icon: ""
+            },
+            {
                 id: 1,
                 name: 'Delivery Report',
                 link: '/report/delivery-report',

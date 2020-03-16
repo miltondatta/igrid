@@ -179,6 +179,39 @@ route.post('/requisition-approve/delivery/between', async (req,res,next) => {
     }
 })
 
+// Delivery Report For All User
+route.post('/requisition-approve/delivery/all', async (req,res,next) => {
+    try{
+        const {date_from, date_to, location_id} = req.body
+        const [data, masterData] = await db.query(`
+                        SELECT concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name,
+                               requisition_approves."createdAt" as delivery_date, requisition_approves.update_quantity as quantity,
+                               concat(delivery_to."firstName",' ',delivery_to."lastName") as delivery_to, concat(delivered_by."firstName",' ',delivered_by."lastName") as delivered_by,
+                               user_roles.role_name as receivers_designation,
+                               locations.location_name as location FROM requisition_approves
+                        JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
+                        JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
+                        JOIN users delivery_to ON delivery_to.id = requisition_approves.delivery_to
+                        JOIN users delivered_by ON delivered_by.id = requisition_approves.update_by
+                        JOIN user_associate_roles ON delivery_to.id = user_associate_roles.user_id
+                        JOIN asset_sub_categories ON asset_sub_categories.id = requisition_details.asset_sub_category
+                        JOIN user_roles ON user_roles.id = user_associate_roles.role_id
+                        JOIN locations ON locations.id = requisition_approves.location_id
+                    WHERE requisition_approves."createdAt" BETWEEN '${date_from}' AND '${date_to}' 
+                      AND requisition_approves.delivery_to IS NOT NULL
+                      AND requisition_approves.location_id = ${location_id}
+    `)
+
+        if(data.length > 0) {
+            res.status(200).json({data, status: true})
+        } else {
+            res.status(200).json({message: 'No Data Found'})
+        }
+    } catch(err) {
+        console.log(err, 178)
+    }
+})
+
 // Delete
 route.delete('/requisition-approve/delete', (req,res,next) =>   {
     RequisitionApproves.destroy({
