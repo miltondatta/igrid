@@ -365,56 +365,111 @@ route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
     }
 });
 
+// Assets Own Stock And Details
+route.post('/assets/all/by/id', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+
+        const [data, metadata] = await db.query(`select
+                                       assets.id,
+                                       products.product_name,
+                                       asset_categories.category_name,
+                                       asset_sub_categories.sub_category_name,
+                                       assets.product_serial,
+                                       assets.cost_of_purchase,
+                                       assets.installation_cost,
+                                       assets.carrying_cost,
+                                       assets.other_cost,
+                                       assets.rate,
+                                       assets.effective_date,
+                                       assets.book_value,
+                                       assets.salvage_value,
+                                       assets.useful_life,
+                                       assets.last_effective_date,
+                                       assets.warranty,
+                                       assets.last_warranty_date,
+                                       conditions.condition_type,
+                                       assets.comments,
+                                       assets.disposal_reason,
+                                       asset_categories.category_name,
+                                       asset_sub_categories.sub_category_name,
+                                       products.product_name,
+                                       count(distinct assets.id) as quantity
+                                from assets
+                                         join asset_categories on assets.asset_category = asset_categories.id
+                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         join products on assets.product_id = products.id
+                                         join conditions on assets.condition = conditions.id
+                                ${queryText} 
+                                group by assets.id, conditions.condition_type, products.product_name, asset_categories.category_name,
+                                            asset_sub_categories.sub_category_name`);
+
+        if (data.length > 0) {
+            return res.status(200).json({response: data, status: true });
+        } else {
+            return res.status(200).json({message: "No Data Found"});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(200).json({message: err.message});
+    }
+});
+
 // Assets Own Stock Data By User
 route.post('/assets-report/all', async (req, res) => {
     try {
-        const [proData, proMetaData] = await db.query(`
-            SELECT distinct on (products.id) products.product_name FROM products
-        `)
-
-        let columnsString = "";
-        let dataSet = []
-
-        proData.length > 0 && proData.forEach(item => {
-            dataSet.push(item.product_name)
-        })
-
-        dataSet.forEach((item) => {
-            columnsString += '"' + item + '"' + " bigint,";
-        });
-
-        columnsString       =  columnsString.slice(0, -1);
+        // const [proData, proMetaData] = await db.query(`
+        //     SELECT distinct on (products.id) products.product_name FROM products
+        // `)
+        //
+        // let columnsString = "";
+        // let dataSet = []
+        //
+        // proData.length > 0 && proData.forEach(item => {
+        //     dataSet.push(item.product_name)
+        // })
+        //
+        // dataSet.forEach((item) => {
+        //     columnsString += '"' + item + '"' + " bigint,";
+        // });
+        //
+        // columnsString       =  columnsString.slice(0, -1);
 
 
         const {location_id} = req.body;
 
-        const [data, metadata] = await db.query(`SELECT * FROM
-                crosstab ( 
-                $$
-                  select CONCAT(users."firstName", ' ',users."lastName") as user_name, products.id, count(distinct assets.id) as quantity from assets
-                                left join products on assets.product_id = products.id
-                                join users on users.id = assets.assign_to
-                                join user_associate_roles on users.id = user_associate_roles.user_id
-                                join locations on locations.id = user_associate_roles.location_id
-                        WHERE (locations.id = '${location_id}')
-                        GROUP BY products.id, user_name
-                        ORDER BY 1,2
-                $$
-                ) AS ct ( user_name text , ${columnsString})`);
+        // const [data, metadata] = await db.query(`SELECT * FROM
+        //         crosstab (
+        //         $$
+        //           select CONCAT(users."firstName", ' ',users."lastName") as user_name, products.id, count(distinct assets.id) as quantity from assets
+        //                         left join products on assets.product_id = products.id
+        //                         join users on users.id = assets.assign_to
+        //                         join user_associate_roles on users.id = user_associate_roles.user_id
+        //                         join locations on locations.id = user_associate_roles.location_id
+        //                 WHERE (locations.id = '${location_id}')
+        //                 GROUP BY products.id, user_name
+        //                 ORDER BY 1,2
+        //         $$
+        //         ) AS ct ( user_name text , ${columnsString})`);
+        //
+        // console.log(data, 404)
 
-        console.log(data, 404)
-
-        // const [data, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ',users."lastName") as user_name,
-        //                                         asset_categories.category_name, asset_sub_categories.sub_category_name,
-        //                                          products.product_name, count(distinct assets.id) as quantity from assets
-        //                                     join asset_categories on assets.asset_category = asset_categories.id
-        //                                     join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-        //                                     join products on assets.product_id = products.id
-        //                                     join users on users.id = assets.assign_to
-        //                                     join user_associate_roles on users.id = user_associate_roles.user_id
-        //                                     join locations on locations.id = user_associate_roles.location_id
-        //                             where locations.id = ${location_id}
-        //                             group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name, users."firstName", users."lastName"`);
+        const [data, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ',users."lastName") as user_name,
+                                                asset_categories.category_name, asset_sub_categories.sub_category_name,
+                                                 products.product_name, count(distinct assets.id) as quantity from assets
+                                            join asset_categories on assets.asset_category = asset_categories.id
+                                            join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                            join products on assets.product_id = products.id
+                                            join users on users.id = assets.assign_to
+                                            join user_associate_roles on users.id = user_associate_roles.user_id
+                                            join locations on locations.id = user_associate_roles.location_id
+                                    where locations.id = ${location_id}
+                                    group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name, users."firstName", users."lastName"`);
 
         if (data.length > 0) {
             return res.status(200).json({data, status: true});
