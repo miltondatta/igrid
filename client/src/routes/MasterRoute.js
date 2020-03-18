@@ -297,6 +297,10 @@ const AsyncMenuContainer = Loadable({
     loader: () => import('../containers/MenuContainer'),
     loading: Loader
 });
+const AsyncMenuAssignContainer = Loadable({
+    loader: () => import('../containers/MenuAssignContainer'),
+    loading: Loader
+});
 const AsyncAdminAssetReport = Loadable({
     loader: () => import('../containers/AdminReport/AllAssetReport'),
     loading: Loader,
@@ -423,6 +427,7 @@ class MasterRoute extends Component{
                             <Route exact path='/documents/details/:id' component={AsyncDocumentListDetails}/>
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                             <Route exact path='/admin/menu' component={AsyncMenuContainer}/>
+                            <Route exact path='/admin/menu/assign' component={AsyncMenuAssignContainer}/>
                 </Switch>
                     </div>
                 )

@@ -1,7 +1,7 @@
 const db          = require('../config/db');
 const Sequelize   = require('sequelize');
 
-const menu = db.define('menus', {
+const menu = db.define('menu', {
     name: Sequelize.STRING,
     icon: Sequelize.STRING,
     sub_menu: Sequelize.BOOLEAN,

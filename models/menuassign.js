@@ -1,10 +1,10 @@
 const db          = require('../config/db');
 const Sequelize   = require('sequelize');
 
-const Menu_assign = db.define('menu_assigns', {
+const menu_assign = db.define('menu_assign', {
     role_id: Sequelize.INTEGER,
     menu_id: Sequelize.INTEGER
 }, {});
 
-module.exports = Menu_assign;
+module.exports = menu_assign;
   

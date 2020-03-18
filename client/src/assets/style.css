@@ -338,6 +338,7 @@ input[type=date],
    font-size: 18px;
 }
 .report-export-btn{background: #2cca94}
+.reset-btn,
 .report-reset-btn,
 .reset-btn-normal{
    font-weight: 700;
@@ -349,6 +350,11 @@ input[type=date],
    font-size: 18px;
 }
 .report-reset-btn{background: #e0bb24}
+.reset-btn {
+   position: absolute;
+   bottom: 12px;
+   left: 115px;
+}
 
 .ui-slider-modal{
    display: flex;

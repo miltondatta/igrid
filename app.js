@@ -38,22 +38,21 @@ const DocumentSubCategory = require('./routes/document/document_sub_category');
 const DocumentList = require('./routes/document/document_list');
 const IndicatorCategory = require('./routes/mis/indicator_category');
 const IndicatorSubCategory = require('./routes/mis/indicator_sub_category');
-const MisImportCSVRouter   = require('./routes/mis/import_csv');
+const MisImportCSVRouter = require('./routes/mis/import_csv');
 const AssetRepair = require('./routes/asset-repair');
 const MisBasicReport = require('./routes/mis/basic_report');
-const MenuSubMenu       = require('./routes/menu');
-
-
+const MenuSubMenu = require('./routes/menu');
+const MenuAssign = require('./routes/menu-assign');
 
 
 // Database Connection
 db.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
 
 
 // Initialization
@@ -65,9 +64,9 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
-app.set('trust proxy',true);
+app.set('trust proxy', true);
 app.use(logger('dev'));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/assets')));
 app.use(express.static(path.join(__dirname, 'public/vendor')));
@@ -113,7 +112,7 @@ app.use('/api/v1', MisImportCSVRouter);
 app.use('/api/v1', MisBasicReport);
 app.use('/api/v1/asset-repair', AssetRepair);
 app.use('/api/v1', MenuSubMenu);
-
+app.use('/api/v1', MenuAssign);
 
 
 module.exports = app;

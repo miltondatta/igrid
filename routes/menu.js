@@ -3,6 +3,7 @@ const Menu = require('../models/menu');
 const {Op} = require("sequelize");
 const {getMenuByParent, getAllSubMenu} = require('../dbHelper/admin');
 const {capitalize} = require('../utility/custom');
+const db = require('../config/db');
 
 const route = express.Router();
 
@@ -168,7 +169,7 @@ route.delete('/menu/delete/:id', async (req, res) => {
 // Get Menu By Credential
 route.post('/menu/by/credential', async (req, res) => {
     try {
-        const {module_id, parent_id, sub_menu} = req.body;
+        const {module_id, parent_id, sub_menu, id} = req.body;
 
         let queryText = '';
         if (module_id || module_id === 0) queryText = 'where menus.module_id = ' + module_id;

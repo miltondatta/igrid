@@ -226,6 +226,12 @@ export const systemAdmin = [
                 link: '/admin/menu',
                 icon: ""
             },
+            {
+                id: 8,
+                name: 'Menu Assign',
+                link: '/admin/menu/assign',
+                icon: ""
+            }
         ]
     },
     {
