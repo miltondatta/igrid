@@ -79,7 +79,10 @@ route.post('/menu/entry', async (req, res) => {
             error: true
         });
 
-        return res.status(200).json({msg: `New ${parent_id === 0 ? 'Menu' : 'Sub Menu'} saved successfully.`, success: true});
+        return res.status(200).json({
+            msg: `New ${parent_id === 0 ? 'Menu' : 'Sub Menu'} saved successfully.`,
+            success: true
+        });
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({err: err});
@@ -108,6 +111,11 @@ route.post('/menu/update', async (req, res) => {
             error: true
         });
 
+        if (status.parent_id === 0 && status.parent_id !== parent_id) return res.status(400).json({
+            msg: `This is Main Menu. It can't revert as Sub Menu!`,
+            error: true
+        });
+
         const menus = await Menu.update(updateMenu, {where: {id}});
         if (!menus) return res.status(400).json({
             msg: 'Please try again with full information!',
@@ -129,7 +137,10 @@ route.delete('/menu/delete/:id', async (req, res) => {
         const id = req.params.id;
 
         const status = await Menu.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: `This ${status.parent_id === 0 ? 'Menu' : 'Sub Menu'} didn\'t found!`, error: true});
+        if (!status) return res.status(400).json({
+            msg: `This ${status.parent_id === 0 ? 'Menu' : 'Sub Menu'} didn\'t found!`,
+            error: true
+        });
 
         if (status.parent_id === 0) {
             const menus = await Menu.findAll({
@@ -144,7 +155,10 @@ route.delete('/menu/delete/:id', async (req, res) => {
         const menu = await Menu.destroy({where: {id}});
         if (!menu) return res.status(400).json({msg: 'Please try again!', error: true});
 
-        return res.status(200).json({msg: `One ${status.parent_id === 0 ? 'Menu' : 'Sub Menu'} deleted successfully!`, success: true});
+        return res.status(200).json({
+            msg: `One ${status.parent_id === 0 ? 'Menu' : 'Sub Menu'} deleted successfully!`,
+            success: true
+        });
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err.message});

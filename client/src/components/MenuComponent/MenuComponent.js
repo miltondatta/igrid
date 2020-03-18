@@ -99,7 +99,7 @@ class MenuComponent extends Component {
         switch (name) {
             case "module_id":
                 if (!value) return;
-                if (menu_type == 1) return this.setState({module_id: value}, () => this.validate());
+                if (menu_type == 1) return this.setState({module_id: value, menu_id: ''}, () => this.validate());
                 let data = {
                     module_id: value,
                     parent_id: 0,
@@ -112,7 +112,8 @@ class MenuComponent extends Component {
                         }, () => {
                             this.setState({
                                 menu_list: resData.data,
-                                module_id: value
+                                module_id: value,
+                                menu_id: ''
                             }, () => {
                                 this.validate();
                             });
