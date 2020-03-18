@@ -189,7 +189,7 @@ class WeeklyReportComponent extends Component {
                             <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
                             <button className={'mx-2 report-reset-btn'}>Reset</button>
                             <div className={'position-relative'}>
-                                <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
+                                <button onClick={() => {this.setState((prevState) => ({optionDropDown: false}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
                                     <button className={`${typeof dailyReport !== 'undefined' && (dailyReport[Object.keys(dailyReport)[0]] ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport[Object.keys(dailyReport)[0]]) ? <ReactExcelExport misReport excelData={dailyReport} /> : 'Excel')}</button>
                                     <button onClick={this.pdfViewr}>PDF</button>
@@ -199,7 +199,7 @@ class WeeklyReportComponent extends Component {
                     </div>
 
                     {!haveData ? <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4> : <div className="ui-report-container">
-                        <div className="ui-report-header">
+                        <div className="ui-report-header"  style={{zIndex: 5}}>
                             {reportHeader}
                         </div>
                         {reportBody}

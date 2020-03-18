@@ -32,7 +32,7 @@ class AdminInputContainer extends Component {
             parent_id: 0,
             location_id: 0,
             module_id: 0,
-            file_name: '',
+            file_name: null,
             category_id: '',
             description: '',
             vendor_name: '',
@@ -42,7 +42,7 @@ class AdminInputContainer extends Component {
             category_code: '',
             asset_code: '',
             type_name: '',
-            order_by: '',
+            order_by: 0,
             product_name: '',
             depreciation_code: '',
             method_name: '',
@@ -496,6 +496,7 @@ class AdminInputContainer extends Component {
 
         switch (formType){
             case 'VENDOR':
+                console.log(typeof file_name, 499)
                 return(
                     <>
                         <div className="px-1 mb-2">
@@ -522,7 +523,10 @@ class AdminInputContainer extends Component {
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                                <label htmlFor="validatedCustomFile">{typeof file_name === "string" ? file_name !== '' ? file_name : 'Choose File' : (file_name.name !== null ? file_name.name : 'Choose file')}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                             <div className="d-flex justify-content-center align-items-center ui-custom-checkbox">
                                 <input
@@ -578,6 +582,9 @@ class AdminInputContainer extends Component {
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                         </div>
                         {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit</button> : <>
@@ -1223,7 +1230,7 @@ class AdminInputContainer extends Component {
                                     name={'location_lat'}
                                     value={location_lat}
                                     onChange={this.handleChange}
-                                    className={`ui-custom-input ${(errorDict && !errorDict.location_lat) && 'is-invalid'}`} />
+                                    className={`ui-custom-input`} />
                             </div>
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Longitude</label>
@@ -1233,7 +1240,7 @@ class AdminInputContainer extends Component {
                                     name={'location_long'}
                                     value={location_long}
                                     onChange={this.handleChange}
-                                    className={`ui-custom-input ${(errorDict && !errorDict.location_long) && 'is-invalid'}`} />
+                                    className={`ui-custom-input`} />
                             </div>
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Location Address</label>
@@ -1249,10 +1256,13 @@ class AdminInputContainer extends Component {
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                         </div>
                         {editId === null ? <><button
-                            className="submit-btn"
+                            className="submit-btn-normal"
                             disabled={errorDict && Object.values(errorDict).includes(false)}
                             onClick={this.handleSubmit}>Submit Location</button>
                             {parent_id !== 0 && <button
@@ -1272,10 +1282,10 @@ class AdminInputContainer extends Component {
                                     this.setState({
                                         editId: null,
                                         error: false,
+                                        hierarchy: false,
                                         location_name: '',
                                         location_code: '',
-                                        parent_id: '',
-                                        hierarchy: '',
+                                        parent_id: 0,
                                     }, () => {
                                         this.validate()
                                     })}}>Go Back</button>
@@ -1283,6 +1293,7 @@ class AdminInputContainer extends Component {
                     </>
                 )
             case 'USERROLES':
+                console.log(errorDict && !errorDict.role_desc, 1286)
                 return(
                     <>
                         <div className="px-1 mb-2">
@@ -1341,11 +1352,11 @@ class AdminInputContainer extends Component {
                                 name={'initial_link'}
                                 value={initial_link}
                                 onChange={this.handleChange}
-                                className={`ui-custom-input ${(errorDict && !errorDict.initial_link) && 'is-invalid'}`} />
+                                className={`ui-custom-input`} />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Order</label>
-                            <select name={'order_by'} value={order_by} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.order_by) && 'is-invalid'}`}>
+                            <select name={'order_by'} value={order_by} onChange={this.handleChange} className={`ui-custom-input`}>
                                 <option>Select Order</option>
                                 <option value={1}>Ascending</option>
                                 <option value={2}>Descending</option>
@@ -1355,6 +1366,9 @@ class AdminInputContainer extends Component {
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
+                            <div className="bottom">
+                                JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                            </div>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
                                     <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
@@ -1438,10 +1452,16 @@ class AdminInputContainer extends Component {
             user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, com_sub_category_id, com_category_id, problem_details} = this.state
         switch (formType){
             case "USERROLES":
+                console.log(
+                    role_desc,
+                role_name,
+                module_id,
+                    1446
+                )
                 errorDict = {
-                    role_desc: role_desc !== '',
-                    role_name: role_name !== '',
-                    module_id: module_id !== '',
+                    role_desc: typeof role_desc !== 'undefined' && role_desc !== '',
+                    role_name: typeof role_name !== 'undefined' && role_name !== '',
+                    module_id: typeof module_id !== 'undefined' && module_id !== '',
                 }
                 this.setState({
                     errorDict
@@ -1459,9 +1479,9 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "USERAPPROVAL":
                 errorDict = {
-                    location_heirarchy_id: location_heirarchy_id !== '',
-                    role_id: role_id !== '',
-                    parent_id: parent_id !== '',
+                    location_heirarchy_id: typeof location_heirarchy_id !== 'undefined' && location_heirarchy_id !== '',
+                    role_id: typeof role_id !== 'undefined' && role_id !== '',
+                    parent_id: typeof parent_id !== 'undefined' && parent_id !== 0,
                 }
                 this.setState({
                     errorDict
@@ -1578,10 +1598,10 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "LOCATIONS":
                 errorDict = {
-                    hierarchy: hierarchy !== '',
-                    parent_id: parent_id !== '',
-                    location_code: location_code !== '',
-                    location_name: location_name !== '',
+                    hierarchy: typeof hierarchy !== 'undefined' && hierarchy !== '',
+                    parent_id: typeof parent_id !== 'undefined' && parent_id !== '',
+                    location_code: typeof location_code !== 'undefined' && location_code !== '',
+                    location_name: typeof location_name !== 'undefined' && location_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1610,9 +1630,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "MODULE":
                 errorDict = {
-                    module_name: module_name !== '',
-                    initial_link: initial_link !== '',
-                    order_by: order_by !== '',
+                    module_name: typeof module_name !== 'undefined' && module_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1620,10 +1638,10 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "USERASSOCIATE":
                 errorDict = {
-                    user_id: user_id !== '',
-                    location_id: location_id !== '',
-                    role_id: role_id !== '',
-                    module_id: module_id !== '',
+                    user_id: typeof user_id !== 'undefined' && user_id !== '',
+                    location_id: typeof location_id !== 'undefined' && location_id !== 0,
+                    role_id: typeof role_id !== 'undefined' && role_id !== '',
+                    module_id: typeof module_id !== 'undefined' && module_id !== '',
                 }
                 this.setState({
                     errorDict
@@ -1721,10 +1739,10 @@ class AdminInputContainer extends Component {
                 return({sub_category_name,category_id, sub_category_code,description})
             case "MODULE":
                 data = new FormData()
-                file_name && data.append('file', file_name);
-                !file_name && data.append('image_name', image_name);
+                file_name && data.append('file', file_name ? file_name : null);
+                !file_name && data.append('image_name', image_name ? image_name : null);
                 data.append('module_name', module_name);
-                data.append('initial_link', initial_link);
+                data.append('initial_link', initial_link ? initial_link : null);
                 data.append('order_by', order_by);
                 return data
             default:

@@ -8,13 +8,14 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 class ReactExcelExport extends Component {
     render() {
         const {excelData, misReport} = this.props
-        const filterData = misReport ? Object.keys(excelData[Object.keys(excelData)][0]).filter(item => item !== 'id') : Object.keys(excelData[0]).filter(item => item !== 'id')
+        let listObj = Object.keys(excelData)[0]
+        const filterData = misReport ? listObj.length > 0 && Object.keys(excelData[listObj][0]).filter(item => item !== 'id') : Object.keys(excelData[0]).filter(item => item !== 'id')
         let exclCol = null
 
         if (misReport) {
             let processedData = []
             Object.keys(excelData).map(item => {
-                processedData = [{indicatordetails_id: item}, ...excelData[item]]
+                processedData = [...processedData, {indicatordetails_id: item}, ...excelData[item]]
             })
             console.log(processedData, 20)
             exclCol = filterData.length > 0 && filterData.map((item, index) => {
@@ -34,6 +35,7 @@ class ReactExcelExport extends Component {
                 </div>
             )
         }
+
         else {
             exclCol = filterData.length > 0 && filterData.map((item, index) => {
                 return (

@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import jwt from "jsonwebtoken";
+import TimePicker from 'react-time-picker';
 import AssetListOptions from "../../utility/component/assetsByUserOptions";
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import {getFileExtension} from "../../utility/custom";
 
 class LostAssetsComponent extends Component {
 
@@ -44,14 +46,29 @@ class LostAssetsComponent extends Component {
     handleChange = (e) => {
         const {name, value, files} = e.target
         if (name === 'gd_other_file') {
-            this.setState({gd_other_file: files[0]})
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if(name === 'incident_type') {
             this.setState({
                 incident_type: value
             }, () => {
                 this.getIncidentType(value)
             })
-        } else {
+        }  else {
             this.setState({
                 [name]: value
             })
@@ -176,11 +193,11 @@ class LostAssetsComponent extends Component {
                         </div>
                         <div className={'mb-1'}>
                             <label className={'ui-custom-label'}>Incident Time</label>
-                            <input type="time"
-                                   value={incident_time}
-                                   onChange={this.handleChange}
-                                   name={'incident_time'}
-                                   className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.incident_time && 'is-invalid'}`}/>
+                            <TimePicker
+                                onChange={(e) => {this.setState({incident_time: e})}}
+                                value={incident_time}
+                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.incident_time && 'is-invalid'}`}
+                            />
                         </div>
                         <div className="mb-1">
                             <label className={'ui-custom-label'}>Police Station</label>
@@ -215,6 +232,9 @@ class LostAssetsComponent extends Component {
                                 <input type="file" onChange={this.handleChange} name={'gd_other_file'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile">{gd_other_file && gd_other_file.name ? gd_other_file.name : gd_other_file ? gd_other_file : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                         </div>
                         <button className="submit-btn" onClick={this.submitLostAssets}>Submit</button>

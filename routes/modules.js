@@ -28,7 +28,6 @@ let upload =  multer({
 route.get('/modules', (req,res,next) => {
     Modules.findAll({attributes: ['id', 'module_name', 'initial_link']})
         .then(resData => {
-            console.log(resData, 31)
             res.status(200).json(resData)
         })
         .catch(err => {
@@ -72,8 +71,8 @@ route.put('/modules/update/:id', (req,res,next) => {
 route.post('/modules/entry', (req,res,next) => {
     upload(req, res , () => {
         const {module_name, initial_link, order_by} = req.body
-        const image_name = req.file.filename
-        if(module_name === '' || image_name === '' || initial_link === '' || order_by === '') {
+        const image_name = req.file ? req.file.filename : null
+        if(module_name === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             Modules.create({module_name, initial_link, order_by, image_name})
@@ -81,6 +80,7 @@ route.post('/modules/entry', (req,res,next) => {
                     res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
                 })
                 .catch(err => {
+                    console.log(err, 84)
                     res.status(200).json({message: 'Something went wrong', err})
                 })
         }

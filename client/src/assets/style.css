@@ -82,6 +82,10 @@ select:focus{
    border: 1.2px solid #e7e7e7;
    -webkit-appearance: checkbox !important;
 }
+.ui-custom-input .react-time-picker__wrapper{
+   border: none
+}
+.ui-custom-input .react-time-picker__clock{z-index: 5}
 .ui-custom-input-no-top{
    padding: 9px;
 }
@@ -132,12 +136,27 @@ input[type=date],
    width: 95%;
    justify-content: center;
    align-items: center;
-   height: 45px;
+   height: 70px;
    border-radius: 4px;
    color: #585858;
    font-size: 17px;
    font-weight: 500;
+   padding-bottom: 17px;
+   margin-bottom: 0;
 }
+
+.ui-custom-file .bottom{
+   position: absolute;
+   font-size: 11px;
+   background: #2384d0;
+   color: white;
+   bottom: 0;
+   width: 95%;
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+   padding: 3px;
+}
+
 .ui-custom-checkbox label{
    color: #585858;
    font-weight: 500;
@@ -235,7 +254,7 @@ input[type=date],
 
 ::-webkit-scrollbar-track{ background-color: #bbb; width: 2px}
 ::-webkit-scrollbar-thumb { background: #005da6; border-radius: 10px;}
-::-webkit-scrollbar {width: 5px; height: 5px}
+::-webkit-scrollbar {width: 5px; height: 9px}
 
 .grid-2{
    display: grid;

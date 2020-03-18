@@ -518,6 +518,9 @@ class ChallanComponent extends Component {
                                     <div className="ui-custom-file">
                                         <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
                                         <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
+                                        <div className="bottom">
+                                            JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                        </div>
                                     </div>
                                 </div>
                                 <button onClick={this.updateChallan} className="submit-btn">Add Challan</button>

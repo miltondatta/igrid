@@ -148,7 +148,7 @@ class FortnightlyReportComponent extends Component {
                     </div>
 
                     <div className="ui-report-container">
-                        <div className="ui-report-header">
+                        <div className="ui-report-header"  style={{zIndex: 5}}>
                             {reportHeader}
                         </div>
                         {reportBody}

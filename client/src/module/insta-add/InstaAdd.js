@@ -209,6 +209,9 @@ class InstaAdd extends Component {
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                             <div className="d-flex justify-content-center align-items-center ui-custom-checkbox">
                                 <input
@@ -539,6 +542,9 @@ class InstaAdd extends Component {
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                         </div>
                         {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit</button> : <>
@@ -826,6 +832,9 @@ class InstaAdd extends Component {
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
+                            <div className="bottom">
+                                JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                            </div>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
