@@ -68,6 +68,7 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
+        this.validate()
         const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             const length = productSet.length
@@ -173,8 +174,30 @@ class AssetComponent extends Component{
         })
     }
 
-    render(){
+    validate = () => {
         const {asset_category, brand, error, success, successMessage, errorMessage, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
+        let errorDict = {
+            asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
+            error: typeof error !== 'undefined' && error !== '',
+            success: typeof success !== 'undefined' && success !== '',
+            successMessage: typeof successMessage !== 'undefined' && successMessage !== '',
+            errorMessage: typeof errorMessage !== 'undefined' && errorMessage !== '',
+            quantity: typeof quantity !== 'undefined' && quantity !== '',
+            upload_file: typeof upload_file !== 'undefined' && upload_file !== '',
+            details: typeof details !== 'undefined' && details !== '',
+            asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
+            productSet: typeof productSet !== 'undefined' && productSet !== '',
+            arrayData: typeof arrayData !== 'undefined' && arrayData !== '',
+            reason: typeof reason !== 'undefined' && reason !== '',
+        }
+
+        this.setState({
+            errorDict
+        })
+    }
+
+    render(){
+        const {asset_category, brand, error, success, successMessage, errorMessage, expected_date, quantity, model, upload_file, details, asset_sub_category, errorDict, arrayData, reason} = this.state
 
         return(
             <>
@@ -191,45 +214,48 @@ class AssetComponent extends Component{
                         </nav>
                         <div className={'px-1 mb-2'}>
                             <label className={'ui-custom-label'}>Select Category</label>
-                            <select onChange={this.handleChange} className="ui-custom-input" id="requeston" value={asset_category} name={'asset_category'}>
+                            <select onChange={this.handleChange} className={`ui-custom-input ${errorDict && !errorDict.asset_category && 'is-invalid'}`} id="requeston" value={asset_category} name={'asset_category'}>
                                 <option value={0}>Select Category</option>
                                 <AssetCategoryOptions />
                             </select>
                         </div>
                         <div className={"px-1 mb-2"}>
                             <label className={'ui-custom-label'}>Select Sub Category</label>
-                            <select onChange={this.handleChange} className="ui-custom-input" id="itemname" name={'asset_sub_category'} value={asset_sub_category}>
+                            <select onChange={this.handleChange} className={`ui-custom-input ${errorDict && !errorDict.asset_sub_category && 'is-invalid'}`} id="itemname" name={'asset_sub_category'} value={asset_sub_category}>
                                 <option value={0}>Select Sub Category</option>
                                 <AssetSubCategoryOptions assetId={asset_category} />
                             </select>
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Brand</label>
-                            <input onChange={this.handleChange} value={brand} type="text" className="ui-custom-input" name={'brand'} placeholder="Brand" />
+                            <input onChange={this.handleChange} value={brand} type="text" className={`ui-custom-input`} name={'brand'} placeholder="Brand" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Model</label>
-                            <input onChange={this.handleChange} value={model} type="text" className="ui-custom-input" name={'model'} placeholder="Model" />
+                            <input onChange={this.handleChange} value={model} type="text" className={`ui-custom-input`} name={'model'} placeholder="Model" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Quantity</label>
-                            <input onChange={this.handleChange} value={quantity} type="number" className="ui-custom-input" name={'quantity'} id="inputAddress" placeholder="Quantity" />
+                            <input onChange={this.handleChange} value={quantity} type="number" className={`ui-custom-input ${errorDict && !errorDict.quantity && 'is-invalid'}`} name={'quantity'} id="inputAddress" placeholder="Quantity" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Reason</label>
-                            <input onChange={this.handleChange} value={reason} type="text" className="ui-custom-input" name={'reason'} placeholder="Reason" />
+                            <input onChange={this.handleChange} value={reason} type="text" className={`ui-custom-input ${errorDict && !errorDict.reason && 'is-invalid'}`} name={'reason'} placeholder="Reason" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Expected Date</label>
-                            <input onChange={this.handleChange} value={expected_date} type={'date'} className="ui-custom-input" name={'expected_date'} placeholder="Expected Date" />
+                            <input onChange={this.handleChange} value={expected_date} type={'date'} className={`ui-custom-input`} name={'expected_date'} placeholder="Expected Date" />
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Details</label>
-                            <textarea onChange={this.handleChange} value={details} className="ui-custom-input " name={'details'} placeholder="Details" />
+                            <textarea onChange={this.handleChange} value={details} className={`ui-custom-input ${errorDict && !errorDict.details && 'is-invalid'}`} name={'details'} placeholder="Details" />
                         </div>
                         <div className="ui-custom-file w-50 px-1 mb-20p">
                             <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
                             <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
+                            <div className="bottom">
+                                JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                            </div>
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
                     </div>

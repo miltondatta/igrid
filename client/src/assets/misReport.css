@@ -72,6 +72,11 @@
 }
 
 
+.ui-mis-report .ui-report-container .ui-report-header div{
+    background: white;
+}
+
+
 .ui-mis-report .ui-report-container .ui-report-title div{
     background: #b0e6ec;
 }
@@ -97,7 +102,7 @@
     border-radius: 5px;
     overflow: hidden;
     bottom: -90px;
-    z-index: 5;
+    z-index: 6;
 }
 
 .ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button,
@@ -110,3 +115,8 @@
 
 .ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button:last-child{background: #2274b4; color: white; font-weight: 600;}
 .ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button:first-child{background: #ecd67b; color: #4a4a4a; font-weight: 600;}
+
+.ui-mis-report .ui-report-container .ui-report-header{
+    position: sticky;
+    top: 0;
+}

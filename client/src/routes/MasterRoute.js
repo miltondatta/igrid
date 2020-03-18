@@ -313,6 +313,10 @@ const AsyncStockReport = Loadable({
     loader: () => import('../containers/Report/StockReport.js'),
     loading: Loader,
 });
+const AsyncMy404Component = Loadable({
+    loader: () => import('./404Page/404Page'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -423,6 +427,8 @@ class MasterRoute extends Component{
                             <Route exact path='/documents/details/:id' component={AsyncDocumentListDetails}/>
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                             <Route exact path='/admin/menu' component={AsyncMenuContainer}/>
+
+                            <Route path='*' exact component={AsyncMy404Component} />
                 </Switch>
                     </div>
                 )

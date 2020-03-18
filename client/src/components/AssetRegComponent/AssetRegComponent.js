@@ -413,7 +413,7 @@ class AssetRegComponent extends Component {
                     getApi = {getApi}
                     headTitle = {headTitle}
                 />
-                {challan_id !== '' && <div className=" p-2 ui-dataEntry">
+                {challan_id === '' && <div className=" p-2 ui-dataEntry">
                     <div className={'admin-input-height bg-white rounded position-relative p-3'}>
                         <nav className="navbar text-center mb-2 pl-1 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
@@ -457,6 +457,9 @@ class AssetRegComponent extends Component {
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
                                 <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                </div>
                             </div>
                         </div>
                         <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
@@ -488,7 +491,7 @@ class AssetRegComponent extends Component {
                         </div>
                     </div>
                 </div>}
-                {challan_id === '' && <div className="ui-dataEntry">
+                {challan_id !== '' && <div className="ui-dataEntry">
                     <div className="admin-input-height bg-challan position-relative rounded p-3 m-2">
                         <nav className="navbar text-center mb-2 border-bottom-nav">
                             <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>

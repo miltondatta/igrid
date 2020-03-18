@@ -144,8 +144,10 @@ class ProfileComponent extends Component {
                         <div className="ui-custom-file w-50 mb-20p">
                             <input onChange={this.handleChange} type="file" className="custom-file-input"
                                    id="customFile" name="filename"/>
-                            <label
-                                htmlFor="customFile">{filename ? filename.name.substr(0, 20) + (filename.name.length > 20 ? '...' : '') : 'Choose File'}</label>
+                            <label htmlFor="customFile">{filename ? filename.name.substr(0, 20) + (filename.name.length > 20 ? '...' : '') : 'Choose File'}</label>
+                            <div className="bottom">
+                                JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                            </div>
                         </div>
                     </div>
                     <button type="submit" onClick={this.handleSubmit} className="submit-btn">Update</button>
