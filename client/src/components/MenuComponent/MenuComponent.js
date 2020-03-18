@@ -257,14 +257,12 @@ class MenuComponent extends Component {
         })
     };
 
-    /*updateData = () => {
-        const {getApi} = this.props;
+    updateData = () => {
         if (Object.values(this.validate()).includes(false)) return;
-        Axios.post(apiUrl() + getApi + '/update', this.getApiData())
+        axios.post(apiUrl() + '/menu/update', this.getApiData())
             .then(resData => {
                 const {success, msg} = resData.data;
                 this.setState({
-                    allData: [],
                     success: success,
                     successMessage: success && msg
                 }, () => {
@@ -294,7 +292,7 @@ class MenuComponent extends Component {
                 }
                 console.log(err.response);
             })
-    };*/
+    };
 
     getApiData = () => {
         const {
@@ -360,6 +358,41 @@ class MenuComponent extends Component {
                 });
             }
         });
+    };
+
+    deleteItem = (id) => {
+        axios.delete(apiUrl() + '/menu/delete/' + id)
+            .then(resData => {
+                const {success, msg} = resData.data;
+                this.setState({
+                    success: success,
+                    successMessage: success && msg
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
+                    this.emptyStateValue();
+                    this.getData();
+                });
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        error: error,
+                        errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
+                    })
+                }
+                console.log(err.response);
+            })
     };
 
     render() {
