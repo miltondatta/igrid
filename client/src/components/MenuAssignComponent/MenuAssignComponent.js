@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import axios from 'axios';
 import {apiUrl} from "../../utility/constant";
-import {validateInput} from "../../utility/custom";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ModuleOptions from "../../utility/component/moduleOptions";
+import UserRoleOptions from "../../utility/component/userRoleOptions";
 
 class MenuAssignComponent extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class MenuAssignComponent extends Component {
             menuAssignTableData: [],
             menu_list: [],
             sub_menu_list: [],
+            role_id: '',
             module_id: '',
             menu_id: '',
             sub_menu_id: '',
@@ -51,8 +52,8 @@ class MenuAssignComponent extends Component {
                         let menu_name = '';
                         res.data.length > 0 && res.data.map(item => {
                             if (item.parent_id === 0) menu_name = item.menu_name;
-                            else res.data.find(val => {
-                                if (val.menus_id === item.parent_id) return val.menu_name
+                            res.data.find(val => {
+                                if (val.menus_id === item.parent_id) return menu_name = val.menu_name;
                             });
                             let newObj = {
                                 id: item.id,
@@ -135,7 +136,7 @@ class MenuAssignComponent extends Component {
 
     handleSubmit = () => {
         if (Object.values(this.validate()).includes(false)) return;
-        axios.post(apiUrl() + 'menu/entry', this.getApiData())
+        axios.post(apiUrl() + 'menu/assign/entry', this.getApiData())
             .then(res => {
                 const {success, msg} = res.data;
                 this.setState({
@@ -177,7 +178,8 @@ class MenuAssignComponent extends Component {
             if (item.id === id) {
                 this.setState({
                     editId: id,
-                    module_id: item.module_id
+                    module_id: item.module_id,
+                    role_id: item.role_id
                 }, () => {
                     axios.post(apiUrl() + 'menu/by/credential', {module_id: item.module_id, parent_id: 0})
                         .then(resData => {
@@ -190,7 +192,12 @@ class MenuAssignComponent extends Component {
                                     menu_id: item.menu_name ? item.menus_id : item.parent_id,
                                     sub_menu_id: ''
                                 }, () => {
-                                    axios.post(apiUrl() + 'menu/by/credential', {module_id: item.module_id, parent_id: this.state.menu_id, sub_menu: false})
+                                    if (!item.sub_menu) return this.setState({sub_menu_list: [], sub_menu_id: ''});
+                                    axios.post(apiUrl() + 'menu/by/credential', {
+                                        module_id: item.module_id,
+                                        parent_id: this.state.menu_id,
+                                        sub_menu: false
+                                    })
                                         .then(resData => {
                                             this.setState({
                                                 sub_menu_list: resData.data,
@@ -215,7 +222,7 @@ class MenuAssignComponent extends Component {
 
     updateData = () => {
         if (Object.values(this.validate()).includes(false)) return;
-        axios.post(apiUrl() + '/menu/update', this.getApiData())
+        axios.post(apiUrl() + '/menu/assign/update', this.getApiData())
             .then(resData => {
                 const {success, msg} = resData.data;
                 this.setState({
@@ -251,25 +258,20 @@ class MenuAssignComponent extends Component {
     };
 
     getApiData = () => {
-        const {
-            module_id, menu_id, name, icon, sub_menu, link, visible, order_by, editId
-        } = this.state;
+        const {role_id, menu_id, sub_menu_id, editId} = this.state;
 
         return ({
             id: editId,
-            module_id,
-            parent_id: menu_id === '' ? 0 : menu_id,
-            name,
-            icon,
-            sub_menu,
-            link,
-            visible,
-            order_by
+            role_id: role_id,
+            menu_id: sub_menu_id !== '' ? sub_menu_id : menu_id
         });
     };
 
     emptyStateValue = () => {
         return this.setState({
+            menu_list: [],
+            sub_menu_list: [],
+            role_id: '',
             menu_type: '',
             module_id: '',
             menu_id: '',
@@ -285,15 +287,15 @@ class MenuAssignComponent extends Component {
 
     validate = () => {
         const {
-            module_id, menu_id, sub_menu_id, sub_menu_list
+            role_id, module_id, menu_id, sub_menu_id, sub_menu_list
         } = this.state;
 
         let errorObj = {
+            role_id: role_id !== '',
             module_id: module_id !== '',
             menu_id: menu_id !== ''
         };
 
-        if (sub_menu_list.length > 0) Object.assign(errorObj, {sub_menu_id: sub_menu_id !== ''});
         this.setState({errorObj});
         return errorObj;
     };
@@ -312,7 +314,7 @@ class MenuAssignComponent extends Component {
     };
 
     deleteItem = (id) => {
-        axios.delete(apiUrl() + '/menu/delete/' + id)
+        axios.delete(apiUrl() + '/menu/assign/delete/' + id)
             .then(resData => {
                 const {success, msg} = resData.data;
                 this.setState({
@@ -349,7 +351,7 @@ class MenuAssignComponent extends Component {
     render() {
         const {
             success, error, successMessage, errorMessage, isLoading, menuAssignTableData, deleteId, deleteModalTitle, deleteContentName, module_id, menu_id,
-            sub_menu_id, errorObj, editId, menu_list, sub_menu_list
+            sub_menu_id, role_id, errorObj, editId, menu_list, sub_menu_list
         } = this.state;
 
         const menu_list_option = menu_list.length > 0 && menu_list.map((item, index) => (
@@ -372,6 +374,17 @@ class MenuAssignComponent extends Component {
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Menu Assign Information</p>
                     </nav>
+                    <div className="px-1 mb-2">
+                        <label htmlFor="inputPassword4" className={'ui-custom-label'}>User Role</label>
+                        <select name={'role_id'} value={role_id} onChange={this.handleChange}
+                                className={`ui-custom-input`}>
+                            <option value="">Select User Role</option>
+                            <UserRoleOptions/>
+                        </select>
+                        {errorObj && !errorObj.role_id &&
+                        <span className="error">User Role Field is required</span>
+                        }
+                    </div>
                     <div className="px-1 mb-2">
                         <label htmlFor="inputPassword4" className={'ui-custom-label'}>Module Name</label>
                         <select name={'module_id'} value={module_id} onChange={this.handleChange}
@@ -403,9 +416,6 @@ class MenuAssignComponent extends Component {
                                 <option value="">Select Sub Menu Name</option>
                                 {sub_menu_list_option}
                             </select>
-                            {errorObj && !errorObj.sub_menu_id &&
-                            <span className="error">Sub Menu Name Field is required</span>
-                            }
                         </div>
                     }
                     {editId === null ? <button className="submit-btn"
