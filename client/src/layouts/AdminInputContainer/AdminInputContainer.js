@@ -33,6 +33,7 @@ class AdminInputContainer extends Component {
             location_id: 0,
             module_id: 0,
             file_name: null,
+            file_name_all: null,
             category_id: '',
             description: '',
             vendor_name: '',
@@ -342,15 +343,23 @@ class AdminInputContainer extends Component {
             if (item.id === id) {
                 console.log(item)
                 this.setState({
-                    editId: id
+                    editId: id,
                 }, () => {
                     Object.keys(item).map(val => {
-                        console.log(val, 144)
-                        this.setState({
-                            [val]: item[val]
-                        }, () => {
-                            this.validate()
-                        })
+                        console.log(val, 349)
+                        if (val === 'file_name' || val === 'file_name') {
+                            this.setState({
+                                file_name_all: item[val]
+                            }, () => {
+                                console.log(this.state.file_name_all, 354)
+                            })
+                        } else {
+                            this.setState({
+                                [val]: item[val]
+                            }, () => {
+                                this.validate()
+                            })
+                        }
                     })
                 })
                 return null
@@ -420,6 +429,7 @@ class AdminInputContainer extends Component {
             if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
                 this.setState({
                     [name]: files[0],
+                    file_name_all: files[0].name
                 })
             } else {
                 this.setState({
@@ -490,13 +500,12 @@ class AdminInputContainer extends Component {
         const {formType} = this.props
         const {project_name, project_code, vendor_name, file_name, description, editId, errorDict, enlisted, model, brand, hierarchy_name, parent_id, image_name,
             category_code,category_name, sub_category_code, sub_category_name, category_id, sub_category_id, product_name,product_code, location_code, order_by,
-            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name,
+            brand_id, model_id, depreciation_code, method_name, type_name, asset_code, condition_type, location_name, hierarchy, role_desc, role_name, file_name_all,
             module_name, initial_link, user_id, location_id, role_id, locationHolder, parent_location_id, location_heirarchy_id,complaint_status, complaint_name,
             com_sub_category_name, com_category_id, com_sub_category_id, problem_details, location_lat, location_long ,address} = this.state
 
         switch (formType){
             case 'VENDOR':
-                console.log(typeof file_name, 499)
                 return(
                     <>
                         <div className="px-1 mb-2">
@@ -523,7 +532,7 @@ class AdminInputContainer extends Component {
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{typeof file_name === "string" ? file_name !== '' ? file_name : 'Choose File' : (file_name.name !== null ? file_name.name : 'Choose file')}</label>
+                                <label htmlFor="validatedCustomFile">{file_name_all ? file_name_all : 'Choose file'}</label>
                                 <div className="bottom">
                                     JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
                                 </div>
@@ -581,7 +590,7 @@ class AdminInputContainer extends Component {
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                                <label htmlFor="validatedCustomFile">{file_name_all ? file_name_all : 'Choose file'}</label>
                                 <div className="bottom">
                                     JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
                                 </div>
@@ -1252,11 +1261,11 @@ class AdminInputContainer extends Component {
                                     onChange={this.handleChange}
                                     className={`ui-custom-input ${(errorDict && !errorDict.address) && 'is-invalid'}`} />
                             </div>
-                            <div className="ui-custom-file w-50 pl-1">
+                            <div className="ui-custom-file w-50 pl-1 overflow-hidden rounded">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
-                                <div className="bottom">
+                                <label htmlFor="validatedCustomFile" className={'w-100'}>{file_name_all ? file_name_all : 'Choose file'}</label>
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
                                 </div>
                             </div>
@@ -1362,11 +1371,11 @@ class AdminInputContainer extends Component {
                                 <option value={2}>Descending</option>
                             </select>
                         </div>
-                        <div className="ui-custom-file w-50 px-1 mb-20p">
+                        <div className="ui-custom-file w-50 mb-20p ml-1 overflow-hidden rounded">
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
-                            <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
-                            <div className="bottom">
+                            <label htmlFor="validatedCustomFile" className={'w-100'}>{file_name_all ? file_name_all : 'Choose file...'}</label>
+                            <div className="bottom w-100">
                                 JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
                             </div>
                         </div>

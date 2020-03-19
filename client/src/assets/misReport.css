@@ -105,6 +105,10 @@
     z-index: 6;
 }
 
+.ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn {
+
+}
+
 .ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button,
 .ui-mis-report .ui-top-container .ui-btn-container .ui-dropdown-btn button{
     padding: 10px;

@@ -70,6 +70,10 @@
     background: #2885ce;
 }
 
+.ui-topnav .ui-dropdown-holder:hover .ui-user-dropdown{
+    display: block;
+}
+
 .ui-user-avatar{
     margin-right: 5px;
     border-radius: 50%;
@@ -78,6 +82,7 @@
 }
 
 .ui-topnav .ui-user-dropdown{
+    display: none;
     text-align: left;
     background: #fff;
     box-shadow: 0 5px 10px #4b4b4b5c;

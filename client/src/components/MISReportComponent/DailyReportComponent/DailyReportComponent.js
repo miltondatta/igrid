@@ -113,7 +113,7 @@ class DailyReportComponent extends Component {
                         name={'parentID'}
                         onChange={(e) => this.handleChange(e, item.hierarchy_name, item.id)}
                         className={`ui-custom-input ${errorDict && !errorDict.parentID && 'border-red'}`}>
-                        <option>{item.hierarchy_name}</option>
+                        <option selected={true} disabled={true}>{item.hierarchy_name}</option>
                         <LocationsWithHOptions parentID={parentID} hierarchyID={item.id === parseInt(parentID, 10) + 1 ? item.id : null} />
                     </select>
                 </div>
@@ -198,7 +198,6 @@ class DailyReportComponent extends Component {
                             </div>
                         </div>
                     </div>
-
                     {!haveData ? <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4> : <div className="ui-report-container">
                         <div className="ui-report-header" style={{zIndex: 5}}>
                             {reportHeader}
