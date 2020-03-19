@@ -72,6 +72,26 @@ select:focus{
    border-radius: 5px;
 }
 
+
+.list-unstyled{
+   background: white;
+   height: 57px;
+   border-radius: 5px;
+   overflow-y: auto;
+   padding: 5px;
+   width: 97%;
+   position: absolute;
+   z-index: 5;
+}
+
+.list-unstyled p{
+   padding: 3.2px 0;
+}
+
+.list-unstyled:hover{
+   height: auto;
+}
+
 .ui-custom-input,
 .ui-custom-input-no-top,
 .ui-custom-keyInput,
@@ -108,6 +128,7 @@ select:focus{
    border-radius: 20px;
    color: white;
    margin-right: 5px;
+   height: 24px;
 }
 
 .ui-custom-keyInput{
@@ -261,6 +282,10 @@ input[type=date],
    grid-template-columns: repeat(2, 1fr);
    justify-content: center;
    align-items: center;
+}
+.grid-2-nc{
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
 }
 .grid-3{
    display: grid;
