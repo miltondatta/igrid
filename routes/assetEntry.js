@@ -126,7 +126,8 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
             return res.status(500).json(err)
         }
         const {challan_no, challan_date, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments} = req.body
-        if (challan_no === '' || challan_date === '' || challan_name === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '') {
+        if (challan_no === '' || challan_date === '' || challan_name === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' ||
+            added_by === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             let data = {

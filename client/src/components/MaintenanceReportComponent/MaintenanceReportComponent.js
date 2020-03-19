@@ -110,12 +110,12 @@ class MaintenanceReportComponent extends Component {
                                             date_from: '', date_to: ''
                                         })
                                     }}>Reset</button>
-                                    <div className={'position-relative'}>
+                                    <div className={'position-relative ui-export-dropdown'}>
                                         <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export</button>
-                                        {optionDropDown && <div className={'ui-dropdown-btn'}>
+                                        <div className={'ui-dropdown-btn'}>
                                             <button className={`${typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? 'p-0' : null)}`}>{typeof deliveryReportData !== 'undefined' && (deliveryReportData.length > 0 ? <ReactExcelExport excelData={deliveryReportData} /> : 'Excel')}</button>
                                             <button onClick={this.pdfViewr}>PDF</button>
-                                        </div>}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

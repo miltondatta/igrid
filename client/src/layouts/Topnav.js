@@ -177,7 +177,7 @@ class Topnav extends Component {
                             <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
                             <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
                         </div>
-                        <div className={'text-white ui-user-nav d-flex align-items-center'}>
+                        <div className={'text-white ui-user-nav d-flex align-items-center h-100 ui-dropdown-holder'}>
                             {toggleNotification && <div className="ui-notification">
                                 <p className={'ui-notification-header'}>Notification</p>
                                 <div>
@@ -196,7 +196,7 @@ class Topnav extends Component {
                             <span onClick={this.handleUserOptions}>{userName}</span>
                             <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                  src={ BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
-                            {showUserOption && <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -235 : -186}}>
+                            <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -221.5 : -171}}>
                                 {userType === 0 && <p><Link onClick={() => {
                                     this.setState((prevState) => ({
                                         showUserOption: false
@@ -215,7 +215,7 @@ class Topnav extends Component {
                                 <a onClick={() => {
                                     localStorage.removeItem('user')
                                 }} href={'/'}><p>Logout</p></a>
-                            </div>}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,7 +236,7 @@ class Topnav extends Component {
                                     </ol>
                                 </div>
                             </div>
-                            <div className={'text-white ui-user-nav d-flex align-items-center'}>
+                            <div className={'text-white ui-user-nav d-flex align-items-center h-100 ui-dropdown-holder'}>
                                 {toggleNotification && <div className="ui-notification">
                                     <p className={'ui-notification-header'}>Notification</p>
                                     <div>
@@ -255,7 +255,7 @@ class Topnav extends Component {
                                 <span onClick={this.handleUserOptions}>{userName}</span>
                                 <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
                                      src={BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
-                                {showUserOption && <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -235 : -186}}>
+                                <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -221.5 : -171}}>
                                     {userType === 0 && <p><Link onClick={() => {
                                         this.setState((prevState) => ({
                                             showUserOption: false
@@ -274,7 +274,7 @@ class Topnav extends Component {
                                     <p><a onClick={() => {
                                         localStorage.removeItem('user')
                                     }} href={'/'}>Logout</a></p>
-                                </div>}
+                                </div>
                             </div>
                         </div>
                     </div>
