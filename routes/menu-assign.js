@@ -10,6 +10,7 @@ Router.get('/menu/assign/data', async (req, res) => {
     try {
         const [data] = await db.query(` select menu_assigns.id as id,
                                menus.id menus_id,
+                               menu_assigns.role_id,
                                menus.parent_id,
                                menus.module_id,
                                user_roles.role_name,
@@ -27,7 +28,8 @@ Router.get('/menu/assign/data', async (req, res) => {
                         from menu_assigns
                                  inner join user_roles on menu_assigns.role_id = user_roles.id
                                  inner join menus on menu_assigns.menu_id = menus.id
-                                 left join modules on menus.module_id = modules.id`);
+                                 left join modules on menus.module_id = modules.id 
+                                 order by menus_id`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -53,7 +55,7 @@ Router.post('/menu/assign/entry', async (req, res) => {
         });
 
         if (menu_assign.length > 0) return res.status(400).json({
-            msg: `This Menu is already assigned!`,
+            msg: `This Menu is already assigned for this User!`,
             error: true
         });
 
@@ -115,9 +117,11 @@ Router.delete('/menu/assign/delete/:id', async (req, res) => {
             error: true
         });
 
-        const menu_assign = await Menu.findAll({
-            where: {parent_id: status.menu_id}
-        });
+        const [menu_assign] = await db.query(`select menu_assigns.*
+                                        from menu_assigns
+                                                 inner join menus on menu_assigns.menu_id = menus.id
+                                        where menus.parent_id = ${status.menu_id} and menu_assigns.role_id = ${status.role_id}`);
+
         if (menu_assign.length > 0) return res.status(400).json({
             msg: 'This Menu has Sub Menu! So Delete First Sub Menu!.',
             error: true
