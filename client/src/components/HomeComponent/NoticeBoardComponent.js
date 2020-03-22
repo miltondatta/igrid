@@ -75,7 +75,7 @@ class NoticeBoardComponent extends Component {
                     </div>
                 </div>
                 <div className="ui-home">
-                    <ul className="d-flex list-unstyled">
+                    <ul className="d-flex list-unstyled-notice">
                         <li className={`btn ${noticeAndCircular ? 'btn-info' : 'btn-outline-info'} `}
                             onClick={() => this.setNoticeOption('all')}>All
                         </li>

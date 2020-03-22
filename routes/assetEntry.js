@@ -31,6 +31,22 @@ let upload = multer({
 }).single('file')
 
 
+
+// Get Total Assets
+route.get('/total/assets', (req,res,next) => {
+    Assets.count({
+        distinct: true,
+        col: 'id'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read challans
 route.get('/assets-entry/challan', async (req, res, next) => {
     const [results, metadata] = await db.query(`

@@ -84,6 +84,13 @@ select:focus{
    z-index: 5;
 }
 
+.list-unstyled-notice{
+   background: white;
+   border-radius: 5px;
+   width: 97%;
+   z-index: 5;
+}
+
 .list-unstyled p{
    padding: 3.2px 0;
 }

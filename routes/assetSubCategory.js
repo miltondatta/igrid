@@ -4,6 +4,22 @@ const AssetSubCategory = require('../models/asset/assetSubCategory')
 
 const route = express.Router()
 
+
+// Get Total Sub Assets
+route.get('/total/asset-sub-category', (req,res,next) => {
+    AssetSubCategory.count({
+        distinct: true,
+        col: 'sub_category_name'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read
 route.get('/asset-sub-category', async (req,res,next) => {
     const [data, metaData] = await db.query(`

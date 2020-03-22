@@ -4,6 +4,22 @@ const Products = require('../models/asset/products')
 
 const route = express.Router()
 
+
+// Get Total Product
+route.get('/total/products', (req,res,next) => {
+    Products.count({
+        distinct: true,
+        col: 'id'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read
 route.get('/products', async (req,res,next) => {
     const [data, metaData] = await db.query(`

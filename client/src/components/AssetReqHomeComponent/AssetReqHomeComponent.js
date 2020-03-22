@@ -1,8 +1,77 @@
+import Axios from 'axios'
 import './assetReqDashboard.css'
 import React, {Component} from 'react';
+import {apiUrl} from "../../utility/constant";
 
 class AssetReqHomeComponent extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state={
+            totalCateogry: 0,
+            totalSubCateogry: 0,
+            totalProducts: 0,
+            totalAssets: 0,
+        }
+    }
+
+    componentDidMount() {
+        this.getTotalProducts()
+        this.getTotalAssetCategories()
+        this.getTotalRegisteredAssets()
+        this.getTotalSubAssetCategories()
+
+
+
+    }
+
+    getTotalAssetCategories = () => {
+        Axios.get(apiUrl() + 'total/asset-category')
+            .then(res => {
+                if (res.data.status){
+                    this.setState({
+                        totalCateogry: res.data.total
+                    })
+                }
+            })
+    }
+
+    getTotalSubAssetCategories = () => {
+        Axios.get(apiUrl() + 'total/asset-sub-category')
+            .then(res => {
+                if (res.data.status){
+                    this.setState({
+                        totalSubCateogry: res.data.total
+                    })
+                }
+            })
+    }
+
+    getTotalProducts = () => {
+        Axios.get(apiUrl() + 'total/products')
+            .then(res => {
+                if (res.data.status){
+                    this.setState({
+                        totalProducts: res.data.total
+                    })
+                }
+            })
+    }
+
+    getTotalRegisteredAssets = () => {
+        Axios.get(apiUrl() + 'total/assets')
+            .then(res => {
+                if (res.data.status){
+                    this.setState({
+                        totalAssets: res.data.total
+                    })
+                }
+            })
+    }
+
+
     render() {
+        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets} = this.state
         return (
             <div className={'ui-asset-dashboard p-4'}>
                 <div className="ui-asset-dashboard-top">
@@ -14,7 +83,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Asset Category
-                            <h2>10</h2>
+                            <h2>{totalCateogry}</h2>
                         </div>
                     </div>
                     <div className={'ui-top-section'}>
@@ -25,7 +94,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Asset Sub Category
-                            <h2>49</h2>
+                            <h2>{totalSubCateogry}</h2>
                         </div>
                     </div>
                     <div className={'ui-top-section'}>
@@ -36,7 +105,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Total Product
-                            <h2>143</h2>
+                            <h2>{totalProducts}</h2>
                         </div>
                     </div>
                     <div className={'ui-top-section'}>
@@ -47,7 +116,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Registered Asset
-                            <h2>376</h2>
+                            <h2>{totalAssets}</h2>
                         </div>
                     </div>
                 </div>
