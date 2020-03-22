@@ -2,68 +2,42 @@ import Axios from 'axios'
 import './assetReqDashboard.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
+import jwt from "jsonwebtoken";
 
 class AssetReqHomeComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state={
-            totalCateogry: 0,
-            totalSubCateogry: 0,
-            totalProducts: 0,
             totalAssets: 0,
+            totalCateogry: 0,
+            totalProducts: 0,
+            totalSubCateogry: 0,
+            closedRequisition: 0,
+            pendingRequisition: 0,
+            inProgressRequisition: 0,
         }
     }
 
     componentDidMount() {
-        this.getTotalProducts()
-        this.getTotalAssetCategories()
-        this.getTotalRegisteredAssets()
-        this.getTotalSubAssetCategories()
-
-
+        this.getPendingRequisition()
 
     }
 
-    getTotalAssetCategories = () => {
-        Axios.get(apiUrl() + 'total/asset-category')
+    getPendingRequisition = () => {
+        const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        Axios.get(apiUrl() + 'requisition/total/' + id)
             .then(res => {
                 if (res.data.status){
+                    console.log(res, 47)
                     this.setState({
-                        totalCateogry: res.data.total
-                    })
-                }
-            })
-    }
-
-    getTotalSubAssetCategories = () => {
-        Axios.get(apiUrl() + 'total/asset-sub-category')
-            .then(res => {
-                if (res.data.status){
-                    this.setState({
-                        totalSubCateogry: res.data.total
-                    })
-                }
-            })
-    }
-
-    getTotalProducts = () => {
-        Axios.get(apiUrl() + 'total/products')
-            .then(res => {
-                if (res.data.status){
-                    this.setState({
-                        totalProducts: res.data.total
-                    })
-                }
-            })
-    }
-
-    getTotalRegisteredAssets = () => {
-        Axios.get(apiUrl() + 'total/assets')
-            .then(res => {
-                if (res.data.status){
-                    this.setState({
-                        totalAssets: res.data.total
+                        pendingRequisition: res.data.total[0].pending,
+                        inProgressRequisition: res.data.total[0].in_progress,
+                        closedRequisition: res.data.total[0].closed,
+                        totalCateogry: res.data.total[0].total_category,
+                        totalSubCateogry: res.data.total[0].total_sub_category,
+                        totalProducts: res.data.total[0].total_products,
+                        totalAssets: res.data.total[0].registered_assets,
                     })
                 }
             })
@@ -71,7 +45,7 @@ class AssetReqHomeComponent extends Component {
 
 
     render() {
-        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets} = this.state
+        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition} = this.state
         return (
             <div className={'ui-asset-dashboard p-4'}>
                 <div className="ui-asset-dashboard-top">
@@ -132,15 +106,15 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div className={'ui-asset-body-bottom'}>
                             <div>
-                                <p>5</p>
+                                <p>{pendingRequisition}</p>
                                 <p>Pending</p>
                             </div>
                             <div>
-                                <p>7</p>
+                                <p>{inProgressRequisition}</p>
                                 <p>In Progress</p>
                             </div>
                             <div>
-                                <p>14</p>
+                                <p>{closedRequisition}</p>
                                 <p>Closed</p>
                             </div>
                         </div>

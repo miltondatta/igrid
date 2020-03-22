@@ -1,5 +1,6 @@
 const db = require('../config/db')
 const express = require('express')
+const {Op} = require("sequelize");
 const RequisitionMaster = require('../models/requisitionmaster')
 
 const route = express.Router()
@@ -13,6 +14,30 @@ route.get('/requisition-master', (req,res,next) => {
         .catch(err => {
             res.status(200).json({message: 'Something Went Wrong', err})
         })
+})
+
+// Pending/In-progress/Closed Requisition
+route.get('/requisition/total/:id', async (req,res,next) => {
+    try{
+        const [data, metaData] = await db.query(`
+            Select (Select COUNT(id) from requisition_masters WHERE status = 0 and request_by = ${req.params.id}) as pending,
+                (Select COUNT(id) from requisition_masters WHERE status = 2 and request_by = ${req.params.id}) as in_progress,
+                 (Select COUNT(id) from requisition_masters WHERE status = 3 and request_by = ${req.params.id}) as closed,
+                 (Select COUNT(id) from assets) as registered_assets,
+                 (Select COUNT(id) from products) as total_products,
+                 (Select Distinct COUNT(category_name) from asset_categories) as total_category,
+                 (Select Distinct COUNT(sub_category_name) from asset_sub_categories) as total_sub_category
+            from requisition_masters
+        `)
+            if (data.length > 0) {
+                res.status(200).json({total: data, status: true})
+            } else {
+                res.status(200).json({message: 'No Data Found'})
+            }
+    }
+    catch(err) {
+        res.status(200).json({message: 'Something Went Wrong', err})
+    }
 })
 
 // My Requisition
