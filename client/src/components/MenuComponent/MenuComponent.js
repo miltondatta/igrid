@@ -214,7 +214,8 @@ class MenuComponent extends Component {
                                 sub_menu: item.sub_menu,
                                 link: item.link,
                                 visible: item.visible,
-                                order_by: item.order_by
+                                order_by: item.order_by === null ? '' : item.order_by,
+                                menu_id: ''
                             }, () => {
                                 this.validate();
                             });
@@ -227,7 +228,7 @@ class MenuComponent extends Component {
                                 sub_menu: item.sub_menu,
                                 link: item.link,
                                 visible: item.visible,
-                                order_by: item.order_by
+                                order_by: item.order_by === null ? '' : item.order_by
                             }, () => {
                                 let data = {
                                     module_id: item.module_id,
@@ -338,12 +339,11 @@ class MenuComponent extends Component {
             module_id: module_id !== '',
             name: name !== '',
             sub_menu: sub_menu !== '',
-            link: link !== '',
-            visible: visible !== '',
-            order_by: order_by !== ''
+            visible: visible !== ''
         };
 
         if (menu_type == 2) Object.assign(errorObj, {menu_id: menu_id !== ''});
+        if (menu_type == 2) Object.assign(errorObj, {link: link !== ''});
         this.setState({errorObj});
         return errorObj;
     };
@@ -489,7 +489,7 @@ class MenuComponent extends Component {
                             value={link}
                             onChange={this.handleChange}
                             className={`ui-custom-input`}/>
-                        {errorObj && !errorObj.link &&
+                        {errorObj && !errorObj.link && menu_type == 2 &&
                         <span className="error">Link Field is required</span>
                         }
                     </div>
@@ -503,9 +503,6 @@ class MenuComponent extends Component {
                             data-number={'integer_only'}
                             onChange={this.handleChange}
                             className={`ui-custom-input`}/>
-                        {errorObj && !errorObj.order_by &&
-                        <span className="error">Order By Field is required</span>
-                        }
                     </div>
                     {menu_type == 1 &&
                     <div className="px-1 mb-2">
