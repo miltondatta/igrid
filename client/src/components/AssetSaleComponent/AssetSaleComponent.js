@@ -161,7 +161,7 @@ class AssetSaleComponent extends Component{
                                                 <input type="file" className="custom-file-input" />
                                                 <label className="custom-file-label w-86 ml-3" htmlFor="validatedCustomFile">Choose file...</label>
                                                 <div className="bottom">
-                                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                                 </div>
                                             </div>
                                         </div>

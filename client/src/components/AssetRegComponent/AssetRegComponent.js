@@ -458,7 +458,7 @@ class AssetRegComponent extends Component {
                                 <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
                                 <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
                                 <div className="bottom">
-                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                         </div>
