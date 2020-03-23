@@ -43,9 +43,10 @@ route.get('/requisition/total/:id', async (req,res,next) => {
 // My Requisition
 route.get('/requisition-master/my-req/:id', async (req,res,next) => {
     const [data, metaData] = await db.query(`
-        SELECT requisition_masters.id, CONCAT(users."firstName", ' ', users."lastName") as userName, locations.location_name, requisition_masters.request_date, requisition_masters.requisition_no FROM requisition_masters
+        SELECT DISTINCT ON ( requisition_masters.id ) requisition_masters.id, CONCAT(users."firstName", ' ', users."lastName") as userName, locations.location_name, requisition_masters.request_date, requisition_masters.requisition_no FROM requisition_masters
             JOIN users ON users.id = requisition_masters.request_by
             JOIN locations ON locations.id = requisition_masters.location_id
+            JOIN requisition_details ON requisition_masters.id = requisition_details.requisition_id
             WHERE requisition_masters.request_by = ${req.params.id}
     `)
     if (data.length > 0) {

@@ -154,7 +154,8 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
         JOIN user_roles ON user_roles.id = requisition_masters.role_id
         JOIN locations ON requisition_masters.location_id = locations.id
         JOIN location_hierarchies ON location_hierarchies.id = locations.hierarchy
-    WHERE requisition_approves.location_id = '${location_id}' AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
+    WHERE requisition_approves.requisition_id NOT IN (SELECT requisition_id FROM requisition_approves WHERE requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NOT NULL)
+     AND requisition_approves.location_id = '${location_id}' AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
                     `);
 
     if (results.length > 0) {
