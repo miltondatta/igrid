@@ -1,8 +1,5 @@
 const db = require('../config/db')
 const Sequelize = require('sequelize')
-const Users = require('./user')
-const UserRoles = require('./userroles')
-const Locations = require('./locations')
 
 const Contacts = db.define('contacts', {
   name:{
@@ -21,25 +18,13 @@ const Contacts = db.define('contacts', {
     type: Sequelize.STRING
   },
   user_id:{
-    type: Sequelize.INTEGER,
-    references: {
-      model: Users,
-      id: 'id'
-    }
+    type: Sequelize.INTEGER
   },
   role_id:{
-    type: Sequelize.INTEGER,
-    references: {
-      model: UserRoles,
-      id: 'id'
-    }
+    type: Sequelize.INTEGER
   },
   location_id:{
-    type: Sequelize.INTEGER,
-    references: {
-      model: Locations,
-      id: 'id'
-    }
+    type: Sequelize.INTEGER
   }
 })
 

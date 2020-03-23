@@ -24,25 +24,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       user_id:{
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          id: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       role_id:{
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'user_roles',
-          id: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       location_id:{
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'locations',
-          id: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
