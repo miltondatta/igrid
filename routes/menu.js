@@ -53,7 +53,7 @@ route.post('/menu/entry', async (req, res) => {
             parent_id,
             module_id,
             visible,
-            order_by
+            order_by : order_by ? order_by : null
         };
 
         const menus = await Menu.findAll({
@@ -103,7 +103,7 @@ route.post('/menu/update', async (req, res) => {
             parent_id,
             module_id,
             visible,
-            order_by
+            order_by : order_by ? order_by : null
         };
 
         const status = await Menu.findOne({where: {id}});
