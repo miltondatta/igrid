@@ -13,6 +13,7 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import Spinner from "../../layouts/Spinner";
 
 class AssetTransferComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {

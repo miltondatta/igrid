@@ -26,7 +26,9 @@ route.get('/requisition/total/:id', async (req,res,next) => {
                  (Select COUNT(id) from assets) as registered_assets,
                  (Select COUNT(id) from products) as total_products,
                  (Select Distinct COUNT(category_name) from asset_categories) as total_category,
-                 (Select Distinct COUNT(sub_category_name) from asset_sub_categories) as total_sub_category
+                 (Select Distinct COUNT(sub_category_name) from asset_sub_categories) as total_sub_category,
+               (Select Distinct COUNT(id) from lost_assets where added_by = ${req.params.id}) as totalLostAssets,
+                (select  Distinct COUNT(id) from assets where is_disposal is true and assign_to = ${req.params.id}) as totalDisposal
             from requisition_masters
         `)
             if (data.length > 0) {
@@ -36,6 +38,7 @@ route.get('/requisition/total/:id', async (req,res,next) => {
             }
     }
     catch(err) {
+        console.log(err, 41)
         res.status(200).json({message: 'Something Went Wrong', err})
     }
 })
