@@ -61,6 +61,7 @@ const Assets = db.define('assets', {
         type: Sequelize.DOUBLE
     },
     asset_type: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
             model: AssetType,
@@ -68,6 +69,7 @@ const Assets = db.define('assets', {
         },
     },
     depreciation_method: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
             model: DepreciationMethods,
@@ -75,32 +77,41 @@ const Assets = db.define('assets', {
         },
     },
     rate: {
+        allowNull: true,
         type: Sequelize.INTEGER
     },
     effective_date: {
+        allowNull: true,
         type: Sequelize.DATEONLY
     },
     book_value: {
+        allowNull: true,
         type: Sequelize.DOUBLE
     },
     salvage_value: {
+        allowNull: true,
         type: Sequelize.DOUBLE
     },
     useful_life: {
+        allowNull: true,
         type: Sequelize.DOUBLE
     },
     last_effective_date: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.DATEONLY
     },
     warranty: {
+        allowNull: true,
         type: Sequelize.STRING
     },
     last_warranty_date: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.DATEONLY
     },
     condition: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
             model: Conditions,
@@ -108,12 +119,15 @@ const Assets = db.define('assets', {
         },
     },
     comments: {
+        allowNull: true,
         type: Sequelize.TEXT
     },
     barcode: {
+        allowNull: true,
         type: Sequelize.BOOLEAN
     },
     assign_to: {
+        allowNull: true,
         type: Sequelize.INTEGER
     },
     is_disposal: {
@@ -144,30 +158,37 @@ const Assets = db.define('assets', {
         type: Sequelize.BOOLEAN
     },
     amc_type: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.STRING
     },
     amc_expire_date: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.DATEONLY
     },
     amc_charge: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.INTEGER
     },
     insurance_value: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.INTEGER
     },
     insurance_premium: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.INTEGER
     },
     insurance_company: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.STRING
     },
     insurance_expire_date: {
+        allowNull: true,
         defaultValue: null,
         type: Sequelize.DATEONLY
     }
