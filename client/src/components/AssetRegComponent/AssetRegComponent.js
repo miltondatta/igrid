@@ -51,18 +51,18 @@ class AssetRegComponent extends Component {
             installation_cost: '',
             carrying_cost: '',
             other_cost: '',
-            asset_type: '',
-            depreciation_method: '',
-            rate: '',
-            effective_date: '',
-            book_value: '',
-            salvage_value: '',
-            useful_life: '',
-            last_effective_date: '',
-            warranty: '',
-            last_warranty_date: '',
-            condition: '',
-            comments: '',
+            asset_type: null,
+            depreciation_method: null,
+            rate: null,
+            effective_date: null,
+            book_value: null,
+            salvage_value: null,
+            useful_life: null,
+            last_effective_date: null,
+            warranty: null,
+            last_warranty_date: null,
+            condition: null,
+            comments: null,
             barcode: false,
             assign_to: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.id : '',
             asset_quantity: 1,
@@ -329,12 +329,14 @@ class AssetRegComponent extends Component {
 
     validate = (forr) => {
         const {challan_no, challan_date, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, project_id,asset_category,asset_sub_category,cost_of_purchase,
-            installation_cost,carrying_cost, other_cost, rate,book_value,salvage_value,  amc_charge, amc_expire_date, amc_type, is_amc} = this.state
+            installation_cost,carrying_cost, other_cost, rate,book_value,salvage_value,  amc_charge, amc_expire_date, amc_type, is_amc, challan_description, challanComments} = this.state
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
                 challan_no: typeof challan_no !== 'undefined' && challan_no !== '',
                 challan_date: typeof challan_date !== 'undefined' && challan_date !== '',
+                challanComments: typeof challanComments !== 'undefined' && challanComments !== '',
+                challan_description: typeof challan_description !== 'undefined' && challan_description !== '',
                 purchase_order_no: typeof purchase_order_no !== 'undefined' && purchase_order_no !== '',
                 purchase_order_date: typeof purchase_order_date !== 'undefined' && purchase_order_date !== '',
                 vendor_id: typeof vendor_id !== 'undefined' && vendor_id !== '',
@@ -348,18 +350,15 @@ class AssetRegComponent extends Component {
         } else if (forr === 'assets') {
             errorDict = {
                 project_id: typeof project_id !== 'undefined' && project_id !== '',
-                amc_charge: is_amc && typeof amc_charge !== 'undefined' && amc_charge !== '',
-                amc_expire_date: is_amc && typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
-                amc_type: is_amc && typeof amc_type !== 'undefined' && amc_type !== '',
+                amc_charge: is_amc ? typeof amc_charge !== 'undefined' && amc_charge !== '' : true,
+                amc_expire_date: is_amc ? typeof amc_expire_date !== 'undefined' && amc_expire_date !== '' : true,
+                amc_type: is_amc ? typeof amc_type !== 'undefined' && amc_type !== '' : true,
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-                rate: typeof rate !== 'undefined' && rate !== '',
-                book_value: typeof book_value !== 'undefined' && book_value !== '',
-                salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
             }
             if (is_amc){
                 errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
@@ -675,7 +674,8 @@ class AssetRegComponent extends Component {
                                             <div className={'mb-1'}>
                                                 <div className="input-grid">
                                                     <label className={'ui-custom-label'}>AMC Type</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'amc_type'} value={amc_type}>
+                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}
+                                                            onChange={this.handleChange} name={'amc_type'} value={amc_type}>
                                                         <option>AMC Types</option>
                                                         <AMCTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd}/>
                                                     </select>
