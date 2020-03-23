@@ -35,7 +35,14 @@
     outline: none;
     padding: 10px 0 !important;
     border-radius: 0 !important;
+}
+
+.ui-user .ui-user-container .ui-login .bb-gray {
     border-bottom: 1px solid #aaa !important;
+}
+
+.ui-user .ui-user-container .ui-login .bb-red{
+    border-bottom: 1.5px solid red !important;
 }
 
 

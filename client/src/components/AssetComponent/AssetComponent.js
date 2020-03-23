@@ -9,6 +9,7 @@ import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOpt
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import {getFileExtension} from "../../utility/custom";
 
 class AssetComponent extends Component{
 
@@ -40,9 +41,22 @@ class AssetComponent extends Component{
     handleChange = (e) => {
         const {name, value, files} = e.target
         if (name === 'upload_file') {
-            this.setState({
-                [name]: files[0]
-            })
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0]
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else {
             this.setState({
                 [name]: value
@@ -250,11 +264,11 @@ class AssetComponent extends Component{
                             <label className={'ui-custom-label'}>Details</label>
                             <textarea onChange={this.handleChange} value={details} className={`ui-custom-input ${errorDict && !errorDict.details && 'is-invalid'}`} name={'details'} placeholder="Details" />
                         </div>
-                        <div className="ui-custom-file w-50 px-1 mb-20p">
+                        <div className="ui-custom-file w-50 mb-20p">
                             <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
                             <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
                             <div className="bottom">
-                                JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
                         <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>

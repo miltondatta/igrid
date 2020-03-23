@@ -233,7 +233,7 @@ class LostAssetsComponent extends Component {
                                        required />
                                 <label htmlFor="validatedCustomFile">{gd_other_file && gd_other_file.name ? gd_other_file.name : gd_other_file ? gd_other_file : 'Choose file'}</label>
                                 <div className="bottom">
-                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                         </div>

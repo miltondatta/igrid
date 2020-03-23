@@ -80,7 +80,7 @@ class ImportCSVComponent extends Component {
                                     required />
                                 <label htmlFor="validatedCustomFile">{(import_data_file && import_data_file.name) ? import_data_file.name : (import_data_file ? import_data_file : 'Choose file')}</label>
                                 <div className="bottom">
-                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                         </div>
