@@ -10,6 +10,10 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import {getFileExtension} from "../../utility/custom";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+
+moment.locale('en');
 
 class AssetComponent extends Component{
 
@@ -96,7 +100,7 @@ class AssetComponent extends Component{
             }
             const productCombinationStore = {
                 id: length + 1,
-                asset_category, asset_sub_category, quantity, brand, expected_date, model, upload_file, details, reason
+                asset_category, asset_sub_category, quantity, brand, expected_date: moment(expected_date).format('YYYY-MM-DD'), model, upload_file, details, reason
             }
             this.setState((prevState) => ({
                 productSet: [...prevState.productSet, productCombinationStore],
@@ -258,7 +262,12 @@ class AssetComponent extends Component{
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Expected Date</label>
-                            <input onChange={this.handleChange} value={expected_date} type={'date'} className={`ui-custom-input`} name={'expected_date'} placeholder="Expected Date" />
+                            <DatePicker timePicker={false}
+                                        name={'expected_date'}
+                                        className={`ui-custom-input`}
+                                        inputFormat="DD/MM/YYYY"
+                                        onChange={date => this.setState({expected_date: date})}
+                                        value={expected_date}/>
                         </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Details</label>

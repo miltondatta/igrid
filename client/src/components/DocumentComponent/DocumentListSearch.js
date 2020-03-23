@@ -7,14 +7,9 @@ import DatePicker from 'react-datepicker2';
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
+import {disabledRanges} from "../../utility/custom";
 
 moment.locale('en');
-
-const disabledRanges = [{
-    disabled: true,
-    start: moment().add(1, 'day'),
-    end: moment().add(50, 'year')
-}];
 
 class DocumentListSearch extends Component {
 
