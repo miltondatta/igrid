@@ -210,7 +210,7 @@ class InstaAdd extends Component {
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file'}</label>
                                 <div className="bottom">
-                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                             <div className="d-flex justify-content-center align-items-center ui-custom-checkbox">
@@ -543,7 +543,7 @@ class InstaAdd extends Component {
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
                                 <div className="bottom">
-                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                         </div>
@@ -833,7 +833,7 @@ class InstaAdd extends Component {
                                    required />
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
                             <div className="bottom">
-                                JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>

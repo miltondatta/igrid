@@ -13,6 +13,9 @@
 }
 
 @media only screen and (max-width: 1550px) {
+    .ui-custom-file .bottom{
+        font-size: 9px;
+    }
     .ui-hometop .ui-home-options .ui-cards p{
         font-size: 14px;
     }
@@ -30,6 +33,7 @@
 }
 
 @media only screen and (max-width: 1450px) {
+
     .ui-hometop {
          grid-template-columns: 30% 68.7%;
      }
@@ -45,6 +49,9 @@
 
 }
 
-@media only screen and (max-width: 1150px) {
+@media only screen and (max-width: 1315px) {
+    .ui-custom-file .bottom{
+        font-size: 8px;
+    }
 
 }

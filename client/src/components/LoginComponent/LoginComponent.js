@@ -19,7 +19,10 @@ class LoginComponent extends Component {
             success: false,
             errorMessage: '',
             successMessage: '',
+
+            errorDict: null
         }
+
     }
 
     componentDidMount() {
@@ -38,6 +41,7 @@ class LoginComponent extends Component {
     }
 
     submitLogin = () => {
+        if (Object.values(this.validate()).includes(false)) return false;
         const {email,password} = this.state
         Axios.get('https://ipapi.co/json/')
             .then(res => {
@@ -81,6 +85,20 @@ class LoginComponent extends Component {
             })
     }
 
+    validate = () => {
+        const {email, password} = this.state
+        let errorDict = {
+            email: typeof email !== 'undefined' && email !== '',
+            password: typeof password !== 'undefined' && password !== ''
+        }
+
+        this.setState({
+            errorDict
+        })
+
+        return errorDict
+    }
+
     renderRedirect = () => {
         if(localStorage.getItem('user') && this.state.redirect){
             return(
@@ -90,7 +108,7 @@ class LoginComponent extends Component {
     }
 
     render() {
-        const {email, password, error,success, errorMessage, successMessage} = this.state
+        const {email, password, error,success, errorMessage, successMessage, errorDict} = this.state
         return (
             <>
                 {error &&
@@ -111,21 +129,21 @@ class LoginComponent extends Component {
                             id ='email' 
                             value={email} 
                             onChange={this.handleChange} 
-                            name='email' 
+                            name='email'
+                            className={`${errorDict && !errorDict.email ? 'bb-red' : 'bb-gray'}`}
                             placeholder='Please enter your email' />
                         <br />
                         <br />
                         <input 
                             type='password'
-                            className={'mb-2'}
                             id ='password' 
                             value={password} 
                             onChange={this.handleChange} 
-                            name='password' 
+                            name='password'
+                            className={`mb-2 ${errorDict && !errorDict.password ? 'bb-red' : 'bb-gray'}`}
                             placeholder='Please enter your passsword' />
                         <div className='d-flex justify-content-between align-items-center mt-4'>
                             <button className='ui-signin' onClick={this.submitLogin}>Log In</button>
-                            <a href='/' className='text-project f-18px f-weight-500'>Forgot Password?</a>
                         </div>
                     </div>
                 </div>

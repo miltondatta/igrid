@@ -341,7 +341,7 @@ class RepairMaintenenceComponent extends Component {
                                        className="custom-file-input" id="validatedCustomFile"/>
                                 <label htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
                                 <div className="bottom">
-                                    JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Allowed
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                             {errorDict && !errorDict.file_name &&

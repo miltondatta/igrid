@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import {getFileExtension} from "../../utility/custom";
 import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class RegisterUserComponent extends Component {
     constructor(props){
@@ -43,7 +44,7 @@ class RegisterUserComponent extends Component {
     handleSubmit = (e) => {
         const {firstName, lastName, email, pin, phone_number, address, confirm_password, password} = this.state
         e.preventDefault()
-        this.validate()
+        if (Object.values(this.validate()).includes(false)) return false;
         if (password !== confirm_password) {
             this.setState({
                 error: true,
@@ -60,7 +61,29 @@ class RegisterUserComponent extends Component {
         if (password === confirm_password) {
             Axios.post(apiUrl() + 'users/register', data)
                 .then(resData => {
-                    console.log(resData, 45)
+                    if (!resData.data.status){
+                        this.setState({
+                            error: true,
+                            errorMessage: resData.data.message
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false,
+                                })
+                            }, 2300)
+                        })
+                    } else {
+                        this.setState({
+                            success: true,
+                            successMessage: resData.data.message
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    success: false,
+                                })
+                            }, 2300)
+                        })
+                    }
                 })
                 .catch(err => {console.log(err)})
         }
@@ -81,14 +104,18 @@ class RegisterUserComponent extends Component {
         this.setState({
             errorDict
         })
+        return errorDict
     }
 
     render() {
-        const {firstName, lastName, phone_number, email, pin, address, confirm_password, password, errorDict, error, errorMessage} = this.state
+        const {firstName, lastName, phone_number, email, pin, address, confirm_password, password, errorDict, error, errorMessage, success, successMessage} = this.state
         return (
             <div className={'bg-white p-3 rounded m-3 grid-2'}>
                 {error &&
                     <ErrorModal errorMessage={errorMessage} />
+                }
+                {success &&
+                    <SuccessModal successMessage={successMessage} />
                 }
                 <div className={'ui-register'}>
                     <img src={process.env.PUBLIC_URL + '/media/image/register.png'} alt="Register"/>

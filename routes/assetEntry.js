@@ -613,7 +613,7 @@ route.post('/asset-transfer/by/credentials', async (req, res) => {
         transferCredential.map((item, index) => {
             Assets.update({assign_to: item.assign_to}, {where: {id: item.id}})
                 .then(() => {
-                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to})
+                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to, status: 4, assign_from:  item.user_id})
                         .then(() => {
                             if (transferCredential.length === index + 1) return res.status(200).json({
                                 success: true,

@@ -12,6 +12,7 @@ class AssetReqHomeComponent extends Component {
             totalAssets: 0,
             totalCateogry: 0,
             totaldisposal: 0,
+            totalTransfer: 0,
             totalProducts: 0,
             totallostassets: 0,
             totalSubCateogry: 0,
@@ -42,6 +43,7 @@ class AssetReqHomeComponent extends Component {
                         totalAssets: res.data.total[0].registered_assets,
                         totaldisposal: res.data.total[0].totaldisposal,
                         totallostassets: res.data.total[0].totaldisposal,
+                        totalTransfer: res.data.total[0].totaltransfer
                     })
                 }
             })
@@ -49,7 +51,7 @@ class AssetReqHomeComponent extends Component {
 
 
     render() {
-        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets} = this.state
+        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets, totalTransfer} = this.state
         return (
             <div className={'ui-asset-dashboard p-4'}>
                 <div className="ui-asset-dashboard-top">
@@ -134,7 +136,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div className={'ui-asset-body-bottom'}>
                             <div>
-                                <p>21</p>
+                                <p>{totalTransfer}</p>
                                 <p>Transfer</p>
                             </div>
                             <div>
