@@ -344,7 +344,7 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
                                  join products on assets.product_id = products.id
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                 join conditions on assets.condition = conditions.id
+                                 left join conditions on assets.condition = conditions.id
                         ${queryText}`);
 
         return res.status(200).json(data);

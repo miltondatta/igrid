@@ -60,7 +60,7 @@ exports.index = async (req, res) => {
                                              inner join products on assets.product_id = products.id
                                              inner join asset_categories on assets.asset_category = asset_categories.id
                                              inner join asset_sub_categories on asset_categories.id = asset_sub_categories.category_id
-                                             inner join conditions on assets.condition = conditions.id
+                                             left join conditions on assets.condition = conditions.id
                                              inner join locations on repair_maintenances.location_id = locations.id
                                              inner join user_roles on repair_maintenances.role_id = user_roles.id
                                              inner join users on repair_maintenances.added_by = users.id 
