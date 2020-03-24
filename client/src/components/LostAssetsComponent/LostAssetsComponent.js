@@ -126,6 +126,12 @@ class LostAssetsComponent extends Component {
                     this.setState({
                         error: true,
                         errorMessage: resData.data.message
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
             })

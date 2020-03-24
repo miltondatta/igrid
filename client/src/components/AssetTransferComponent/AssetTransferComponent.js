@@ -11,6 +11,8 @@ import {apiUrl} from "../../utility/constant";
 import '../../module/data-table-react/reactDataTable.css';
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import Spinner from "../../layouts/Spinner";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class AssetTransferComponent extends Component {
 
@@ -70,6 +72,12 @@ class AssetTransferComponent extends Component {
         if (isExistTransfer.length) return this.setState({
             error: true,
             errorMessage: 'This Asset is already added in Transfer list!'
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300);
         });
 
         this.setState({isLoading: true}, () => {
@@ -78,12 +86,16 @@ class AssetTransferComponent extends Component {
                     if (!res.data[0].length) return this.setState({
                         error: true,
                         errorMessage: 'There is no asset found for Transfer!',
-                        isLoading: false,
-                        success: false
+                        isLoading: false
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     });
                     this.setState({
                         transferData: [...transferData, ...res.data[0]],
-                        error: false,
                         isLoading: false
                     }, () => {
                         res.data[0].map(item => {
@@ -144,21 +156,27 @@ class AssetTransferComponent extends Component {
                 this.setState({
                     transferData: [],
                     transferCredential: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
                 }, () => {
-                    window.location.reload();
                     this.emptyStateValue();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2300);
                 })
             })
             .catch(err => {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -251,17 +269,11 @@ class AssetTransferComponent extends Component {
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => this.setState({error: false})}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage}/>
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage}/>
+                }
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 admin-input-height position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
@@ -349,6 +361,7 @@ class AssetTransferComponent extends Component {
                             <ReactDataTable
                                 remove={this.cancelTransfer}
                                 tableData={transferTableData}
+                                bigTable
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Transfer Asset</h4>}
