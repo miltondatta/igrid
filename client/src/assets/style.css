@@ -237,7 +237,7 @@ input[type=date],
 
 .line-h-35px{line-height: 35px}
 
-.is-invalid{border: 1px solid red}
+.is-invalid{border: 1.5px solid red}
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
 .text-copyright{

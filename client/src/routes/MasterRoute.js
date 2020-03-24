@@ -9,10 +9,6 @@ const AsyncHome = Loadable({
     loader: () => import('../containers/Home'),
     loading: Loader,
   });
-const AsyncMIS = Loadable({
-    loader: () => import('../containers/MIS'),
-    loading: Loader,
-});
 const AsyncHomeLand = Loadable({
     loader: () => import('../containers/HomeLand'),
     loading: Loader,
@@ -321,6 +317,10 @@ const AsyncMy404Component = Loadable({
     loader: () => import('./404Page/404Page'),
     loading: Loader,
 });
+const AsyncMISDashboard = Loadable({
+    loader: () => import('../containers/MISDashboard.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -354,7 +354,6 @@ class MasterRoute extends Component{
                     <div className={`ui-container h-100`}>
                         <Topnav/>
                         <Switch>
-                            <Route exact path='/mis' component={AsyncMIS}/>
                             <Route exact path='/about' component={AsyncAbout}/>
                             <Route exact path='/home' component={AsyncHomeLand}/>
                             <Route exact path='/profile' component={AsyncProile}/>
@@ -376,6 +375,7 @@ class MasterRoute extends Component{
                             <Route exact path='/stock-report' component={AsyncStockReport}/>
                             <Route exact path='/admin/amc-types' component={AsyncAmcTypes}/>
                             <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
+                            <Route exact path='/mis/dashboard' component={AsyncMISDashboard}/>
                             <Route exact path='/admin/user-roles' component={AsyncUserRoles}/>
                             <Route exact path='/admin/project' component={AsyncCreateProject}/>
                             <Route exact path='/own-stock' component={AsyncOwnStockContainer}/>
@@ -434,6 +434,7 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/menu/assign' component={AsyncMenuAssignContainer}/>
 
 
+                            {/*404 Page*/}
                             <Route path='*' exact component={AsyncMy404Component} />
                 </Switch>
                     </div>

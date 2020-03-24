@@ -17,6 +17,7 @@ class DeliveryReportComponent extends Component {
             pdf: false,
             error: false,
             date_from: '',
+            errorDict: null,
             errorMessage: '',
             optionDropDown: false,
             deliveryReportData: []
@@ -31,6 +32,7 @@ class DeliveryReportComponent extends Component {
     }
 
     handleSubmit = () => {
+        if (Object.values(this.validate()).includes(false)) return;
         const {date_from, date_to, errorDictAsset} = this.state
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         let data = {
@@ -65,8 +67,21 @@ class DeliveryReportComponent extends Component {
         deliveryReportData.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
     }
 
+    validate = () => {
+        const {date_from, date_to} = this.state
+        let errorDict = {
+            date_to: typeof date_to !== 'undefined' && date_to !== '',
+            date_from: typeof date_from !== 'undefined' && date_from !== ''
+        }
+        this.setState({
+            errorDict
+        })
+
+        return errorDict
+    }
+
     render() {
-        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, errorDictAsset, deliveryReportData, pdf} = this.state
+        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, deliveryReportData, pdf, errorDict} = this.state
         console.log(deliveryReportData, 72)
         return (
             <>
@@ -89,7 +104,7 @@ class DeliveryReportComponent extends Component {
                                            name={'date_from'}
                                            value={date_from}
                                            onChange={this.handleChange}
-                                           className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_from && 'is-invalid'}`}/>
+                                           className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}/>
                                 </div>
                             </div>
                             <div className="col-md-4">
@@ -99,7 +114,7 @@ class DeliveryReportComponent extends Component {
                                            name={'date_to'}
                                            value={date_to}
                                            onChange={this.handleChange}
-                                           className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_to && 'is-invalid'}`}/>
+                                           className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}/>
                                 </div>
                             </div>
                             <div className="col-md-4">

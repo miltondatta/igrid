@@ -17,12 +17,26 @@ class AssetDisposalReportComponent extends Component {
             pdf: false,
             error: false,
             date_from: '',
+            errorDict: null,
             errorMessage: '',
             optionDropDown: false,
             deliveryReportData: []
         }
     }
 
+    validate = () => {
+        const {date_from, date_to} = this.state
+        let errorDict = {
+            date_to: typeof date_to !== 'undefined' && date_to !== '',
+            date_from: typeof date_from !== 'undefined' && date_from !== ''
+        }
+        this.setState({
+            errorDict
+        })
+
+        return errorDict
+    }
+    
     handleChange = (e) => {
         const {name, value} = e.target
         this.setState({
@@ -31,6 +45,7 @@ class AssetDisposalReportComponent extends Component {
     }
 
     handleSubmit = () => {
+        if (Object.values(this.validate()).includes(false)) return;
         const {date_from, date_to} = this.state
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         let data = {
@@ -66,7 +81,7 @@ class AssetDisposalReportComponent extends Component {
     }
 
     render() {
-        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, errorDictAsset, deliveryReportData, pdf} = this.state
+        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, errorDict, deliveryReportData, pdf} = this.state
 
         return (
             <>
@@ -89,7 +104,7 @@ class AssetDisposalReportComponent extends Component {
                                            name={'date_from'}
                                            value={date_from}
                                            onChange={this.handleChange}
-                                           className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_from && 'is-invalid'}`}/>
+                                           className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}/>
                                 </div>
                             </div>
                             <div className="col-md-4">
@@ -99,7 +114,7 @@ class AssetDisposalReportComponent extends Component {
                                            name={'date_to'}
                                            value={date_to}
                                            onChange={this.handleChange}
-                                           className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_to && 'is-invalid'}`}/>
+                                           className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}/>
                                 </div>
                             </div>
                             <div className="col-md-4">

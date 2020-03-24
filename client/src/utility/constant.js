@@ -431,7 +431,7 @@ export const misCategory = [
         name: 'Dashboard',
         icon: 'fab fa-fort-awesome',
         subCat: false,
-        link: '/mis'
+        link: '/mis/dashboard'
     },
     {
         id: 11,
