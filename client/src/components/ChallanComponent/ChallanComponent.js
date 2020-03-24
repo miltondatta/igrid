@@ -299,9 +299,6 @@ class ChallanComponent extends Component {
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-                rate: typeof rate !== 'undefined' && rate !== '',
-                book_value: typeof book_value !== 'undefined' && book_value !== '',
-                salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
             }
             if (is_amc){
                  errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
@@ -766,7 +763,8 @@ class ChallanComponent extends Component {
                                                         <div className={'mb-1'}>
                                                             <div className="input-grid">
                                                                 <label className={'ui-custom-label'}>AMC Type</label>
-                                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'amc_type'} value={amc_type}>
+                                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}
+                                                                        onChange={this.handleChange} name={'amc_type'} value={amc_type}>
                                                                     <option>AMC Types</option>
                                                                     <AMCTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd}/>
                                                                 </select>
