@@ -4,6 +4,7 @@ const multer = require('multer')
 const express = require('express')
 const LostAsset = require('../models/lost_asset')
 const LostAssetFeedback = require('../models/lost_asset_feedback')
+const Location = require('../models/locations');
 
 const route = express.Router()
 
@@ -12,10 +13,10 @@ let storage = multer.diskStorage({
         cb(null, 'public/lostAssets')
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' +file.originalname )
+        cb(null, Date.now() + '-' + file.originalname)
     }
 })
-let upload =  multer({
+let upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
@@ -28,7 +29,7 @@ let upload =  multer({
 
 
 // Get Lost Assets
-route.get('/lost-assets', (req,res,next) => {
+route.get('/lost-assets', (req, res, next) => {
     LostAsset.findAll({attributes: ['id', 'incident_type', 'police_station', 'gd_no', 'gd_date', 'incident_date', 'incident_time']})
         .then(resData => {
             res.status(200).json({res: resData, status: true})
@@ -40,7 +41,7 @@ route.get('/lost-assets', (req,res,next) => {
 })
 
 // Get Lost Assets
-route.get('/lost-asset/feedback/:id', async (req,res,next) => {
+route.get('/lost-asset/feedback/:id', async (req, res, next) => {
     const [data, metaData] = await db.query(`
         SELECT lost_assets.id, CONCAT(users."firstName", '_', users."lastName") as feedback_by, user_roles.role_name as designation, locations.location_name as location,
             lost_asset_feedbacks.feedback_details as feedback FROM lost_asset_feedbacks
@@ -59,7 +60,7 @@ route.get('/lost-asset/feedback/:id', async (req,res,next) => {
 })
 
 // Get Lost Assets Incident Type
-route.post('/lost-assets/incident_type', (req,res,next) => {
+route.post('/lost-assets/incident_type', (req, res, next) => {
     let {incident_type} = req.body
     if (incident_type.length >= 3) {
         LostAsset.findAll({
@@ -77,7 +78,7 @@ route.post('/lost-assets/incident_type', (req,res,next) => {
 });
 
 // Post Lost Assets Feedback
-route.post('/lost-assets/feedback', (req,res,next) => {
+route.post('/lost-assets/feedback', (req, res, next) => {
     let {feedback_details, lost_asset_id} = req.body
     if (feedback_details !== '' && lost_asset_id !== '') {
         LostAssetFeedback.create(req.body)
@@ -91,7 +92,7 @@ route.post('/lost-assets/feedback', (req,res,next) => {
 });
 
 // Lost Assets Report
-route.post('/lost-assets/report', async (req,res,next) => {
+route.post('/lost-assets/report', async (req, res, next) => {
     const {date_from, date_to, user_id} = req.body
     const [data, metaData] = await db.query(`
         SELECT lost_assets.id, CONCAT(users."firstName", ' ', users."lastName") as reported_by, user_roles.role_name as designation,
@@ -103,7 +104,7 @@ route.post('/lost-assets/report', async (req,res,next) => {
         WHERE lost_assets."createdAt" BETWEEN '${date_from}' AND '${date_to}' AND lost_assets.added_by = ${user_id}
     `)
 
-    if(data.length > 0) {
+    if (data.length > 0) {
         res.status(200).json({data, status: true})
     } else {
         res.status(200).json({message: 'No Data Found'})
@@ -111,27 +112,49 @@ route.post('/lost-assets/report', async (req,res,next) => {
 });
 
 // Create
-route.post('/lost-assets/entry', (req,res,next) => {
+route.post('/lost-assets/entry', (req, res, next) => {
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
         } else if (err) {
             return res.status(500).json(err)
         }
-        const {parent_id, asset_id, police_station, incident_time, gd_no, gd_date} = req.body
-        if (asset_id !== '' && parent_id !== '' && incident_time !== '' && police_station !== '' && gd_no !== '' && gd_date !== '') {
-            LostAsset.create({...req.body, gd_other_file: req.file.filename ? req.file.filename : null})
-                .then(resData => {
-                    res.status(200).json({message: 'Data Saved Successfully', status: true})
-                })
-                .catch(err => {
-                    console.log(err)
-                    res.status(200).json({message: 'Something went wrong', err})
-                })
-        } else {
-            res.status(200).json({message: 'All fields required!'})
-        }
+
+        Location.findOne({where: {parent_id: req.body.location_id}})
+            .then(resData => {
+                const {parent_id, asset_id, police_station, incident_time, gd_no, gd_date, role_id, added_by, incident_type, incident_date} = req.body;
+                if (asset_id !== '' && parent_id !== '' && incident_time !== '' && police_station !== '' && gd_no !== '' && gd_date !== '') {
+                    const newLostAsset = {
+                        location_id: resData.id,
+                        role_id,
+                        added_by,
+                        asset_id,
+                        incident_type,
+                        incident_date,
+                        incident_time,
+                        police_station,
+                        gd_no,
+                        gd_date,
+                        gd_other_file: req.file.filename ? req.file.filename : null
+                    };
+
+                    LostAsset.create(newLostAsset)
+                        .then(() => {
+                            res.status(200).json({message: 'Data Saved Successfully', status: true});
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(200).json({message: 'Something went wrong', err});
+                        })
+                } else {
+                    res.status(200).json({message: 'All fields required!'});
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(200).json({message: 'Something went wrong', err})
+            });
     })
-})
+});
 
 module.exports = route
