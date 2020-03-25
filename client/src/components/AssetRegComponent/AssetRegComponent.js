@@ -16,6 +16,12 @@ import SuccessModal from "../../utility/success/successModal";
 import ErrorModal from "../../utility/error/errorModal";
 import AMCTypeOptions from "../../utility/component/amcTypeOptions";
 import {getFileExtension} from "../../utility/custom";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+import {disabledRanges} from "../../utility/custom";
+
+moment.locale('en');
+
 
 class AssetRegComponent extends Component {
 
@@ -23,11 +29,11 @@ class AssetRegComponent extends Component {
         super(props)
         this.state = {
             challan_no: '',
-            challan_date: '',
+            challan_date: moment(),
             product_id: '',
             challan_description: '',
             purchase_order_no: '',
-            purchase_order_date: '',
+            purchase_order_date: moment(),
             vendor_id: '',
             received_by: '',
             receivedByFocus: false,
@@ -54,13 +60,13 @@ class AssetRegComponent extends Component {
             asset_type: null,
             depreciation_method: null,
             rate: null,
-            effective_date: null,
+            effective_date: moment(),
             book_value: null,
             salvage_value: null,
             useful_life: null,
-            last_effective_date: null,
+            last_effective_date: moment(),
             warranty: null,
-            last_warranty_date: null,
+            last_warranty_date: moment(),
             condition: null,
             comments: null,
             barcode: false,
@@ -259,10 +265,10 @@ class AssetRegComponent extends Component {
         const data = new FormData()
         data.append('file', attachment)
         data.append('challan_no', challan_no)
-        data.append('challan_date', challan_date)
+        data.append('challan_date', moment(challan_date).format('YYYY-MM-DD'))
         data.append('challan_description', challan_description)
         data.append('purchase_order_no', purchase_order_no)
-        data.append('purchase_order_date', purchase_order_date)
+        data.append('purchase_order_date', moment(purchase_order_date).format('YYYY-MM-DD'))
         data.append('vendor_id', vendor_id)
         data.append('received_by', received_by)
         data.append('added_by', added_by)
@@ -270,18 +276,18 @@ class AssetRegComponent extends Component {
         Axios.post(apiUrl() + 'assets-entry/challan/entry', data)
             .then(resData => {
                 if (resData.data.status) {
-                this.setState({
-                    success: true,
-                    successMessage: resData.data.message,
-                    challan_id: resData.data.resId,
-                    vendor_id: resData.data.vendorName
-                }, () => {
-                    setTimeout(() => {
-                        this.setState({
-                            success: false,
-                        })
-                    }, 2300)
-                })
+                    this.setState({
+                        success: true,
+                        successMessage: resData.data.message,
+                        challan_id: resData.data.resId,
+                        vendor_id: resData.data.vendorName
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false,
+                            })
+                        }, 2300)
+                    })
                 } else {
                     console.log(resData, 267)
                     this.setState({
@@ -297,7 +303,7 @@ class AssetRegComponent extends Component {
                 }
             })
             .catch(err => {console.log(err)})
-    }
+    };
 
     resetFields = () => {
         this.setState({
@@ -401,10 +407,10 @@ class AssetRegComponent extends Component {
         return (
             <>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                <ErrorModal errorMessage={errorMessage} />
                 }
                 {success &&
-                    <SuccessModal successMessage={successMessage} />
+                <SuccessModal successMessage={successMessage} />
                 }
                 <InstaAdd
                     forceUp = {this.forceUp}
@@ -423,7 +429,13 @@ class AssetRegComponent extends Component {
                         </div>
                         <div className={'mb-2'}>
                             <label htmlFor="challan_date" className={'ui-custom-label'}>Challan Date</label>
-                            <input value={challan_date} type={'date'} onChange={this.handleChange} name={'challan_date'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_date && 'is-invalid'}`} />
+                            <DatePicker timePicker={false}
+                                        name={'challan_date'}
+                                        className={`ui-custom-input w-100 ${errorDict && !errorDict.challan_date && 'is-invalid'}`}
+                                        inputFormat="DD/MM/YYYY"
+                                        onChange={date => this.setState({challan_date: date})}
+                                        ranges={disabledRanges}
+                                        value={challan_date}/>
                         </div>
                         <div className={'mb-2'}>
                             <div className="input-grid">
@@ -450,7 +462,12 @@ class AssetRegComponent extends Component {
                         </div>
                         <div className={'mb-2'}>
                             <label className={'ui-custom-label'}>Purchase Order Date</label>
-                            <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
+                            <DatePicker timePicker={false}
+                                        name={'purchase_order_date'}
+                                        className={`ui-custom-input w-100 ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`}
+                                        inputFormat="DD/MM/YYYY"
+                                        onChange={date => this.setState({purchase_order_date: date})}
+                                        value={purchase_order_date}/>
                         </div>
                         <div className={'w-50 mb-20p'}>
                             <div className="ui-custom-file">
@@ -474,7 +491,7 @@ class AssetRegComponent extends Component {
                                 value={challan_description}
                                 placeholder={'Write Description'}
                                 onChange={this.handleChange} name={'challan_description'}
-                                 />
+                            />
                         </div>
                         <div className={'mb-2'}>
                             <nav className="navbar text-center mb-2 pl-1 rounded">
@@ -486,7 +503,7 @@ class AssetRegComponent extends Component {
                                 onChange={this.handleChange} name={'challanComments'}
                                 placeholder={'Write Comments'}
                                 className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
-                                 />
+                            />
                         </div>
                     </div>
                 </div>}
@@ -508,7 +525,7 @@ class AssetRegComponent extends Component {
                                 Challan Date
                             </div>
                             <div className={'col-8 pr-2 ui-text'}>
-                                <span className={'ui-text mr-3'}>:</span> {challan_date}
+                                <span className={'ui-text mr-3'}>:</span> {moment(challan_date).format('YYYY-MM-DD')}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>
@@ -564,7 +581,7 @@ class AssetRegComponent extends Component {
                                 Purchase Order Date
                             </div>
                             <div className={'col-8 pr-2 ui-text'}>
-                                <span className={'ui-text mr-3'}>:</span> {purchase_order_date}
+                                <span className={'ui-text mr-3'}>:</span> {moment(purchase_order_date).format('YYYY-MM-DD')}
                             </div>
                         </div>
                     </div>
@@ -694,11 +711,12 @@ class AssetRegComponent extends Component {
                                             </div>
                                             <div className={'mb-1'}>
                                                 <label className={'ui-custom-label'}>AMC Expire Date</label>
-                                                <input type="date"
-                                                       value={amc_expire_date}
-                                                       onChange={this.handleChange} name={'amc_expire_date'}
-                                                       placeholder={'AMC Expire Date'}
-                                                       className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
+                                                <DatePicker timePicker={false}
+                                                            name={'amc_expire_date'}
+                                                            className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}
+                                                            inputFormat="DD/MM/YYYY"
+                                                            onChange={date => this.setState({amc_expire_date: date})}
+                                                            value={amc_expire_date}/>
                                             </div></>}
                                     </div>
                                     <div className={'bg-white p-2 rounded mb-2 border-blue'}>
@@ -740,11 +758,12 @@ class AssetRegComponent extends Component {
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Expire Date</label>
-                                            <input type="date"
-                                                   value={insurance_expire_date}
-                                                   onChange={this.handleChange} name={'insurance_expire_date'}
-                                                   placeholder={'Expire Date'}
-                                                   className={`ui-custom-input pb-6px w-100`}/>
+                                            <DatePicker timePicker={false}
+                                                        name={'insurance_expire_date'}
+                                                        className={`ui-custom-input w-100`}
+                                                        inputFormat="DD/MM/YYYY"
+                                                        onChange={date => this.setState({insurance_expire_date: date})}
+                                                        value={insurance_expire_date}/>
                                         </div>
                                     </div>
                                     <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
@@ -795,11 +814,12 @@ class AssetRegComponent extends Component {
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Effective Date</label>
-                                            <input type="date"
-                                                   value={effective_date}
-                                                   onChange={this.handleChange} name={'effective_date'}
-                                                   placeholder={'Effective Date'}
-                                                   className={`ui-custom-input pb-6px w-100`}/>
+                                            <DatePicker timePicker={false}
+                                                        name={'effective_date'}
+                                                        className={`ui-custom-input w-100`}
+                                                        inputFormat="DD/MM/YYYY"
+                                                        onChange={date => this.setState({effective_date: date})}
+                                                        value={effective_date}/>
                                         </div>
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Book Value</label>
