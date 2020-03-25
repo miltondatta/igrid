@@ -53,7 +53,7 @@ class MisDashboardComponent extends Component {
                     <div className={'ui-mis-top '}>
                         <div className={'ui-mis-body-top mb-3'}>
                             <div className="ui-icon-container-1">
-                                <i className="fab fa-laravel"></i>
+                                <i className="fas fa-globe"></i>
                             </div>
                             <p>Total Locations</p>
                         </div>
@@ -65,7 +65,7 @@ class MisDashboardComponent extends Component {
                         <div className={'ui-mis-body-top  mb-3'}>
                             <div>
                                 <div className="ui-icon-container-2">
-                                    <i className="fab fa-laravel"></i>
+                                    <i className="fas fa-users"></i>
                                 </div>
                             </div>
                             <p>Total Users</p>
