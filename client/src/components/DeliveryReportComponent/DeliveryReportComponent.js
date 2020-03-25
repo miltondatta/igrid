@@ -22,6 +22,7 @@ class DeliveryReportComponent extends Component {
             date_to: moment(),
             pdf: false,
             error: false,
+            errorDict: null,
             date_from: moment(),
             errorMessage: '',
             optionDropDown: false,
@@ -37,7 +38,8 @@ class DeliveryReportComponent extends Component {
     }
 
     handleSubmit = () => {
-        const {date_from, date_to, errorDictAsset} = this.state
+        if (Object.values(this.validate()).includes(false)) return;
+        const {date_from, date_to, errorDict} = this.state
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         let data = {
             date_from : moment(date_from).format('YYYY-MM-DD'),
@@ -71,8 +73,21 @@ class DeliveryReportComponent extends Component {
         deliveryReportData.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
     }
 
+    validate = () => {
+        const {date_from, date_to} = this.state
+        let errorDict = {
+            date_to: typeof date_to !== 'undefined' && date_to !== '',
+            date_from: typeof date_from !== 'undefined' && date_from !== ''
+        }
+        this.setState({
+            errorDict
+        })
+
+        return errorDict
+    }
+
     render() {
-        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, errorDictAsset, deliveryReportData, pdf} = this.state
+        const {error, optionDropDown, success, successMessage, errorMessage, date_from, date_to, deliveryReportData, pdf, errorDict} = this.state
         console.log(deliveryReportData, 72)
         return (
             <>
@@ -93,7 +108,7 @@ class DeliveryReportComponent extends Component {
                                     <label className={'ui-custom-label'}>Date From</label>
                                     <DatePicker timePicker={false}
                                                 name={'date_from'}
-                                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_from && 'is-invalid'}`}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}
                                                 inputFormat="DD/MM/YYYY"
                                                 onChange={date => this.setState({date_from: date})}
                                                 ranges={disabledRanges}
@@ -105,7 +120,7 @@ class DeliveryReportComponent extends Component {
                                     <label className={'ui-custom-label'}>Date To</label>
                                     <DatePicker timePicker={false}
                                                 name={'date_to'}
-                                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_to && 'is-invalid'}`}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}
                                                 inputFormat="DD/MM/YYYY"
                                                 onChange={date => this.setState({date_to: date})}
                                                 ranges={disabledRanges}

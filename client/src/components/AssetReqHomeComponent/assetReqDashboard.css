@@ -33,14 +33,14 @@
 
 .ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-1,
 .ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-2,
-.ui-asset-dashboard .ui-asset-dashboard-top .ui-img-container{
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .ui-asset-dashboard .ui-asset-dashboard-top .ui-img-container{
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
 .ui-asset-dashboard .ui-asset-dashboard-top .ui-top-section:nth-child(1) .ui-img-container{background: #df336a; display: flex; justify-content: center}
 .ui-asset-dashboard .ui-asset-dashboard-top .ui-top-section:nth-child(1) h2{color: #df336a; font-weight: 600; font-size: 2.3rem}

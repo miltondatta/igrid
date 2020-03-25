@@ -54,7 +54,7 @@ const HomeComponent = () => {
                             <p>ASSET REQUISITION & TRACKING</p>
                         </div>
                     </Link>
-                    <Link to={'/mis'}>
+                    <Link to={'/mis/dashboard'}>
                         <div className={'ui-cards ui-mis'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/mis_report.png'} alt="document_management"/>
