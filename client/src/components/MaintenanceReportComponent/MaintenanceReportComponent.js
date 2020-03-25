@@ -7,17 +7,22 @@ import SuccessModal from "../../utility/success/successModal";
 import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+import {disabledRanges} from "../../utility/custom";
+
+moment.locale('en');
 
 class MaintenanceReportComponent extends Component {
 
     constructor(props){
         super(props)
         this.state = {
-            date_to: '',
+            date_to: moment(),
             pdf: false,
             error: false,
-            date_from: '',
             errorDict: null,
+            date_from: moment(),
             errorMessage: '',
             optionDropDown: false,
             deliveryReportData: []
@@ -36,8 +41,8 @@ class MaintenanceReportComponent extends Component {
         const {date_from, date_to} = this.state
         const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         let data = {
-            date_from,
-            date_to,
+            date_from : moment(date_from).format('YYYY-MM-DD'),
+            date_to : moment(date_to).format('YYYY-MM-DD'),
             user_id: id
         }
         Axios.post(apiUrl() + 'asset-repair/asset-maintenance/report', data)
@@ -61,7 +66,7 @@ class MaintenanceReportComponent extends Component {
                 }
             })
     }
-    
+
     validate = () => {
         const {date_from, date_to} = this.state
         let errorDict = {
@@ -100,21 +105,25 @@ class MaintenanceReportComponent extends Component {
                             <div className="col-md-4">
                                 <div>
                                     <label className={'ui-custom-label'}>Date From</label>
-                                    <input type="date"
-                                           name={'date_from'}
-                                           value={date_from}
-                                           onChange={this.handleChange}
-                                           className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}/>
+                                    <DatePicker timePicker={false}
+                                                name={'date_from'}
+                                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_from && 'is-invalid'}`}
+                                                inputFormat="DD/MM/YYYY"
+                                                onChange={date => this.setState({date_from: date})}
+                                                ranges={disabledRanges}
+                                                value={date_from}/>
                                 </div>
                             </div>
                             <div className="col-md-4">
                                 <div>
                                     <label className={'ui-custom-label'}>Date To</label>
-                                    <input type="date"
-                                           name={'date_to'}
-                                           value={date_to}
-                                           onChange={this.handleChange}
-                                           className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}/>
+                                    <DatePicker timePicker={false}
+                                                name={'date_to'}
+                                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_to && 'is-invalid'}`}
+                                                inputFormat="DD/MM/YYYY"
+                                                onChange={date => this.setState({date_to: date})}
+                                                ranges={disabledRanges}
+                                                value={date_to}/>
                                 </div>
                             </div>
                             <div className="col-md-4">
@@ -122,7 +131,7 @@ class MaintenanceReportComponent extends Component {
                                     <button onClick={this.handleSubmit} className={'mx-2 submit-btn-normal'}>Submit</button>
                                     <button className={'mx-2 reset-btn-normal'} onClick={() => {
                                         this.setState({
-                                            date_from: '', date_to: ''
+                                            date_from: moment(), date_to: moment()
                                         })
                                     }}>Reset</button>
                                     <div className={'position-relative ui-export-dropdown'}>

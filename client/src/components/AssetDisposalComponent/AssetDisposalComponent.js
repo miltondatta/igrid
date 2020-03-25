@@ -153,20 +153,27 @@ class AssetDisposalComponent extends Component {
                 this.setState({
                     disposalData: [],
                     disposalCredential: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
                 }, () => {
-                    window.location.reload();
+                    this.emptyStateValue();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2300);
                 })
             })
             .catch(err => {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -304,6 +311,7 @@ class AssetDisposalComponent extends Component {
                             <ReactDataTable
                                 remove={this.cancelDisposal}
                                 tableData={assetDisposalTableData}
+                                bigTable
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Disposal Asset</h4>}

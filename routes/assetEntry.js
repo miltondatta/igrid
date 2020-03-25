@@ -124,7 +124,7 @@ route.get('/assets/user/options/:id', async (req, res, next) => {
     const [data, metaData] = await db.query(`
         SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products from assets
             JOIN products ON assets.product_id = products.id
-            WHERE assets.assign_to = ${req.params.id}
+            WHERE assets.assign_to = ${req.params.id} and is_disposal = false  
     `)
     if (data.length > 0) {
         res.status(200).json(data)
