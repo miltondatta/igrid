@@ -107,7 +107,7 @@ class AssetDisposalReportComponent extends Component {
                                     <label className={'ui-custom-label'}>Date From</label>
                                     <DatePicker timePicker={false}
                                                 name={'date_from'}
-                                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_from && 'is-invalid'}`}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}
                                                 inputFormat="DD/MM/YYYY"
                                                 onChange={date => this.setState({date_from: date})}
                                                 ranges={disabledRanges}
@@ -119,7 +119,7 @@ class AssetDisposalReportComponent extends Component {
                                     <label className={'ui-custom-label'}>Date To</label>
                                     <DatePicker timePicker={false}
                                                 name={'date_to'}
-                                                className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.date_to && 'is-invalid'}`}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}
                                                 inputFormat="DD/MM/YYYY"
                                                 onChange={date => this.setState({date_to: date})}
                                                 ranges={disabledRanges}
