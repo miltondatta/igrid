@@ -5,6 +5,11 @@ import LocationsWithHOptions from "../../../utility/component/locationWithHierar
 import ReactExcelExport from "../../../module/react-excel-export/reactExcelExport";
 import TablePdfViewer from "../../../module/table-pdf-viewer/tablePdfViewer";
 import ErrorModal from "../../../utility/error/errorModal";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+import {disabledRanges} from "../../../utility/custom";
+
+moment.locale('en');
 
 class MonthlyReportComponent extends Component {
 
@@ -12,9 +17,9 @@ class MonthlyReportComponent extends Component {
         super(props);
         this.state = {
             parentID: 0,
-            date_to: '',
+            date_to: moment(),
             error: false,
-            date_from: '',
+            date_from: moment(),
             haveData: false,
             errorMessage: '',
             dailyReport: {},
@@ -59,8 +64,8 @@ class MonthlyReportComponent extends Component {
         console.log(this.validate(), 48)
         const {parentID, date_to, date_from} = this.state
         const data = {
-            date_to,
-            date_from,
+            date_from : moment(date_from).format('YYYY-MM-DD'),
+            date_to : moment(date_to).format('YYYY-MM-DD'),
             location_id: parentID,
         }
         if (date_from !== '' && date_to !== '' && parentID !== 0) {
@@ -171,19 +176,23 @@ class MonthlyReportComponent extends Component {
                             {locations}
                             <div>
                                 <label className={'ui-custom-label'}>Date From</label>
-                                <input type="date"
-                                       name={'date_from'}
-                                       value={date_from}
-                                       onChange={this.handleChange}
-                                       className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'border-red'}`}/>
+                                <DatePicker timePicker={false}
+                                            name={'date_from'}
+                                            className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}
+                                            inputFormat="DD/MM/YYYY"
+                                            onChange={date => this.setState({date_from: date})}
+                                            ranges={disabledRanges}
+                                            value={date_from}/>
                             </div>
                             <div>
                                 <label className={'ui-custom-label'}>Date To</label>
-                                <input type="date"
-                                       name={'date_to'}
-                                       value={date_to}
-                                       onChange={this.handleChange}
-                                       className={`ui-custom-input w-100 ${errorDict && !errorDict.to && 'border-red'}`}/>
+                                <DatePicker timePicker={false}
+                                            name={'date_to'}
+                                            className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}
+                                            inputFormat="DD/MM/YYYY"
+                                            onChange={date => this.setState({date_to: date})}
+                                            ranges={disabledRanges}
+                                            value={date_to}/>
                             </div>
                         </div>
                         <div className="ui-btn-container rounded">

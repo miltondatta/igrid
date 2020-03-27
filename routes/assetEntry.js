@@ -225,7 +225,7 @@ route.post('/assets-entry/entry', (req, res, next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(200).json({message: 'Something went wrong', err})
+                res.status(500).json({message: 'Something went wrong', err})
             })
     })
 })
