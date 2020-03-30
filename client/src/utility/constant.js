@@ -193,12 +193,12 @@ export const systemAdmin = [
         icon: 'icofont-ui-settings',
         subCat: true,
         categories: [
-            {
-                id: 14,
-                name: 'Modules',
-                link: '/admin/modules',
-                icon: ""
-            },
+            // {
+            //     id: 14,
+            //     name: 'Modules',
+            //     link: '/admin/modules',
+            //     icon: ""
+            // },
             {
                 id: 12,
                 name: 'User Roles',
@@ -223,12 +223,12 @@ export const systemAdmin = [
                 link: '/admin/depreciation-methods',
                 icon: ""
             },
-            {
-                id: 8,
-                name: 'Menu',
-                link: '/admin/menu',
-                icon: ""
-            },
+            // {
+            //     id: 8,
+            //     name: 'Menu',
+            //     link: '/admin/menu',
+            //     icon: ""
+            // },
         ]
     },
     {
