@@ -31,6 +31,22 @@ let upload = multer({
 }).single('file')
 
 
+
+// Get Total Assets
+route.get('/total/assets', (req,res,next) => {
+    Assets.count({
+        distinct: true,
+        col: 'id'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read challans
 route.get('/assets-entry/challan', async (req, res, next) => {
     const [results, metadata] = await db.query(`
@@ -108,7 +124,7 @@ route.get('/assets/user/options/:id', async (req, res, next) => {
     const [data, metaData] = await db.query(`
         SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products from assets
             JOIN products ON assets.product_id = products.id
-            WHERE assets.assign_to = ${req.params.id}
+            WHERE assets.assign_to = ${req.params.id} and is_disposal = false  
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -126,7 +142,8 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
             return res.status(500).json(err)
         }
         const {challan_no, challan_date, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments} = req.body
-        if (challan_no === '' || challan_date === '' || challan_name === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '') {
+        if (challan_no === '' || challan_date === '' || challan_name === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' ||
+            added_by === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             let data = {
@@ -208,7 +225,7 @@ route.post('/assets-entry/entry', (req, res, next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(200).json({message: 'Something went wrong', err})
+                res.status(500).json({message: 'Something went wrong', err})
             })
     })
 })
@@ -327,7 +344,7 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
                                  join products on assets.product_id = products.id
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                 join conditions on assets.condition = conditions.id
+                                 left join conditions on assets.condition = conditions.id
                         ${queryText}`);
 
         return res.status(200).json(data);
@@ -561,7 +578,7 @@ route.post('/asset-transfer/by/credentials', async (req, res) => {
         transferCredential.map((item, index) => {
             Assets.update({assign_to: item.assign_to}, {where: {id: item.id}})
                 .then(() => {
-                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to})
+                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to, status: 4, assign_from:  item.user_id})
                         .then(() => {
                             if (transferCredential.length === index + 1) return res.status(200).json({
                                 success: true,

@@ -145,7 +145,7 @@ class ReactDataTable extends Component {
                             <>
                             {(items !== 'id' && items !== 'file_name') &&
                                 <p key={key + 20}>
-                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : item[items] === null ? 'N/A' : items === 'requisition_id' ? null : items === 'description' ? <div dangerouslySetInnerHTML={{__html: item[items]}} /> : item[items]}
+                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : (item[items] === null || item[items] === " ") ? 'N/A' : items === 'requisition_id' ? null : items === 'description' ? <div dangerouslySetInnerHTML={{__html: item[items]}} /> : item[items]}
                                 </p>
                             }
                             </>

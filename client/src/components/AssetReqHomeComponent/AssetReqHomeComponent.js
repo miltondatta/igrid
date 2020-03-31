@@ -1,8 +1,57 @@
+import Axios from 'axios'
 import './assetReqDashboard.css'
 import React, {Component} from 'react';
+import {apiUrl} from "../../utility/constant";
+import jwt from "jsonwebtoken";
 
 class AssetReqHomeComponent extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state={
+            totalAssets: 0,
+            totalCateogry: 0,
+            totaldisposal: 0,
+            totalTransfer: 0,
+            totalProducts: 0,
+            totallostassets: 0,
+            totalSubCateogry: 0,
+            closedRequisition: 0,
+            pendingRequisition: 0,
+            inProgressRequisition: 0,
+        }
+    }
+
+    componentDidMount() {
+        this.getPendingRequisition()
+
+    }
+
+    getPendingRequisition = () => {
+        const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        Axios.get(apiUrl() + 'requisition/total/' + id)
+            .then(res => {
+                if (res.data.status){
+                    console.log(res, 47)
+                    this.setState({
+                        pendingRequisition: res.data.total[0].pending,
+                        inProgressRequisition: res.data.total[0].in_progress,
+                        closedRequisition: res.data.total[0].closed,
+                        totalCateogry: res.data.total[0].total_category,
+                        totalSubCateogry: res.data.total[0].total_sub_category,
+                        totalProducts: res.data.total[0].total_products,
+                        totalAssets: res.data.total[0].registered_assets,
+                        totaldisposal: res.data.total[0].totaldisposal,
+                        totallostassets: res.data.total[0].totaldisposal,
+                        totalTransfer: res.data.total[0].totaltransfer
+                    })
+                }
+            })
+    }
+
+
     render() {
+        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets, totalTransfer} = this.state
         return (
             <div className={'ui-asset-dashboard p-4'}>
                 <div className="ui-asset-dashboard-top">
@@ -14,7 +63,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Asset Category
-                            <h2>10</h2>
+                            <h2>{totalCateogry}</h2>
                         </div>
                     </div>
                     <div className={'ui-top-section'}>
@@ -25,7 +74,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Asset Sub Category
-                            <h2>49</h2>
+                            <h2>{totalSubCateogry}</h2>
                         </div>
                     </div>
                     <div className={'ui-top-section'}>
@@ -36,7 +85,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Total Product
-                            <h2>143</h2>
+                            <h2>{totalProducts}</h2>
                         </div>
                     </div>
                     <div className={'ui-top-section'}>
@@ -47,7 +96,7 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div>
                             Registered Asset
-                            <h2>376</h2>
+                            <h2>{totalAssets}</h2>
                         </div>
                     </div>
                 </div>
@@ -63,15 +112,15 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div className={'ui-asset-body-bottom'}>
                             <div>
-                                <p>5</p>
+                                <p>{pendingRequisition}</p>
                                 <p>Pending</p>
                             </div>
                             <div>
-                                <p>7</p>
+                                <p>{inProgressRequisition}</p>
                                 <p>In Progress</p>
                             </div>
                             <div>
-                                <p>14</p>
+                                <p>{closedRequisition}</p>
                                 <p>Closed</p>
                             </div>
                         </div>
@@ -87,15 +136,15 @@ class AssetReqHomeComponent extends Component {
                         </div>
                         <div className={'ui-asset-body-bottom'}>
                             <div>
-                                <p>21</p>
+                                <p>{totalTransfer}</p>
                                 <p>Transfer</p>
                             </div>
                             <div>
-                                <p>3</p>
+                                <p>{totaldisposal}</p>
                                 <p>Lost</p>
                             </div>
                             <div>
-                                <p>1</p>
+                                <p>{totallostassets}</p>
                                 <p>Disposal</p>
                             </div>
                         </div>

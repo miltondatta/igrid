@@ -17,6 +17,11 @@ import SuccessModal from "../../utility/success/successModal";
 import AMCTypeOptions from "../../utility/component/amcTypeOptions";
 import InstaAdd from "../../module/insta-add/InstaAdd";
 import {getFileExtension} from "../../utility/custom";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+import {disabledRanges} from "../../utility/custom";
+
+moment.locale('en');
 
 class ChallanComponent extends Component {
 
@@ -25,7 +30,7 @@ class ChallanComponent extends Component {
         this.state={
             challans: [],
             assets: [],
-            challan_date: '',
+            challan_date: moment(),
             receivedBy: [],
             assetId: '',
             forceUpd: false,
@@ -39,7 +44,7 @@ class ChallanComponent extends Component {
             is_amc: true,
             challan_description: '',
             purchase_order_no: '',
-            purchase_order_date: '',
+            purchase_order_date: moment(),
             vendor_id: '',
             received_by: '',
             added_by: jwt.decode(localStorage.getItem('user')).data.id,
@@ -57,13 +62,13 @@ class ChallanComponent extends Component {
             asset_type: '',
             depreciation_method: '',
             rate: '',
-            effective_date: '',
+            effective_date: moment(),
             book_value: '',
             salvage_value: '',
             useful_life: '',
-            last_effective_date: '',
+            last_effective_date: moment(),
             warranty: '',
-            last_warranty_date: '',
+            last_warranty_date: moment(),
             condition: '',
             comments: '',
             barcode: false,
@@ -128,17 +133,18 @@ class ChallanComponent extends Component {
         Axios.get(apiUrl() + 'assets-entry/' + endpoint + id)
             .then(resData => {
                 let data = resData.data[0]
+                console.log(data);
                 if (endpoint === 'specific-challan/') {
                     this.setState({
                         challan_id: id,
                         targetChallan: resData.data,
                         challan_no: data.challan_no,
-                        challan_date: data.challan_date,
+                        challan_date: moment(data.challan_date),
                         challan_name: data.challan_name,
                         vendor_id: data.vendor_id,
                         challan_description: data.challan_description,
                         purchase_order_no: data.purchase_order_no,
-                        purchase_order_date: data.purchase_order_date,
+                        purchase_order_date: moment(data.purchase_order_date),
                         attachment: data.attachment,
                         received_by: data.received_by,
                         added_by: data.added_by,
@@ -161,13 +167,13 @@ class ChallanComponent extends Component {
                         asset_type: data.asset_type,
                         depreciation_method: data.depreciation_method,
                         rate: data.rate,
-                        effective_date: data.effective_date,
+                        effective_date: moment(data.effective_date).format('YYYY-MM-DD'),
                         book_value: data.book_value,
                         salvage_value: data.salvage_value,
                         useful_life: data.useful_life,
-                        last_effective_date: data.last_effective_date,
+                        last_effective_date: moment(data.last_effective_date).format('YYYY-MM-DD'),
                         warranty: data.warranty,
-                        last_warranty_date: data.last_warranty_date,
+                        last_warranty_date: moment(data.last_warranty_date).format('YYYY-MM-DD'),
                         condition: data.condition,
                         comments: data.comments,
                     })
@@ -286,22 +292,17 @@ class ChallanComponent extends Component {
     }
 
     validate = (forr) => {
-        const {project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,
-            rate,is_amc,book_value,salvage_value,
-            amc_charge, amc_expire_date, amc_type} = this.state
+        const {product_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,is_amc, amc_charge, amc_expire_date, amc_type} = this.state
         let errorDict = null
         if (forr === 'assets') {
             errorDict = {
-                project_id: typeof project_id !== 'undefined' && project_id !== '',
+                product_id: typeof product_id !== 'undefined' && product_id !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-                rate: typeof rate !== 'undefined' && rate !== '',
-                book_value: typeof book_value !== 'undefined' && book_value !== '',
-                salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
             }
             if (is_amc){
                  errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
@@ -332,12 +333,12 @@ class ChallanComponent extends Component {
                             challan_id: id,
                             targetChallan: resData.data,
                             challan_no: data.challan_no,
-                            challan_date: data.challan_date,
+                            challan_date: moment(data.challan_date).format('YYYY-MM-DD'),
                             challan_name: data.challan_name,
                             vendor_id: data.vendor_id,
                             challan_description: data.challan_description,
                             purchase_order_no: data.purchase_order_no,
-                            purchase_order_date: data.purchase_order_date,
+                            purchase_order_date: moment(data.purchase_order_date).format('YYYY-MM-DD'),
                             attachment: data.attachment,
                             received_by: data.received_by,
                             added_by: data.added_by,
@@ -443,7 +444,6 @@ class ChallanComponent extends Component {
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, targetAsset, targetChallan,
             salvage_value, useful_life, warranty, condition, comments, barcode, challan_date, receivedBy, receivedByFocus, is_closed, added_by, addAsst,
             recDropFoc, success, successMessage, amc_charge, amc_expire_date, amc_type, is_amc, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
-
         const prodSer = asset_quantity && prodArr.map((item, index) => {
             return(
                 <div className={'mb-1'}>
@@ -485,7 +485,13 @@ class ChallanComponent extends Component {
                                 </div>
                                 <div className={'mb-2'}>
                                     <label htmlFor="challan_date" className={'ui-custom-label'}>Challan Date</label>
-                                    <input value={challan_date} type={'date'} onChange={this.handleChange} name={'challan_date'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_date && 'is-invalid'}`} />
+                                    <DatePicker timePicker={false}
+                                                name={'challan_date'}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.challan_date && 'is-invalid'}`}
+                                                inputFormat="DD/MM/YYYY"
+                                                onChange={date => this.setState({challan_date: date})}
+                                                ranges={disabledRanges}
+                                                value={challan_date} />
                                 </div>
                                 <div className={'mb-2'}>
                                     <div className="input-grid">
@@ -512,15 +518,24 @@ class ChallanComponent extends Component {
                                 </div>
                                 <div className={'mb-2'}>
                                     <label className={'ui-custom-label'}>Purchase Order Date</label>
-                                    <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
+                                    <DatePicker timePicker={false}
+                                                name={'purchase_order_date'}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`}
+                                                inputFormat="DD/MM/YYYY"
+                                                onChange={date => this.setState({purchase_order_date: date})}
+                                                ranges={disabledRanges}
+                                                value={purchase_order_date}/>
                                 </div>
                                 <div className={'w-50 mb-20p'}>
                                     <div className="ui-custom-file">
                                         <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
                                         <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
+                                        <div className="bottom">
+                                            JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                        </div>
                                     </div>
                                 </div>
-                                <button onClick={this.updateChallan} className="submit-btn">Add Challan</button>
+                                <button onClick={this.updateChallan} className="submit-btn-normal">Add Challan</button>
                             </div>
                             <div className="max-h-80vh bg-white rounded p-3">
                                 <div className={'mb-2'}>
@@ -529,7 +544,7 @@ class ChallanComponent extends Component {
                                     </nav>
                                     <textarea
                                         id={'enCh1'}
-                                        className={`ui-custom-textarea ${errorDict && !errorDict.challan_description && 'is-invalid'}`}
+                                        className={`ui-custom-textarea`}
                                         value={challan_description}
                                         placeholder={'Write Description'}
                                         onChange={this.handleChange} name={'challan_description'}
@@ -544,7 +559,7 @@ class ChallanComponent extends Component {
                                         value={challanComments}
                                         onChange={this.handleChange} name={'challanComments'}
                                         placeholder={'Write Comments'}
-                                        className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
+                                        className={`ui-custom-textarea`}
                                     />
                                 </div>
                                 <div className={'mb-2'}>
@@ -610,7 +625,7 @@ class ChallanComponent extends Component {
                                             Challan Date
                                         </div>
                                         <div className={'col-8 pr-2 ui-text'}>
-                                            <span className={'ui-text mr-3'}>:</span> {challan_date}
+                                            <span className={'ui-text mr-3'}>:</span> {moment(challan_date).format('YYYY-MM-DD')}
                                         </div>
                                     </div>
                                     <div className={'row p-2 align-items-center mb-3'}>
@@ -650,7 +665,7 @@ class ChallanComponent extends Component {
                                             Purchase Order Date
                                         </div>
                                         <div className={'col-8 pr-2 ui-text'}>
-                                            <span className={'ui-text mr-3'}>:</span> {purchase_order_date}
+                                            <span className={'ui-text mr-3'}>:</span> {moment(purchase_order_date).format('YYYY-MM-DD')}
                                         </div>
                                     </div>
                                 </div>
@@ -692,7 +707,7 @@ class ChallanComponent extends Component {
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
                                                             <label className={'ui-custom-label'}>Project</label>
-                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'project_id'} value={project_id}>
                                                                 <option>Select Project</option>
                                                                 <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                             </select>
@@ -763,7 +778,8 @@ class ChallanComponent extends Component {
                                                         <div className={'mb-1'}>
                                                             <div className="input-grid">
                                                                 <label className={'ui-custom-label'}>AMC Type</label>
-                                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'amc_type'} value={amc_type}>
+                                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}
+                                                                        onChange={this.handleChange} name={'amc_type'} value={amc_type}>
                                                                     <option>AMC Types</option>
                                                                     <AMCTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd}/>
                                                                 </select>
@@ -782,11 +798,12 @@ class ChallanComponent extends Component {
                                                         </div>
                                                         <div className={'mb-1'}>
                                                             <label className={'ui-custom-label'}>AMC Expire Date</label>
-                                                            <input type="date"
-                                                                   value={amc_expire_date}
-                                                                   onChange={this.handleChange} name={'amc_expire_date'}
-                                                                   placeholder={'AMC Expire Date'}
-                                                                   className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
+                                                            <DatePicker timePicker={false}
+                                                                        name={'amc_expire_date'}
+                                                                        className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}
+                                                                        inputFormat="DD/MM/YYYY"
+                                                                        onChange={date => this.setState({amc_expire_date: date})}
+                                                                        value={amc_expire_date}/>
                                                         </div></>}
                                                 </div>
                                                 <div className={'bg-white p-2 rounded mb-2 border-blue'}>
@@ -827,11 +844,12 @@ class ChallanComponent extends Component {
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Expire Date</label>
-                                                        <input type="date"
-                                                               value={insurance_expire_date}
-                                                               onChange={this.handleChange} name={'insurance_expire_date'}
-                                                               placeholder={'Expire Date'}
-                                                               className={`ui-custom-input pb-6px w-100`}/>
+                                                        <DatePicker timePicker={false}
+                                                                    name={'insurance_expire_date'}
+                                                                    className={`ui-custom-input w-100`}
+                                                                    inputFormat="DD/MM/YYYY"
+                                                                    onChange={date => this.setState({insurance_expire_date: date})}
+                                                                    value={insurance_expire_date}/>
                                                     </div>
                                                 </div>
                                                 <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
@@ -882,11 +900,12 @@ class ChallanComponent extends Component {
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Effective Date</label>
-                                                        <input type="date"
-                                                               value={effective_date}
-                                                               onChange={this.handleChange} name={'effective_date'}
-                                                               placeholder={'Effective Date'}
-                                                               className={`ui-custom-input pb-6px w-100`}/>
+                                                        <DatePicker timePicker={false}
+                                                                    name={'effective_date'}
+                                                                    className={`ui-custom-input w-100`}
+                                                                    inputFormat="DD/MM/YYYY"
+                                                                    onChange={date => this.setState({effective_date: date})}
+                                                                    value={effective_date}/>
                                                     </div>
                                                     <div className={'mb-1'}>
                                                         <label className={'ui-custom-label'}>Book Value</label>

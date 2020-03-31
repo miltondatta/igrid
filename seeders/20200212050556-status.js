@@ -17,6 +17,16 @@ module.exports = {
         status_name: 'Delivered',
           createdAt: new Date(),
           updatedAt: new Date()
+      },
+      {
+          status_name: 'Transfer',
+          createdAt: new Date(),
+          updatedAt: new Date()
+      },
+      {
+          status_name: 'Disposal',
+          createdAt: new Date(),
+          updatedAt: new Date()
       }
       ], {});
   },

@@ -43,17 +43,26 @@ route.post('/vendors/entry', (req,res,next) => {
             return res.status(500).json(err)
         }
         const {vendor_name,description, enlisted} = req.body
+        vendor_name.trim()
         const file_name = req.file ? req.file.filename : null
         if (vendor_name === '' || description === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
-            let data = {vendor_name,description,file_name, enlisted}
-            Vendors.create(data)
+            Vendors.findAll({where: {vendor_name}})
                 .then(resData => {
-                    res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
-                })
-                .catch(err => {
-                    res.status(200).json({message: 'Something went wrong', err})
+                    console.log(resData, 53)
+                    if(resData.length > 0) {
+                        res.status(200).json({message: 'Vendor Exists'})
+                    } else {
+                        let data = {vendor_name,description,file_name, enlisted}
+                        Vendors.create(data)
+                            .then(resData => {
+                                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
+                            })
+                            .catch(err => {
+                                res.status(200).json({message: 'Something went wrong', err})
+                            })
+                    }
                 })
         }
     })

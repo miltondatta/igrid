@@ -44,6 +44,6 @@ const Challan = db.define('challans', {
     },
 })
 
-Challan.hasMany(Assets)
+// Challan.hasMany(Assets)
 
 module.exports = Challan

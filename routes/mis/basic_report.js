@@ -19,12 +19,17 @@ const processFinalResult = async (results) => {
 
     if (results.length > 0) {
         results.forEach((item, index) => {
-            let detailsObj = detailsComponents.find(d => d.id === item.indicatordetails_id);
+            let detailsObj = detailsComponents.find(d => d.id === item.indicator);
             let masterObj = masterComponents.find(m => m.id === detailsObj.indicatormaster_id);
-            item.indicatordetails_id = detailsObj.indicator_name;
+            item.indicator = detailsObj.indicator_name;
             finalResults[masterObj.indicatormaster_name].push(item);
         });
     }
+    Object.keys(finalResults).forEach(item => {
+        if(finalResults[item].length === 0) {
+            delete finalResults[item]
+        }
+    })
     return finalResults;
 };
 
@@ -48,15 +53,18 @@ route.get('/mis/basic/report/daily', async(req, res) => {
     });
     columnsString       =  columnsString.slice(0, -1);
     let child_locations =  await getChildLocations(location_id);
+
+    console.log(columnsString, 52)
+
     const [results, metadata] = await db.query(`SELECT * FROM
         crosstab ( 
         $$
-        SELECT indicatordetails_id, data_date, SUM(data_value) as data_value
-        FROM mis_imported_datas 
+        SELECT indicatordetails_id as indicator, data_date, SUM(data_value) as data_value
+        FROM  mis_imported_datas
         WHERE (data_date BETWEEN '${date_from}' AND '${date_to}') AND location_id IN (${child_locations}) 
         GROUP BY indicatordetails_id, data_date order by 1,2 
         $$
-        ) AS ct ( indicatordetails_id INT, ${columnsString})`);
+        ) AS ct ( indicator INT, ${columnsString})`);
     
         if (results.length > 0) {
             let finalResults = await processFinalResult(results);
@@ -95,12 +103,12 @@ route.get('/mis/basic/report/daily', async(req, res) => {
         const [results, metadata]   =  await db.query(`SELECT * FROM
             crosstab ( 
             $$
-            SELECT indicatordetails_id, data_date, SUM(data_value) as data_value
+            SELECT indicatordetails_id as indicator, data_date, SUM(data_value) as data_value
             FROM mis_imported_datas 
             WHERE data_date IN (${dateIn}) AND location_id IN (${child_locations}) 
             GROUP BY indicatordetails_id, data_date order by 1,2 
             $$
-            ) AS ct ( indicatordetails_id INT, ${columnsString})`);
+            ) AS ct ( indicator INT, ${columnsString})`);
             
             if (results.length > 0) {
                 let finalResults = await processFinalResult(results);
@@ -138,12 +146,12 @@ route.get('/mis/basic/report/daily', async(req, res) => {
         const [results, metadata]   = await db.query(`SELECT * FROM
             crosstab ( 
             $$
-            SELECT indicatordetails_id, data_date, SUM(data_value) as data_value
+            SELECT indicatordetails_id as indicator, data_date, SUM(data_value) as data_value
             FROM mis_imported_datas 
             WHERE data_date IN (${dateIn}) AND location_id IN (${child_locations}) 
             GROUP BY indicatordetails_id, data_date order by 1,2 
             $$
-            ) AS ct ( indicatordetails_id INT, ${columnsString})`);
+            ) AS ct ( indicator INT, ${columnsString})`);
             
             if (results.length > 0) {
                 let finalResults = await processFinalResult(results);

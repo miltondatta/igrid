@@ -7,14 +7,9 @@ import DatePicker from 'react-datepicker2';
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
+import {disabledRanges} from "../../utility/custom";
 
 moment.locale('en');
-
-const disabledRanges = [{
-    disabled: true,
-    start: moment().add(1, 'day'),
-    end: moment().add(50, 'year')
-}];
 
 class DocumentListSearch extends Component {
 
@@ -344,25 +339,35 @@ class DocumentListSearch extends Component {
                                     </div>
                                     <div>
                                         <div className={'position-relative'}>
-                                            <input onFocus={() => {
-                                                this.setState({receivedByFocus: true})
-                                            }} onBlur={() => {
-                                                this.setState({receivedByFocus: false})
-                                            }} autoComplete={'off'} placeholder='Search Keywords'
-                                                   onKeyDown={this.onKeyDown}
-                                                   onKeyPress={e => e.which === 13 && e.preventDefault()}
-                                                   onChange={this.handleChange}
-                                                   name={'keywordText'}
-                                                   value={this.state.keywordText}
-                                                   className="ui-custom-input"/>
-                                            {(keyword.length > 0 && (receivedByFocus || recDropFoc)) &&
-                                            <div id={'keywordScrollID'} onMouseEnter={() => {
-                                                this.setState({recDropFoc: true})
-                                            }}
-                                                 onMouseLeave={() => {
-                                                     this.setState({recDropFoc: false})
-                                                 }} className={'ui-received-by-keyword'}> {keywordList}
-                                            </div>}
+                                            <div className="grid-2-nc">
+                                                <div>
+                                                    <ul className={'d-flex flex-wrap mb-1 list-unstyled'}>
+                                                        {keywordHolder.length > 0 ? badgeKeyword : <p>Keywords</p>}
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <label className={'ui-custom-label'}>Keywords</label>
+                                                    <input onFocus={() => {
+                                                        this.setState({receivedByFocus: true})
+                                                    }} onBlur={() => {
+                                                        this.setState({receivedByFocus: false})
+                                                    }} autoComplete={'off'} placeholder='Search Keywords'
+                                                           onKeyDown={this.onKeyDown}
+                                                           onKeyPress={e => e.which === 13 && e.preventDefault()}
+                                                           onChange={this.handleChange}
+                                                           name={'keywordText'}
+                                                           value={this.state.keywordText}
+                                                           className="ui-custom-input"/>
+                                                    {(keyword.length > 0 && (receivedByFocus || recDropFoc)) &&
+                                                    <div id={'keywordScrollID'} onMouseEnter={() => {
+                                                        this.setState({recDropFoc: true})
+                                                    }}
+                                                         onMouseLeave={() => {
+                                                             this.setState({recDropFoc: false})
+                                                         }} className={'ui-received-by-keyword'}> {keywordList}
+                                                    </div>}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

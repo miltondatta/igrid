@@ -3,6 +3,21 @@ const AssetCategory = require('../models/asset/assetCategory')
 
 const route = express.Router()
 
+// Get Total Assets
+route.get('/total/asset-category', (req,res,next) => {
+    AssetCategory.count({
+        distinct: true,
+        col: 'category_name'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read
 route.get('/asset-category', (req,res,next) => {
     AssetCategory.findAll({attributes: ['id', 'category_name','category_code','description']})

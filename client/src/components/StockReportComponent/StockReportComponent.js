@@ -121,6 +121,11 @@ class StockReportComponent extends Component {
         return errorObj;
     };
 
+    pdfViewr = () => {
+        const {allData} = this.state
+        allData.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
+    }
+
     render() {
         const {error, optionDropDown, errorMessage, category_id, sub_category_id, errorObj, allData, pdf} = this.state
         console.log(allData, 72)
@@ -172,7 +177,7 @@ class StockReportComponent extends Component {
                                     <div className={'position-relative'}>
                                         <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 new-btn-normal'}>Export</button>
                                         {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                            <button className={`${typeof allData !== 'undefined' && (allData.length > 0 ? 'p-0' : null)}`}>{typeof allData !== 'undefined' && (allData.length > 0 ? <ReactExcelExport excelData={allData} /> : 'Excel')}</button>
+                                            <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={`${typeof allData !== 'undefined' && (allData.length > 0 ? 'p-0' : null)}`}>{typeof allData !== 'undefined' && (allData.length > 0 ? <ReactExcelExport excelData={allData} /> : 'Excel')}</button>
                                             <button onClick={this.pdfViewr}>PDF</button>
                                         </div>}
                                     </div>

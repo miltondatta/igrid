@@ -339,8 +339,10 @@ class RepairMaintenenceComponent extends Component {
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'}
                                        className="custom-file-input" id="validatedCustomFile"/>
-                                <label
-                                    htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <label htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                </div>
                             </div>
                             {errorDict && !errorDict.file_name &&
                             <>
@@ -352,7 +354,7 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
                             }
                         </div>
-                        <button onClick={this.addRepair} className="submit-btn">Add Into List</button>
+                        <button onClick={this.addRepair} className="submit-btn-normal">Add Into List</button>
                     </div>
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">

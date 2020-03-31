@@ -1,3 +1,11 @@
+import moment from "moment";
+
+export const disabledRanges = [{
+    disabled: true,
+    start: moment().add(1, 'day'),
+    end: moment().add(50, 'year')
+}];
+
 export const validateInput = (e) => {
     let value = e.target.value;
     let numDataset = e.target.dataset.number;

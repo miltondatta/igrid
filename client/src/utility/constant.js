@@ -233,7 +233,7 @@ export const systemAdmin = [
     },
     {
         id: 9,
-        name: 'Settings',
+        name: 'Asset Config',
         icon: 'fas fa-user-shield',
         subCat: true,
         categories: [
@@ -402,7 +402,7 @@ export const misCategory = [
         name: 'Dashboard',
         icon: 'fab fa-fort-awesome',
         subCat: false,
-        link: '/mis'
+        link: '/mis/dashboard'
     },
     {
         id: 11,
@@ -429,6 +429,37 @@ export const misCategory = [
                 icon: ""
             }
         ]
+    },
+];
+
+export const profileCategory = [
+    {
+        id: 31,
+        name: 'Profile',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/profile'
+    },
+    {
+        id: 32,
+        name: 'Update Password',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/profile/pass-reset'
+    },
+    {
+        id: 33,
+        name: 'Settings',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/admin/user-login-log'
+    },
+    {
+        id: 34,
+        name: 'Logout',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/'
     },
 ];
 

@@ -160,6 +160,9 @@ class AssetSaleComponent extends Component{
                                             <div className={'col-md-6'}>
                                                 <input type="file" className="custom-file-input" />
                                                 <label className="custom-file-label w-86 ml-3" htmlFor="validatedCustomFile">Choose file...</label>
+                                                <div className="bottom">
+                                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

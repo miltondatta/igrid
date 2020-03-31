@@ -72,6 +72,33 @@ select:focus{
    border-radius: 5px;
 }
 
+
+.list-unstyled{
+   background: white;
+   height: 57px;
+   border-radius: 5px;
+   overflow-y: auto;
+   padding: 5px;
+   width: 97%;
+   position: absolute;
+   z-index: 5;
+}
+
+.list-unstyled-notice{
+   background: white;
+   border-radius: 5px;
+   width: 97%;
+   z-index: 5;
+}
+
+.list-unstyled p{
+   padding: 3.2px 0;
+}
+
+.list-unstyled:hover{
+   height: auto;
+}
+
 .ui-custom-input,
 .ui-custom-input-no-top,
 .ui-custom-keyInput,
@@ -82,6 +109,10 @@ select:focus{
    border: 1.2px solid #e7e7e7;
    -webkit-appearance: checkbox !important;
 }
+.ui-custom-input .react-time-picker__wrapper{
+   border: none
+}
+.ui-custom-input .react-time-picker__clock{z-index: 5}
 .ui-custom-input-no-top{
    padding: 9px;
 }
@@ -95,7 +126,7 @@ select:focus{
    color: #2384d0;
 }
 .ui-custom-textarea {
-   height: 350px;
+   height: 330px;
 }
 .ui-custom-badge{
    background: #2384d0;
@@ -104,6 +135,7 @@ select:focus{
    border-radius: 20px;
    color: white;
    margin-right: 5px;
+   height: 24px;
 }
 
 .ui-custom-keyInput{
@@ -132,12 +164,28 @@ input[type=date],
    width: 95%;
    justify-content: center;
    align-items: center;
-   height: 45px;
+   height: 70px;
    border-radius: 4px;
    color: #585858;
    font-size: 17px;
    font-weight: 500;
+   padding-bottom: 17px;
+   margin-bottom: 0;
 }
+
+.ui-custom-file .bottom{
+   position: absolute;
+   font-size: 11px;
+   text-align: justify;
+   background: #2384d0;
+   color: white;
+   bottom: 0;
+   width: 95%;
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+   padding: 3px;
+}
+
 .ui-custom-checkbox label{
    color: #585858;
    font-weight: 500;
@@ -184,12 +232,16 @@ input[type=date],
 .f-30px{font-size: 30px !important;}
 .f-capitalize{text-transform: capitalize;}
 
+.p-4px{padding: 4px !important;}
 .pb-6px{padding-bottom: 6px}
 .px-13px{padding: 0 13px}
 
+
+.flex-basis-290px{flex-basis: 290px !important;}
+
 .line-h-35px{line-height: 35px}
 
-.is-invalid{border: 1px solid red}
+.is-invalid{border: 1.5px solid red}
 
 .text-blue{color: #2384d0; text-shadow: 0 0 2px #c5e5ff;}
 .text-copyright{
@@ -235,13 +287,17 @@ input[type=date],
 
 ::-webkit-scrollbar-track{ background-color: #bbb; width: 2px}
 ::-webkit-scrollbar-thumb { background: #005da6; border-radius: 10px;}
-::-webkit-scrollbar {width: 5px; height: 5px}
+::-webkit-scrollbar {width: 5px; height: 9px}
 
 .grid-2{
    display: grid;
    grid-template-columns: repeat(2, 1fr);
    justify-content: center;
    align-items: center;
+}
+.grid-2-nc{
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
 }
 .grid-3{
    display: grid;
@@ -338,6 +394,7 @@ input[type=date],
    font-size: 18px;
 }
 .report-export-btn{background: #2cca94}
+.reset-btn,
 .report-reset-btn,
 .reset-btn-normal{
    font-weight: 700;
@@ -349,6 +406,11 @@ input[type=date],
    font-size: 18px;
 }
 .report-reset-btn{background: #e0bb24}
+.reset-btn {
+   position: absolute;
+   bottom: 12px;
+   left: 115px;
+}
 
 .ui-slider-modal{
    display: flex;

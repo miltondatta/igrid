@@ -3,6 +3,13 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('modules', [{
+        module_name: 'Admin',
+        image_name: '',
+        initial_link: '',
+        order_by: 1,
+          createdAt: new Date(),
+          updatedAt: new Date()
+      },{
         module_name: 'Asset Requisition & Tracking',
         image_name: '',
         initial_link: '',

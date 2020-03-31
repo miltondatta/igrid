@@ -83,7 +83,7 @@ router.post('/users/register', (req,res,next) => {
                                     }
                                     console.log('Message %s sent: %s', info.messageId, info.response);
                                 });
-                                res.status(200).json({"message": "User Created Successfully"})
+                                res.status(200).json({message: "User Created Successfully", status: true})
                             })
                             .catch(err => {console.log(err,35)})
                     }
@@ -108,7 +108,7 @@ router.post('/users/login', (req,res,next) => {
     const userPass = userData.password.toString()
     Users.findAll({where: {email: userEmail}})
         .then(data => {
-            if(data.length === 0){res.status(400).json({message: "User Doesn't Exist"})}
+            if(data.length === 0){res.status(200).json({message: "User Doesn't Exist"})}
             else{
                 const passFromDB = data[0].dataValues.password.toString()
                 bcrypt.compare(userPass, passFromDB, async function(err, resData) {

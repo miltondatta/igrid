@@ -2,7 +2,10 @@ const db = require('../config/db');
 
 const getMenuByParent = async (parent_id) => {
     const [menu_datas] = await db.query(`
-        SELECT * FROM menus WHERE parent_id = ${parent_id}
+        SELECT menus.*, modules.module_name
+        FROM menus
+        left join modules on menus.module_id = modules.id
+        WHERE parent_id = ${parent_id}
     `);
     return menu_datas;
 };

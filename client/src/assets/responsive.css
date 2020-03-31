@@ -1,6 +1,12 @@
 @media only screen and (max-width: 2750px) {
+    .ui-mis-report {
+        height: 74.6%;
+    }
     .admin-input-height{
         min-height: 87vh;
+    }
+    .admin-input-height-max{
+        max-height: 87vh;
     }
     .min-h-80vh{min-height: 82.5vh}
     .ui-user .ui-user-container {
@@ -10,6 +16,9 @@
 }
 
 @media only screen and (max-width: 1550px) {
+    .ui-custom-file .bottom{
+        font-size: 9px;
+    }
     .ui-hometop .ui-home-options .ui-cards p{
         font-size: 14px;
     }
@@ -27,6 +36,7 @@
 }
 
 @media only screen and (max-width: 1450px) {
+
     .ui-hometop {
          grid-template-columns: 30% 68.7%;
      }
@@ -42,6 +52,9 @@
 
 }
 
-@media only screen and (max-width: 1150px) {
+@media only screen and (max-width: 1315px) {
+    .ui-custom-file .bottom{
+        font-size: 8px;
+    }
 
 }
