@@ -55,7 +55,7 @@ class MisDashboardComponent extends Component {
                             <div className="ui-icon-container-1">
                                 <i className="fas fa-globe"></i>
                             </div>
-                            <p>Total Locations</p>
+                            <p>Total Users</p>
                         </div>
                         <div className={'ui-mis-body-bottom'}>
                             {rolesBox}
@@ -68,7 +68,7 @@ class MisDashboardComponent extends Component {
                                     <i className="fas fa-users"></i>
                                 </div>
                             </div>
-                            <p>Total Users</p>
+                            <p>Total Locations</p>
                         </div>
                         <div className={'ui-mis-body-bottom'}>
                             {locationsBox}

@@ -2,7 +2,16 @@ import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import {Link, Redirect, withRouter} from 'react-router-dom'
 import React, {Component} from 'react'
-import {documentNav, sidenav, systemAdmin, misNav, apiUrl, locationCategory, misCategory} from "../utility/constant";
+import {
+    documentNav,
+    sidenav,
+    systemAdmin,
+    misNav,
+    apiUrl,
+    locationCategory,
+    misCategory,
+    profileCategory
+} from "../utility/constant";
 import {BackEnd_BaseUrl} from "../config/private";
 
 class Topnav extends Component {
@@ -59,6 +68,8 @@ class Topnav extends Component {
             data = documentNav;
         } else if (moduleName === 'admin') {
             data = systemAdmin
+        } else if (moduleName === 'profile') {
+            data = profileCategory
         } else if (moduleName === 'location') {
             data = locationCategory
         } else if (moduleName === 'mis') {
@@ -109,7 +120,34 @@ class Topnav extends Component {
                                         ))}
                                     </div>}
                                 </div>
-                            </div> : <Link to={items.link} className={'h-100'}>
+                            </div> : items.id === 33 ? userType === 0 && <Link to={items.link} className={'h-100'}>
+                                <div key={index + 20}
+                                     className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
+                                     onMouseOut={() => {
+                                         this.setState({currentHover: ''})
+                                     }} onMouseOver={() => {
+                                    this.handleMouseOver(items.id)
+                                }}>
+                                    <div>
+                                        <i className={`f-14px ${items.icon}`}></i>
+                                        <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'}
+                                              key={index}>{items.name}</span>
+                                        {items.subCat && <div className={`ui-subcategory`}
+                                                              style={{display: currentHover !== items.id && 'none'}}>
+                                            {items.categories.map((subItems, key) => (
+                                                <>
+                                                    <p key={key + 10}
+                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                        <a key={subItems.id} href={subItems.link}> {subItems.name}</a>
+                                                    </p>
+                                                </>
+                                            ))}
+                                        </div>}
+                                    </div>
+                                </div>
+                            </Link> : <Link to={items.link} className={'h-100'} onClick={() => {
+                                items.id === 34 && localStorage.removeItem('user')
+                            }}>
                                 <div key={index + 20}
                                      className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
                                      onMouseOut={() => {
@@ -177,7 +215,7 @@ class Topnav extends Component {
                             <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
                             <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
                         </div>
-                        <div className={'text-white ui-user-nav d-flex align-items-center h-100 ui-dropdown-holder'}>
+                        <div className={'text-white ui-user-nav d-flex align-items-center h-100'}>
                             {toggleNotification && <div className="ui-notification">
                                 <p className={'ui-notification-header'}>Notification</p>
                                 <div>
@@ -193,15 +231,11 @@ class Topnav extends Component {
                             <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
                                 {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
                             </i>
-                            <span onClick={this.handleUserOptions}>{userName}</span>
-                            <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
-                                 src={ BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
-                            <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -221.5 : -171}}>
-                                {userType === 0 && <p><Link onClick={() => {
-                                    this.setState((prevState) => ({
-                                        showUserOption: false
-                                    }))
-                                }} to={'/admin/user-login-log'}>Admin</Link></p>}
+                            <div className="ui-dropdown-holder">
+                                <span onClick={this.handleUserOptions}>{userName}</span>
+                                <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
+                                     src={ BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
+                                <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -221.5 : -171}}>
                                 <Link onClick={() => {
                                     this.setState((prevState) => ({
                                         showUserOption: false
@@ -211,10 +245,16 @@ class Topnav extends Component {
                                     this.setState((prevState) => ({
                                         showUserOption: false
                                     }))
-                                }} to={'/pass-reset'}><p>Update Password</p></Link>
+                                }} to={'/profile/pass-reset'}><p>Update Password</p></Link>
+                                    {userType === 0 && <p><Link onClick={() => {
+                                        this.setState((prevState) => ({
+                                            showUserOption: false
+                                        }))
+                                    }} to={'/admin/user-login-log'}>Setting</Link></p>}
                                 <a onClick={() => {
                                     localStorage.removeItem('user')
                                 }} href={'/'}><p>Logout</p></a>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -236,7 +276,7 @@ class Topnav extends Component {
                                     </ol>
                                 </div>
                             </div>
-                            <div className={'text-white ui-user-nav d-flex align-items-center h-100 ui-dropdown-holder'}>
+                            <div className={'text-white ui-user-nav d-flex align-items-center h-100'}>
                                 {toggleNotification && <div className="ui-notification">
                                     <p className={'ui-notification-header'}>Notification</p>
                                     <div>
@@ -252,15 +292,12 @@ class Topnav extends Component {
                                 <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
                                     {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
                                 </i>
-                                <span onClick={this.handleUserOptions}>{userName}</span>
-                                <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
-                                     src={BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
-                                <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -221.5 : -171}}>
-                                    {userType === 0 && <p><Link onClick={() => {
-                                        this.setState((prevState) => ({
-                                            showUserOption: false
-                                        }))
-                                    }} to={'/admin/user-login-log'}>Admin</Link></p>}
+
+                                <div className="ui-dropdown-holder">
+                                    <span onClick={this.handleUserOptions}>{userName}</span>
+                                    <img className={'ui-user-avatar ml-3'} onClick={this.handleUserOptions}
+                                         src={BackEnd_BaseUrl + 'images/' + image} alt={'user'}/>
+                                    <div className={'ui-user-dropdown'} style={{bottom: userType === 0 ? -221.5 : -171}}>
                                     <p><Link onClick={() => {
                                         this.setState((prevState) => ({
                                             showUserOption: false
@@ -270,10 +307,16 @@ class Topnav extends Component {
                                         this.setState((prevState) => ({
                                             showUserOption: false
                                         }))
-                                    }} to={'/pass-reset'}>Update Password</Link></p>
+                                    }} to={'/profile/pass-reset'}>Update Password</Link></p>
+                                        {userType === 0 && <p><Link onClick={() => {
+                                            this.setState((prevState) => ({
+                                                showUserOption: false
+                                            }))
+                                }} to={'/admin/user-login-log'}>Settings</Link></p>}
                                     <p><a onClick={() => {
                                         localStorage.removeItem('user')
                                     }} href={'/'}>Logout</a></p>
+                                </div>
                                 </div>
                             </div>
                         </div>

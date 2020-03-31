@@ -126,7 +126,7 @@ select:focus{
    color: #2384d0;
 }
 .ui-custom-textarea {
-   height: 350px;
+   height: 330px;
 }
 .ui-custom-badge{
    background: #2384d0;
@@ -232,8 +232,12 @@ input[type=date],
 .f-30px{font-size: 30px !important;}
 .f-capitalize{text-transform: capitalize;}
 
+.p-4px{padding: 4px !important;}
 .pb-6px{padding-bottom: 6px}
 .px-13px{padding: 0 13px}
+
+
+.flex-basis-290px{flex-basis: 290px !important;}
 
 .line-h-35px{line-height: 35px}
 

@@ -70,6 +70,12 @@
     background: #2885ce;
 }
 
+.ui-topnav .ui-dropdown-holder{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .ui-topnav .ui-dropdown-holder:hover .ui-user-dropdown{
     display: block;
 }
@@ -226,7 +232,7 @@
     background: white;
     z-index: 5;
     border-radius: 5px;
-    top: 140%;
+    top: 95%;
     right: 21%;
     padding: 10px;
     box-shadow: 0 5px 10px #00000040;
