@@ -1,4 +1,7 @@
 @media only screen and (max-width: 2750px) {
+    .ui-mis-report {
+        height: 74.6%;
+    }
     .admin-input-height{
         min-height: 87vh;
     }

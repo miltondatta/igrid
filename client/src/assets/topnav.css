@@ -97,7 +97,7 @@
     position: absolute;
     border-radius: 7px;
     right: 0;
-    z-index: 5;
+    z-index: 10;
     width: 225px;
     padding: 10px;
     -webkit-animation: user-dropdown .3s;

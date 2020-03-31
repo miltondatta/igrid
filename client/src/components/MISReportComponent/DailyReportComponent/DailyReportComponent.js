@@ -23,9 +23,8 @@ class DailyReportComponent extends Component {
             error: false,
             date_from: moment(),
             haveData: false,
-            collaps: false,
             errorMessage: '',
-            collapsId: [0],
+            collapsId: [0,1],
             dailyReport: {},
             selectData: [],
             hierarchies: [],
@@ -125,7 +124,7 @@ class DailyReportComponent extends Component {
     }
 
     render() {
-        const {hierarchies, collaps, parentID, date_from, date_to, dailyReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict, collapsId} = this.state
+        const {hierarchies, parentID, date_from, date_to, dailyReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict, collapsId} = this.state
 
         console.log(collapsId, 130)
 
@@ -161,7 +160,7 @@ class DailyReportComponent extends Component {
                         {
                             Object.keys(dailyReport[main][0]).map((data, index2) => {
                                 return (
-                                    <div key={index2}>
+                                    <div key={index2} onClick={() => {this.collaps(index)}}>
 
                                     </div>
                                 )
