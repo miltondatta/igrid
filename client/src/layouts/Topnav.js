@@ -216,7 +216,7 @@ class Topnav extends Component {
                             <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
                         </div>
                         <div className={'text-white ui-user-nav d-flex align-items-center h-100'}>
-                            {toggleNotification && <div className="ui-notification">
+                            {toggleNotification && <div className="ui-notification" style={{right: userType === 0 ? '33%' : '21%'}}>
                                 <p className={'ui-notification-header'}>Notification</p>
                                 <div>
                                     {notification ? <p className={'align-items-center no-project px-2 f-14px text-left'}>
