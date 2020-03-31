@@ -47,11 +47,12 @@ class ChallanComponent extends Component {
             purchase_order_date: moment(),
             vendor_id: '',
             received_by: '',
+            product_serial_1: '',
             added_by: jwt.decode(localStorage.getItem('user')).data.id,
             attachment: '',
             challanComments: '',
             challan_id: '',
-            project_id: '',
+            project_id: null,
             asset_category: '',
             asset_sub_category: '',
             product_serial: '',
@@ -633,7 +634,7 @@ class ChallanComponent extends Component {
                                             Challan Description
                                         </div>
                                         <div className={'col-8 pr-2 ui-text'}>
-                                            <span className={'ui-text mr-3'}>:</span> {challan_description}
+                                            <span className={'ui-text mr-3'}>:</span> {challan_description ? challan_description : 'N/A'}
                                         </div>
                                     </div>
                                     <div className={'row p-2 align-items-center mb-3'}>
@@ -649,7 +650,7 @@ class ChallanComponent extends Component {
                                             Comments
                                         </div>
                                         <div className={'col-8 pr-2 ui-text'}>
-                                            <span className={'ui-text mr-3'}>:</span> {challanComments}
+                                            <span className={'ui-text mr-3'}>:</span> {challanComments ? challanComments : 'N/A'}
                                         </div>
                                     </div>
                                     <div className={'row p-2 align-items-center mb-3'}>

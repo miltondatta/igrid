@@ -49,7 +49,8 @@ class AssetRegComponent extends Component {
             attachment: '',
             challanComments: '',
             challan_id: '',
-            project_id: '',
+            product_serial_1: '',
+            project_id: null,
             asset_category: '',
             asset_sub_category: '',
             product_serial: '',
@@ -80,7 +81,7 @@ class AssetRegComponent extends Component {
     }
 
     componentDidMount() {
-        let prodArr = Array.from(Array(this.state.asset_quantity).keys())
+        let prodArr = Array.from(Array(1).keys())
         this.setState({
             prodArr,
         })
@@ -531,7 +532,7 @@ class AssetRegComponent extends Component {
                                 Challan Description
                             </div>
                             <div className={'col-8 pr-2 ui-text'}>
-                                <span className={'ui-text mr-3'}>:</span> {challan_description}
+                                <span className={'ui-text mr-3'}>:</span> {challan_description ? challan_description : 'N/A'}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>
@@ -563,7 +564,7 @@ class AssetRegComponent extends Component {
                                 Comments
                             </div>
                             <div className={'col-8 pr-2 ui-text'}>
-                                <span className={'ui-text mr-3'}>:</span> {challanComments}
+                                <span className={'ui-text mr-3'}>:</span> {challanComments ? challanComments : 'N/A'}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>
