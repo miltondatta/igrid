@@ -334,15 +334,13 @@ class AssetRegComponent extends Component {
     }
 
     validate = (forr) => {
-        const {challan_no, challan_date, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, project_id,asset_category,asset_sub_category,cost_of_purchase,
-            installation_cost,carrying_cost, other_cost, rate,book_value,salvage_value,  amc_charge, amc_expire_date, amc_type, is_amc, challan_description, challanComments} = this.state
+        const {challan_no, challan_date, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by,asset_category,asset_sub_category,cost_of_purchase,
+            installation_cost,carrying_cost, other_cost, product_id, amc_charge, amc_expire_date, amc_type, is_amc} = this.state
         let errorDict = null
         if (forr === 'challan') {
             errorDict = {
                 challan_no: typeof challan_no !== 'undefined' && challan_no !== '',
                 challan_date: typeof challan_date !== 'undefined' && challan_date !== '',
-                challanComments: typeof challanComments !== 'undefined' && challanComments !== '',
-                challan_description: typeof challan_description !== 'undefined' && challan_description !== '',
                 purchase_order_no: typeof purchase_order_no !== 'undefined' && purchase_order_no !== '',
                 purchase_order_date: typeof purchase_order_date !== 'undefined' && purchase_order_date !== '',
                 vendor_id: typeof vendor_id !== 'undefined' && vendor_id !== '',
@@ -355,7 +353,7 @@ class AssetRegComponent extends Component {
             return errorDict
         } else if (forr === 'assets') {
             errorDict = {
-                project_id: typeof project_id !== 'undefined' && project_id !== '',
+                product_id: typeof product_id !== 'undefined' && product_id !== '',
                 amc_charge: is_amc ? typeof amc_charge !== 'undefined' && amc_charge !== '' : true,
                 amc_expire_date: is_amc ? typeof amc_expire_date !== 'undefined' && amc_expire_date !== '' : true,
                 amc_type: is_amc ? typeof amc_type !== 'undefined' && amc_type !== '' : true,
@@ -421,7 +419,7 @@ class AssetRegComponent extends Component {
                 {challan_id === '' && <div className=" p-2 ui-dataEntry">
                     <div className={'admin-input-height bg-white rounded position-relative p-3'}>
                         <nav className="navbar text-center mb-2 pl-1 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">Add Challan Information</p>
                         </nav>
                         <div className={'mb-2'}>
                             <label htmlFor="challan_no" className={'ui-custom-label'}>Challan No</label>
@@ -469,16 +467,16 @@ class AssetRegComponent extends Component {
                                         onChange={date => this.setState({purchase_order_date: date})}
                                         value={purchase_order_date}/>
                         </div>
-                        <div className={'w-50 mb-20p'}>
+                        <div className={'w-100 mb-3'}>
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
-                                <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
-                                <div className="bottom">
+                                <label className={`w-100 ${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                         </div>
-                        <button onClick={this.addChallan} className="submit-btn">Add Challan</button>
+                        <button onClick={this.addChallan} className="submit-btn-normal">Add Challan</button>
                     </div>
                     <div className="admin-input-height bg-white rounded p-3">
                         <div className={'mb-2'}>
@@ -487,7 +485,7 @@ class AssetRegComponent extends Component {
                             </nav>
                             <textarea
                                 id={'enCh1'}
-                                className={`ui-custom-textarea ${errorDict && !errorDict.challan_description && 'is-invalid'}`}
+                                className={`ui-custom-textarea`}
                                 value={challan_description}
                                 placeholder={'Write Description'}
                                 onChange={this.handleChange} name={'challan_description'}
@@ -502,7 +500,7 @@ class AssetRegComponent extends Component {
                                 value={challanComments}
                                 onChange={this.handleChange} name={'challanComments'}
                                 placeholder={'Write Comments'}
-                                className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
+                                className={`ui-custom-textarea`}
                             />
                         </div>
                     </div>
@@ -620,7 +618,7 @@ class AssetRegComponent extends Component {
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Project</label>
-                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'project_id'} value={project_id}>
                                                     <option>Select Project</option>
                                                     <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                 </select>

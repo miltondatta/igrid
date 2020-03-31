@@ -24,6 +24,7 @@ class DailyReportComponent extends Component {
             date_from: moment(),
             haveData: false,
             errorMessage: '',
+            collapsId: [0,1],
             dailyReport: {},
             selectData: [],
             hierarchies: [],
@@ -107,8 +108,25 @@ class DailyReportComponent extends Component {
         return errorDict
     }
 
+    collaps = (ind) => {
+        let colId
+        if (this.state.collapsId.includes(ind)) {
+            colId = this.state.collapsId.filter(item => ind !== item)
+            this.setState((prevState) => ({
+                collapsId: colId
+            }))
+        } else {
+            this.setState((prevState) => ({
+                collapsId: [...prevState.collapsId, ind]
+            }))
+        }
+
+    }
+
     render() {
-        const {hierarchies, selectData, parentID, date_from, date_to, dailyReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict} = this.state
+        const {hierarchies, parentID, date_from, date_to, dailyReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict, collapsId} = this.state
+
+        console.log(collapsId, 130)
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -136,20 +154,20 @@ class DailyReportComponent extends Component {
             return (
                 <>
                     <div className={'ui-report-title'}>
-                        <div>
-                            {main}
+                        <div className={'flex'} onClick={() => {this.collaps(index)}}>
+                            {collapsId.includes(index) ? <i className="fas fa-plus"></i> : <i className="fas fa-minus"></i>} {main}
                         </div>
                         {
                             Object.keys(dailyReport[main][0]).map((data, index2) => {
                                 return (
-                                    <div key={index2}>
+                                    <div key={index2} onClick={() => {this.collaps(index)}}>
 
                                     </div>
                                 )
                             })
                         }
                     </div>
-                    {dailyReport[main].map((mainData, index3) => {
+                    {collapsId.includes(index) && dailyReport[main].map((mainData, index3) => {
                         return (
                             <div key={index} className="ui-report-header">
                                 {

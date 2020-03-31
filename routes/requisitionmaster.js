@@ -30,7 +30,7 @@ route.get('/requisition/total/:id', async (req,res,next) => {
                (Select Distinct COUNT(id) from lost_assets where added_by = ${req.params.id}) as totalLostAssets,
                 (select  Distinct COUNT(id) from assets where is_disposal is true and assign_to = ${req.params.id}) as totalDisposal,
                 (select  Distinct COUNT(id) from asset_histories where status = 4 and assign_from = '${req.params.id}') as totalTransfer
-            from requisition_masters
+            from asset_categories
         `)
             if (data.length > 0) {
                 res.status(200).json({total: data, status: true})

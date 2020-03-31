@@ -374,7 +374,7 @@ class MasterRoute extends Component{
                             <Route exact path='/location' component={AsyncLocationFinder}/>
                             <Route exact path='/stock-report' component={AsyncStockReport}/>
                             <Route exact path='/admin/amc-types' component={AsyncAmcTypes}/>
-                            <Route exact path='/pass-reset' component={AsyncPasswordReset}/>
+                            <Route exact path='/profile/pass-reset' component={AsyncPasswordReset}/>
                             <Route exact path='/mis/dashboard' component={AsyncMISDashboard}/>
                             <Route exact path='/admin/user-roles' component={AsyncUserRoles}/>
                             <Route exact path='/admin/project' component={AsyncCreateProject}/>

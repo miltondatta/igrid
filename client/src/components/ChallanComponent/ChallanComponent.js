@@ -292,13 +292,11 @@ class ChallanComponent extends Component {
     }
 
     validate = (forr) => {
-        const {project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,
-            rate,is_amc,book_value,salvage_value,
-            amc_charge, amc_expire_date, amc_type} = this.state
+        const {product_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,is_amc, amc_charge, amc_expire_date, amc_type} = this.state
         let errorDict = null
         if (forr === 'assets') {
             errorDict = {
-                project_id: typeof project_id !== 'undefined' && project_id !== '',
+                product_id: typeof product_id !== 'undefined' && product_id !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
@@ -546,7 +544,7 @@ class ChallanComponent extends Component {
                                     </nav>
                                     <textarea
                                         id={'enCh1'}
-                                        className={`ui-custom-textarea ${errorDict && !errorDict.challan_description && 'is-invalid'}`}
+                                        className={`ui-custom-textarea`}
                                         value={challan_description}
                                         placeholder={'Write Description'}
                                         onChange={this.handleChange} name={'challan_description'}
@@ -561,7 +559,7 @@ class ChallanComponent extends Component {
                                         value={challanComments}
                                         onChange={this.handleChange} name={'challanComments'}
                                         placeholder={'Write Comments'}
-                                        className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
+                                        className={`ui-custom-textarea`}
                                     />
                                 </div>
                                 <div className={'mb-2'}>
@@ -709,7 +707,7 @@ class ChallanComponent extends Component {
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
                                                             <label className={'ui-custom-label'}>Project</label>
-                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'project_id'} value={project_id}>
                                                                 <option>Select Project</option>
                                                                 <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                             </select>

@@ -70,6 +70,12 @@
     background: #2885ce;
 }
 
+.ui-topnav .ui-dropdown-holder{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .ui-topnav .ui-dropdown-holder:hover .ui-user-dropdown{
     display: block;
 }
@@ -91,7 +97,7 @@
     position: absolute;
     border-radius: 7px;
     right: 0;
-    z-index: 5;
+    z-index: 10;
     width: 225px;
     padding: 10px;
     -webkit-animation: user-dropdown .3s;
@@ -224,9 +230,9 @@
     height: 260px;
     position: absolute;
     background: white;
-    z-index: 5;
+    z-index: 10;
     border-radius: 5px;
-    top: 140%;
+    top: 95%;
     right: 21%;
     padding: 10px;
     box-shadow: 0 5px 10px #00000040;

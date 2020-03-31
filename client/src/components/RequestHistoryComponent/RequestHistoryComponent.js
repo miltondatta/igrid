@@ -157,7 +157,7 @@ class RequestHistoryComponent extends Component {
                         <p>{item.model}</p>
                         <p>{item.reason}</p>
                         <p>{item.av_assets}</p>
-                        <p>
+                        <p className={'p-4px'}>
                             {this.state[item.id] ? <input
                                     className={'ui-transparent-input'}
                                     onChange={(e) => {this.handleChange(e,item.id, 'update_quantity', item.quantity )}}
@@ -171,7 +171,7 @@ class RequestHistoryComponent extends Component {
                                 }}
                                 value={item.quantity} />}
                         </p>
-                        <p>
+                        <p className={'p-4px flex-basis-290px'}>
                             <input
                                 type={'text'}
                                 name={'comment'}
@@ -204,7 +204,7 @@ class RequestHistoryComponent extends Component {
                             <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
                         </nav>
 
-                        <div className={'reactDataTable mb-20p'}>
+                        <div className={'reactDataTable'}>
                             <div className={'table'}>
                                 <div className={'thead'}>
                                     <div className={'d-flex align-items-center'}>
@@ -225,7 +225,7 @@ class RequestHistoryComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button className="submit-btn" onClick={this.submitApprove}>Approve</button>
+                        <button className="submit-btn-normal" onClick={this.submitApprove}>Approve</button>
                     </>}
                 </div>
             </div>
