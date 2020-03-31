@@ -500,12 +500,6 @@ export const documentNav = [
 
 export const homeBanner = [
     {
-        title: "Manage Your Business Easily",
-        btnText: "Report",
-        link: "/",
-        img: "/media/banner/b_1.png"
-    },
-    {
         title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
         link: "/asset-dashboard",
@@ -514,7 +508,7 @@ export const homeBanner = [
     {
         title: "Manage Your Documents Easily",
         btnText: "Document Management",
-        link: "/document-list-search",
+        link: "/documents/document-list-search",
         img: "/media/banner/b_3.png"
     },
     {
