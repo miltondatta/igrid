@@ -17,7 +17,7 @@ route.get('/assets-types', (req,res,next) => {
 // Update
 route.put('/assets-types/update/:id', (req,res,next) => {
     const {type_name,asset_code,description} = req.body
-    if(type_name !== '' && asset_code !== '' && description !== '') {
+    if(type_name !== '' && asset_code !== '') {
         AssetType.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if(resData[0].dataValues.asset_code === asset_code) {
@@ -40,7 +40,7 @@ route.put('/assets-types/update/:id', (req,res,next) => {
 // Create
 route.post('/assets-types/entry', (req,res,next) => {
     const {type_name,asset_code,description} = req.body
-    if(type_name !== '' && asset_code !== '' && description !== '') {
+    if(type_name !== '' && asset_code !== '') {
         AssetType.findAll({where: {asset_code}})
             .then(resData => {
                 if (resData.length === 0) {
