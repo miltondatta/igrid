@@ -30,7 +30,7 @@ route.get('/com-sub-category-options', (req,res,next) => {
 // Update
 route.put('/com-sub-category/update/:id', (req,res,next) => {
     const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
+    if(category_name !== '' && category_code !== '') {
         ComSubCategory.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if(resData[0].dataValues.category_code === category_code) {

@@ -155,7 +155,7 @@ class DailyReportComponent extends Component {
                 <>
                     <div className={'ui-report-title'}>
                         <div className={'flex'} onClick={() => {this.collaps(index)}}>
-                            {collapsId.includes(index) ? <i className="fas fa-plus"></i> : <i className="fas fa-minus"></i>} {main}
+                            {main}
                         </div>
                         {
                             Object.keys(dailyReport[main][0]).map((data, index2) => {

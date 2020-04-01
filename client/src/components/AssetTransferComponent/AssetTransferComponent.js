@@ -339,7 +339,7 @@ class AssetTransferComponent extends Component {
                             </select>
                         </div>
                         {subLocationItem}
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>User</label>
                             <select name={'user_id'} value={user_id}
                                     onChange={this.handleChange}
@@ -351,7 +351,7 @@ class AssetTransferComponent extends Component {
                             <span className="error">User Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addTransfer} className="submit-btn">Add Transfer</button>
+                        <button onClick={this.addTransfer} className="submit-btn-normal mt-5">Add Transfer</button>
                     </div>
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -366,8 +366,7 @@ class AssetTransferComponent extends Component {
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Transfer Asset</h4>}
                         {transferTableData.length ?
-                            <button className="submit-btn" data-toggle="modal"
-                                    data-target="#assetTransferModal">Submit</button> : ''}
+                            <button className="submit-btn" data-toggle="modal" data-target="#assetTransferModal">Submit</button> : ''}
                     </div>
                     <div className="modal fade" id="assetTransferModal" tabIndex="-1" role="dialog"
                          aria-labelledby="assetTransferModal" aria-hidden="true">

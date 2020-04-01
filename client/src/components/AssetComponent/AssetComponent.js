@@ -29,6 +29,7 @@ class AssetComponent extends Component{
             assetSubCategory: [],
             filterText: '',
             error: false,
+            expected_date: moment(),
             errorMessage: '',
             success: false,
             successMessage: '',
@@ -86,8 +87,9 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        this.validate()
-        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory,  brand, expected_date, model, upload_file, details, reason} = this.state
+        console.log(this.validate(), 89)
+        if (Object.values(this.validate()).includes(false)) return;
+        const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory, expected_date, brand, model, upload_file, details, reason} = this.state
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             const length = productSet.length
             const assName = assetCategory.find(item => item.id === parseInt(asset_category, 10)).category_name
@@ -193,25 +195,21 @@ class AssetComponent extends Component{
     }
 
     validate = () => {
-        const {asset_category, brand, error, success, successMessage, errorMessage, expected_date, quantity, model, upload_file, details, asset_sub_category, productSet, arrayData, reason} = this.state
+        const {asset_category, quantity, details, asset_sub_category, reason, expected_date} = this.state
         let errorDict = {
             asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
-            error: typeof error !== 'undefined' && error !== '',
-            success: typeof success !== 'undefined' && success !== '',
-            successMessage: typeof successMessage !== 'undefined' && successMessage !== '',
-            errorMessage: typeof errorMessage !== 'undefined' && errorMessage !== '',
             quantity: typeof quantity !== 'undefined' && quantity !== '',
-            upload_file: typeof upload_file !== 'undefined' && upload_file !== '',
             details: typeof details !== 'undefined' && details !== '',
+            expected_date: typeof expected_date !== 'undefined' && expected_date !== '',
             asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
-            productSet: typeof productSet !== 'undefined' && productSet !== '',
-            arrayData: typeof arrayData !== 'undefined' && arrayData !== '',
             reason: typeof reason !== 'undefined' && reason !== '',
         }
 
         this.setState({
             errorDict
         })
+
+        return errorDict
     }
 
     render(){
@@ -228,7 +226,7 @@ class AssetComponent extends Component{
                 <div className={'ui-dataEntry p-2'}>
                     <div className={'bg-white rounded p-2 admin-input-height position-relative'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Requisition</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">Add Product for Requisition</p>
                         </nav>
                         <div className={'px-1 mb-2'}>
                             <label className={'ui-custom-label'}>Select Category</label>
@@ -264,7 +262,7 @@ class AssetComponent extends Component{
                             <label className={'ui-custom-label'}>Expected Date</label>
                             <DatePicker timePicker={false}
                                         name={'expected_date'}
-                                        className={`ui-custom-input`}
+                                        className={`ui-custom-input ${errorDict && !errorDict.expected_date && 'is-invalid'}`}
                                         inputFormat="DD/MM/YYYY"
                                         onChange={date => this.setState({expected_date: date})}
                                         value={expected_date}/>
@@ -273,14 +271,14 @@ class AssetComponent extends Component{
                             <label className={'ui-custom-label'}>Details</label>
                             <textarea onChange={this.handleChange} value={details} className={`ui-custom-input ${errorDict && !errorDict.details && 'is-invalid'}`} name={'details'} placeholder="Details" />
                         </div>
-                        <div className="ui-custom-file w-50 mb-20p">
+                        <div className="ui-custom-file w-100 mb-20p">
                             <input id={'validatedCustomFile'} type="file" onChange={this.handleChange} name={'upload_file'} required />
-                            <label htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
-                            <div className="bottom">
+                            <label className={`w-100 `} htmlFor="validatedCustomFile">{upload_file ? upload_file.name : 'Choose file'}</label>
+                            <div className="bottom w-100">
                                 JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Add Product</button>
                     </div>
                     <div className={'rounded bg-white admin-input-height p-2'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">

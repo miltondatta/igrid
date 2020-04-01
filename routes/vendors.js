@@ -46,7 +46,7 @@ route.post('/vendors/entry', (req,res,next) => {
         const {vendor_name,description, enlisted} = req.body
         vendor_name.trim()
         const file_name = req.file ? req.file.filename : null
-        if (vendor_name === '' || description === '') {
+        if (vendor_name === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             Vendors.findAll({where: {vendor_name}})

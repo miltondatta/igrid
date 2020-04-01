@@ -195,7 +195,17 @@ class AdminInputContainer extends Component {
                 })
                 break;
             case 'USERAPPROVAL':
-                dataTableData = allProjects
+                allProjects.map((items, key) => {
+                    let obj = {}
+                    Object.keys(items).forEach(item => {
+                        console.log(item, 283)
+                        if (item === 'location_heirarchy_id' || item === 'role_id') {return null}
+                        else {
+                            obj[item] = items[item]
+                        }
+                    })
+                    dataTableData.push(obj)
+                }, {})
                 this.setState({
                     dataTableData,
                 })
@@ -358,6 +368,7 @@ class AdminInputContainer extends Component {
                                 [val]: item[val]
                             }, () => {
                                 this.validate()
+                                console.log(this.state, 361)
                             })
                         }
                     })
@@ -448,7 +459,7 @@ class AdminInputContainer extends Component {
                 [name]: value
             }, () => {
                 this.validate()
-                this.locationApi(value)
+                this.locationUserApi(value)
             })
         } else if(name === 'parent_id') {
             this.setState({
@@ -483,6 +494,7 @@ class AdminInputContainer extends Component {
 
     locationApi = (id) => {
         const {hierarchy, parent_id} = this.state
+        console.log(hierarchy, parent_id, 487)
         if (parent_id < hierarchy) {
             Axios.get(apiUrl() + 'locations/render/' + id)
                 .then(resData => {
@@ -494,6 +506,20 @@ class AdminInputContainer extends Component {
                     }
                 })
         }
+    }
+
+    locationUserApi = (id) => {
+        const {hierarchy, parent_id} = this.state
+        console.log(hierarchy, parent_id, 487)
+            Axios.get(apiUrl() + 'locations/render/' + id)
+                .then(resData => {
+                    if(resData.data.length > 0) {
+                        console.log(resData.data, 445)
+                        this.setState({
+                            locationHolder: [...this.state.locationHolder, ...resData.data]
+                        })
+                    }
+                })
     }
 
     renderForm = () => {
@@ -525,15 +551,15 @@ class AdminInputContainer extends Component {
                                 id={'enCh1'}
                                 name={'description'}
                                 value={description}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
+                                className={`ui-custom-textarea`}
                                 onChange={this.handleChange} />
                         </div>
                         <div className="px-1 mb-20p grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{file_name_all ? file_name_all : 'Choose file'}</label>
-                                <div className="bottom">
+                                <label htmlFor="validatedCustomFile" className={'w-100'}>{file_name_all ? file_name_all : 'Choose file'}</label>
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
@@ -548,8 +574,8 @@ class AdminInputContainer extends Component {
                                 <label htmlFor="customCheckbox" className={'mb-0'}>Enlisted</label>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit Vendor</button> : <>
-                            <button className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit Vendor</button> : <>
+                            <button className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                             <button className="reset-btn-normal mt-3" onClick={() => {
                                 this.setState({
                                     editId: null,
@@ -583,21 +609,21 @@ class AdminInputContainer extends Component {
                                 id={'enCh1'}
                                 name={'description'}
                                 value={description}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
+                                className={`ui-custom-textarea`}
                                 onChange={this.handleChange} />
                         </div>
                         <div className="px-1 mb-20p grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
-                                <label htmlFor="validatedCustomFile">{file_name_all ? file_name_all : 'Choose file'}</label>
-                                <div className="bottom">
+                                <label htmlFor="validatedCustomFile" className={'w-100'}>{file_name_all ? file_name_all : 'Choose file'}</label>
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                             <button className="reset-btn-normal mt-3" onClick={() => {
                                 this.setState({
                                     editId: null,
@@ -641,10 +667,10 @@ class AdminInputContainer extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea`} />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -681,14 +707,14 @@ class AdminInputContainer extends Component {
                                 <ApproveLevelOptions />
                             </select>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Level</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Level</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
-                                            project_name: '',
-                                            project_code: '',
-                                            description: '',
+                                            location_heirarchy_id: '',
+                                            role_id: '',
+                                            parent_id: 0,
                                         }, () => {
                                             this.validate()
                                         })}}>Go Back</button>
@@ -744,12 +770,16 @@ class AdminInputContainer extends Component {
                                 <ModelIdOptions />
                             </select>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Product</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Product</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         error: false,
+                                        category_id: '',
+                                        sub_category_id: '',
+                                        brand_id: '',
+                                        model_id: '',
                                         product_name: '',
                                         product_code: '',
                                         description: '',
@@ -772,8 +802,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.model) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <div>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Model</button> : <div>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -797,8 +827,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.brand) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Brand</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -822,8 +852,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.condition_type) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Condition</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -847,8 +877,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-input ${(errorDict && !errorDict.hierarchy_name) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Hierarchy</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Hierarchy</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -889,10 +919,10 @@ class AdminInputContainer extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea`} />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -935,10 +965,10 @@ class AdminInputContainer extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea`} />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -974,8 +1004,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Display</label>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -1018,8 +1048,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange} />
                             <label htmlFor="complaint_status" className={'mb-0'}>Status</label>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -1059,8 +1089,8 @@ class AdminInputContainer extends Component {
                                 onChange={this.handleChange}
                                 className={`ui-custom-textarea ${(errorDict && !errorDict.problem_details) && 'is-invalid'}`}  />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Complaint</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
@@ -1103,10 +1133,10 @@ class AdminInputContainer extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea`} />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -1156,14 +1186,15 @@ class AdminInputContainer extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea`} />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
+                                <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
                                         error: false,
+                                        category_id: '',
                                         sub_category_code: '',
                                         sub_category_name: '',
                                         description: '',
@@ -1259,9 +1290,9 @@ class AdminInputContainer extends Component {
                                     name={'address'}
                                     value={address}
                                     onChange={this.handleChange}
-                                    className={`ui-custom-input ${(errorDict && !errorDict.address) && 'is-invalid'}`} />
+                                    className={`ui-custom-input`} />
                             </div>
-                            <div className="ui-custom-file w-50 pl-1 overflow-hidden rounded">
+                            <div className="ui-custom-file w-100 pl-1 overflow-hidden rounded">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile" className={'w-100'}>{file_name_all ? file_name_all : 'Choose file'}</label>
@@ -1323,17 +1354,17 @@ class AdminInputContainer extends Component {
                                 name={'role_desc'}
                                 value={role_desc}
                                 onChange={this.handleChange}
-                                className={`ui-custom-input ${(errorDict && !errorDict.role_desc) && 'is-invalid'}`} />
+                                className={`ui-custom-input`} />
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             error: false,
                                             role_desc: '',
                                             role_name: '',
-                                            module_id: ''
+                                            module_id: 0
                                         }, () => {
                                             this.validate()
                                         })}}>Go Back</button>
@@ -1371,7 +1402,7 @@ class AdminInputContainer extends Component {
                                 <option value={2}>Descending</option>
                             </select>
                         </div>
-                        <div className="ui-custom-file w-50 mb-20p ml-1 overflow-hidden rounded">
+                        <div className="ui-custom-file w-100 mb-20p ml-1 overflow-hidden rounded">
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
                             <label htmlFor="validatedCustomFile" className={'w-100'}>{file_name_all ? file_name_all : 'Choose file...'}</label>
@@ -1379,8 +1410,8 @@ class AdminInputContainer extends Component {
                                 JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -1424,15 +1455,17 @@ class AdminInputContainer extends Component {
                             </div>
                             <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Locations</label>
-                                <select name={'location_id'} value={parent_location_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
+                                <select name={'location_id'} value={parent_location_id}
+                                        onChange={this.handleChange}
+                                        className={`ui-custom-input ${(errorDict && !errorDict.location_id) && 'is-invalid'}`}>
                                     <option>Select Location</option>
                                     <LocationsOptions selectedId={location_id} />
                                 </select>
                             </div>
                             {subLocation}
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Role</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mt-3 mr-2" onClick={this.updateData}>Update</button>
                                     <button className="reset-btn-normal mt-3" onClick={() => {
                                         this.setState({
                                             editId: null,
@@ -1461,16 +1494,8 @@ class AdminInputContainer extends Component {
             user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, com_sub_category_id, com_category_id, problem_details} = this.state
         switch (formType){
             case "USERROLES":
-                console.log(
-                    role_desc,
-                role_name,
-                module_id,
-                    1446
-                )
                 errorDict = {
-                    role_desc: typeof role_desc !== 'undefined' && role_desc !== '',
                     role_name: typeof role_name !== 'undefined' && role_name !== '',
-                    module_id: typeof module_id !== 'undefined' && module_id !== '',
                 }
                 this.setState({
                     errorDict
@@ -1478,9 +1503,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "PROJECT":
                 errorDict = {
-                    description: description !== '',
-                    project_name: project_name !== '',
-                    project_code: project_code !== '',
+                    project_name: typeof project_name !== 'undefined' && project_name !== '',
+                    project_code: typeof project_code !== 'undefined' && project_code !== '',
                 }
                 this.setState({
                     errorDict
@@ -1498,9 +1522,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "DEPMETHOD":
                 errorDict = {
-                    depreciation_code: depreciation_code !== '',
-                    method_name: method_name !== '',
-                    description: description !== '',
+                    depreciation_code: typeof depreciation_code !== 'undefined' && depreciation_code !== '',
+                    method_name: typeof method_name !== 'undefined' && method_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1508,9 +1531,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "ASSETTYPES":
                 errorDict = {
-                    asset_code: asset_code !== '',
-                    type_name: type_name !== '',
-                    description: description !== '',
+                    asset_code: typeof asset_code !== 'undefined' && asset_code !== '',
+                    type_name: typeof type_name !== 'undefined' && type_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1518,12 +1540,12 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "PRODUCTS":
                 errorDict = {
-                    brand_id: brand_id !== '',
-                    model_id: model_id !== '',
-                    category_id: category_id !== '',
-                    product_name: product_name !== '',
-                    product_code: product_code !== '',
-                    sub_category_id: sub_category_id !== '',
+                    brand_id: typeof brand_id !== 'undefined' && brand_id !== '',
+                    model_id: typeof model_id !== 'undefined' && model_id !== '',
+                    category_id: typeof category_id !== 'undefined' && category_id !== '',
+                    product_name: typeof product_name !== 'undefined' && product_name !== '',
+                    product_code: typeof product_code !== 'undefined' && product_code !== '',
+                    sub_category_id: typeof sub_category_id !== 'undefined' && sub_category_id !== '',
                 }
                 this.setState({
                     errorDict
@@ -1531,8 +1553,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "VENDOR":
                 errorDict = {
-                    vendor_name: vendor_name !== '',
-                    description: description !== '',
+                    vendor_name: typeof vendor_name !== 'undefined' && vendor_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1540,8 +1561,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "AMCTYPES":
                 errorDict = {
-                    type_name: type_name !== '',
-                    description: description !== '',
+                    type_name: typeof type_name !== 'undefined' && type_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1549,7 +1569,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "COMPLAINT":
                 errorDict = {
-                    problem_details: problem_details !== '',
+                    problem_details: typeof problem_details !== 'undefined' && problem_details !== '',
                 }
                 this.setState({
                     errorDict
@@ -1557,7 +1577,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "MODELS":
                 errorDict = {
-                    model: model !== '',
+                    model: typeof model !== 'undefined' && model !== '',
                 }
                 this.setState({
                     errorDict
@@ -1565,7 +1585,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "CONDITIONS":
                 errorDict = {
-                    condition_type: condition_type !== '',
+                    condition_type: typeof condition_type !== 'undefined' && condition_type !== '',
                 }
                 this.setState({
                     errorDict
@@ -1573,7 +1593,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "LOCHIERARCHY":
                 errorDict = {
-                    hierarchy_name: hierarchy_name !== '',
+                    hierarchy_name: typeof hierarchy_name !== 'undefined' && hierarchy_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1581,7 +1601,7 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "BRANDS":
                 errorDict = {
-                    brand: brand !== '',
+                    brand: typeof brand !== 'undefined' && brand !== '',
                 }
                 this.setState({
                     errorDict
@@ -1589,8 +1609,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "COMCATEGORY":
                 errorDict = {
-                    complaint_status: complaint_status !== '',
-                    complaint_name: complaint_name !== '',
+                    complaint_status: typeof complaint_status !== 'undefined' && complaint_status !== '',
+                    complaint_name: typeof complaint_name !== 'undefined' && complaint_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1598,8 +1618,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "COMSUBCATEGORY":
                 errorDict = {
-                    com_sub_category_name: complaint_status !== '',
-                    com_category_id: complaint_name !== '',
+                    com_sub_category_name: typeof complaint_status !== 'undefined' && complaint_status !== '',
+                    com_category_id: typeof complaint_name !== 'undefined' && complaint_name !== '',
                 }
                 this.setState({
                     errorDict
@@ -1618,9 +1638,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "ASSETCATEGORY":
                 errorDict = {
-                    description: description !== '',
-                    category_name: category_name !== '',
-                    category_code: category_code !== '',
+                    category_name: typeof category_name !== 'undefined' && category_name !== '',
+                    category_code: typeof category_code !== 'undefined' && category_code !== '',
                 }
                 this.setState({
                     errorDict
@@ -1628,10 +1647,9 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "ASSETSUBCATEGORY":
                 errorDict = {
-                    description: description !== '',
-                    category_id: category_id !== '',
-                    sub_category_name: sub_category_name !== '',
-                    sub_category_code: sub_category_code !== '',
+                    category_id: typeof  category_id !== 'undefined' && category_id !== '',
+                    sub_category_name: typeof  sub_category_name !== 'undefined' && sub_category_name !== '',
+                    sub_category_code: typeof  sub_category_code !== 'undefined' && sub_category_code !== '',
                 }
                 this.setState({
                     errorDict
@@ -1789,8 +1807,8 @@ class AdminInputContainer extends Component {
                                 isLoading = {formType !== 'COMPLAINT'}
                                 pagination = {formType !== 'COMPLAINT'}
                                 searchable = {formType !== 'COMPLAINT'}
-                                shortWidth = {formType !== 'ASSETSUBCATEGORY'}
-                                bigTable = {formType === 'PRODUCTS'}
+                                shortWidth = {true}
+                                bigTable = {true}
                                 deleteModalTitle={title}
                                 del={formType !== 'COMPLAINT' ? getApi : false}
                                 tableData={dataTableData}
