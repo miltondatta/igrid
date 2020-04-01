@@ -418,13 +418,10 @@ class MenuAssignComponent extends Component {
                             </select>
                         </div>
                     }
-                    {editId === null ? <button className="submit-btn"
+                    {editId === null ? <button className="submit-btn-normal mt-5"
                                                onClick={this.handleSubmit}>Submit</button> : <>
-                        <button className="submit-btn mr-2" onClick={this.updateData}>
-                            Update
-                        </button>
-                        <button className="reset-btn" onClick={this.emptyStateValue}>Go Back
-                        </button>
+                        <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                        <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back</button>
                     </>}
                 </div>
                 <div className="rounded bg-white admin-input-height">

@@ -223,11 +223,18 @@ class AssetDisposalComponent extends Component {
         });
     };
 
+    setTableWidth = () => {
+        let table = document.getElementById('__table_react');
+        if (table) table.style.width = '100%';
+    };
+
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, disposal_reason, success, successMessage, error, errorMessage,
             errorDict, isLoading, disposalData, assetDisposalTableData
         } = this.state;
+
+        assetDisposalTableData.length > 0 && this.setTableWidth();
 
         return (
             <>
@@ -292,7 +299,7 @@ class AssetDisposalComponent extends Component {
                             <span className="error">Product Serial Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Disposal Reason</label>
                             <textarea onChange={this.handleChange} value={disposal_reason}
                                       className="ui-custom-input " name={'disposal_reason'}
@@ -301,7 +308,7 @@ class AssetDisposalComponent extends Component {
                             <span className="error">Disposal Reason Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addDisposal} className="submit-btn">Add Disposal</button>
+                        <button onClick={this.addDisposal} className="submit-btn-normal mt-5">Add Disposal</button>
                     </div>
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">

@@ -84,7 +84,7 @@ class ImportCSVComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button className="submit-btn" onClick={this.handleSubmit}>Submit</button>
+                        <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button>
                     </div>
                     <div className="rounded bg-white admin-input-height">
                         <nav className="navbar text-center mb-2 pl-3 rounded">

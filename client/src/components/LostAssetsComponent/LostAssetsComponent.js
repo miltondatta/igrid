@@ -263,7 +263,7 @@ class LostAssetsComponent extends Component {
                                         ranges={disabledRanges}
                                         value={gd_date}/>
                         </div>
-                        <div className="mb-20p grid-2">
+                        <div className="mb-2 grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'gd_other_file'}
                                        id="validatedCustomFile"
@@ -275,7 +275,7 @@ class LostAssetsComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button className="submit-btn" onClick={this.submitLostAssets}>Submit</button>
+                        <button className="submit-btn-normal mt-5" onClick={this.submitLostAssets}>Submit</button>
                     </div>
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-0 mt-1 pl-2 rounded">

@@ -7,7 +7,6 @@ import {validateInput} from "../../utility/custom";
 import Spinner from "../Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
-import moment from "moment";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 class MisInputContainer extends Component {
@@ -344,15 +343,9 @@ class MisInputContainer extends Component {
                                 <label className="custom-control-label" htmlFor="switch1">Is Default</label>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn"
-                                                   onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData}
-                                    style={{position: 'absolute', bottom: 12}}>
-                                Update
-                            </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue}
-                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
-                            </button>
+                        {editId === null ? <button className="submit-btn-normal mt-5" onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -429,15 +422,9 @@ class MisInputContainer extends Component {
                                 <label className="custom-control-label" htmlFor="switch2">Is Default</label>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn"
-                                                   onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData}
-                                    style={{position: 'absolute', bottom: 12}}>
-                                Update
-                            </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue}
-                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
-                            </button>
+                        {editId === null ? <button className="submit-btn-normal mt-5" onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -538,10 +525,10 @@ class MisInputContainer extends Component {
         return (
             <>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                <ErrorModal errorMessage={errorMessage} />
                 }
                 {success &&
-                    <SuccessModal successMessage={successMessage} />
+                <SuccessModal successMessage={successMessage} />
                 }
 
                 <div className="px-2 my-2 ui-dataEntry">

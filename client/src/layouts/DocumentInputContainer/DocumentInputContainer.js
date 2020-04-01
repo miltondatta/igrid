@@ -438,14 +438,12 @@ class DocumentInputContainer extends Component {
                         {errorDict && !errorDict.category_name &&
                         <span className="error">Document Category Field is required</span>
                         }
-                        {editId === null ? <button className="submit-btn"
+                        {editId === null ? <button className="submit-btn-normal"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData}
-                                    style={{position: 'absolute', bottom: 12}}>
+                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue}
-                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back
                             </button>
                         </>}
                     </>
@@ -477,15 +475,10 @@ class DocumentInputContainer extends Component {
                             <span className="error">Sub Category Name Field is required</span>
                             }
                         </div>
-                        {editId === null ? <button className="submit-btn"
-                                                   onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData}
-                                    style={{position: 'absolute', bottom: 12}}>
-                                Update
-                            </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue}
-                                    style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
-                            </button>
+                        {editId === null ? <button className="submit-btn-normal"
+                                                   onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -620,14 +613,10 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn"
-                                                   onClick={this.handleSubmit}>Submit Documents</button> : <>
-                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>
-                                Update
-                            </button>
-                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue}>Go
-                                Back
-                            </button>
+                        {editId === null ? <button className="submit-btn-normal"
+                                                   onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );

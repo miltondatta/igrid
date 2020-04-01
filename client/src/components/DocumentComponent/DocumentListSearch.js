@@ -100,8 +100,7 @@ class DocumentListSearch extends Component {
                 return;
             default:
                 this.setState({
-                    [name]: value,
-                    receivedByFocus: true
+                    [name]: value
                 });
                 return;
         }
