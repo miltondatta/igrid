@@ -551,9 +551,10 @@ class MisInputContainer extends Component {
                                 pagination
                                 searchable
                                 edit
+                                docDelete
                                 tableData={tableData}
                                 updateEdit={this.updateEdit}
-                                docDelete={this.docDeleteModal}
+                                docDeleteModal={this.docDeleteModal}
                                 bigTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"

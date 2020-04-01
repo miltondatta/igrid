@@ -181,11 +181,11 @@ class DocumentInputContainer extends Component {
                                 res.data.length > 0 && res.data.map(item => {
                                     let newObj = {
                                         id: item.id,
+                                        document_date: moment(item.document_date).format('YYYY-MM-DD'),
                                         category_name: item.document_category.category_name,
                                         sub_category_name: item.document_sub_category.sub_category_name,
                                         title: item.title,
                                         description: item.description,
-                                        document_date: moment(item.document_date).format('YYYY-MM-DD'),
                                         circular_no: item.circular_no,
                                         content_type: item.content_type === 1 ? 'notice' : 'circular',
                                         display_notice: item.display_notice ? 'on' : 'off',
@@ -425,7 +425,7 @@ class DocumentInputContainer extends Component {
             case 'DOCUMENTCATEGORY':
                 return (
                     <>
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label htmlFor="inputPassword4" className={'ui-custom-label'}>Document Category Name</label>
                             <input
                                 placeholder='Enter Document Category Name'
@@ -438,12 +438,12 @@ class DocumentInputContainer extends Component {
                         {errorDict && !errorDict.category_name &&
                         <span className="error">Document Category Field is required</span>
                         }
-                        {editId === null ? <button className="submit-btn-normal"
+                        {editId === null ? <button className="submit-btn-normal mt-5"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back
+                            <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back
                             </button>
                         </>}
                     </>
@@ -462,7 +462,7 @@ class DocumentInputContainer extends Component {
                             <span className="error">Category Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label htmlFor="inputPassword4" className={'ui-custom-label'}>Sub Category Name</label>
                             <input
                                 placeholder='Sub Category Name'
@@ -475,10 +475,10 @@ class DocumentInputContainer extends Component {
                             <span className="error">Sub Category Name Field is required</span>
                             }
                         </div>
-                        {editId === null ? <button className="submit-btn-normal"
+                        {editId === null ? <button className="submit-btn-normal mt-5"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back</button>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -574,27 +574,27 @@ class DocumentInputContainer extends Component {
                                         ranges={disabledRanges}
                                         value={document_date}/>
                         </div>
-                        <div className="px-1 mb-20p">
-                            <div className="row align-items-center">
-                                <div className="col-md-4">
-                                    <div className="ui-custom-file">
-                                        <input type="file" onChange={this.handleChange} name={'file_name'}
-                                               className="custom-file-input" id="validatedCustomFile"/>
-                                        <label htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
-                                        <div className="bottom">
-                                            JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
-                                        </div>
-                                    </div>
-                                    {errorDict && !errorDict.file_name &&
-                                    <>
-                                        <span className="error">File Name Field is required</span>
-                                        <br/>
-                                    </>
-                                    }
-                                    {extError &&
-                                    <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
-                                    }
+                        <div className="px-1 mb-2">
+                            <div className="ui-custom-file">
+                                <input type="file" onChange={this.handleChange} name={'file_name'}
+                                       className="custom-file-input" id="validatedCustomFile"/>
+                                <label htmlFor="validatedCustomFile" style={{width: '100%'}}>{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <div className="bottom text-center" style={{width: '100%'}}>
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
+                            </div>
+                            {errorDict && !errorDict.file_name &&
+                            <>
+                                <span className="error">File Name Field is required</span>
+                                <br/>
+                            </>
+                            }
+                            {extError &&
+                            <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
+                            }
+                        </div>
+                        <div className="px-1 mb-2">
+                            <div className="row align-items-center">
                                 <div className="col-md-4">
                                     <div className="custom-control custom-switch">
                                         <input type="checkbox" name="display_notice"
@@ -613,10 +613,10 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn-normal"
+                        {editId === null ? <button className="submit-btn-normal mt-5"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
-                            <button className="reset-btn-normal cursor-pointer mt-3" onClick={this.emptyStateValue}>Go Back</button>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal cursor-pointer mt-5" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -760,10 +760,10 @@ class DocumentInputContainer extends Component {
                                 shortWidth
                                 pagination
                                 searchable
-                                edit
+                                action
                                 tableData={allProjectTableData}
                                 updateEdit={this.updateEdit}
-                                docDelete={this.docDeleteModal}
+                                docDeleteModal={this.docDeleteModal}
                                 bigTable={formType === 'DOCUMENTLIST'}
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"

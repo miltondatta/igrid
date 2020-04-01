@@ -437,9 +437,10 @@ class MenuAssignComponent extends Component {
                                 pagination
                                 searchable
                                 edit
+                                docDelete
                                 tableData={menuAssignTableData}
                                 updateEdit={this.updateEdit}
-                                docDelete={this.docDeleteModal}
+                                docDeleteModal={this.docDeleteModal}
                                 bigTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
