@@ -67,6 +67,7 @@ class InstaAdd extends Component {
                     })
                 } else {
                     this.props.forceUp()
+                    this.props.forceAmc()
                     this.setState({
                         success: true,
                         successMessage: res.data.message,
@@ -162,6 +163,7 @@ class InstaAdd extends Component {
 
     componentDidMount() {
         this.props.forceUp()
+        this.props.forceAmc()
     }
 
     locationApi = (id) => {
