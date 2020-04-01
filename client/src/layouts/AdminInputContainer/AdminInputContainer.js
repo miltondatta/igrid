@@ -1808,7 +1808,7 @@ class AdminInputContainer extends Component {
                                 pagination = {formType !== 'COMPLAINT'}
                                 searchable = {formType !== 'COMPLAINT'}
                                 shortWidth = {true}
-                                bigTable = {formType === 'PRODUCTS' || formType === 'LOCATIONS' || formType === 'AMCTYPES' || formType === 'USERROLES' || formType === 'USERAPPROVAL' || formType === 'DEPMETHOD'}
+                                bigTable = {true}
                                 deleteModalTitle={title}
                                 del={formType !== 'COMPLAINT' ? getApi : false}
                                 tableData={dataTableData}
