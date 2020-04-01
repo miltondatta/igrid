@@ -1379,9 +1379,9 @@ class AdminInputContainer extends Component {
                                 JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
-                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
-                                    <button className="reset-btn-normal mt-3" onClick={() => {
+                        {editId === null ? <button className="submit-btn-normal" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
+                                    <button disabled={errorDict && Object.values(errorDict).includes(false)} className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
+                                    <button className="reset-btn-normal" onClick={() => {
                                         this.setState({
                                             editId: null,
                                             error: false,

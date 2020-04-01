@@ -228,7 +228,7 @@ class AssetComponent extends Component{
                 <div className={'ui-dataEntry p-2'}>
                     <div className={'bg-white rounded p-2 admin-input-height position-relative'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Requisition</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">Add Product for Requisition</p>
                         </nav>
                         <div className={'px-1 mb-2'}>
                             <label className={'ui-custom-label'}>Select Category</label>
@@ -280,7 +280,7 @@ class AssetComponent extends Component{
                                 JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Requisition</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Add Product</button>
                     </div>
                     <div className={'rounded bg-white admin-input-height p-2'}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
