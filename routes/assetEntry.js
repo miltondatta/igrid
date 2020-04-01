@@ -260,7 +260,7 @@ route.put('/assets-entry/assets/update/:id', (req, res, next) => {
 
     if (project_id !== '' && asset_category !== '' && asset_sub_category !== '' && cost_of_purchase !== '' && installation_cost !== '' && carrying_cost !== '',
     other_cost !== '' && asset_type !== '' && depreciation_method !== '' && rate !== '' && effective_date !== '' && book_value !== '' && salvage_value !== '' &&
-    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && comments !== '' && barcode !== '') {
+    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && barcode !== '') {
         Assets.update({...req.body}, {where: {id: req.params.id}})
             .then(() => {
                 res.status(200).json({message: 'Asset has been updated'})

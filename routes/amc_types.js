@@ -57,7 +57,7 @@ route.put('/amc_types/update/:id', (req,res,next) => {
             return res.status(500).json(err)
         }
         const {type_name, description} = req.body
-        if (type_name !== '' && description !== '') {
+        if (type_name !== '') {
             Amc_Types.update({type_name, description}, {where: {id: req.params.id}})
                 .then(resData => {
                     res.status(200).json({resData, message: 'Data Updated Successfully', status: true})
@@ -80,7 +80,7 @@ route.post('/amc_types/entry', (req,res,next) => {
             return res.status(500).json(err)
         }
         const {type_name, description} = req.body
-        if (type_name !== '' && description !== '') {
+        if (type_name !== '') {
             Amc_Types.create({type_name, description})
                 .then(resData => {
                     res.status(200).json({resData, message: 'Data Saved Successfully', status: true})

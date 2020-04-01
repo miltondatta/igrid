@@ -21,9 +21,9 @@ route.get('/approval_level/options', async (req,res,next) => {
 // Read
 route.get('/approval_level', async (req,res,next) => {
     const [data, metaData] = await db.query(`
-       SELECT approval_levels.id, location_hierarchies.hierarchy_name,user_roles.role_name, approval_levels.parent_id FROM approval_levels
-        JOIN location_hierarchies ON approval_levels.location_heirarchy_id = location_hierarchies.id
-        JOIN user_roles ON approval_levels.role_id = user_roles.id
+        SELECT approval_levels.id, location_hierarchies.hierarchy_name, location_hierarchies.id as location_heirarchy_id, user_roles.id as role_id, user_roles.role_name, approval_levels.parent_id FROM approval_levels
+            JOIN location_hierarchies ON approval_levels.location_heirarchy_id = location_hierarchies.id
+            JOIN user_roles ON approval_levels.role_id = user_roles.id
     `)
     if (data.length > 0) {
         res.status(200).json(data)

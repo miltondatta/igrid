@@ -32,7 +32,7 @@ route.get('/asset-category', (req,res,next) => {
 // Update
 route.put('/asset-category/update/:id', (req,res,next) => {
     const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
+    if(category_name !== '' && category_code !== '') {
         AssetCategory.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if(resData[0].dataValues.category_code === category_code) {
@@ -55,7 +55,7 @@ route.put('/asset-category/update/:id', (req,res,next) => {
 // Create
 route.post('/asset-category/entry', (req,res,next) => {
     const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
+    if(category_name !== '' && category_code !== '') {
         AssetCategory.findAll({where: {category_code}})
             .then(resData => {
                 if(resData.length === 0) {

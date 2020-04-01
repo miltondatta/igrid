@@ -47,6 +47,9 @@
     height: 55px;
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 0 0 0 5px;
+    display: flex;
+    align-items: center;
 }
 
 .tbody .ui-tbody-child{

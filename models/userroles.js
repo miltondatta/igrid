@@ -11,6 +11,7 @@ const UserRoles = db.define('user_roles', {
     type: Sequelize.STRING
   },
   module_id: {
+    allowNull: true,
     defaultValue: 0,
     type: Sequelize.INTEGER
   }

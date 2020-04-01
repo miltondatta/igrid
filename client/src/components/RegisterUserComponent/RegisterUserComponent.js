@@ -153,12 +153,12 @@ class RegisterUserComponent extends Component {
                             <input onChange={this.handleChange} name={'password'} value={password} type="password" className={`ui-custom-input ${errorDict && !errorDict.password && 'is-invalid'}`}
                                    id="inputAddress" placeholder="Password" />
                         </div>
-                        <div className="mb-20p ml-3">
+                        <div className="mb-5 ml-3">
                             <label htmlFor="inputEmail4" className={'ui-custom-label'}>Confirm Password</label>
                             <input type="password" className={`ui-custom-input ${errorDict && !errorDict.confirm_password && 'is-invalid'}`} id="inputEmail4" name='confirm_password'
                                    value={confirm_password} onChange={this.handleChange} placeholder="Confirm Password" />
                         </div>
-                        <button type="submit" onClick={this.handleSubmit} className="submit-btn">Register</button>
+                        <button type="submit" onClick={this.handleSubmit} className="submit-btn-normal ml-3">Register</button>
                 </div>
             </div>
         );
