@@ -22,6 +22,11 @@ class AssetComponent extends Component{
         this.state={
             items: 0,
             quantity: '',
+            brand: '',
+            model: '',
+            reason: '',
+            details: '',
+            upload_file: null,
             reqMaster: '',
             arrayData: [],
             productSet: [],
@@ -111,7 +116,18 @@ class AssetComponent extends Component{
                 quantity: '',
                 request: 0,
                 items: 0,
-            }))
+            }), () => {
+                this.setState({
+                    reason: '',
+                    details: '',
+                    brand: '',
+                    model: '',
+                    upload_file: null,
+                    quantity: '',
+                    asset_category: '',
+                    asset_sub_category: '',
+                })
+            })
         }
     }
 
