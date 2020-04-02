@@ -11,6 +11,7 @@ class ReactDataTable extends Component {
         this.state = {
             dataCount: 0,
             displayRow: 10,
+            comments: '',
             sortColumn: '',
             dataPassed: 0,
             filterByTitle: '',
@@ -124,7 +125,7 @@ class ReactDataTable extends Component {
 
     render() {
         const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
-            feedback, file, docDelete, docDetails} = this.props
+            feedback, file, docDelete, docDetails, comments, done} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
@@ -145,7 +146,7 @@ class ReactDataTable extends Component {
                             <>
                             {(items !== 'id' && items !== 'file_name') &&
                                 <p key={key + 20}>
-                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : (item[items] === null || item[items] === " ") ? 'N/A' : items === 'requisition_id' ? null : items === 'description' ? <div dangerouslySetInnerHTML={{__html: item[items]}} /> : item[items]}
+                                    {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : items === 'status' ? "Solved" : item[items] ? 'True' : 'False' : (item[items] === null || item[items] === " ") ? 'N/A' : items === 'requisition_id' ? null : items === 'description' ? <div dangerouslySetInnerHTML={{__html: item[items]}} /> : item[items]}
                                 </p>
                             }
                             </>
@@ -178,6 +179,8 @@ class ReactDataTable extends Component {
                                 <i className="icofont-ui-delete"></i>
                             </p>}
                             {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
+                            {comments && <input className={'reactDataTableInput'} placeholder={'Comments'} onChange={this.handleChange} name={'comments'} />}
+                            {done && <button className={'reactDataTableButton'} onClick={() => {this.props.done(this.state.comments, item.id)}}>Submit</button>}
                         </>}
                     </div>
                     <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
@@ -233,6 +236,8 @@ class ReactDataTable extends Component {
                             <i className="icofont-ui-delete"></i>
                         </p>}
                         {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
+                        {comments && <input className={'reactDataTableInput'}  placeholder={'Comments'} onChange={this.handleChange} name={'comments'} />}
+                        {done && <button className={'reactDataTableButton'}  onClick={() => {this.props.done(this.state.comment, item.id)}}>Submit</button>}
                     </div>}
                 </div>
             )})
@@ -281,6 +286,8 @@ class ReactDataTable extends Component {
                                 {file && <p className={'w-125px'}>File Download</p>}
                                 {docDelete && <p className={'w-95px'}>Delete</p>}
                                 {docDetails && <p className={'w-95px'}>Details</p>}
+                                {comments && <p className={'w-95px'}>Add Solution</p>}
+                                {done && <p className={'w-95px'}>Submit</p>}
                             </>}
                         </div>
                         {!bigTable && <div className={'d-flex text-right align-items-center justify-content-end ui-table-functions'}>
@@ -295,6 +302,8 @@ class ReactDataTable extends Component {
                             {file && <p className={'w-125px pr-2'}>File Download</p>}
                             {docDelete && <p className={'w-95px pr-2'}>Delete</p>}
                             {docDetails && <p className={'w-95px pr-2'}>Details</p>}
+                            {comments && <p className={'w-95px pr-2'}>Add Solution</p>}
+                            {done && <p className={'w-95px pr-2'}>Submit</p>}
                         </div>}
                     </div>
                     <div className={'tbody'}>

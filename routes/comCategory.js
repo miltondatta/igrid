@@ -5,7 +5,7 @@ const route = express.Router()
 
 // Read
 route.get('/com-category', (req,res,next) => {
-    ComCategory.findAll({attributes: ['id', 'complaint_name','status']})
+    ComCategory.findAll({attributes: ['id', 'complaint_name']})
         .then(resData => {
             res.status(200).json(resData)
         })

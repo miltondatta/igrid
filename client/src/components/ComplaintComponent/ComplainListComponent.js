@@ -27,6 +27,17 @@ class ComplainListComponent extends Component {
             })
     }
 
+    done = (val, id) => {
+        console.log(val, 31)
+        const payload = {solutionDetails: val, status: true}
+        Axios.put(apiUrl() + 'complaints/update/'+ id, payload)
+            .then(res => {
+                if (res.data.status) {
+                    window.location.reload()
+                }
+            })
+    }
+
     render() {
         const {data, trackData, zoom} = this.state
         return (
@@ -38,7 +49,9 @@ class ComplainListComponent extends Component {
                     pagination
                     footer
                     dataDisplay
-                    trackUser={this.trackUser}
+                    bigTable
+                    comments
+                    done={this.done}
                     tableData={data}
                 />
             </div>

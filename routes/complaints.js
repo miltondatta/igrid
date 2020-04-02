@@ -5,11 +5,12 @@ const Complaints = require('../models/complaints')
 const route = express.Router()
 
 // Read
-route.get('/complaints', async (req,res,next) => {
+route.get('/complaints/:id', async (req,res,next) => {
     const [data, metaData] = await db.query(`
         SELECT complaints.id, "comCategories".complaint_name, "comSubCategories".sub_complaint_name, "complaints"."status", "complaints"."solutionDetails" as solution FROM complaints
             JOIN "comCategories" ON "comCategories".id = complaints.complaint_category
             JOIN "comSubCategories" ON "comSubCategories".id = complaints.complaint_sub_category
+            WHERE complaints."createdBy" = ${req.params.id}
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -48,21 +49,15 @@ route.get('/complaints-options', (req,res,next) => {
 
 // Update
 route.put('/complaints/update/:id', (req,res,next) => {
-    const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
-        Complaints.findAll({where: {id: req.params.id}})
+    const {solutionDetails, status} = req.body
+    if(solutionDetails) {
+        Complaints.update({solutionDetails, status}, {where: {id: req.params.id}})
             .then(resData => {
-                if(resData[0].dataValues.category_code === category_code) {
-                    Complaints.update({category_name,category_code,description}, {where: {id: req.params.id}})
-                        .then(resData => {
-                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
-                        })
-                        .catch(err => {
-                            res.status(200).json({message: 'Something went wrong'})
-                        })
-                } else {
-                    res.status(200).json({message: 'Category Code Exist'})
-                }
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(200).json({message: 'Something went wrong'})
             })
     } else {
         res.status(200).json({message: 'All fields required!'})

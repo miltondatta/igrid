@@ -67,6 +67,23 @@
 .thead{
     background: #c6e4f9;
 }
+.reactDataTable .reactDataTableInput{
+    padding: 0 10px;
+    height: 43px;
+    border-radius: 5px;
+    border: 1px solid #c6e4f9;
+    margin-right: 10px;
+    width: 185px;
+}
+
+.reactDataTable .reactDataTableButton{
+    height: 39px;
+    width: 100px;
+    background: #2184d0;
+    border-radius: 5px;
+    color: white;
+    border: none;
+}
 .reactDataTable .custom-search div{
     color: white;
     background: #329df0;
