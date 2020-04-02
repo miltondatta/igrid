@@ -600,6 +600,7 @@ class ChallanComponent extends Component {
                         {assets.length > 0 ? <ReactDataTable
                             pagination
                             footer
+                            bigTable
                             del={'assets-entry'}
                             deleteModalTitle={'Delete Asset'}
                             updateEdit={this.updateEdit}
@@ -607,6 +608,11 @@ class ChallanComponent extends Component {
                         /> : challans.length > 0 && assets.length === 0 ? <ReactDataTable
                             details
                             add
+                            bigTable
+                            searchable
+                            pagination
+                            footer
+                            dataDisplay
                             addName={'Assets'}
                             addAssets={this.addAssets}
                             edit={'specific-challan/'}

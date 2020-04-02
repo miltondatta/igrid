@@ -15,6 +15,8 @@
     color: #666666;
     font-weight: 600;
 }
+
+
 .reactDataTable .tbody p,
 .reactDataTable .thead p{
     color: #0f88e7;
@@ -115,4 +117,12 @@
 
 .reactDataTable .page-item.active .page-link{
     border-color: #12b79e
+}
+
+.reactDataTable .ui-all-action{
+    min-width: 189px !important;
+    text-align: center;
+}
+.reactDataTable .ui-all-action span{
+    margin-right: 15px;
 }

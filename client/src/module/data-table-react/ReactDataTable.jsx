@@ -153,43 +153,43 @@ class ReactDataTable extends Component {
                             }
                             </>
                         ))}
-                        {bigTable &&  <>
-                            {edit && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                        <p className={'ui-all-action'}>
+                            {edit && <span data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                                 <i className="icofont-ui-edit"></i>
-                            </p>}
-                            {feedback && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
+                            </span>}
+                            {feedback && <span data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                                 <i className="icofont-ui-edit"></i>
-                            </p>}
-                            {del && <p onClick={() => {this.setState({delId: item.id})}} className="cursor-pointer text-danger" data-toggle="modal"
+                            </span>}
+                            {del && <span onClick={() => {this.setState({delId: item.id})}} className="cursor-pointer text-danger" data-toggle="modal"
                                        data-target="#rowDeleteModal">
                                 <i className="icofont-ui-delete"></i>
-                            </p>}
-                            {add && <p className="cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>
-                                <i className="icofont-ui-add"></i></p>}
-                            {details && <p className="cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></p>}
-                            {approve && <p className="cursor-pointer text-danger">Approve</p>}
-                            {track && <p className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
+                            </span>}
+                            {add && <span className="cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>
+                                <i className="icofont-ui-add"></i></span>}
+                            {details && <span className="cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></span>}
+                            {approve && <span className="cursor-pointer text-danger">Approve</span>}
+                            {track && <span className="cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
                                 <i className="icofont-location-pin"></i>
-                            </p>}
-                            {remove && <p className="cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
+                            </span>}
+                            {remove && <span className="cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
                                 <i className="fas fa-times"></i>
-                            </p>}
-                            {file && <p className="cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
-                                <i className="fas fa-download"></i></p>
+                            </span>}
+                            {file && <span className="cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
+                                <i className="fas fa-download"></i></span>
                             }
-                            {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}>
+                            {docDelete && <span className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}>
                                 <i className="icofont-ui-delete"></i>
-                            </p>}
-                            {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
+                            </span>}
+                            {docDetails && <span className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></span>}
                             {action &&
                             <>
-                                <p className={'d-flex justify-content-center'}>
+                                <span className={'d-flex justify-content-center'}>
                                     <i className="cursor-pointer text-warning icofont-ui-edit mr-2" onClick={() => {this.props.updateEdit(item.id, edit)}}></i>
                                     <i className="cursor-pointer text-danger icofont-ui-delete" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}></i>
-                                </p>
+                                </span>
                             </>
                             }
-                        </>}
+                        </p>
                     </div>
                     <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
                          aria-labelledby="rowDeleteModal" aria-hidden="true">
@@ -216,43 +216,6 @@ class ReactDataTable extends Component {
                             </div>
                         </div>
                     </div>
-                    {!bigTable && <div className={'d-flex text-right align-items-center justify-content-end ui-table-functions'}>
-                        {edit && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="pr-2 w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
-                            <i className="icofont-ui-edit"></i>
-                        </p>}
-                        {feedback && <p data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="pr-2 w-95px cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
-                            <i className="icofont-ui-edit"></i>
-                        </p>}
-                        {del && <p onClick={() => {this.setState({delId: item.id})}} className="pr-2 w-95px cursor-pointer text-danger" data-toggle="modal"
-                                   data-target="#rowDeleteModal">
-                            <i className="icofont-ui-delete"></i>
-                        </p>}
-                        {add && <p className="pr-2 w-95px cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>
-                            <i className="icofont-ui-add"></i></p>}
-                        {details && <p className="pr-2 w-95px cursor-pointer text-primary" onClick={() => {this.props.assetList(details === 'reqHistory' ? item.requisition_id : item.id)}}><i className="fas fa-info-circle"></i></p>}
-                        {approve && <p className="pr-2 w-95px cursor-pointer text-danger">Approve</p>}
-                        {track && <p className="pr-2 w-95px cursor-pointer text-danger" onClick={() => {this.props.trackUser(item.user_ip)}}>
-                            <i className="icofont-location-pin"></i>
-                        </p>}
-                        {remove && <p className="pr-2 w-95px cursor-pointer text-danger" onClick={ () => {this.props.remove(item.id)}}>
-                            <i className="fas fa-times"></i>
-                        </p>}
-                        {file && <p className="pr-2 cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
-                            <i className="fas fa-download"></i></p>
-                        }
-                        {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}>
-                            <i className="icofont-ui-delete"></i>
-                        </p>}
-                        {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
-                        {action &&
-                        <>
-                            <p className={'d-flex justify-content-center'}>
-                                <i className="cursor-pointer text-warning icofont-ui-edit mr-2" onClick={() => {this.props.updateEdit(item.id, edit)}}></i>
-                                <i className="cursor-pointer text-danger icofont-ui-delete" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}></i>
-                            </p>
-                        </>
-                        }
-                    </div>}
                 </div>
             )})
 
@@ -288,35 +251,17 @@ class ReactDataTable extends Component {
                                 No
                             </p>
                             {table_headers}
-                            {bigTable && <>
-                                {edit && <p className={'w-95px'}>Edit</p>}
-                                {del && <p className={'w-95px'}>Delete</p>}
-                                {add && <p className={'w-95px'}>Add</p>}
-                                {details && <p className={'w-95px'}>Details</p>}
-                                {approve && <p className={'w-95px'}>Approve</p>}
-                                {track && <p className={'w-95px'}>Track</p>}
-                                {feedback && <p className={'w-95px'}>Feedback</p>}
-                                {remove && <p className={'w-95px'}>Remove</p>}
-                                {file && <p className={'w-125px'}>File Download</p>}
-                                {docDelete && <p className={'w-95px'}>Delete</p>}
-                                {docDetails && <p className={'w-95px'}>Details</p>}
-                                {action && <p className={'w-95px text-center'}>Action</p>}
-                            </>}
+                            {/*{bigTable && <>*/}
+                                {(edit || del || add || details || approve || track || feedback || remove || file || docDelete || docDetails || action) &&
+                                    <p className={'w-95px text-center'}>Action</p>
+                                }
+                            {/*</>}*/}
                         </div>
-                        {!bigTable && <div className={'d-flex text-right align-items-center justify-content-end ui-table-functions'}>
-                            {edit && <p className={'w-95px pr-2'}>Edit</p>}
-                            {del && <p className={'w-95px pr-2'}>Delete</p>}
-                            {add && <p className={'w-95px pr-2'}>Add</p>}
-                            {details && <p className={'w-95px pr-2'}>Details</p>}
-                            {approve && <p className={'w-95px pr-2'}>Approve</p>}
-                            {track && <p className={'w-95px pr-2'}>Track</p>}
-                            {feedback && <p className={'w-95px pr-2'}>Feedback</p>}
-                            {remove && <p className={'w-95px pr-2'}>Remove</p>}
-                            {file && <p className={'w-125px pr-2'}>File Download</p>}
-                            {docDelete && <p className={'w-95px pr-2'}>Delete</p>}
-                            {docDetails && <p className={'w-95px pr-2'}>Details</p>}
-                            {action && <p className={'w-95px text-center'}>Action</p>}
-                        </div>}
+                        {/*{!bigTable && <div className={'d-flex text-right align-items-center justify-content-center ui-table-functions'}>*/}
+                        {/*    {(edit || del || add || details || approve || track || feedback || remove || file || docDelete || docDetails || action) &&*/}
+                        {/*        <p className={'w-95px text-center'}>Action</p>*/}
+                        {/*    }*/}
+                        {/*</div>}*/}
                     </div>
                     <div className={'tbody'}>
                         {table_body}
