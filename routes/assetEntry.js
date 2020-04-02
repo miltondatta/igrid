@@ -75,13 +75,13 @@ route.get('/assets-entry/assets/:id', async (req, res, next) => {
     console.log(req.params.id, 38)
     const [results, metadata] = await db.query(`
             SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name,asset_sub_categories.sub_category_name,projects.project_name From assets
-            JOIN challans ON assets.challan_id = challans.id
-            JOIN projects ON assets.project_id = projects.id
-            JOIN asset_categories ON assets.asset_category = asset_categories.id
-            JOIN asset_sub_categories ON assets.asset_sub_category = asset_sub_categories.id
-            JOIN asset_types ON assets.asset_type = asset_types.id
-            JOIN conditions ON assets.condition = conditions.id
-            JOIN depreciation_methods ON assets.depreciation_method = depreciation_methods.id
+            Left JOIN challans ON assets.challan_id = challans.id
+            Left JOIN projects ON assets.project_id = projects.id
+            Left JOIN asset_categories ON assets.asset_category = asset_categories.id
+            Left JOIN asset_sub_categories ON assets.asset_sub_category = asset_sub_categories.id
+            Left JOIN asset_types ON assets.asset_type = asset_types.id
+            Left JOIN conditions ON assets.condition = conditions.id
+            Left JOIN depreciation_methods ON assets.depreciation_method = depreciation_methods.id
             WHERE assets.challan_id = ${req.params.id}  
             ORDER BY asset_categories.category_name
         `)

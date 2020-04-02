@@ -531,7 +531,7 @@ class AssetRegComponent extends Component {
                                 Challan Description
                             </div>
                             <div className={'col-8 pr-2 ui-text'}>
-                                <span className={'ui-text mr-3'}>:</span> {challan_description}
+                                <span className={'ui-text mr-3'}>:</span> {challan_description ? challan_description : 'N/A'}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>
@@ -563,7 +563,7 @@ class AssetRegComponent extends Component {
                                 Comments
                             </div>
                             <div className={'col-8 pr-2 ui-text'}>
-                                <span className={'ui-text mr-3'}>:</span> {challanComments}
+                                <span className={'ui-text mr-3'}>:</span> {challanComments ? challanComments : 'N/A'}
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center mb-3'}>

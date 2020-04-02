@@ -59,18 +59,18 @@ class ChallanComponent extends Component {
             installation_cost: '',
             carrying_cost: '',
             other_cost: '',
-            asset_type: '',
-            depreciation_method: '',
-            rate: '',
+            asset_type: null,
+            depreciation_method: null,
+            rate: null,
             effective_date: moment(),
-            book_value: '',
-            salvage_value: '',
-            useful_life: '',
+            book_value: null,
+            salvage_value: null,
+            useful_life: null,
             last_effective_date: moment(),
-            warranty: '',
+            warranty: null,
             last_warranty_date: moment(),
-            condition: '',
-            comments: '',
+            condition: null,
+            comments: null,
             barcode: false,
             addAssets: false,
             assign_to: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.id : '',
@@ -633,7 +633,7 @@ class ChallanComponent extends Component {
                                             Challan Description
                                         </div>
                                         <div className={'col-8 pr-2 ui-text'}>
-                                            <span className={'ui-text mr-3'}>:</span> {challan_description}
+                                            <span className={'ui-text mr-3'}>:</span> {challan_description ? challan_description : 'N/A'}
                                         </div>
                                     </div>
                                     <div className={'row p-2 align-items-center mb-3'}>
@@ -649,7 +649,7 @@ class ChallanComponent extends Component {
                                             Comments
                                         </div>
                                         <div className={'col-8 pr-2 ui-text'}>
-                                            <span className={'ui-text mr-3'}>:</span> {challanComments}
+                                            <span className={'ui-text mr-3'}>:</span> {challanComments ? challanComments : 'N/A'}
                                         </div>
                                     </div>
                                     <div className={'row p-2 align-items-center mb-3'}>
@@ -719,7 +719,7 @@ class ChallanComponent extends Component {
                                                     <div className={'mb-1'}>
                                                         <div className="input-grid">
                                                             <label className={'ui-custom-label'}>Product</label>
-                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
+                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.product_id && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
                                                                 <option>Product</option>
                                                                 <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
                                                             </select>
