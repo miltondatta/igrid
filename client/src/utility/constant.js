@@ -91,30 +91,30 @@ export const sidenav = [
                 link: '/asset-transfer',
                 icon: ""
             },
-            {
-                id: 11,
-                name: 'Asset Disposal',
-                link: '/asset-disposal',
-                icon: ""
-            },
-            {
-                id: 12,
-                name: 'Disposal Asset List',
-                link: '/asset-disposal-list',
-                icon: ""
-            },
-            {
-                id: 3,
-                name: 'Lost Assets Information',
-                link: '/lost-assets',
-                icon: ""
-            },
-            {
-                id: 4,
-                name: 'Lost Assets Status',
-                link: '/lost-assets-status',
-                icon: ""
-            },
+            // {
+            //     id: 11,
+            //     name: 'Asset Disposal',
+            //     link: '/asset-disposal',
+            //     icon: ""
+            // },
+            // {
+            //     id: 12,
+            //     name: 'Disposal Asset List',
+            //     link: '/asset-disposal-list',
+            //     icon: ""
+            // },
+            // {
+            //     id: 3,
+            //     name: 'Lost Assets Information',
+            //     link: '/lost-assets',
+            //     icon: ""
+            // },
+            // {
+            //     id: 4,
+            //     name: 'Lost Assets Status',
+            //     link: '/lost-assets-status',
+            //     icon: ""
+            // },
             {
                 id: 15,
                 name: 'Repair & Maintenance',
