@@ -124,7 +124,7 @@ class ReactDataTable extends Component {
 
     render() {
         const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
-            feedback, file, docDelete, docDetails} = this.props
+            feedback, file, docDelete, docDetails, action} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         console.log(tableData, 129)
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
@@ -177,10 +177,18 @@ class ReactDataTable extends Component {
                             {file && <p className="cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
                                 <i className="fas fa-download"></i></p>
                             }
-                            {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDelete(item.id)}}>
+                            {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}>
                                 <i className="icofont-ui-delete"></i>
                             </p>}
                             {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
+                            {action &&
+                            <>
+                                <p className={'d-flex justify-content-center'}>
+                                    <i className="cursor-pointer text-warning icofont-ui-edit mr-2" onClick={() => {this.props.updateEdit(item.id, edit)}}></i>
+                                    <i className="cursor-pointer text-danger icofont-ui-delete" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}></i>
+                                </p>
+                            </>
+                            }
                         </>}
                     </div>
                     <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
@@ -232,10 +240,18 @@ class ReactDataTable extends Component {
                         {file && <p className="pr-2 cursor-pointer w-125px text-success" onClick={ e => {this.props.file(e, item.file_name)}}>
                             <i className="fas fa-download"></i></p>
                         }
-                        {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDelete(item.id)}}>
+                        {docDelete && <p className="cursor-pointer text-danger" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}>
                             <i className="icofont-ui-delete"></i>
                         </p>}
                         {docDetails && <p className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(item.id)}}><i className="fas fa-info-circle"></i></p>}
+                        {action &&
+                        <>
+                            <p className={'d-flex justify-content-center'}>
+                                <i className="cursor-pointer text-warning icofont-ui-edit mr-2" onClick={() => {this.props.updateEdit(item.id, edit)}}></i>
+                                <i className="cursor-pointer text-danger icofont-ui-delete" data-toggle={'modal'} data-target={'#docDeleteModal'} onClick={ () => {this.props.docDeleteModal(item.id)}}></i>
+                            </p>
+                        </>
+                        }
                     </div>}
                 </div>
             )})
@@ -284,6 +300,7 @@ class ReactDataTable extends Component {
                                 {file && <p className={'w-125px'}>File Download</p>}
                                 {docDelete && <p className={'w-95px'}>Delete</p>}
                                 {docDetails && <p className={'w-95px'}>Details</p>}
+                                {action && <p className={'w-95px text-center'}>Action</p>}
                             </>}
                         </div>
                         {!bigTable && <div className={'d-flex text-right align-items-center justify-content-end ui-table-functions'}>
@@ -298,6 +315,7 @@ class ReactDataTable extends Component {
                             {file && <p className={'w-125px pr-2'}>File Download</p>}
                             {docDelete && <p className={'w-95px pr-2'}>Delete</p>}
                             {docDetails && <p className={'w-95px pr-2'}>Details</p>}
+                            {action && <p className={'w-95px text-center'}>Action</p>}
                         </div>}
                     </div>
                     <div className={'tbody'}>
