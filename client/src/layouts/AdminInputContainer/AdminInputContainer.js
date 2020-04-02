@@ -1057,7 +1057,7 @@ class AdminInputContainer extends Component {
                             </select>
                         </div>
                         <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Complaint Category</label>
+                            <label className={'ui-custom-label'}>Complaint Sub Category</label>
                             <select name={'com_sub_category_id'} value={com_sub_category_id} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.com_sub_category_id) && 'is-invalid'}`}>
                                 <option>Select Sub Category</option>
                                 <ComSubCategoryOptions com_category_id={com_category_id}/>
