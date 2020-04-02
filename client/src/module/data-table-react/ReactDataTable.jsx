@@ -126,7 +126,6 @@ class ReactDataTable extends Component {
         const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
             feedback, file, docDelete, docDetails, action} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
-        console.log(tableData, 129)
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 

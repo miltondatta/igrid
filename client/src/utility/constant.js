@@ -383,6 +383,12 @@ export const systemAdmin = [
                 name: 'Complaint Sub Category',
                 link: '/admin/complain-sub-category',
                 icon: ""
+            },
+            {
+                id: 4,
+                name: 'Complaint Mapping',
+                link: '/admin/complaint-mapping',
+                icon: ""
             }
         ]
     },
