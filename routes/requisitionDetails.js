@@ -111,7 +111,7 @@ route.get('/requisition-details', async (req,res,next) => {
     if (pending_requisition_details_id.length) {
         pending_requisition_details_id = pending_requisition_details_id.join(",");
         const [results, metadata] = await db.query(`SELECT DISTINCT ON
-        ( requisition_details.requisition_id ) requisition_details.id,
+        ( requisition_details.requisition_id ) requisition_details.id,  requisition_masters.request_date,
         concat(location_hierarchies.hierarchy_name, '-', locations.location_name) as location_name,
         Concat ( users."firstName", ' ', users."lastName" ) AS request_by,
         user_roles.role_name as role_name,
@@ -168,7 +168,7 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
 // Read
 route.get('/requisition-details/status/:id', async (req,res,next) => {
     const [data, master] = await db.query(`
-        SELECT requisition_details.id, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name, asset_sub_categories.sub_category_name, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
+        SELECT requisition_details.id, requisition_masters.request_date, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name as category, asset_sub_categories.sub_category_name as sub_category, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
                requisition_details.brand, requisition_details.model, requisition_approves.update_quantity, statuses.status_name FROM requisition_details 
         Left JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id
         Left JOIN requisition_approves ON requisition_approves.requisition_id = requisition_masters.id

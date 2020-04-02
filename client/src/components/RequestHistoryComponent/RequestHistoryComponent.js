@@ -192,12 +192,18 @@ class RequestHistoryComponent extends Component {
                 <div className={'bg-white p-1 admin-input-height rounded'}>
                     {!showDetails ? <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0" >Requisition History</p>
+                        <p className="text-blue f-weight-700 f-20px m-0" >Requisition List</p>
                     </nav>
                         {data.length > 0 ? <ReactDataTable
                             details={'reqHistory'}
                             assetList={this.assetList}
                             tableData={data}
+                            bigTable
+                            searchable
+                            footer
+                            pagination
+                            dataDisplay
+
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </> : <>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -214,7 +220,7 @@ class RequestHistoryComponent extends Component {
                                         <p>Brand</p>
                                         <p>Model</p>
                                         <p>Reasons</p>
-                                        <p>Av. Assets</p>
+                                        <p>Stock</p>
                                         <p>Quantity</p>
                                         <p>Comment</p>
                                     </div>

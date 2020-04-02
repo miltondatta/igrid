@@ -126,13 +126,16 @@ class ReactDataTable extends Component {
         const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
             feedback, file, docDelete, docDetails, action} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
+        console.log(tableData, 129)
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]
         let filteredData = tableData.length > 0 &&  tableData.filter(item => (item[title].toLowerCase().includes(filterByTitle.toLowerCase())))
 
         let table_headers = filteredData.length > 0 && Object.keys(filteredData[0]).map((item, index) => (
             <>
-                {item === 'id' ? null : item === 'requisition_id' ? null : item === 'file_name' ? null : <p onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
-                    {item.replace('_', " ")}
+                {(item === 'id' || item === 'requisition_id') ? null : item === 'file_name' ? null : <p style={{display: item.replace('_', " ") === '' && 'none'}} onClick={(e) => this.sortColumn(e, item)} scope="col" key={index}>
+                    {
+                        item.replace('_', " ")
+                    }
                 </p>}
             </>
         ))
@@ -143,7 +146,7 @@ class ReactDataTable extends Component {
                         <p className={'w-60px'}>{index + 1}</p>
                         {Object.keys(filteredData[0]).map((items, key) => (
                             <>
-                            {(items !== 'id' && items !== 'file_name') &&
+                            {(items !== 'id' && items !== 'file_name' && items !== 'requisition_id') &&
                                 <p key={key + 20}>
                                     {(items === 'enlisted' || items === 'status') ? item[items] === null ? "Pending" : item[items] ? 'True' : 'False' : (item[items] === null || item[items] === " " || item[items] === "") ? 'N/A' : items === 'requisition_id' ? null : items === 'description' ? <div dangerouslySetInnerHTML={{__html: item[items]}} /> : item[items]}
                                 </p>
@@ -269,7 +272,7 @@ class ReactDataTable extends Component {
                             <button onClick={this.exportExcel} className="btn btn-outline-secondary">Export Excel</button>
                         </div>}
                     </div></>}
-                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3">
+                    {searchable && <div className="col-md-6 d-flex flex-column align-items-end p-0 ml-3 mb-3">
                         <div className="input-group custom-search" style={{width: 280}}>
                             <input name={'filterByTitle'} onChange={this.handleChange} className="form-control h-45px" placeholder={`Search by ${title.split('_').join(' ')}`} />
                             <div className="input-group-append">
