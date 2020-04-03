@@ -78,6 +78,9 @@ router.post('/update', async (req, res) => {
         const status = await ComplaintMapping.findOne({where: {id}});
         if (!status) return res.status(400).json({msg: 'This Complaint Mapping didn\'t found!', error: true});
 
+        const complaint_mapping_exist = await ComplaintMapping.findAll({where: {role_id, cat_id}});
+        if (complaint_mapping_exist.length > 0) return res.status(400).json({msg: 'This Complaint Mapping is already exist!', error: true});
+
         const complaint_mapping = await ComplaintMapping.update(updateComplaintMapping, {where: {id}});
         if (!complaint_mapping) return res.status(400).json({msg: 'Please try again with full information!', error: true});
 
