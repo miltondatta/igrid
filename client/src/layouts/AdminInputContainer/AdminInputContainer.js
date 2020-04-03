@@ -999,9 +999,7 @@ class AdminInputContainer extends Component {
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
-                                        asset_code: '',
-                                        type_name: '',
-                                        description: '',
+                                        complaint_name: '',
                                     }, () => {
                                         this.validate()
                                     })}}>Go Back</button>
@@ -1033,9 +1031,8 @@ class AdminInputContainer extends Component {
                                 <button className="reset-btn-normal mt-3" onClick={() => {
                                     this.setState({
                                         editId: null,
-                                        asset_code: '',
-                                        type_name: '',
-                                        description: '',
+                                        complain_id: '',
+                                        sub_complaint_name: '',
                                     }, () => {
                                         this.validate()
                                     })}}>Go Back</button>
