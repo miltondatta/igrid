@@ -54,6 +54,8 @@
 
 .tbody .ui-tbody-child{
     background: #e2f1fc;
+    border: 1px solid #abc2d4;
+    overflow: hidden;
 }
 .tbody .ui-tbody-child,
 .thead{
@@ -69,6 +71,8 @@
 }
 .thead{
     background: #c6e4f9;
+    border: 1px solid #abc2d4;
+    overflow: hidden;
 }
 .reactDataTable .custom-search div{
     color: white;
