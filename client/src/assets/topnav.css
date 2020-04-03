@@ -50,6 +50,10 @@
     text-align: right;
     position: relative;
     justify-self: end;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
+    width: 240px;
 }
 
 .ui-topnav .ui-user-nav i{

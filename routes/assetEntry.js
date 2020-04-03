@@ -50,7 +50,7 @@ route.get('/total/assets', (req,res,next) => {
 // Read challans
 route.get('/assets-entry/challan', async (req, res, next) => {
     const [results, metadata] = await db.query(`
-        SELECT challans.id,challans.challan_no,challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
+        SELECT challans.id,challans.challan_date,challans.challan_no, challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
             JOIN vendors ON challans.vendor_id = vendors.id
             JOIN users ON challans.added_by = users.id
                 WHERE challans.is_closed = FALSE
