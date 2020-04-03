@@ -1662,7 +1662,7 @@ class AdminInputContainer extends Component {
         const {vendor_name, file_name, description, project_name, project_code, enlisted, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name,product_code, brand_id, model_id, depreciation_code, method_name, module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id, image_name,
-            user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, location_lat, location_long ,address, com_sub_category_name, com_category_id, com_sub_category_id, problem_details} = this.state
+            user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, location_lat, location_long ,address, sub_complaint_name, complain_id, com_category_id, com_sub_category_id, problem_details} = this.state
         switch (formType){
             case "USERROLES":
                 return ({role_desc, role_name, module_id})
@@ -1717,7 +1717,7 @@ class AdminInputContainer extends Component {
             case "COMCATEGORY":
                 return({status: complaint_status, complaint_name})
             case "COMSUBCATEGORY":
-                return({status: complaint_status, sub_complaint_name: com_sub_category_name, complain_id: com_category_id})
+                return({status: complaint_status, sub_complaint_name, complain_id})
             case "LOCHIERARCHY":
                 return({hierarchy_name})
             case "BRANDS":
