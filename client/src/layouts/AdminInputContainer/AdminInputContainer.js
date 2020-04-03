@@ -308,8 +308,16 @@ class AdminInputContainer extends Component {
                 })
                 break;
             case 'COMSUBCATEGORY':
-
-                dataTableData = allProjects
+                allProjects.map((items, key) => {
+                    let obj = {}
+                    Object.keys(items).forEach(item => {
+                        if (item === 'complain_id') {return null}
+                        else {
+                            obj[item] = items[item]
+                        }
+                    })
+                    dataTableData.push(obj)
+                }, {})
                 this.setState({
                     dataTableData,
                 })
