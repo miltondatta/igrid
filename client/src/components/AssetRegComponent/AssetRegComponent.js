@@ -45,11 +45,13 @@ class AssetRegComponent extends Component {
             successMessage: '',
             errorMessage: '',
             forceUpd: false,
+            amc: false,
             added_by: jwt.decode(localStorage.getItem('user')).data.id,
             attachment: '',
             challanComments: '',
             challan_id: '',
-            project_id: '',
+            product_serial_1: '',
+            project_id: null,
             asset_category: '',
             asset_sub_category: '',
             product_serial: '',
@@ -80,7 +82,7 @@ class AssetRegComponent extends Component {
     }
 
     componentDidMount() {
-        let prodArr = Array.from(Array(this.state.asset_quantity).keys())
+        let prodArr = Array.from(Array(1).keys())
         this.setState({
             prodArr,
         })
@@ -92,6 +94,12 @@ class AssetRegComponent extends Component {
         }), () => {
             console.log(this.state.forceUpd)
         })
+    }
+
+    amc = () => {
+        this.setState((prevState) => ({
+            amc: !prevState.amc
+        }))
     }
 
     handleChange = (e) => {
@@ -412,6 +420,7 @@ class AssetRegComponent extends Component {
                 }
                 <InstaAdd
                     forceUp = {this.forceUp}
+                    forceAmc = {this.amc}
                     formType = {formType}
                     getApi = {getApi}
                     headTitle = {headTitle}
@@ -692,9 +701,14 @@ class AssetRegComponent extends Component {
                                                     <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}
                                                             onChange={this.handleChange} name={'amc_type'} value={amc_type}>
                                                         <option>AMC Types</option>
-                                                        <AMCTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd}/>
+                                                        <AMCTypeOptions forceUp={this.amc} stateForceUpdate={this.state.amc}/>
                                                     </select>
-                                                    <button onClick={() => {this.setState({formType: 'AMCTYPES', getApi: 'amc_types', headTitle: 'AMC Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                    <button
+                                                        onClick={() => {this.setState({formType: 'AMCTYPES', getApi: 'amc_types', headTitle: 'AMC Type Information'})}}
+                                                        type="button"
+                                                        className="add-button"
+                                                        data-toggle="modal"
+                                                        data-target="#rowDeleteModal">
                                                         <i className="fas fa-plus"></i>
                                                     </button>
                                                 </div>

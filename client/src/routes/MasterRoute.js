@@ -321,6 +321,10 @@ const AsyncMISDashboard = Loadable({
     loader: () => import('../containers/MISDashboard.js'),
     loading: Loader,
 });
+const AsyncComplaintMapping = Loadable({
+    loader: () => import('../containers/ComplaintMapping.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -432,6 +436,7 @@ class MasterRoute extends Component{
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                             <Route exact path='/admin/menu' component={AsyncMenuContainer}/>
                             <Route exact path='/admin/menu/assign' component={AsyncMenuAssignContainer}/>
+                            <Route exact path='/admin/complaint-mapping' component={AsyncComplaintMapping}/>
 
 
                             {/*404 Page*/}

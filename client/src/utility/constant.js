@@ -189,7 +189,7 @@ export const report = [
 export const systemAdmin = [
     {
         id: 10,
-        name: 'System Config',
+        name: 'System Configuration',
         icon: 'icofont-ui-settings',
         subCat: true,
         categories: [
@@ -218,6 +218,18 @@ export const systemAdmin = [
                 icon: ""
             },
             {
+                id: 16,
+                name: 'Register User',
+                link: '/admin/register-user',
+                icon: ""
+            },
+            {
+                id: 15,
+                name: 'Assign User Role ',
+                link: '/admin/user-associate-role',
+                icon: ""
+            },
+            {
                 id: 7,
                 name: 'Depreciation Methods',
                 link: '/admin/depreciation-methods',
@@ -233,10 +245,22 @@ export const systemAdmin = [
     },
     {
         id: 9,
-        name: 'Asset Config',
+        name: 'Asset Configuration',
         icon: 'fas fa-user-shield',
         subCat: true,
         categories: [
+            {
+                id: 5,
+                name: 'Asset Category',
+                link: '/admin/asset-category',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Asset Sub Category',
+                link: '/admin/asset-sub-category',
+                icon: ""
+            },
             {
                 id: 1,
                 name: 'Project',
@@ -262,18 +286,6 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 5,
-                name: 'Asset Category',
-                link: '/admin/asset-category',
-                icon: ""
-            },
-            {
-                id: 5,
-                name: 'Asset Sub Category',
-                link: '/admin/asset-sub-category',
-                icon: ""
-            },
-            {
                 id: 6,
                 name: 'Product',
                 link: '/admin/product',
@@ -295,18 +307,6 @@ export const systemAdmin = [
                 id: 11,
                 name: 'Locations',
                 link: '/admin/assign-locations',
-                icon: ""
-            },
-            {
-                id: 16,
-                name: 'Register User',
-                link: '/admin/register-user',
-                icon: ""
-            },
-            {
-                id: 15,
-                name: 'Assign User Role ',
-                link: '/admin/user-associate-role',
                 icon: ""
             },
             {
@@ -354,7 +354,13 @@ export const systemAdmin = [
                 name: 'Complaint Sub Category',
                 link: '/admin/complain-sub-category',
                 icon: ""
-            }
+            },
+            // {
+            //     id: 4,
+            //     name: 'Complaint Mapping',
+            //     link: '/admin/complaint-mapping',
+            //     icon: ""
+            // }
         ]
     },
     {

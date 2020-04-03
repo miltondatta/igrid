@@ -50,7 +50,7 @@ route.get('/total/assets', (req,res,next) => {
 // Read challans
 route.get('/assets-entry/challan', async (req, res, next) => {
     const [results, metadata] = await db.query(`
-        SELECT challans.id,challans.challan_no,challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
+        SELECT challans.id,challans.challan_date,challans.challan_no, challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
             JOIN vendors ON challans.vendor_id = vendors.id
             JOIN users ON challans.added_by = users.id
                 WHERE challans.is_closed = FALSE
@@ -214,7 +214,7 @@ route.post('/assets-entry/entry', (req, res, next) => {
         Assets.create(item)
             .then(resData => {
                 if (item.product_serial === '') {
-                    Assets.update({product_serial: resData.id}, {where: {id: resData.id}})
+                    Assets.update({product_serial: 'prod_serial_' + resData.id}, {where: {id: resData.id}})
                         .then(upd => {
                         })
                 }
@@ -260,7 +260,7 @@ route.put('/assets-entry/assets/update/:id', (req, res, next) => {
 
     if (project_id !== '' && asset_category !== '' && asset_sub_category !== '' && cost_of_purchase !== '' && installation_cost !== '' && carrying_cost !== '',
     other_cost !== '' && asset_type !== '' && depreciation_method !== '' && rate !== '' && effective_date !== '' && book_value !== '' && salvage_value !== '' &&
-    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && comments !== '' && barcode !== '') {
+    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && barcode !== '') {
         Assets.update({...req.body}, {where: {id: req.params.id}})
             .then(() => {
                 res.status(200).json({message: 'Asset has been updated'})

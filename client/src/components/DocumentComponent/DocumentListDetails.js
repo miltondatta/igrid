@@ -159,20 +159,20 @@ class DocumentListDetails extends Component {
                         <div className="ui-document-details-header  p-3">
                             <div className="row">
                                 <div className="col-md-2">
-                                    <ul className="list-unstyled pl-1"
+                                    <ul className="ul-list-unstyled pl-1"
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>Document Date</li>
                                         <li>Description</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-1 pr-0">
-                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>:</li>
                                         <li>:</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-9 p-0">
-                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>{moment(item.document_date).format('MMMM Do YYYY, hh:mm a')}</li>
                                         <li style={{fontWeight: 400}}
                                             dangerouslySetInnerHTML={{__html: item.description}}></li>
@@ -181,25 +181,25 @@ class DocumentListDetails extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-2">
-                                    <ul className="list-unstyled pl-1"
+                                    <ul className="ul-list-unstyled pl-1"
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>File Download</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-1 pr-0">
-                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>:</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-6 px-0">
-                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         {!fileError && <li>
                                             <p className={'text-white'}>{item.file_name}</p>
                                         </li>}
                                     </ul>
                                 </div>
                                 <div className="col-md-3">
-                                    <ul className="list-unstyled" style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         {!fileError && <li>
                                             <button className={'ui-document-btn'} onClick={e => this.downloadFile(e, item.file_name)}><i
                                                 className="icofont-download"></i> Download File</button>

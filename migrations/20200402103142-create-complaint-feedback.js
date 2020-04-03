@@ -1,22 +1,23 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('user_roles', {
+    return queryInterface.createTable('complaint_feedbacks', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      role_name: {
+      complaint_id: {
+        type: Sequelize.INTEGER
+      },
+      feedback: {
         type: Sequelize.STRING
       },
-      role_desc: {
+      file_name: {
         type: Sequelize.STRING
       },
-      module_id: {
-        allowNull: true,
-        defaultValue: 0,
+      feedback_by: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -30,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('user_roles');
+    return queryInterface.dropTable('complaint_feedbacks');
   }
 };

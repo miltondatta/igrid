@@ -7,10 +7,12 @@ import SuccessModal from "../../utility/success/successModal";
 import ErrorModal from "../../utility/error/errorModal";
 
 class ProfileComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            filename: null
+            filename: null,
+            errorDict: null,
         };
 
         this.file_types = ["jpg", "jpeg", "png", "doc", "docx", "pdf", "xlsx"];
@@ -57,6 +59,8 @@ class ProfileComponent extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        if (Object.values(this.validate()).includes(false)) return;
+
         const {firstName, lastName, email, pin, phone_number, address, filename} = this.state;
         const {id} = jwt.decode(localStorage.getItem('user')).data;
 
@@ -97,8 +101,26 @@ class ProfileComponent extends Component {
             })
     };
 
-    render() {
+    validate = () => {
         const {firstName, lastName, phone_number, email, pin, address, filename, error, errorMessage, success, successMessage} = this.state;
+        let errorDict = {
+            firstName: typeof firstName !== 'undefined' && firstName !== '',
+            lastName: typeof lastName !== 'undefined' && lastName !== '',
+            phone_number: typeof phone_number !== 'undefined' && phone_number !== '',
+            email: typeof email !== 'undefined' && email !== '',
+            pin: typeof pin !== 'undefined' && pin !== '',
+            address: typeof address !== 'undefined' && address !== '',
+            filename: typeof filename !== 'undefined' && filename !== ''
+        }
+        this.setState({
+            errorDict
+        })
+
+        return errorDict
+    }
+
+    render() {
+        const {firstName, lastName, phone_number, email, pin, address, filename, error, errorMessage, success, successMessage, errorDict} = this.state;
         return (
             <div className={'bg-white p-3 rounded m-3 grid-2'}>
                 {success && <SuccessModal successMessage={successMessage}/>}
@@ -113,44 +135,44 @@ class ProfileComponent extends Component {
                     <div className="mb-2 ml-3">
                         <label htmlFor="inputEmail4" className={'ui-custom-label'}>First Name</label>
                         <input onChange={this.handleChange} name={'firstName'} value={firstName} type="text"
-                               className="ui-custom-input" id="inputEmail4" placeholder="First Name"/>
+                               className={`ui-custom-input ${errorDict && !errorDict.firstName && 'is-invalid'}`} id="inputEmail4" placeholder="First Name"/>
                     </div>
                     <div className="mb-2 ml-3">
                         <label htmlFor="inputPassword4" className={'ui-custom-label'}>Last Name</label>
                         <input onChange={this.handleChange} name={'lastName'} value={lastName} type="text"
-                               className="ui-custom-input" id="inputPassword4" placeholder="Last Name"/>
+                               className={`ui-custom-input ${errorDict && !errorDict.lastName && 'is-invalid'}`} id="inputPassword4" placeholder="Last Name"/>
                     </div>
                     <div className="mb-2 ml-3">
                         <label htmlFor="inputEmail4" className={'ui-custom-label'}>Official Email</label>
                         <input onChange={this.handleChange} name={'email'} value={email} type="text"
-                               className="ui-custom-input" id="inputEmail4" placeholder="Official Email"/>
+                               className={`ui-custom-input ${errorDict && !errorDict.email && 'is-invalid'}`} id="inputEmail4" placeholder="Official Email"/>
                     </div>
                     <div className="mb-2 ml-3">
                         <label htmlFor="inputPassword4" className={'ui-custom-label'}>Official Phone Number</label>
                         <input onChange={this.handleChange} name={'phone_number'} value={phone_number} type="text"
-                               className="ui-custom-input" id="inputPassword4" placeholder="Official Phone Number"/>
+                               className={`ui-custom-input ${errorDict && !errorDict.phone_number && 'is-invalid'}`} id="inputPassword4" placeholder="Official Phone Number"/>
                     </div>
                     <div className="mb-2 ml-3">
                         <label htmlFor="inputAddress" className={'ui-custom-label'}>Address</label>
                         <input onChange={this.handleChange} name={'address'} value={address} type="text"
-                               className="ui-custom-input" id="inputAddress" placeholder="1234 Main St"/>
+                               className={`ui-custom-input ${errorDict && !errorDict.address && 'is-invalid'}`} id="inputAddress" placeholder="1234 Main St"/>
                     </div>
                     <div className="mb-2 ml-3">
                         <label htmlFor="inputEmail4" className={'ui-custom-label'}>Your PIN</label>
-                        <input type="text" className="ui-custom-input" id="inputEmail4" name='pin' value={pin}
+                        <input type="text" className={`ui-custom-input ${errorDict && !errorDict.pin && 'is-invalid'}`} id="inputEmail4" name='pin' value={pin}
                                onChange={this.handleChange} placeholder="PIN"/>
                     </div>
                     <div className="mb-2 ml-3">
-                        <div className="ui-custom-file w-50 mb-20p">
+                        <div className="ui-custom-file w-100 mb-5">
                             <input onChange={this.handleChange} type="file" className="custom-file-input"
                                    id="customFile" name="filename"/>
-                            <label htmlFor="customFile">{filename ? filename.name.substr(0, 20) + (filename.name.length > 20 ? '...' : '') : 'Choose File'}</label>
-                            <div className="bottom">
+                            <label className={'w-100'} htmlFor="customFile">{filename ? filename.name.substr(0, 20) + (filename.name.length > 20 ? '...' : '') : 'Choose File'}</label>
+                            <div className="bottom w-100">
                                 JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                             </div>
                         </div>
                     </div>
-                    <button type="submit" onClick={this.handleSubmit} className="submit-btn">Update</button>
+                    <button type="submit" onClick={this.handleSubmit} className="ml-3 submit-btn-normal">Update Profile</button>
                 </div>
             </div>
         )

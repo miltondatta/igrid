@@ -111,10 +111,11 @@ class UserLoginLogComponent extends Component {
                         </button>
                     </div>
                 </div>
-                {isLoading ? <Spinner/> : trackData.length === 0 ? <ReactDataTable
+                {isLoading ? <Spinner/> : trackData.length === 0 ? data.length > 0 && <ReactDataTable
                     track
                     pagination
                     footer
+                    searchable
                     dataDisplay
                     trackUser={this.trackUser}
                     tableData={data}

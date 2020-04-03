@@ -17,7 +17,7 @@ route.get('/depreciation-methods', (req,res,next) => {
 // Update
 route.put('/depreciation-methods/update/:id', (req,res,next) => {
     const {method_name,depreciation_code,description} = req.body
-    if (method_name !== '' && depreciation_code !== "" && description !== "") {
+    if (method_name !== '' && depreciation_code !== "") {
         DepreciationMethods.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if(resData[0].dataValues.depreciation_code === depreciation_code) {
@@ -40,7 +40,7 @@ route.put('/depreciation-methods/update/:id', (req,res,next) => {
 // Create
 route.post('/depreciation-methods/entry', (req,res,next) => {
     const {method_name,depreciation_code,description} = req.body
-    if (method_name !== '' && depreciation_code !== "" && description !== "") {
+    if (method_name !== '' && depreciation_code !== "") {
         DepreciationMethods.findAll({where: {depreciation_code}})
             .then(resData => {
                 if (resData.length === 0) {

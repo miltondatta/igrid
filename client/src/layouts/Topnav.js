@@ -217,8 +217,8 @@ class Topnav extends Component {
                             <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
                             <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
                         </div>
-                        <div className={'text-white ui-user-nav d-flex align-items-center h-100'}>
-                            {toggleNotification && <div className="ui-notification" style={{right: userType === 0 ? '33%' : '21%'}}>
+                        <div className={'text-white ui-user-nav h-100'}>
+                            {toggleNotification && <div className="ui-notification" style={{right: userType === 0 ? '33.5%' : '33.5%'}}>
                                 <p className={'ui-notification-header'}>Notification</p>
                                 <div>
                                     {notification ? <p className={'align-items-center no-project px-2 f-14px text-left'}>
@@ -278,7 +278,7 @@ class Topnav extends Component {
                                     </ol>
                                 </div>
                             </div>
-                            <div className={'text-white ui-user-nav d-flex align-items-center h-100'}>
+                            <div className={'text-white ui-user-nav h-100'}>
                                 {toggleNotification && <div className="ui-notification">
                                     <p className={'ui-notification-header'}>Notification</p>
                                     <div>

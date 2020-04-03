@@ -56,11 +56,22 @@ class RequisitionStatusComponent extends Component {
                     <ReactDataTable
                     tableData={requisitionDetailsStatus}
                     assetList={this.assetList}
-                /> </>: <ReactDataTable
+                    searchable
+                    footer
+                    pagination
+                    dataDisplay
+                    bigTable
+                /> </>: requisitionStatus.length > 0 ?<ReactDataTable
                     tableData={requisitionStatus}
                     assetList={this.assetList}
+                    bigTable
+                    searchable
                     details
-                />}
+                    footer
+                    pagination
+                    dataDisplay
+                /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
+                    are No Data</h4>}
             </div>
         );
     }

@@ -17,7 +17,7 @@ route.get('/projects', (req,res,next) => {
 // Update
 route.put('/projects/update/:id', (req,res,next) => {
     const {project_name,project_code,description} = req.body
-    if(project_code === '' || project_name === '' || description === '') {
+    if(project_code === '' || project_name === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
         Project.findAll({where: {id: req.params.id}})
@@ -40,7 +40,7 @@ route.put('/projects/update/:id', (req,res,next) => {
 // Create
 route.post('/projects/entry', (req,res,next) => {
     const {project_code, project_name, description} = req.body
-    if(project_code === '' || project_name === '' || description === '') {
+    if(project_code === '' || project_name === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
         Project.findAll({where: {project_code}})

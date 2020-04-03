@@ -522,13 +522,9 @@ class MenuComponent extends Component {
                             <label className="custom-control-label" htmlFor="switch2">Visibility</label>
                         </div>
                     </div>
-                    {editId === null ? <button className="submit-btn-normal"
-                                               onClick={this.handleSubmit}>Submit</button> : <>
-                        <button className="submit-btn-normal mr-2" onClick={this.updateData}>
-                            Update
-                        </button>
-                        <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back
-                        </button>
+                    {editId === null ? <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button> : <>
+                        <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
+                        <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back</button>
                     </>}
                 </div>
                 <div className="rounded bg-white admin-input-height">
@@ -544,9 +540,10 @@ class MenuComponent extends Component {
                                 pagination
                                 searchable
                                 edit
+                                docDelete
                                 tableData={menuTableData}
                                 updateEdit={this.updateEdit}
-                                docDelete={this.docDeleteModal}
+                                docDeleteModal={this.docDeleteModal}
                                 bigTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"

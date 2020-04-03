@@ -10,6 +10,8 @@ import {getFileExtension} from "../../utility/custom";
 import {validateInput} from "../../utility/custom";
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class RepairMaintenenceComponent extends Component {
     constructor(props) {
@@ -81,12 +83,24 @@ class RepairMaintenenceComponent extends Component {
         let file = document.getElementById("validatedCustomFile");
 
         const isExistRepair = repairCredential.filter(item => {return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id && item.product_serial === product_serial)});
-        if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'});
+        if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'}, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300)
+        });
 
         this.setState({isLoading: true}, () => {
             axios.post(apiUrl() + 'assets-entry/all/by/credentials', this.getApiData())
                 .then(res => {
-                    if (!res.data[0].length) return this.setState({error: true, errorMessage: 'There is no asset found for Repair & Maintenance!', isLoading: false, success: false});
+                    if (!res.data[0].length) return this.setState({error: true, errorMessage: 'There is no asset found for Repair & Maintenance!', isLoading: false, success: false}, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300)
+                    });
                     this.setState({repairData: [...repairData, ...res.data[0]], error: false, isLoading: false}, () => {
                         let newRepair = this.getApiData();
                         res.data[0].map(item => {
@@ -143,14 +157,24 @@ class RepairMaintenenceComponent extends Component {
                     repairData: [],
                     repairCredential: [],
                     repairTableData: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
-                }, () => {this.emptyStateValue()})
+                }, () => {
+                    this.emptyStateValue();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2300);
+                })
             })
             .catch(err => {
                 const {error, msg} = err.response.data;
-                if (msg) this.setState({success: false, error: error, errorMessage: error && msg});
+                if (msg) this.setState({error: error, errorMessage: error && msg}, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false
+                        })
+                    }, 2300);
+                });
                 console.log(err.response);
             })
     };
@@ -238,26 +262,27 @@ class RepairMaintenenceComponent extends Component {
         });
     };
 
+    setTableWidth = () => {
+        let table = document.getElementById('__table_react');
+        if (table) table.style.width = '100%';
+    };
+
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
             errorDict, isLoading, repairData, repairTableData, estimated_cost, details, file_name, extError
         } = this.state;
 
+        repairTableData.length > 0 && this.setTableWidth();
+
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => this.setState({error: false})}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage}/>
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage}/>
+                }
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 admin-input-height position-relative ui-overflow`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
@@ -335,7 +360,7 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Repair Details Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-20p w-50">
+                        <div className="px-1 mb-2 w-50">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'}
                                        className="custom-file-input" id="validatedCustomFile"/>
@@ -354,7 +379,7 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
                             }
                         </div>
-                        <button onClick={this.addRepair} className="submit-btn-normal">Add Into List</button>
+                        <button onClick={this.addRepair} className="submit-btn-normal mt-5">Add Into List</button>
                     </div>
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
@@ -364,6 +389,7 @@ class RepairMaintenenceComponent extends Component {
                             <ReactDataTable
                                 remove={this.cancelRepair}
                                 tableData={repairTableData}
+                                bigTable
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Repair/Maintenance Asset</h4>}

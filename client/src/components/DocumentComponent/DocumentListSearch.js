@@ -100,8 +100,7 @@ class DocumentListSearch extends Component {
                 return;
             default:
                 this.setState({
-                    [name]: value,
-                    receivedByFocus: true
+                    [name]: value
                 });
                 return;
         }
@@ -139,12 +138,12 @@ class DocumentListSearch extends Component {
                         res.data[0].length > 0 && res.data[0].map(item => {
                             let newObj = {
                                 id: item.id,
+                                document_date: moment(item.document_date).format('YYYY-MM-DD'),
                                 category_name: item.category_name,
                                 sub_category_name: item.sub_category_name,
                                 title: item.title,
                                 description: item.description,
                                 circular_no: item.circular_no,
-                                document_date: moment(item.document_date).format('YYYY-MM-DD'),
                                 content_type: item.content_type === 1 ? 'notice' : 'circular',
                                 file_name: item.file_name
                             };

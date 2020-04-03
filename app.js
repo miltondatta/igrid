@@ -47,6 +47,7 @@ const RequisitionDetailsRouter = require('./routes/requisitionDetails');
 const DocumentCategory = require('./routes/document/document_category');
 const IndicatorSubCategory = require('./routes/mis/indicator_sub_category');
 const DocumentSubCategory = require('./routes/document/document_sub_category');
+const ComplaintMapping = require('./routes/complaint_mapping');
 
 
 // Database Connection
@@ -119,6 +120,7 @@ app.use('/api/v1/document/sub/category', DocumentSubCategory);
 app.use('/api/v1/mis/indicator/category', IndicatorCategory);
 app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1/asset-repair', AssetRepair);
+app.use('/api/v1/complaint/mapping', ComplaintMapping);
 
 
 module.exports = app;

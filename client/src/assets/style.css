@@ -108,6 +108,7 @@ select:focus{
    border-radius: 5px;
    border: 1.2px solid #e7e7e7;
    -webkit-appearance: checkbox !important;
+   font-size: 15px;
 }
 .ui-custom-input .react-time-picker__wrapper{
    border: none
@@ -829,4 +830,16 @@ label:focus,
 
 .gg-0{
    grid-gap: 0 !important;
+}
+
+.ul-list-unstyled {
+   list-style: none;
+}
+
+.tbody .ui-tbody-child p div p {
+   padding: 0;
+}
+
+.ck.ck-editor__editable_inline {
+   height: 120px;
 }

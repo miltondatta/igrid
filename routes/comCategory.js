@@ -29,21 +29,14 @@ route.get('/com-category-options', (req,res,next) => {
 
 // Update
 route.put('/com-category/update/:id', (req,res,next) => {
-    const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
-        ComCategory.findAll({where: {id: req.params.id}})
+    const {complaint_name} = req.body
+    if(complaint_name !== '') {
+        ComCategory.update({complaint_name}, {where: {id: req.params.id}})
             .then(resData => {
-                if(resData[0].dataValues.category_code === category_code) {
-                    ComCategory.update({category_name,category_code,description}, {where: {id: req.params.id}})
-                        .then(resData => {
-                            res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
-                        })
-                        .catch(err => {
-                            res.status(200).json({message: 'Something went wrong'})
-                        })
-                } else {
-                    res.status(200).json({message: 'Category Code Exist'})
-                }
+                res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
+            })
+            .catch(err => {
+                res.status(200).json({message: 'Something went wrong'})
             })
     } else {
         res.status(200).json({message: 'All fields required!'})
