@@ -1599,7 +1599,7 @@ class AdminInputContainer extends Component {
             case "COMSUBCATEGORY":
                 errorDict = {
                     com_sub_category_name: typeof com_sub_category_name !== 'undefined' && com_sub_category_name !== '',
-                    com_category_id: typeof complaint_name !== 'undefined' && complaint_name !== '',
+                    com_category_id: typeof com_category_id !== 'undefined' && com_category_id !== '',
                 }
                 this.setState({
                     errorDict
