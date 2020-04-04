@@ -20,9 +20,9 @@
 .reactDataTable .tbody p,
 .reactDataTable .thead p{
     color: #0f88e7;
-    font-size: 18px;
+    font-size: 14px;
     flex-basis: 12%;
-    padding: 12px 5px;
+    padding: 11px 3px;
     font-weight: 600;
     margin: 0;
     text-transform: capitalize;
@@ -33,7 +33,7 @@
     background: #d4edff;
 }
 
-.reactDataTable .tbody p{color: #555; font-size: 15px;}
+.reactDataTable .tbody p{color: #555; font-size: 14px;}
 
 .reactDataTable td{
     width: 200px;
@@ -49,7 +49,7 @@
     height: 48px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 1px 0 1px 10px;
+    padding: 1px 0 1px 4px;
 }
 
 .tbody .ui-tbody-child{

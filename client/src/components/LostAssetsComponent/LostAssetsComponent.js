@@ -263,14 +263,14 @@ class LostAssetsComponent extends Component {
                                         ranges={disabledRanges}
                                         value={gd_date}/>
                         </div>
-                        <div className="mb-2 grid-2">
-                            <div className="ui-custom-file">
+                        <div className="mb-2">
+                            <div className="ui-custom-file w-100">
                                 <input type="file" onChange={this.handleChange} name={'gd_other_file'}
                                        id="validatedCustomFile"
                                        required/>
-                                <label
+                                <label className={'w-100'}
                                     htmlFor="validatedCustomFile">{gd_other_file && gd_other_file.name ? gd_other_file.name : gd_other_file ? gd_other_file : 'Choose file'}</label>
-                                <div className="bottom">
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>

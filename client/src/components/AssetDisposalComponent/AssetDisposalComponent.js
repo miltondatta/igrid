@@ -19,7 +19,7 @@ class AssetDisposalComponent extends Component {
             category_id: '',
             category_name: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             product_id: '',
             product_name: '',
             product_serial: '',
@@ -115,8 +115,8 @@ class AssetDisposalComponent extends Component {
                                 const newObj = {
                                     id: item.id,
                                     product_serial: item.product_serial,
-                                    category_name: item.category_name,
-                                    sub_category_name: item.sub_category_name,
+                                    category: item.category,
+                                    sub_category: item.sub_category,
                                     product_name: item.product_name,
                                     disposal_reason: disposal_reason
                                 };

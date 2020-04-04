@@ -394,34 +394,22 @@ route.post('/assets/all/by/id', async (req, res) => {
 
         const [data, metadata] = await db.query(`select
                                        assets.id,
-                                       products.product_name,
-                                       asset_categories.category_name,
-                                       asset_sub_categories.sub_category_name,
+                                       products.product_name as product,
+                                       asset_categories.category_name as category,
+                                       asset_sub_categories.sub_category_name as sub_category,
                                        assets.product_serial,
-                                       assets.cost_of_purchase,
+                                       assets.cost_of_purchase as purchase_cost,
                                        assets.installation_cost,
-                                       assets.carrying_cost,
-                                       assets.other_cost,
                                        assets.rate,
-                                       assets.effective_date,
-                                       assets.book_value,
                                        assets.salvage_value,
-                                       assets.useful_life,
-                                       assets.last_effective_date,
                                        assets.warranty,
-                                       assets.last_warranty_date,
                                        conditions.condition_type,
-                                       assets.comments,
-                                       assets.disposal_reason,
-                                       asset_categories.category_name,
-                                       asset_sub_categories.sub_category_name,
-                                       products.product_name,
                                        count(distinct assets.id) as quantity
                                 from assets
-                                         join asset_categories on assets.asset_category = asset_categories.id
-                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                         join products on assets.product_id = products.id
-                                         join conditions on assets.condition = conditions.id
+                                         left join asset_categories on assets.asset_category = asset_categories.id
+                                         left join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         left join products on assets.product_id = products.id
+                                         left join conditions on assets.condition = conditions.id
                                 ${queryText} 
                                 group by assets.id, conditions.condition_type, products.product_name, asset_categories.category_name,
                                             asset_sub_categories.sub_category_name`);

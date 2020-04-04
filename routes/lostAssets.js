@@ -119,7 +119,7 @@ route.post('/lost-assets/entry', (req, res, next) => {
         } else if (err) {
             return res.status(500).json(err)
         }
-
+console.log(req.body, 122)
         Location.findOne({where: {parent_id: req.body.location_id}})
             .then(resData => {
                 const {parent_id, asset_id, police_station, incident_time, gd_no, gd_date, role_id, added_by, incident_type, incident_date} = req.body;
@@ -143,7 +143,7 @@ route.post('/lost-assets/entry', (req, res, next) => {
                             res.status(200).json({message: 'Data Saved Successfully', status: true});
                         })
                         .catch(err => {
-                            console.log(err);
+                            console.log(err, 14);
                             res.status(200).json({message: 'Something went wrong', err});
                         })
                 } else {
@@ -151,9 +151,9 @@ route.post('/lost-assets/entry', (req, res, next) => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                console.log(err, 154);
                 res.status(200).json({message: 'Something went wrong', err})
-            });
+            })
     })
 });
 

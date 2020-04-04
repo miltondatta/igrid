@@ -188,7 +188,7 @@ route.post('/requisition-approve/delivery/all', async (req,res,next) => {
                                requisition_approves."createdAt" as delivery_date, requisition_approves.update_quantity as quantity,
                                concat(delivery_to."firstName",' ',delivery_to."lastName") as delivery_to, concat(delivered_by."firstName",' ',delivered_by."lastName") as delivered_by,
                                user_roles.role_name as receivers_designation,
-                               locations.location_name as location FROM requisition_approves
+                               locations.location_name as location FROM  
                         JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
                         JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
                         JOIN users delivery_to ON delivery_to.id = requisition_approves.delivery_to

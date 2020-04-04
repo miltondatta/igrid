@@ -38,7 +38,7 @@ class RepairMaintenanceListComponent extends Component {
                                 product_serial: item.product_serial,
                                 product_name: item.product_name,
                                 category_name: item.category_name,
-                                sub_category_name: item.sub_category_name,
+                                sub_category: item.sub_category_name,
                                 book_value: item.book_value,
                                 salvage_value: item.salvage_value,
                                 useful_life: item.useful_life,

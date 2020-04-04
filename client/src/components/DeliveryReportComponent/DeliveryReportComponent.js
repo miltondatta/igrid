@@ -111,7 +111,6 @@ class DeliveryReportComponent extends Component {
                                                 className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'is-invalid'}`}
                                                 inputFormat="DD/MM/YYYY"
                                                 onChange={date => this.setState({date_from: date})}
-                                                ranges={disabledRanges}
                                                 value={date_from}/>
                                 </div>
                             </div>
@@ -123,7 +122,6 @@ class DeliveryReportComponent extends Component {
                                                 className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'is-invalid'}`}
                                                 inputFormat="DD/MM/YYYY"
                                                 onChange={date => this.setState({date_to: date})}
-                                                ranges={disabledRanges}
                                                 value={date_to}/>
 
                                 </div>

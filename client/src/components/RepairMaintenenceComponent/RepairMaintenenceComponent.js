@@ -360,12 +360,12 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Repair Details Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-2 w-50">
+                        <div className="px-1 mb-2 w-100">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'}
                                        className="custom-file-input" id="validatedCustomFile"/>
-                                <label htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
-                                <div className="bottom">
+                                <label className={'w-100'} htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
