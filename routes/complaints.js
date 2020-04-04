@@ -15,9 +15,9 @@ route.get('/complaints/:id', async (req,res,next) => {
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json()
+        res.status(200).json({})
     }
-})
+});
 
 // Read
 route.get('/complaints/list', async (req,res,next) => {

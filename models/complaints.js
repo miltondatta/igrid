@@ -7,7 +7,7 @@ const Complaints = db.define('complaints', {
   complaint_no: {
     type: Sequelize.STRING
   },
-  created_by: {
+  createdBy: {
     type: Sequelize.INTEGER
   },
   location_id: {
@@ -48,7 +48,7 @@ const Complaints = db.define('complaints', {
   status: {
     type: Sequelize.INTEGER
   },
-  solution_details: {
+  solutionDetails: {
     type: Sequelize.STRING,
     defaultValue: null,
     allowNull: true
