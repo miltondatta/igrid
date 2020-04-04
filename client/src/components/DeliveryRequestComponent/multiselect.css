@@ -33,13 +33,13 @@
 }
 .reactDataTable .tbody p,
 .reactDataTable .thead p{
-    color: #0f88e7;
-    font-size: 18px;
+    color: white;
+    font-size: 14px;
     width: 200px;
-    padding: 12px 5px;
+    padding: 10px 3px;
     font-weight: 600;
     margin: 0;
-    white-space: nowrap;
+    word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: capitalize;
@@ -159,6 +159,7 @@
 .ui-print .print-body .delivery-info{
     margin-bottom: 20%;
 }
+.ui-print .print-body .sideTable,
 .ui-print .print-body .table{
     display: grid;
     margin-bottom: 0;
@@ -214,6 +215,7 @@
     .ui-print .print-body .delivery-info{
         margin-bottom: 20%;
     }
+    .ui-print .print-body .sideTable,
     .ui-print .print-body .table{
         display: grid;
         margin-bottom: 0;
