@@ -22,7 +22,7 @@
 .reactDataTable{
     background: white;
     padding: 15px 5px;
-    width: 100%;
+    width: max-content;
     border-radius: 5px;
     margin: 0 auto;
 }
@@ -66,8 +66,6 @@
 .reactDataTable .tbody .ui-tbody-child,
 .reactDataTable .thead{
     background: #c6e4f9;
-    display: grid;
-    grid-template-columns: 80% 20%;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 3px;
@@ -88,7 +86,7 @@
     background: white;
 }
 .reactDataTable .tbody .ui-tbody-child:nth-child(odd){
-    background: #e2f1fc;
+    background: #e5f2fb;
 }
 
 .reactDataTable .thead p:nth-child(1) {

@@ -6,7 +6,7 @@
     margin: 0 auto;
 }
 .reactDataTable .table{
-    width: 98.4vw;
+    width: 98vw;
     margin-bottom: 1rem;
     color: #212529;
     overflow-x: auto;
@@ -21,19 +21,19 @@
 .reactDataTable .thead p{
     color: #0f88e7;
     font-size: 18px;
-    flex-basis: 189px;
+    flex-basis: 12%;
     padding: 12px 5px;
     font-weight: 600;
     margin: 0;
     text-transform: capitalize;
     border-color: transparent !important;
-    flex-shrink: 0;
+    flex-shrink: 1;
 }
 .reactDataTable .thead p{
-    background: #c6e4f9;
+    background: #d4edff;
 }
 
-.reactDataTable .tbody p{color: #555; font-size: 16px;}
+.reactDataTable .tbody p{color: #555; font-size: 15px;}
 
 .reactDataTable td{
     width: 200px;
@@ -46,10 +46,10 @@
 }
 
 .tbody .ui-tbody-child p{
-    height: 55px;
+    height: 48px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 0 0 10px;
+    padding: 1px 0 1px 10px;
 }
 
 .tbody .ui-tbody-child{
@@ -59,8 +59,6 @@
 }
 .tbody .ui-tbody-child,
 .thead{
-    display: grid;
-    grid-template-columns: 80% 20%;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 3px;
@@ -70,7 +68,7 @@
     align-items: center;
 }
 .thead{
-    background: #c6e4f9;
+    background: #d4edff;
     border: 1px solid #abc2d4;
     overflow: hidden;
 }
@@ -102,7 +100,7 @@
     background: white;
 }
 .tbody .ui-tbody-child:nth-child(odd) p{
-    background: #e2f1fc;
+    background: #e5f2fb;
 }
 
 .thead p:first-child,
@@ -141,9 +139,34 @@
 }
 
 .reactDataTable .ui-all-action{
-    min-width: 189px !important;
     text-align: center;
 }
 .reactDataTable .ui-all-action span{
     margin-right: 15px;
+}
+
+
+
+
+@media only screen and (max-width: 1950px) {
+    .reactDataTable .table{width: 97.5vw}
+}
+
+@media only screen and (max-width: 1750px) {
+    .reactDataTable .table{width: 97.5vw}
+    .reactDataTable .thead div p:first-child{flex-basis: 63px}
+}
+
+@media only screen and (max-width: 1600px) {
+    .reactDataTable .table{width: 97vw}
+    .reactDataTable .thead div p:first-child{flex-basis: 63px}
+}
+
+@media only screen and (max-width: 1530px) {
+    .reactDataTable .tbody p{font-size: 14px}
+}
+
+@media only screen and (max-width: 1360px) {
+    .reactDataTable .table{width: 96vw}
+    .reactDataTable .tbody p{font-size: 13px}
 }
