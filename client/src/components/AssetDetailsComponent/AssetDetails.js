@@ -40,24 +40,22 @@ class AssetDetails extends Component {
                         let allDetailsTableData = [];
                         res.data[0].map(item => {
                             let newObj = {
-                                product_serial: item.product_serial,
-                                product_name: item.product_name,
-                                category_name: item.category_name,
-                                sub_category_name: item.sub_category_name,
-                                cost_of_purchase: item.cost_of_purchase,
+                                serial: item.product_serial,
+                                product: item.product_name,
+                                category: item.category,
+                                sub_category: item.sub_category,
+                                purchase_cost: item.cost_of_purchase,
                                 installation_cost: item.installation_cost,
                                 carrying_cost: item.carrying_cost,
                                 other_cost: item.other_cost,
                                 rate: item.rate,
                                 effective_date: item.effective_date,
-                                last_effective_date: item.last_effective_date,
                                 book_value: item.book_value,
                                 salvage_value: item.salvage_value,
                                 useful_life: item.useful_life,
                                 warranty: item.warranty,
-                                last_warranty_date: item.last_warranty_date,
                                 comments: item.comments,
-                                condition_type: item.condition_type
+                                condition: item.condition_type
                             };
                             allDetailsTableData.push(newObj);
                         });
@@ -102,24 +100,22 @@ class AssetDetails extends Component {
                         let allDetailsTableData = [];
                         res.data[0].map(item => {
                             let newObj = {
-                                product_serial: item.product_serial,
-                                product_name: item.product_name,
-                                category_name: item.category_name,
-                                sub_category_name: item.sub_category_name,
-                                cost_of_purchase: item.cost_of_purchase,
+                                serial: item.product_serial,
+                                product: item.product_name,
+                                category: item.category,
+                                sub_category: item.sub_category,
+                                purchase_cost: item.cost_of_purchase,
                                 installation_cost: item.installation_cost,
                                 carrying_cost: item.carrying_cost,
                                 other_cost: item.other_cost,
                                 rate: item.rate,
                                 effective_date: item.effective_date,
-                                last_effective_date: item.last_effective_date,
                                 book_value: item.book_value,
                                 salvage_value: item.salvage_value,
                                 useful_life: item.useful_life,
                                 warranty: item.warranty,
-                                last_warranty_date: item.last_warranty_date,
                                 comments: item.comments,
-                                condition_type: item.condition_type
+                                condition: item.condition_type
                             };
                             allDetailsTableData.push(newObj);
                         });

@@ -45,8 +45,6 @@
 .tbody .ui-tbody-child,
 .thead{
     background: #c6e4f9;
-    display: grid;
-    grid-template-columns: 80% 20%;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 3px;
@@ -67,7 +65,7 @@
     background: white;
 }
 .tbody .ui-tbody-child:nth-child(odd){
-    background: #e2f1fc;
+    background: #e5f2fb;
 }
 
 .thead p:nth-child(1) {

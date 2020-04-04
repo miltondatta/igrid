@@ -157,7 +157,7 @@ class RequestHistoryComponent extends Component {
                         <p>{item.model}</p>
                         <p>{item.reason}</p>
                         <p>{item.av_assets}</p>
-                        <p className={'p-4px'}>
+                        <p>
                             {this.state[item.id] ? <input
                                     className={'ui-transparent-input'}
                                     onChange={(e) => {this.handleChange(e,item.id, 'update_quantity', item.quantity )}}
@@ -171,7 +171,7 @@ class RequestHistoryComponent extends Component {
                                 }}
                                 value={item.quantity} />}
                         </p>
-                        <p className={'p-4px flex-basis-290px'}>
+                        <p>
                             <input
                                 type={'text'}
                                 name={'comment'}

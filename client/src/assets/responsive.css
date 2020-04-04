@@ -56,5 +56,5 @@
     .ui-custom-file .bottom{
         font-size: 8px;
     }
-
+    .reactDataTable .tbody p{font-size: 14px !important;}
 }

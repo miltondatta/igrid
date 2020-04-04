@@ -402,7 +402,7 @@ class DocumentListSearch extends Component {
                     </div>
                     <div className={'p-2 my-2'}>
                         {fileError && <ErrorModal errorMessage={fileErrorMessage} />}
-                        <div className="rounded p-3 bg-white max-h-80vh">
+                        <div className="rounded bg-white">
                             {isLoading ? <Spinner/> : searchTableData.length > 0 ? <>
                                 <nav className="navbar text-center mb-2 pl-2 rounded">
                                     <p className="text-dark f-weight-500 f-20px m-0">Document Search</p>

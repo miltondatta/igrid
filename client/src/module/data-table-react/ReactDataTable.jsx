@@ -152,7 +152,8 @@ class ReactDataTable extends Component {
                             }
                             </>
                         ))}
-                        <p className={'ui-all-action'}>
+                       {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) &&
+                           <p className={'ui-all-action'}>
                             {edit && <span data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                                 <i className="icofont-ui-edit"></i>
                             </span>}
@@ -188,7 +189,7 @@ class ReactDataTable extends Component {
                                 </span>
                             </>
                             }
-                        </p>
+                        </p>}
                     </div>
                     <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
                          aria-labelledby="rowDeleteModal" aria-hidden="true">
@@ -243,7 +244,7 @@ class ReactDataTable extends Component {
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <div id={'__table_react'} className={'table'} style={{width: shortWidth ? '64vw' : '97.8vw'}}>
+                {tableData.length > 0 ? <div id={'__table_react'} className={'table'}>
                     <div className={'thead'}>
                         <div className={'d-flex align-items-center'}>
                             <p className={'w-60px'}>
