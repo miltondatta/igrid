@@ -27,6 +27,21 @@ module.exports = {
           status_name: 'Disposal',
           createdAt: new Date(),
           updatedAt: new Date()
+      },
+      {
+        status_name: 'Pending',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        status_name: 'In Progress',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        status_name: 'Solved',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
       ], {});
   },
