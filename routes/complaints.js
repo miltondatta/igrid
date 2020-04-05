@@ -30,7 +30,7 @@ route.get('/complaints/list', async (req,res,next) => {
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
-        res.status(200).json()
+        res.status(200).json({message: 'No Data Available'})
     }
 })
 
@@ -49,7 +49,7 @@ route.get('/complaints-options', (req,res,next) => {
 // Update
 route.put('/complaints/update/:id', (req,res,next) => {
     const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
+    if(category_name !== '' && category_code !== '') {
         Complaints.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if(resData[0].dataValues.category_code === category_code) {

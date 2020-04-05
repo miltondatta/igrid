@@ -5,31 +5,41 @@
     border-radius: 5px;
     margin: 0 auto;
 }
-
+.reactDataTable .sideTable,
+.reactDataTable .table{
+    width: 98vw;
+    margin-bottom: 1rem;
+    color: #212529;
+    overflow-x: auto;
+}
 .reactDataTable select{
     color: #666666;
     font-weight: 600;
 }
+
+
 .reactDataTable .tbody p,
 .reactDataTable .thead p{
-    color: #0f88e7;
-    font-size: 18px;
-    width: 200px;
-    padding: 12px 5px;
+    color: white;
+    font-size: 14px;
+    flex-basis: 12%;
+    padding: 10px 3px;
     font-weight: 600;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: break-word;
     text-transform: capitalize;
-    background-color: transparent !important;
     border-color: transparent !important;
+    flex-shrink: 1;
+}
+.reactDataTable .thead p{
+    background:#2184d0;
+    word-break: break-word;
 }
 
-.reactDataTable .tbody p{color: #555; font-size: 16px;}
+.reactDataTable .tbody p{color: #555; font-size: 14px;}
 
 .reactDataTable td{
-    width: 130px;
+    width: 200px;
     padding: 12px;
     vertical-align: middle;
 }
@@ -38,15 +48,20 @@
     font-size: 20px;
 }
 
-.tbody p:nth-child(even){
-    background: #eafffc;
+.tbody .ui-tbody-child p{
+    min-height: 35px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1px 0 1px 5px;
 }
 
+.tbody .ui-tbody-child{
+    background: #e2f1fc;
+    border: 1px solid #abc2d4;
+    overflow: hidden;
+}
 .tbody .ui-tbody-child,
 .thead{
-    background: #c6e4f9;
-    display: grid;
-    grid-template-columns: 80% 20%;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 3px;
@@ -55,7 +70,11 @@
     border-radius: 5px;
     align-items: center;
 }
-
+.thead{
+    background: #2184d0;
+    border: 1px solid #abc2d4;
+    overflow: hidden;
+}
 .reactDataTable .custom-search div{
     color: white;
     background: #329df0;
@@ -66,8 +85,17 @@
 .tbody .ui-tbody-child:nth-child(even){
     background: white;
 }
-.tbody .ui-tbody-child:nth-child(odd){
-    background: #e2f1fc;
+.tbody .ui-tbody-child:nth-child(odd) p{
+    background: #e5f2fb;
+}
+
+.thead p:first-child,
+.tbody .ui-tbody-child p:first-child{
+    flex-basis: 60px;
+}
+
+.ui-table-functions p{
+    flex-basis: 189px !important;
 }
 
 .thead p:nth-child(1) {
@@ -94,4 +122,40 @@
 
 .reactDataTable .page-item.active .page-link{
     border-color: #12b79e
+}
+
+.reactDataTable .ui-all-action{
+    text-align: center;
+}
+.reactDataTable .ui-all-action span{
+    margin-right: 15px;
+}
+
+
+
+
+@media only screen and (max-width: 1950px) {
+    .reactDataTable .table{width: 97.5vw}
+    .reactDataTable .sideTable{width: 63.2vw}
+}
+
+@media only screen and (max-width: 1750px) {
+    .reactDataTable .table{width: 97.5vw}
+    .reactDataTable .sideTable{width: 62.9vw}
+    .reactDataTable .thead div p:first-child{flex-basis: 63px}
+}
+
+@media only screen and (max-width: 1600px) {
+    .reactDataTable .table{width: 97vw}
+    .reactDataTable .thead div p:first-child{flex-basis: 63px}
+}
+
+@media only screen and (max-width: 1530px) {
+    .reactDataTable .tbody p{font-size: 14px}
+}
+
+@media only screen and (max-width: 1360px) {
+    .reactDataTable .table{width: 96vw}
+    .reactDataTable .sideTable{width: 62vw}
+    .reactDataTable .tbody p{font-size: 13px}
 }

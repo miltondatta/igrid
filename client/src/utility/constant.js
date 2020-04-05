@@ -1,6 +1,6 @@
-import {devBaseUrl, prodBaseUrl} from "../config/private";
+import {devBaseUrl, prodBaseUrl, BackEnd_BaseUrl} from "../config/private";
 import React from "react";
-export const apiBaseUrl =  'http://localhost:5000/';
+export const apiBaseUrl =  BackEnd_BaseUrl;
 
 export const apiUrl = () => {
     if(process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -18,6 +18,18 @@ export const sidenav = [
         subCat: true,
         categories: [
             {
+                id: 4,
+                name: 'New Requisition',
+                link: '/requisition',
+                icon: "far fa-keyboard"
+            },
+            {
+                id: 5,
+                name: 'My Requisition Status',
+                link: '/requisition-status',
+                icon: "far fa-keyboard"
+            },
+            {
                 id: 1,
                 name: 'Requisition List',
                 link: '/request-history',
@@ -31,20 +43,14 @@ export const sidenav = [
             },
             {
                 id: 3,
-                name: 'Approved Delivery',
+                name: 'My Delivery',
                 link: '/approved-delivery',
                 icon: "far fa-keyboard"
             },
             {
-                id: 4,
-                name: 'Material Requisition',
-                link: '/requisition',
-                icon: "far fa-keyboard"
-            },
-            {
-                id: 5,
-                name: 'Requisition Status',
-                link: '/requisition-status',
+                id: 6,
+                name: 'Delivery Received',
+                link: '/delivery-received',
                 icon: "far fa-keyboard"
             },
         ]
@@ -63,7 +69,7 @@ export const sidenav = [
             },
             {
                 id: 1,
-                name: 'Existing Assets',
+                name: 'Open Challan List',
                 link: '/challan',
                 icon: ""
             },
@@ -71,6 +77,12 @@ export const sidenav = [
                 id: 2,
                 name: 'Own Stock',
                 link: '/own-stock',
+                icon: ""
+            },
+            {
+                id: 17,
+                name: 'Asset Details',
+                link: '/asset-details',
                 icon: ""
             },
             {
@@ -109,6 +121,12 @@ export const sidenav = [
                 link: '/asset-repair',
                 icon: ""
             },
+            {
+                id: 16,
+                name: 'Repair & Maintenance List',
+                link: '/asset-repair-list',
+                icon: ""
+            },
         ]
     },
     {
@@ -118,6 +136,12 @@ export const sidenav = [
         subCat: true,
         categories: [
             {
+                id: 5,
+                name: 'Stock Report',
+                link: '/stock-report',
+                icon: ""
+            },
+            {
                 id: 1,
                 name: 'Delivery Report',
                 link: '/delivery-report',
@@ -125,8 +149,20 @@ export const sidenav = [
             },
             {
                 id: 2,
-                name: 'Stock Report',
-                link: '/branch-requesition',
+                name: 'Lost Assets Report',
+                link: '/lost-assets-report',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Asset Disposal Report',
+                link: '/asset-disposal-report',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Maintenance Report',
+                link: '/maintenance-report',
                 icon: ""
             }
         ]
@@ -150,7 +186,7 @@ export const sidenav = [
 export const systemAdmin = [
     {
         id: 10,
-        name: 'System Config',
+        name: 'System Configuration',
         icon: 'icofont-ui-settings',
         subCat: true,
         categories: [
@@ -179,19 +215,55 @@ export const systemAdmin = [
                 icon: ""
             },
             {
+                id: 16,
+                name: 'Register User',
+                link: '/admin/register-user',
+                icon: ""
+            },
+            {
+                id: 15,
+                name: 'Assign User Role ',
+                link: '/admin/user-associate-role',
+                icon: ""
+            },
+            {
                 id: 7,
                 name: 'Depreciation Methods',
                 link: '/admin/depreciation-methods',
                 icon: ""
             },
+            {
+                id: 8,
+                name: 'Menu',
+                link: '/admin/menu',
+                icon: ""
+            },
+            {
+                id: 8,
+                name: 'Menu Assign',
+                link: '/admin/menu/assign',
+                icon: ""
+            }
         ]
     },
     {
         id: 9,
-        name: 'Setting',
+        name: 'Asset Configuration',
         icon: 'fas fa-user-shield',
         subCat: true,
         categories: [
+            {
+                id: 5,
+                name: 'Asset Category',
+                link: '/admin/asset-category',
+                icon: ""
+            },
+            {
+                id: 5,
+                name: 'Asset Sub Category',
+                link: '/admin/asset-sub-category',
+                icon: ""
+            },
             {
                 id: 1,
                 name: 'Project',
@@ -214,18 +286,6 @@ export const systemAdmin = [
                 id: 3,
                 name: 'Models',
                 link: '/admin/model',
-                icon: ""
-            },
-            {
-                id: 5,
-                name: 'Asset Category',
-                link: '/admin/asset-category',
-                icon: ""
-            },
-            {
-                id: 5,
-                name: 'Asset Sub Category',
-                link: '/admin/asset-sub-category',
                 icon: ""
             },
             {
@@ -253,22 +313,16 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 16,
-                name: 'Register User',
-                link: '/admin/register-user',
-                icon: ""
-            },
-            {
-                id: 15,
-                name: 'Assign User Role ',
-                link: '/admin/user-associate-role',
+                id: 17,
+                name: 'AMC Types',
+                link: '/admin/amc-types',
                 icon: ""
             },
         ]
     },
     {
         id: 7,
-        name: 'MIS Config',
+        name: 'MIS Configuration',
         icon: 'fas fa-reply-all',
         subCat: true,
         categories: [
@@ -329,7 +383,33 @@ export const systemAdmin = [
                 name: 'Complaint Sub Category',
                 link: '/admin/complain-sub-category',
                 icon: ""
+            },
+            {
+                id: 4,
+                name: 'Complaint Mapping',
+                link: '/admin/complaint-mapping',
+                icon: ""
             }
+        ]
+    },
+    {
+        id: 20,
+        name: 'Report',
+        icon: 'icofont-chart-histogram',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Delivery Report (All)',
+                link: '/admin/delivery-report/all',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Assets Report (All)',
+                link: '/admin/asset-report/all',
+                icon: ""
+            },
         ]
     },
 ];
@@ -348,6 +428,73 @@ export const locationCategory = [
         icon: 'fas fa-map-marked-alt',
         subCat: false,
         link: '/location/details'
+    },
+];
+
+export const misCategory = [
+    {
+        id: 10,
+        name: 'Dashboard',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/mis/dashboard'
+    },
+    {
+        id: 11,
+        name: 'Basic Reports',
+        icon: 'fas fa-map-marked-alt',
+        subCat: true,
+        categories: [
+            {
+                id: 3,
+                name: 'Daily',
+                link: '/mis/daily-report',
+                icon: ""
+            },
+            {
+                id: 1,
+                name: 'Weekly',
+                link: '/mis/weekly-report',
+                icon: ""
+            },
+            {
+                id: 4,
+                name: 'Monthly',
+                link: '/mis/monthly-report',
+                icon: ""
+            }
+        ]
+    },
+];
+
+export const profileCategory = [
+    {
+        id: 31,
+        name: 'Profile',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/profile'
+    },
+    {
+        id: 32,
+        name: 'Update Password',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/profile/pass-reset'
+    },
+    {
+        id: 33,
+        name: 'Settings',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/admin/user-login-log'
+    },
+    {
+        id: 34,
+        name: 'Logout',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/'
     },
 ];
 
@@ -396,7 +543,7 @@ export const homeBanner = [
     {
         title: "Manage Your Asset quickly",
         btnText: "Asset Requisition & Tracking",
-        link: "/request-history",
+        link: "/asset-dashboard",
         img: "/media/banner/b_2.png"
     },
     {

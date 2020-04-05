@@ -4,6 +4,8 @@ import './RequestHistoryCom.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import SuccessModal from "../../utility/success/successModal";
+import ErrorModal from "../../utility/error/errorModal";
 
 class RequestHistoryComponent extends Component {
     constructor(props){
@@ -54,7 +56,9 @@ class RequestHistoryComponent extends Component {
         this.setState({
             requisition_id: id
         })
-        Axios.get(apiUrl() + 'requisition-details/details/' + id)
+        let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        user_data['requisition_id'] = id
+        Axios.get(apiUrl() + 'requisition-details/details', {params: user_data})
             .then(res => {
                 if(res.data.length > 0) {
                     this.setState({
@@ -152,6 +156,7 @@ class RequestHistoryComponent extends Component {
                         <p>{item.brand}</p>
                         <p>{item.model}</p>
                         <p>{item.reason}</p>
+                        <p>{item.av_assets}</p>
                         <p>
                             {this.state[item.id] ? <input
                                     className={'ui-transparent-input'}
@@ -181,33 +186,31 @@ class RequestHistoryComponent extends Component {
         })
 
         return (
-            <div className={'m-3'}>
-                {error && <div className="alert alert-danger my-2 position-relative d-flex justify-content-between align-items-center  " role="alert">
-                    {errorMessage}  <i className="fas fa-times " onClick={() => {this.setState({error: false})}}></i>
-                </div>}
-                {success &&
-                <div className="alert alert-success my-2 position-relative d-flex justify-content-between align-items-center"
-                     role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
-                <div className={'bg-white p-3 rounded'}>
+            <div className={'m-2'}>
+                {success && <SuccessModal successMessage={successMessage}/>}
+                {error && <ErrorModal errorMessage={errorMessage}/>}
+                <div className={'bg-white p-1 admin-input-height rounded'}>
                     {!showDetails ? <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0" >Requisition History</p>
+                        <p className="text-blue f-weight-700 f-20px m-0" >Requisition List</p>
                     </nav>
                         {data.length > 0 ? <ReactDataTable
                             details={'reqHistory'}
                             assetList={this.assetList}
                             tableData={data}
+                            bigTable
+                            searchable
+                            footer
+                            pagination
+                            dataDisplay
+
                         /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </> : <>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
-                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
                         </nav>
 
-                        <div className={'reactDataTable mb-20p'}>
+                        <div className={'reactDataTable'}>
                             <div className={'table'}>
                                 <div className={'thead'}>
                                     <div className={'d-flex align-items-center'}>
@@ -217,6 +220,7 @@ class RequestHistoryComponent extends Component {
                                         <p>Brand</p>
                                         <p>Model</p>
                                         <p>Reasons</p>
+                                        <p>Stock</p>
                                         <p>Quantity</p>
                                         <p>Comment</p>
                                     </div>
@@ -227,7 +231,7 @@ class RequestHistoryComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button className="submit-btn" onClick={this.submitApprove}>Approve</button>
+                        <button className="submit-btn-normal" onClick={this.submitApprove}>Approve</button>
                     </>}
                 </div>
             </div>

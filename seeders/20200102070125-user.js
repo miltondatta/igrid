@@ -5,7 +5,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('users', [
         {
-          firstName: 'Mr. Super',
+          firstName: 'Super',
           lastName: 'Admin',
           email: 'sadmin@example.com',
           phone_number: '01234567891',
@@ -18,7 +18,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. Admin',
+          firstName: 'Admin',
           lastName: 'User',
           email: 'admin@example.com',
           phone_number: '01234567891',
@@ -31,7 +31,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. PM',
+          firstName: 'PM',
           lastName: 'User',
           email: 'pm@example.com',
           phone_number: '01234567891',
@@ -44,7 +44,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. DM',
+          firstName: 'DM',
           lastName: 'User',
           email: 'dm@example.com',
           phone_number: '01234567891',
@@ -57,7 +57,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. RM',
+          firstName: 'RM',
           lastName: 'User',
           email: 'rm@example.com',
           phone_number: '01234567891',
@@ -70,7 +70,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. AM',
+          firstName: 'AM',
           lastName: 'User',
           email: 'am@example.com',
           phone_number: '01234567891',
@@ -83,7 +83,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. BM',
+          firstName: 'BM',
           lastName: 'User',
           email: 'bm@example.com',
           phone_number: '01234567891',
@@ -96,7 +96,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          firstName: 'Mr. Stock',
+          firstName: 'Stock',
           lastName: 'Manager',
           email: 'sm@example.com',
           phone_number: '01234567891',

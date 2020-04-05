@@ -7,6 +7,7 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import PrintDelivery from "./PrintDelivery";
 
 class DeliveryRequestComponent extends Component {
+
     constructor(props){
         super(props)
         this.state = {
@@ -87,14 +88,14 @@ class DeliveryRequestComponent extends Component {
 
         console.log(payload, 88)
 
-        if (products.length === resData.length) {
+        // if (products.length === resData.length) {
             Axios.post(apiUrl() + 'requisition-approve/delivery', payload)
                 .then(res => {
                     this.setState({
                         printDelivery: true
                     })
                 })
-        }
+        // }
     }
 
     comeBack = () => {
@@ -118,6 +119,13 @@ class DeliveryRequestComponent extends Component {
                 </div>
             )
         })
+        return selectAsset
+    }
+
+    availableAssets = (cat, sub, dev_to) => {
+        const {products} = this.state
+        const filteredCategory = products.length > 0 && products.filter(item => (item.asset_category === parseInt(cat, 10) && item.asset_sub_category === parseInt(sub, 10)))
+        const selectAsset = filteredCategory.length > 0 ? filteredCategory.length : 0
         return selectAsset
     }
 
@@ -150,6 +158,9 @@ class DeliveryRequestComponent extends Component {
                         <p>{item.role_name}</p>
                         <p>{item.location_name}</p>
                         <p>{item.update_quantity}</p>
+                        <p>
+                            {this.availableAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
+                        </p>
                         <p style={{width: 350, overflow: "visible"}}>
                             <div className={'ui-multiselect'}>
                                 {this.subAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
@@ -160,10 +171,8 @@ class DeliveryRequestComponent extends Component {
             )
         })
 
-        console.log({delivery: resData, products: assetsList})
-
         return (
-            <div className={'bg-white p-3 rounded m-3 min-h-80vh'}>
+            <div className={'bg-white p-3 rounded m-2 admin-input-height'}>
                 {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
                 {showDetails ?  <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
@@ -179,7 +188,8 @@ class DeliveryRequestComponent extends Component {
                                     <p>Role</p>
                                     <p>Location</p>
                                     <p>Quantity</p>
-                                    <p>Product</p>
+                                    <p>Av. Quantity</p>
+                                    <p style={{width: 350}}>Product</p>
                                 </div>
                             </div>
                             <div className={'tbody'}>

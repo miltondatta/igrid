@@ -48,11 +48,11 @@ router.delete('/delete', documentListController.delete);
 router.get('/active', documentListController.documentActiveListData);
 
 /*
-    @route          GET api/v1/document/list/by/notice
+    @route          GET api/v1/document/list/by/notice/:date?
     @desc           Get All Document List Data By Notice
     @access         Private
  */
-router.get('/by/notice', documentListController.documentListDataByNotice);
+router.get('/by/notice/:date?', documentListController.documentListDataByNotice);
 
 /*
     @route          GET api/v1/document/list/by/circular

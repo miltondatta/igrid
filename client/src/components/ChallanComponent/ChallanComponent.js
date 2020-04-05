@@ -14,30 +14,46 @@ import VendorOptions from "../../utility/component/vendorOptions";
 import ProductsOptions from "../../utility/component/productOptions";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import AMCTypeOptions from "../../utility/component/amcTypeOptions";
+import InstaAdd from "../../module/insta-add/InstaAdd";
+import {getFileExtension} from "../../utility/custom";
+import moment from "moment";
+import DatePicker from 'react-datepicker2';
+import {disabledRanges} from "../../utility/custom";
+
+moment.locale('en');
 
 class ChallanComponent extends Component {
+
     constructor(props){
         super(props)
         this.state={
             challans: [],
             assets: [],
-            challan_date: '',
+            challan_date: moment(),
             receivedBy: [],
             assetId: '',
-            forceUpdate: false,
+            forceUpd: false,
+            amc: false,
+            is_closed: false,
+            addAsst: false,
             challan_no: '',
+            error: false,
+            errorMessage: '',
             receivedByFocus: false,
             recDropFoc: false,
+            is_amc: true,
             challan_description: '',
             purchase_order_no: '',
-            purchase_order_date: '',
+            purchase_order_date: moment(),
             vendor_id: '',
             received_by: '',
+            product_serial_1: '',
             added_by: jwt.decode(localStorage.getItem('user')).data.id,
             attachment: '',
             challanComments: '',
             challan_id: '',
-            project_id: '',
+            project_id: null,
             asset_category: '',
             asset_sub_category: '',
             product_serial: '',
@@ -48,13 +64,13 @@ class ChallanComponent extends Component {
             asset_type: '',
             depreciation_method: '',
             rate: '',
-            effective_date: '',
+            effective_date: moment(),
             book_value: '',
             salvage_value: '',
             useful_life: '',
-            last_effective_date: '',
+            last_effective_date: moment(),
             warranty: '',
-            last_warranty_date: '',
+            last_warranty_date: moment(),
             condition: '',
             comments: '',
             barcode: false,
@@ -88,7 +104,7 @@ class ChallanComponent extends Component {
 
     forceUp = () => {
         this.setState({
-            forceUpdate: !this.state.forceUpdate
+            forceUpd: !this.state.forceUpd
         })
     }
 
@@ -96,9 +112,22 @@ class ChallanComponent extends Component {
         console.log(id)
         Axios.get(apiUrl() + 'assets-entry/assets/' + id)
             .then(resData => {
-                this.setState({
-                    assets: resData.data
-                })
+                if (resData.data.status) {
+                    this.setState({
+                        assets: resData.data.results
+                    })
+                } else {
+                    this.setState({
+                        error: true,
+                        errorMessage: resData.data.message,
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
+                    })
+                }
             })
     }
 
@@ -106,17 +135,18 @@ class ChallanComponent extends Component {
         Axios.get(apiUrl() + 'assets-entry/' + endpoint + id)
             .then(resData => {
                 let data = resData.data[0]
+                console.log(data);
                 if (endpoint === 'specific-challan/') {
                     this.setState({
                         challan_id: id,
                         targetChallan: resData.data,
                         challan_no: data.challan_no,
-                        challan_date: data.challan_date,
+                        challan_date: moment(data.challan_date),
                         challan_name: data.challan_name,
                         vendor_id: data.vendor_id,
                         challan_description: data.challan_description,
                         purchase_order_no: data.purchase_order_no,
-                        purchase_order_date: data.purchase_order_date,
+                        purchase_order_date: moment(data.purchase_order_date),
                         attachment: data.attachment,
                         received_by: data.received_by,
                         added_by: data.added_by,
@@ -139,18 +169,17 @@ class ChallanComponent extends Component {
                         asset_type: data.asset_type,
                         depreciation_method: data.depreciation_method,
                         rate: data.rate,
-                        effective_date: data.effective_date,
+                        effective_date: moment(data.effective_date).format('YYYY-MM-DD'),
                         book_value: data.book_value,
                         salvage_value: data.salvage_value,
                         useful_life: data.useful_life,
-                        last_effective_date: data.last_effective_date,
+                        last_effective_date: moment(data.last_effective_date).format('YYYY-MM-DD'),
                         warranty: data.warranty,
-                        last_warranty_date: data.last_warranty_date,
+                        last_warranty_date: moment(data.last_warranty_date).format('YYYY-MM-DD'),
                         condition: data.condition,
                         comments: data.comments,
                     })
-                }
-                setTimeout(() => {
+                } setTimeout(() => {
                     this.forceUpdate()
                 }, 100)
             })
@@ -158,12 +187,27 @@ class ChallanComponent extends Component {
 
     handleChange = (e) => {
         const {name, value, checked, files} = e.target
-        if(name === 'barcode'){
+        if(name === 'barcode' || name === 'is_amc' || name === 'is_closed'){
             this.setState({
-                barcode: checked
+                [name]: checked
             })
         } else if (name === 'attachment') {
-            this.setState({attachment: files[0]})
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if (name === 'asset_quantity') {
             for(let i = 0; i < value; i++) {
                 let lebel = `product_serial_${i + 1}`
@@ -219,8 +263,8 @@ class ChallanComponent extends Component {
     }
 
     updateChallan = () => {
-        const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = this.state
-            const data = {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, comments: challanComments, added_by}
+        const {challan_no, is_closed, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = this.state
+            const data = {challan_no, is_closed, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, comments: challanComments, added_by}
             Axios.put(apiUrl() + 'assets-entry/challan-update/' + this.state.challan_id, data)
                 .then(resData => {
                     if (resData.data.status) {
@@ -250,37 +294,26 @@ class ChallanComponent extends Component {
     }
 
     validate = (forr) => {
-        const {project_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,
-            asset_type,depreciation_method,rate,effective_date,book_value,salvage_value,useful_life,warranty, condition,comments,barcode,
-            amc_charge, amc_expire_date, amc_type, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
+        const {product_id,asset_category,asset_sub_category,cost_of_purchase,installation_cost,carrying_cost, other_cost,is_amc, amc_charge, amc_expire_date, amc_type} = this.state
         let errorDict = null
         if (forr === 'assets') {
             errorDict = {
-                project_id: typeof project_id !== 'undefined' && project_id !== '',
-                amc_charge: typeof amc_charge !== 'undefined' && amc_charge !== '',
-                amc_expire_date: typeof amc_expire_date !== 'undefined' && amc_expire_date !== '',
-                amc_type: typeof amc_type !== 'undefined' && amc_type !== '',
-                insurance_expire_date: typeof insurance_expire_date !== 'undefined' && insurance_expire_date !== '',
-                insurance_premium: typeof insurance_premium !== 'undefined' && insurance_premium !== '',
-                insurance_value: typeof insurance_value !== 'undefined' && insurance_value !== '',
-                insurance_company: typeof insurance_company !== 'undefined' && insurance_company !== '',
+                product_id: typeof product_id !== 'undefined' && product_id !== '',
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-                asset_type: typeof asset_type !== 'undefined' && asset_type !== '',
-                depreciation_method: typeof depreciation_method !== 'undefined' && depreciation_method !== '',
-                rate: typeof rate !== 'undefined' && rate !== '',
-                effective_date: typeof effective_date !== 'undefined' && effective_date !== '',
-                book_value: typeof book_value !== 'undefined' && book_value !== '',
-                salvage_value: typeof salvage_value !== 'undefined' && salvage_value !== '',
-                useful_life: typeof useful_life !== 'undefined' && useful_life !== '',
-                warranty: typeof warranty !== 'undefined' && warranty !== '',
-                condition: typeof condition !== 'undefined' && condition !== '',
-                comments: typeof comments !== 'undefined' && comments !== '',
-                barcode: typeof barcode !== 'undefined' && barcode !== '',
+            }
+            if (is_amc){
+                 errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
+                 errorDict['amc_expire_date'] =  typeof amc_expire_date !== 'undefined' && amc_expire_date !== ''
+                 errorDict['amc_type'] =  typeof amc_type !== 'undefined' && amc_type !== ''
+            } else {
+                errorDict['amc_charge'] = true
+                errorDict['amc_expire_date'] = true
+                errorDict['amc_type'] = true
             }
             this.setState({
                 errorDictAsset: errorDict
@@ -293,10 +326,45 @@ class ChallanComponent extends Component {
         this.setState({
             challan_id: id,
             addAssets: true
+        }, () => {
+            Axios.get(apiUrl() + 'assets-entry/specific-challan/' + id)
+                .then(resData => {
+                    let data = resData.data[0]
+                        this.setState({
+                            addAsst: true,
+                            challan_id: id,
+                            targetChallan: resData.data,
+                            challan_no: data.challan_no,
+                            challan_date: moment(data.challan_date).format('YYYY-MM-DD'),
+                            challan_name: data.challan_name,
+                            vendor_id: data.vendor_id,
+                            challan_description: data.challan_description,
+                            purchase_order_no: data.purchase_order_no,
+                            purchase_order_date: moment(data.purchase_order_date).format('YYYY-MM-DD'),
+                            attachment: data.attachment,
+                            received_by: data.received_by,
+                            added_by: data.added_by,
+                            challanComments: data.comments
+                        }, () => {
+                            setTimeout(() => {
+                                this.forceUpdate()
+                            }, 100)
+                        })
+                })
         })
     }
 
+    amc = () => {
+        this.setState((prevState) => ({
+            amc: !prevState.amc
+        }))
+    }
+
     addProduct = () => {
+        console.log(this.validate('assets'), 349)
+        if (Object.values(this.validate('assets')).includes(false)) {
+            return
+        }
         const {asset_quantity} = this.state
         let prodSerialHolder = []
         let stateHolder = this.state
@@ -379,12 +447,11 @@ class ChallanComponent extends Component {
     }
 
     render() {
-        const {challans, assets, product_id, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr, error,
+        const {challans, assets, product_id, challan_no, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, prodArr, error, formType, getApi, headTitle,
             received_by, challanComments, project_id, asset_category, asset_sub_category, cost_of_purchase,errorDictAsset, errorMessage, addAssets, asset_quantity,
             installation_cost, carrying_cost, other_cost, asset_type, depreciation_method, rate, effective_date, book_value, errorDict, targetAsset, targetChallan,
-            salvage_value, useful_life, warranty, condition, comments, barcode, challan_date, receivedBy, receivedByFocus,
+            salvage_value, useful_life, warranty, condition, comments, barcode, challan_date, receivedBy, receivedByFocus, is_closed, added_by, addAsst,
             recDropFoc, success, successMessage, amc_charge, amc_expire_date, amc_type, is_amc, insurance_expire_date, insurance_company, insurance_premium, insurance_value} = this.state
-        console.log(receivedBy, 334)
         const prodSer = asset_quantity && prodArr.map((item, index) => {
             return(
                 <div className={'mb-1'}>
@@ -399,20 +466,27 @@ class ChallanComponent extends Component {
         return (
             <div className={'w-100 p-2'}>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                    <ErrorModal ops errorMessage={errorMessage} />
                 }
                 {success &&
                     <SuccessModal successMessage={successMessage} />
                 }
+                <InstaAdd
+                    forceUp = {this.forceUp}
+                    forceAmc = {this.amc}
+                    formType = {formType}
+                    getApi = {getApi}
+                    headTitle = {headTitle}
+                />
                 <div className="rounded">
-                    {targetChallan.length > 0 ? <>
+                    {targetChallan.length > 0 && !addAsst ? <>
                         <nav className="navbar text-center mb-0 mx-1 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({targetChallan: []})}}>
-                            <p className="text-blue f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
+                            <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
                         </nav>
                         <div className=" p-1 ui-dataEntry">
-                            <div className={'min-h-80vh bg-white rounded position-relative p-3'}>
+                            <div className={'max-h-80vh bg-white rounded position-relative p-3'}>
                                 <nav className="navbar text-center mb-2 pl-1 rounded">
-                                    <p className="text-blue f-weight-700 f-20px m-0">Add Challan Info First</p>
+                                    <p className="text-blue f-weight-700 f-20px m-0">Challan Info</p>
                                 </nav>
                                 <div className={'mb-2'}>
                                     <label htmlFor="challan_no" className={'ui-custom-label'}>Challan No</label>
@@ -420,7 +494,13 @@ class ChallanComponent extends Component {
                                 </div>
                                 <div className={'mb-2'}>
                                     <label htmlFor="challan_date" className={'ui-custom-label'}>Challan Date</label>
-                                    <input value={challan_date} type={'date'} onChange={this.handleChange} name={'challan_date'} placeholder='Challan Name' className={`ui-custom-input ${errorDict && !errorDict.challan_date && 'is-invalid'}`} />
+                                    <DatePicker timePicker={false}
+                                                name={'challan_date'}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.challan_date && 'is-invalid'}`}
+                                                inputFormat="DD/MM/YYYY"
+                                                onChange={date => this.setState({challan_date: date})}
+                                                ranges={disabledRanges}
+                                                value={challan_date} />
                                 </div>
                                 <div className={'mb-2'}>
                                     <div className="input-grid">
@@ -447,24 +527,33 @@ class ChallanComponent extends Component {
                                 </div>
                                 <div className={'mb-2'}>
                                     <label className={'ui-custom-label'}>Purchase Order Date</label>
-                                    <input onChange={this.handleChange} name={'purchase_order_date'} value={purchase_order_date} type={'date'} className={`ui-custom-input ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`} />
+                                    <DatePicker timePicker={false}
+                                                name={'purchase_order_date'}
+                                                className={`ui-custom-input w-100 ${errorDict && !errorDict.purchase_order_date && 'is-invalid'}`}
+                                                inputFormat="DD/MM/YYYY"
+                                                onChange={date => this.setState({purchase_order_date: date})}
+                                                ranges={disabledRanges}
+                                                value={purchase_order_date}/>
                                 </div>
                                 <div className={'w-50 mb-20p'}>
                                     <div className="ui-custom-file">
                                         <input type="file" onChange={this.handleChange} name={'attachment'} id="attachment" />
                                         <label className={`${errorDict && !errorDict.challanComments && 'is-invalid'}`} htmlFor="attachment">{attachment ? attachment.name : 'Choose File'}</label>
+                                        <div className="bottom">
+                                            JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                        </div>
                                     </div>
                                 </div>
-                                <button onClick={this.updateChallan} className="submit-btn">Add Challan</button>
+                                <button onClick={this.updateChallan} className="submit-btn-normal">Add Challan</button>
                             </div>
-                            <div className="min-h-80vh bg-white rounded p-3">
+                            <div className="max-h-80vh bg-white rounded p-3">
                                 <div className={'mb-2'}>
                                     <nav className="navbar text-center mb-2 pl-1 rounded">
                                         <p className="text-blue f-weight-700 f-20px m-0">Challan Description</p>
                                     </nav>
                                     <textarea
                                         id={'enCh1'}
-                                        className={`ui-custom-textarea ${errorDict && !errorDict.challan_description && 'is-invalid'}`}
+                                        className={`ui-custom-textarea`}
                                         value={challan_description}
                                         placeholder={'Write Description'}
                                         onChange={this.handleChange} name={'challan_description'}
@@ -479,17 +568,39 @@ class ChallanComponent extends Component {
                                         value={challanComments}
                                         onChange={this.handleChange} name={'challanComments'}
                                         placeholder={'Write Comments'}
-                                        className={`ui-custom-textarea ${errorDict && !errorDict.challanComments && 'is-invalid'}`}
+                                        className={`ui-custom-textarea`}
                                     />
+                                </div>
+                                <div className={'mb-2'}>
+                                    <nav className="navbar text-center mb-2 pl-1 rounded">
+                                        <p className="text-blue f-weight-700 f-20px m-0">Close Challan</p>
+                                    </nav>
+                                    <div className="d-flex ml-4 align-items-center ui-custom-checkbox">
+                                        <input
+                                            type={'checkbox'}
+                                            checked={is_closed}
+                                            id={'customCheckbox'}
+                                            name={'is_closed'}
+                                            value={is_closed}
+                                            onChange={this.handleChange} />
+                                        <label htmlFor="customCheckbox" className={'mb-0'}>Close Challan</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white m-1 rounded'}>
+                    </> : (targetAsset.length === 0 && !addAssets) ? <div className={'bg-white rounded admin-input-height'}>
                     <nav className="navbar text-center mb-0 pl-3 rounded">
-                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ? <p className={'cursor-pointer mb-0'} onClick={() => {this.setState({assets: []})}}><i className="fas fa-angle-left"></i> Challan Details</p> : 'Challan Information'}</p>
+                        <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ?
+                            <p className={'cursor-pointer mb-0'}
+                               onClick={() => {this.setState({assets: []})}}>
+                                <i className="fas fa-angle-left"></i> Challan Details
+                            </p> : 'Challan Information'}</p>
                     </nav>
                     <div className="px-2">
                         {assets.length > 0 ? <ReactDataTable
+                            pagination
+                            footer
+                            bigTable
                             del={'assets-entry'}
                             deleteModalTitle={'Delete Asset'}
                             updateEdit={this.updateEdit}
@@ -497,6 +608,11 @@ class ChallanComponent extends Component {
                         /> : challans.length > 0 && assets.length === 0 ? <ReactDataTable
                             details
                             add
+                            bigTable
+                            searchable
+                            pagination
+                            footer
+                            dataDisplay
                             addName={'Assets'}
                             addAssets={this.addAssets}
                             edit={'specific-challan/'}
@@ -504,295 +620,366 @@ class ChallanComponent extends Component {
                             assetList={this.assetList}
                             tableData={challans}
                         /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
-                    </div> </div> : <div className={'p-2'}>
-                        <nav className="navbar text-center mb-0 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({    targetAsset: [], addAssets: false })}}>
-                            <p className="text-blue f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Go Back</p>
-                        </nav>
+                    </div> </div> :
                         <div>
-                            <div className={'rounded pl-3 pt-1'}>
-                                <div className="row">
-                                    <div className="col-md-6 pr-1 pl-0">
-                                        <div className={'bg-white p-2 rounded mb-2'}>
-                                            <h5>Add Asset Information</h5>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Project</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.project_id && 'is-invalid'}`} onChange={this.handleChange} name={'project_id'} value={project_id}>
-                                                        <option>Select Project</option>
-                                                        <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Category</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_category'} value={asset_category}>
-                                                        <option>Asset Category</option>
-                                                        <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Sub Category</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
-                                                        <option>Asset Sub Category</option>
-                                                        <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Product</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
-                                                        <option>Product</option>
-                                                        <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                            <div className="ui-dataEntry">
+                                <div className="admin-input-height bg-challan position-relative rounded p-3">
+                                    <nav className="navbar text-center mb-2 border-bottom-nav">
+                                        <p className="text-white f-weight-700 f-20px m-0">Challan Information</p>
+                                    </nav>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Challan No
                                         </div>
-                                        <div className={'bg-white p-2 rounded mb-2'}>
-                                            <h5>Cost Information</h5>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Cost of Purchase</label>
-                                                <input type="number"
-                                                       value={cost_of_purchase}
-                                                       onChange={this.handleChange} name={'cost_of_purchase'}
-                                                       placeholder={'Cost of Purchase'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.cost_of_purchase && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Installation Cost</label>
-                                                <input type="number"
-                                                       value={installation_cost}
-                                                       onChange={this.handleChange} name={'installation_cost'}
-                                                       placeholder={'Installation Cost'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.installation_cost && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Carrying Cost</label>
-                                                <input type="number"
-                                                       value={carrying_cost}
-                                                       onChange={this.handleChange} name={'carrying_cost'}
-                                                       placeholder={'Carrying Cost'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.carrying_cost && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Other Cost</label>
-                                                <input type={'number'}
-                                                       value={other_cost}
-                                                       onChange={this.handleChange} name={'other_cost'}
-                                                       placeholder={'Other Cost'}
-                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Charge</label>
-                                                <input type={'number'}
-                                                       value={amc_charge}
-                                                       onChange={this.handleChange} name={'amc_charge'}
-                                                       placeholder={'AMC Charge'}
-                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Expire Date</label>
-                                                <input type="date"
-                                                       value={amc_expire_date}
-                                                       onChange={this.handleChange} name={'amc_expire_date'}
-                                                       placeholder={'AMC Expire Date'}
-                                                       className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Type</label>
-                                                <input type={'text'}
-                                                       value={amc_type}
-                                                       onChange={this.handleChange} name={'amc_type'}
-                                                       placeholder={'AMC Type'}
-                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
-                                                <div className="ui-custom-checkbox">
-                                                    <input
-                                                        type={'checkbox'}
-                                                        checked={is_amc}
-                                                        id={'is_amc'}
-                                                        name={'is_amc'}
-                                                        onChange={this.handleChange} />
-                                                    <label htmlFor="is_amc" className={'mb-0'}>IS AMC</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className={'bg-white p-2 rounded mb-2'}>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Asset Quantity</label>
-                                            <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
-                                        </div>
-                                        {prodSer}
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {challan_no}
                                         </div>
                                     </div>
-                                    <div className="col-md-6 pl-1">
-                                        <div className={'bg-white p-2 rounded mb-2'}>
-                                            <h5>Insurance Information</h5>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Value of Insurance</label>
-                                                <input type="number"
-                                                       value={insurance_value}
-                                                       onChange={this.handleChange} name={'insurance_value'}
-                                                       placeholder={'Value of Insurance'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_value && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Value of Premium</label>
-                                                <input type="number"
-                                                       value={insurance_premium}
-                                                       onChange={this.handleChange} name={'insurance_premium'}
-                                                       placeholder={'Value of Premium'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_premium && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Insurance Company</label>
-                                                <input type="text"
-                                                       value={insurance_company}
-                                                       onChange={this.handleChange} name={'insurance_company'}
-                                                       placeholder={'Insurance Company'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.insurance_company && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Expire Date</label>
-                                                <input type="date"
-                                                       value={insurance_expire_date}
-                                                       onChange={this.handleChange} name={'insurance_expire_date'}
-                                                       placeholder={'Expire Date'}
-                                                       className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.insurance_expire_date && 'is-invalid'}`}/>
-                                            </div>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Challan Date
                                         </div>
-                                        <div className={'bg-white p-2 rounded mb-2'}>
-                                            <h5>Additional Information</h5>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Asset Type</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_type && 'is-invalid'}`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
-                                                        <option>Asset Type</option>
-                                                        <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Condition</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.condition && 'is-invalid'}`} onChange={this.handleChange} name={'condition'} value={condition}>
-                                                        <option>Select Condition</option>
-                                                        <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>Depreciation Method</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.depreciation_method && 'is-invalid'}`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
-                                                        <option>Select Depreciation Method</option>
-                                                        <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                    </select>
-                                                    <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Rate</label>
-                                                <input type="number"
-                                                       value={rate}
-                                                       onChange={this.handleChange} name={'rate'}
-                                                       placeholder={'Rate'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.rate && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Effective Date</label>
-                                                <input type="date"
-                                                       value={effective_date}
-                                                       onChange={this.handleChange} name={'effective_date'}
-                                                       placeholder={'Effective Date'}
-                                                       className={`ui-custom-input pb-6px w-100 ${errorDictAsset && !errorDictAsset.effective_date && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Book Value</label>
-                                                <input type="number"
-                                                       value={book_value}
-                                                       onChange={this.handleChange} name={'book_value'}
-                                                       placeholder={'Book Value'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.book_value && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Salvage Value</label>
-                                                <input type="number"
-                                                       value={salvage_value}
-                                                       onChange={this.handleChange} name={'salvage_value'}
-                                                       placeholder={'Salvage Value'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.salvage_value && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Useful Life</label>
-                                                <input type="text"
-                                                       value={useful_life}
-                                                       onChange={this.handleChange} name={'useful_life'}
-                                                       placeholder={'Useful Life'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.useful_life && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Warranty</label>
-                                                <input type="text"
-                                                       value={warranty}
-                                                       onChange={this.handleChange} name={'warranty'}
-                                                       placeholder={'Warranty'}
-                                                       className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.warranty && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>Comments</label>
-                                                <textarea placeholder={'Comments'}
-                                                          onChange={this.handleChange} name={'comments'}
-                                                          value={comments}
-                                                          className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.comments && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
-                                                <div className="ui-custom-checkbox">
-                                                    <input
-                                                        type={'checkbox'}
-                                                        checked={barcode}
-                                                        id={'customCheckbox'}
-                                                        name={'barcode'}
-                                                        onChange={this.handleChange} />
-                                                    <label htmlFor="customCheckbox" className={'mb-0'}>Barcode</label>
-                                                </div>
-                                            </div>
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {moment(challan_date).format('YYYY-MM-DD')}
+                                        </div>
+                                    </div>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Challan Description
+                                        </div>
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {challan_description ? challan_description : 'N/A'}
+                                        </div>
+                                    </div>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Received By
+                                        </div>
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {received_by}
+                                        </div>
+                                    </div>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Comments
+                                        </div>
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {challanComments ? challanComments : 'N/A'}
+                                        </div>
+                                    </div>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Purchase Order No
+                                        </div>
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {purchase_order_no}
+                                        </div>
+                                    </div>
+                                    <div className={'row p-2 align-items-center mb-3'}>
+                                        <div className={'col-4 pl-2 ui-text'}>
+                                            Purchase Order Date
+                                        </div>
+                                        <div className={'col-8 pr-2 ui-text'}>
+                                            <span className={'ui-text mr-3'}>:</span> {moment(purchase_order_date).format('YYYY-MM-DD')}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={'row p-2 align-items-center mt-1'}>
-                                <div className={'col-6 px-2 d-flex w-100'}>
-                                    <button className="mr-3 submit-btn-normal" onClick={this.addProduct} >Submit Product</button>
+                                <div className={'asset-right admin-input-height'}>
+                                    <nav className="navbar mr-1 border-blue text-center mb-0 mb-1 p-3 rounded bg-white cursor-pointer" onClick={() => {this.setState({    targetAsset: [], targetChallan: [], addAsst: false, addAssets: false })}}>
+                                        <p className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i className="icofont-swoosh-left f-22px"></i> Assets Registration</p>
+                                    </nav>
+                                    <div className={'rounded pl-3 pt-1'}>
+                                        <div className="row">
+                                            <div className="col-md-6 pr-1 pl-0">
+                                                <div className={'bg-white p-2 rounded mb-2 border-blue'}>
+                                                    <h5>Add Asset Information</h5>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Category</label>
+                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_category && 'is-invalid'}`}
+                                                                    onChange={this.handleChange} name={'asset_category'}
+                                                                    value={asset_category}>
+                                                                <option>Asset Category</option>
+                                                                <AssetCategoryOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'ASSETCATEGORY', getApi: 'asset-category', headTitle: 'Asset Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Sub Category</label>
+                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'asset_sub_category'} value={asset_sub_category} >
+                                                                <option>Asset Sub Category</option>
+                                                                <AssetSubCategoryOptions assetId={asset_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'ASSETSUBCATEGORY', getApi: 'asset-sub-category', headTitle: 'Asset Sub Category Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Project</label>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'project_id'} value={project_id}>
+                                                                <option>Select Project</option>
+                                                                <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Product</label>
+                                                            <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
+                                                                <option>Product</option>
+                                                                <ProductsOptions catId={asset_category} subId={asset_sub_category} forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'PRODUCTS', getApi: 'products', headTitle: 'Product Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className={'bg-white p-2 rounded mb-2 border-blue'}>
+                                                    <h5>Cost Information</h5>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Cost of Purchase</label>
+                                                        <input type="number"
+                                                               value={cost_of_purchase}
+                                                               onChange={this.handleChange} name={'cost_of_purchase'}
+                                                               placeholder={'Cost of Purchase'}
+                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.cost_of_purchase && 'is-invalid'}`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Installation Cost</label>
+                                                        <input type="number"
+                                                               value={installation_cost}
+                                                               onChange={this.handleChange} name={'installation_cost'}
+                                                               placeholder={'Installation Cost'}
+                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.installation_cost && 'is-invalid'}`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Carrying Cost</label>
+                                                        <input type="number"
+                                                               value={carrying_cost}
+                                                               onChange={this.handleChange} name={'carrying_cost'}
+                                                               placeholder={'Carrying Cost'}
+                                                               className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.carrying_cost && 'is-invalid'}`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Other Cost</label>
+                                                        <input type={'number'}
+                                                               value={other_cost}
+                                                               onChange={this.handleChange} name={'other_cost'}
+                                                               placeholder={'Other Cost'}
+                                                               className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
+                                                    </div>
+                                                    <div className="mb-2 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
+                                                        <div className="ui-custom-checkbox">
+                                                            <input
+                                                                type={'checkbox'}
+                                                                checked={is_amc}
+                                                                id={'is_amc'}
+                                                                name={'is_amc'}
+                                                                onChange={this.handleChange} />
+                                                            <label htmlFor="is_amc" className={'mb-0'}>IS AMC</label>
+                                                        </div>
+                                                    </div>
+                                                    {is_amc && <>
+                                                        <div className={'mb-1'}>
+                                                            <div className="input-grid">
+                                                                <label className={'ui-custom-label'}>AMC Type</label>
+                                                                <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}
+                                                                        onChange={this.handleChange} name={'amc_type'} value={amc_type}>
+                                                                    <option>AMC Types</option>
+                                                                    <AMCTypeOptions forceUp={this.amc} stateForceUpdate={this.state.amc}/>
+                                                                </select>
+                                                                <button onClick={() => {this.setState({formType: 'AMCTYPES', getApi: 'amc_types', headTitle: 'AMC Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                    <i className="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                            </div>
+                                                        <div className={'mb-1'}>
+                                                            <label className={'ui-custom-label'}>AMC Charge</label>
+                                                            <input type={'number'}
+                                                                   value={amc_charge}
+                                                                   onChange={this.handleChange} name={'amc_charge'}
+                                                                   placeholder={'AMC Charge'}
+                                                                   className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
+                                                        </div>
+                                                        <div className={'mb-1'}>
+                                                            <label className={'ui-custom-label'}>AMC Expire Date</label>
+                                                            <DatePicker timePicker={false}
+                                                                        name={'amc_expire_date'}
+                                                                        className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}
+                                                                        inputFormat="DD/MM/YYYY"
+                                                                        onChange={date => this.setState({amc_expire_date: date})}
+                                                                        value={amc_expire_date}/>
+                                                        </div></>}
+                                                </div>
+                                                <div className={'bg-white p-2 rounded mb-2 border-blue'}>
+                                                <div className={'mb-1'}>
+                                                    <label className={'ui-custom-label'}>Asset Quantity</label>
+                                                    <input type='number' className={`ui-custom-input`} onChange={this.handleChange} placeholder={'Quantity'} name={'asset_quantity'} value={asset_quantity}/>
+                                                </div>
+                                                {prodSer}
+                                                <button className="mt-3 submit-btn-normal w-50" onClick={this.addProduct} >Register Asset</button>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6 pl-1">
+                                                <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
+                                                    <h5>Insurance Information</h5>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Value of Insurance</label>
+                                                        <input type="number"
+                                                               value={insurance_value}
+                                                               onChange={this.handleChange} name={'insurance_value'}
+                                                               placeholder={'Value of Insurance'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Value of Premium</label>
+                                                        <input type="number"
+                                                               value={insurance_premium}
+                                                               onChange={this.handleChange} name={'insurance_premium'}
+                                                               placeholder={'Value of Premium'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Insurance Company</label>
+                                                        <input type="text"
+                                                               value={insurance_company}
+                                                               onChange={this.handleChange} name={'insurance_company'}
+                                                               placeholder={'Insurance Company'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Expire Date</label>
+                                                        <DatePicker timePicker={false}
+                                                                    name={'insurance_expire_date'}
+                                                                    className={`ui-custom-input w-100`}
+                                                                    inputFormat="DD/MM/YYYY"
+                                                                    onChange={date => this.setState({insurance_expire_date: date})}
+                                                                    value={insurance_expire_date}/>
+                                                    </div>
+                                                </div>
+                                                <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
+                                                    <h5>Depreciation & Others</h5>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Asset Type</label>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'asset_type'} value={asset_type}>
+                                                                <option>Asset Type</option>
+                                                                <AssetTypeOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'ASSETTYPES', getApi: 'assets-types', headTitle: 'Asset Type Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Condition</label>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'condition'} value={condition}>
+                                                                <option>Select Condition</option>
+                                                                <ConditionOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'CONDITIONS', getApi: 'conditions', headTitle: 'Condition Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <div className="input-grid">
+                                                            <label className={'ui-custom-label'}>Depreciation Method</label>
+                                                            <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'depreciation_method'} value={depreciation_method}>
+                                                                <option>Select Depreciation Method</option>
+                                                                <DepreciationOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
+                                                            </select>
+                                                            <button onClick={() => {this.setState({formType: 'DEPMETHOD', getApi: 'depreciation-methods', headTitle: 'Depreciation Method Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
+                                                                <i className="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Rate</label>
+                                                        <input type="number"
+                                                               value={rate}
+                                                               onChange={this.handleChange} name={'rate'}
+                                                               placeholder={'Rate'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Effective Date</label>
+                                                        <DatePicker timePicker={false}
+                                                                    name={'effective_date'}
+                                                                    className={`ui-custom-input w-100`}
+                                                                    inputFormat="DD/MM/YYYY"
+                                                                    onChange={date => this.setState({effective_date: date})}
+                                                                    value={effective_date}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Book Value</label>
+                                                        <input type="number"
+                                                               value={book_value}
+                                                               onChange={this.handleChange} name={'book_value'}
+                                                               placeholder={'Book Value'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Salvage Value</label>
+                                                        <input type="number"
+                                                               value={salvage_value}
+                                                               onChange={this.handleChange} name={'salvage_value'}
+                                                               placeholder={'Salvage Value'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Useful Life (in month)</label>
+                                                        <input type="text"
+                                                               value={useful_life}
+                                                               onChange={this.handleChange} name={'useful_life'}
+                                                               placeholder={'Useful Life'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Warranty (in month)</label>
+                                                        <input type="text"
+                                                               value={warranty}
+                                                               onChange={this.handleChange} name={'warranty'}
+                                                               placeholder={'Warranty'}
+                                                               className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className={'mb-1'}>
+                                                        <label className={'ui-custom-label'}>Comments</label>
+                                                        <textarea placeholder={'Comments'}
+                                                                  onChange={this.handleChange} name={'comments'}
+                                                                  value={comments}
+                                                                  className={`ui-custom-input w-100`}/>
+                                                    </div>
+                                                    <div className="mb-1 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
+                                                        <div className="ui-custom-checkbox">
+                                                            <input
+                                                                type={'checkbox'}
+                                                                checked={barcode}
+                                                                id={'customCheckbox'}
+                                                                name={'barcode'}
+                                                                onChange={this.handleChange} />
+                                                            <label htmlFor="customCheckbox" className={'mb-0'}>Barcode</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>}
+                    }
                 </div>
             </div>
         );

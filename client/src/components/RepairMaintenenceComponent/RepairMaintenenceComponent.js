@@ -8,6 +8,10 @@ import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import {getFileExtension} from "../../utility/custom";
 import {validateInput} from "../../utility/custom";
+import Spinner from "../../layouts/Spinner";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class RepairMaintenenceComponent extends Component {
     constructor(props) {
@@ -33,22 +37,10 @@ class RepairMaintenenceComponent extends Component {
             errorDict: null,
             isLoading: false,
             repairData: [],
-            repairCredential: []
+            repairCredential: [],
+            repairTableData: []
         };
 
-        this.table_header = [
-            "Product Serial",
-            "Product",
-            "Category",
-            "Sub Category",
-            "Cost of Purchase",
-            "Book Value",
-            "Salvage Value",
-            "Useful Life",
-            "Estimated Cost",
-            "Details",
-            "Action"
-        ];
         this.accepted_file_ext = ['png', 'jpg', 'jpeg', 'doc', 'docx', 'pdf', 'xlsx'];
     }
 
@@ -68,6 +60,7 @@ class RepairMaintenenceComponent extends Component {
                 if (valid || valid === '') this.setState({[name]: valid}, () => {this.validate()});
                 return;
             case 'file_name':
+                if (!files.length) return;
                 const ext = getFileExtension(files[0].name);
                 if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
                 this.setState({file_name: files[0], extError: false}, () => {this.validate()});
@@ -86,15 +79,28 @@ class RepairMaintenenceComponent extends Component {
     addRepair = () => {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
-        const {repairData, repairCredential, category_id, sub_category_id, product_id, product_serial, user, estimated_cost, details} = this.state;
+        const {repairData, repairCredential, category_id, sub_category_id, product_id, product_serial, estimated_cost, details} = this.state;
+        let file = document.getElementById("validatedCustomFile");
 
         const isExistRepair = repairCredential.filter(item => {return (item.category_id === category_id && item.sub_category_id === sub_category_id && item.product_id === product_id && item.product_serial === product_serial)});
-        if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'});
+        if (isExistRepair.length) return this.setState({error: true, errorMessage: 'This Asset is already added in Repair list!'}, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300)
+        });
 
         this.setState({isLoading: true}, () => {
             axios.post(apiUrl() + 'assets-entry/all/by/credentials', this.getApiData())
                 .then(res => {
-                    if (!res.data[0].length) return this.setState({error: true, errorMessage: 'There is no asset found for Repair & Maintenance!', isLoading: false, success: false});
+                    if (!res.data[0].length) return this.setState({error: true, errorMessage: 'There is no asset found for Repair & Maintenance!', isLoading: false, success: false}, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300)
+                    });
                     this.setState({repairData: [...repairData, ...res.data[0]], error: false, isLoading: false}, () => {
                         let newRepair = this.getApiData();
                         res.data[0].map(item => {
@@ -106,7 +112,26 @@ class RepairMaintenenceComponent extends Component {
                         let newRepairArray = [newRepair];
                         this.setState({
                             repairCredential: [...repairCredential, ...newRepairArray]
-                        }, () => this.setState({estimated_cost: '', details: '', file_name: ''}))
+                        }, () => {
+                            let newRepairObj = {};
+                            this.state.repairData.length > 0 && this.state.repairData.map(item => {
+                                const newObj = {
+                                    id: item.id,
+                                    product_serial: item.product_serial,
+                                    category_name: item.category_name,
+                                    sub_category_name: item.sub_category_name,
+                                    product_name: item.product_name,
+                                    cost: estimated_cost,
+                                    details: details
+                                };
+                                Object.assign(newRepairObj, newObj);
+                            });
+
+                            let repairTableData = [newRepairObj];
+                            this.setState({
+                                repairTableData: [...this.state.repairTableData, ...repairTableData]
+                            }, () => this.setState({estimated_cost: '', details: '', file_name: ''}, () => { return file.value = "";}))
+                        })
                     })
                 })
                 .catch(err => {
@@ -115,11 +140,12 @@ class RepairMaintenenceComponent extends Component {
         })
     };
 
-    cancelRepair = index => {
-        const {repairData, repairCredential} = this.state;
+    cancelRepair = id => {
+        const {repairData, repairCredential, repairTableData} = this.state;
         this.setState({
-            repairData: repairData.filter((item, key) => key !== index),
-            repairCredential: repairCredential.filter((item, key) => key !== index)
+            repairData: repairData.filter(item => item.id !== id),
+            repairCredential: repairCredential.filter(item => item.id !== id),
+            repairTableData: repairTableData.filter(item => item.id !== id)
         });
     };
 
@@ -130,14 +156,25 @@ class RepairMaintenenceComponent extends Component {
                 this.setState({
                     repairData: [],
                     repairCredential: [],
-                    error: false,
+                    repairTableData: [],
                     success: success,
                     successMessage: success && msg
-                }, () => {this.emptyStateValue()})
+                }, () => {
+                    this.emptyStateValue();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2300);
+                })
             })
             .catch(err => {
                 const {error, msg} = err.response.data;
-                if (msg) this.setState({success: false, error: error, errorMessage: error && msg});
+                if (msg) this.setState({error: error, errorMessage: error && msg}, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false
+                        })
+                    }, 2300);
+                });
                 console.log(err.response);
             })
     };
@@ -145,16 +182,27 @@ class RepairMaintenenceComponent extends Component {
     getFormData = () => {
         const {repairCredential, user: {id, location_id, role_id}} = this.state;
         let jsonData = [];
+        let data;
 
         repairCredential.length && repairCredential.map(item => {
-            let data = {
-                location_id: location_id,
-                role_id: role_id,
-                user_id: id,
-                asset_id: item.id,
-                estimated_cost: item.estimated_cost,
-                details: item.details
-            };
+            if (location_id !== 0 && role_id !== 0) {
+                data = {
+                    location_id: location_id,
+                    role_id: role_id,
+                    user_id: id,
+                    asset_id: item.id,
+                    estimated_cost: item.estimated_cost,
+                    details: item.details
+                };
+            } else {
+                data = {
+                    user_id: id,
+                    asset_id: item.id,
+                    estimated_cost: item.estimated_cost,
+                    details: item.details
+                };
+            }
+
             jsonData.push(data);
         });
 
@@ -214,60 +262,29 @@ class RepairMaintenenceComponent extends Component {
         });
     };
 
+    setTableWidth = () => {
+        let table = document.getElementById('__table_react');
+        if (table) table.style.width = '100%';
+    };
+
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
-            errorDict, isLoading, repairData, repairCredential, estimated_cost, details, file_name, extError
+            errorDict, isLoading, repairData, repairTableData, estimated_cost, details, file_name, extError
         } = this.state;
 
-        let estimated_cost_array = [];
-        let details_array = [];
-        repairCredential.length && repairCredential.map(item => {
-            Object.keys(item).map(val => {
-                if (val === 'estimated_cost') estimated_cost_array.push(item[val]);
-                if (val === 'details') details_array.push(item[val]);
-            });
-        });
-
-        const table_body = repairData.length && repairData.map((item, index) => (
-            <tr key={index}>
-                <td>{item.product_serial}</td>
-                <td>{item.product_name}</td>
-                <td>{item.category_name}</td>
-                <td>{item.sub_category_name}</td>
-                <td>{item.cost_of_purchase}</td>
-                <td>{item.book_value}</td>
-                <td>{item.salvage_value}</td>
-                <td>{item.useful_life}</td>
-                <td>{estimated_cost_array[index]}</td>
-                <td>{details_array[index]}</td>
-                <td>
-                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelRepair(index)}><i
-                        className="fas fa-times"/></span>
-                </td>
-            </tr>
-        ));
-
-        const table_header = this.table_header.length && this.table_header.map((item, index) => (
-            <th key={index} scope="col">{item}</th>
-        ));
+        repairTableData.length > 0 && this.setTableWidth();
 
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => this.setState({error: false})}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage}/>
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage}/>
+                }
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 min-h-80vh position-relative ui-overflow`}>
+                    <div className={`bg-white rounded p-2 admin-input-height position-relative ui-overflow`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Repair/Maintenance</p>
                         </nav>
@@ -322,16 +339,16 @@ class RepairMaintenenceComponent extends Component {
                             }
                         </div>
                         <div className="px-1 mb-2">
-                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Estimated Cost</label>
+                            <label htmlFor="inputPassword4" className={'ui-custom-label'}>Cost</label>
                             <input
-                                placeholder='Estimated Cost'
+                                placeholder='Cost'
                                 name={'estimated_cost'}
                                 value={estimated_cost}
                                 data-number={'float_only'}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                             {errorDict && !errorDict.estimated_cost &&
-                            <span className="error">Estimated Cost Field is required</span>
+                            <span className="error">Cost Field is required</span>
                             }
                         </div>
                         <div className="px-1 mb-2">
@@ -343,12 +360,14 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Repair Details Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-20p w-50">
+                        <div className="px-1 mb-2 w-50">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'}
                                        className="custom-file-input" id="validatedCustomFile"/>
-                                <label
-                                    htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <label htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                </div>
                             </div>
                             {errorDict && !errorDict.file_name &&
                             <>
@@ -360,23 +379,18 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
                             }
                         </div>
-                        <button onClick={this.addRepair} className="submit-btn">Add Repair-Maintenance</button>
+                        <button onClick={this.addRepair} className="submit-btn-normal mt-5">Add Into List</button>
                     </div>
-                    <div className="rounded bg-white min-h-80vh p-2">
+                    <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Repair/Maintenance List</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : repairData.length ? <>
-                            <table className="table table-bordered table-responsive">
-                                <thead>
-                                <tr>
-                                    {table_header}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {table_body}
-                                </tbody>
-                            </table>
+                        {isLoading ? <Spinner/> : repairTableData.length ? <>
+                            <ReactDataTable
+                                remove={this.cancelRepair}
+                                tableData={repairTableData}
+                                bigTable
+                            />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Repair/Maintenance Asset</h4>}
                         {repairData.length ?
@@ -404,7 +418,7 @@ class RepairMaintenenceComponent extends Component {
                                             data-dismiss="modal">Cancel
                                     </button>
                                     <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                            onClick={this.handleSubmit}>Repair Now
+                                            onClick={this.handleSubmit}>Confirm
                                     </button>
                                 </div>
                             </div>

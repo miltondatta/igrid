@@ -42,7 +42,7 @@
 
 .ui-topnav .ui-search-bar input::placeholder{
     color: #a7a7a7;
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .ui-topnav .ui-user-nav{
@@ -50,6 +50,10 @@
     text-align: right;
     position: relative;
     justify-self: end;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
+    width: 240px;
 }
 
 .ui-topnav .ui-user-nav i{
@@ -70,6 +74,16 @@
     background: #2885ce;
 }
 
+.ui-topnav .ui-dropdown-holder{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.ui-topnav .ui-dropdown-holder:hover .ui-user-dropdown{
+    display: block;
+}
+
 .ui-user-avatar{
     margin-right: 5px;
     border-radius: 50%;
@@ -78,7 +92,7 @@
 }
 
 .ui-topnav .ui-user-dropdown{
-    bottom: -186px;
+    display: none;
     text-align: left;
     background: #fff;
     box-shadow: 0 5px 10px #4b4b4b5c;
@@ -87,7 +101,7 @@
     position: absolute;
     border-radius: 7px;
     right: 0;
-    z-index: 5;
+    z-index: 10;
     width: 225px;
     padding: 10px;
     -webkit-animation: user-dropdown .3s;
@@ -214,25 +228,15 @@
     color: #2384d0 !important;
 }
 
-@keyframes user-dropdown{
-    from{
-        bottom: -166px;
-        opacity: 0;
-    } to{
-        bottom: -186px;
-        opacity: 1;
-    }
-}
-
 
 .ui-topnav .ui-notification{
     width: 290px;
     height: 260px;
     position: absolute;
     background: white;
-    z-index: 5;
+    z-index: 10;
     border-radius: 5px;
-    top: 140%;
+    top: 95%;
     right: 21%;
     padding: 10px;
     box-shadow: 0 5px 10px #00000040;

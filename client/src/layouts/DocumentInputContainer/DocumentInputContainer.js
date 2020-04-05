@@ -1,12 +1,16 @@
 import Axios from "axios";
 import React, {Component} from 'react';
-import {apiUrl} from "../../utility/constant";
+import {apiBaseUrl, apiUrl} from "../../utility/constant";
 import DocumentCategoryOptions from "../../utility/component/documentCategoryOptions";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {getFileExtension} from "../../utility/custom";
+import Spinner from "../Spinner";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -38,10 +42,11 @@ class DocumentInputContainer extends Component {
         super(props);
         this.state = {
             allProjects: [],
+            allProjectTableData: [],
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             content_type: '',
             title: '',
             circular_no: '',
@@ -71,24 +76,43 @@ class DocumentInputContainer extends Component {
     handleSubmit = () => {
         if (this.state.extError) return false;
         if (Object.values(this.validate()).includes(false)) return false;
-        const {getApi} = this.props;
+        if (this.state.description.length > 3000) return this.setState({
+            error: true,
+            errorMessage: 'Description Message length exceeds!'
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300);
+        });
+        const {getApi, formType} = this.props;
+        let file = document.getElementById("validatedCustomFile");
+
         Axios.post(apiUrl() + getApi + '/store', this.getApiData())
             .then(res => {
                 const {success, msg} = res.data;
                 this.setState({
                     category_id: '',
-                    category_name: '',
+                    category: '',
                     sub_category_id: '',
-                    sub_category_name: '',
+                    sub_category: '',
                     content_type: 0,
                     title: '',
                     circular_no: '',
                     description: '',
                     file_name: '',
                     document_date: '',
-                    error: false,
+                    display_notice: false,
                     success: success,
                     successMessage: success && msg
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
+                    if (formType === 'DOCUMENTLIST') return file.value = ""; else return true;
                 })
             })
             .then(() => {
@@ -101,9 +125,14 @@ class DocumentInputContainer extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -111,23 +140,70 @@ class DocumentInputContainer extends Component {
     };
 
     getData = () => {
-        const {getApi} = this.props;
+        const {getApi, formType} = this.props;
         this.setState({
             isLoading: true
         }, () => {
             Axios.get(apiUrl() + getApi + '/all')
                 .then(res => {
                     this.setState({
-                        allProjects: res.data
-                    })
-                })
-                .then(res => {
-                    this.setState({
-                        isLoading: false
+                        allProjects: res.data,
+                        allProjectTableData: []
+                    }, () => {
+                        let allProjectTableData = [];
+                        switch (formType) {
+                            case "DOCUMENTCATEGORY":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category: item.category_name
+                                    };
+                                    allProjectTableData.push(newObj);
+                                });
+                                return this.setState({
+                                    allProjectTableData: allProjectTableData,
+                                    isLoading: false
+                                });
+                            case "DOCUMENTSUBCATEGORY":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        category: item.document_category.category_name,
+                                        sub_category: item.sub_category_name
+                                    };
+                                    allProjectTableData.push(newObj);
+                                });
+                                return this.setState({
+                                    allProjectTableData: allProjectTableData,
+                                    isLoading: false
+                                });
+                            case "DOCUMENTLIST":
+                                res.data.length > 0 && res.data.map(item => {
+                                    let newObj = {
+                                        id: item.id,
+                                        document_date: moment(item.document_date).format('YYYY-MM-DD'),
+                                        category: item.document_category.category_name,
+                                        sub_category: item.document_sub_category.sub_category_name,
+                                        title: item.title,
+                                        description: item.description,
+                                        circular_no: item.circular_no,
+                                        content_type: item.content_type === 1 ? 'notice' : 'circular',
+                                        display_notice: item.display_notice ? 'on' : 'off',
+                                        current_status: item.status ? 'active' : 'inactive'
+                                    };
+                                    allProjectTableData.push(newObj);
+                                });
+                                return this.setState({
+                                    allProjectTableData: allProjectTableData,
+                                    isLoading: false
+                                });
+                            default:
+                                return;
+                        }
                     })
                 })
                 .catch(err => {
-                    console.log(err)
+                    console.log(err.response);
                 })
         })
     };
@@ -183,9 +259,14 @@ class DocumentInputContainer extends Component {
                 const {success, msg} = resData.data;
                 this.setState({
                     allProjects: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                 });
             })
             .then(() => {
@@ -195,9 +276,14 @@ class DocumentInputContainer extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -212,13 +298,17 @@ class DocumentInputContainer extends Component {
                 const {success, msg} = resData.data;
                 this.setState({
                     allProjects: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg,
                     deleteId: 0,
                     deleteContentName: '',
                     deleteModalTitle: ''
                 }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            success: false
+                        })
+                    }, 2300);
                     this.emptyStateValue();
                     this.getData();
                 });
@@ -228,9 +318,14 @@ class DocumentInputContainer extends Component {
                 if (fullError.name === 'SequelizeForeignKeyConstraintError') {
                     if (msg) {
                         this.setState({
-                            success: false,
                             error: error,
                             errorMessage: error && msg
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false
+                                })
+                            }, 2300);
                         })
                     }
                 }
@@ -241,9 +336,9 @@ class DocumentInputContainer extends Component {
     emptyStateValue = () => {
         return this.setState({
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             content_type: 0,
             title: '',
             circular_no: '',
@@ -261,6 +356,7 @@ class DocumentInputContainer extends Component {
         const {name, value, files, checked} = e.target;
         switch (name) {
             case "file_name":
+                if (!files.length) return;
                 const ext = getFileExtension(files[0].name);
                 if (!this.accepted_file_ext.includes(ext)) return this.setState({extError: true, file_name: ''});
 
@@ -321,7 +417,7 @@ class DocumentInputContainer extends Component {
     renderForm = () => {
         const {formType} = this.props;
         const {
-            category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
+            category_id, category, sub_category_id, sub_category, content_type, title, circular_no, description, file_name,
             document_date, display_notice, status, editId, errorDict, documentSubCategory, extError
         } = this.state;
 
@@ -329,25 +425,25 @@ class DocumentInputContainer extends Component {
             case 'DOCUMENTCATEGORY':
                 return (
                     <>
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label htmlFor="inputPassword4" className={'ui-custom-label'}>Document Category Name</label>
                             <input
                                 placeholder='Enter Document Category Name'
                                 type={'text'}
                                 name={'category_name'}
-                                value={category_name}
+                                value={category}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                         </div>
-                        {errorDict && !errorDict.category_name &&
+                        {errorDict && !errorDict.category &&
                         <span className="error">Document Category Field is required</span>
                         }
-                        {editId === null ? <button className="submit-btn"
+                        {editId === null ? <button className="submit-btn-normal mt-5"
                                                    onClick={this.handleSubmit}>Submit</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>
                                 Update
                             </button>
-                            <button className="reset-btn-normal"  onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
+                            <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back
                             </button>
                         </>}
                     </>
@@ -366,26 +462,23 @@ class DocumentInputContainer extends Component {
                             <span className="error">Category Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label htmlFor="inputPassword4" className={'ui-custom-label'}>Sub Category Name</label>
                             <input
                                 placeholder='Sub Category Name'
                                 type={'text'}
                                 name={'sub_category_name'}
-                                value={sub_category_name}
+                                value={sub_category}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
-                            {errorDict && !errorDict.sub_category_name &&
+                            {errorDict && !errorDict.sub_category &&
                             <span className="error">Sub Category Name Field is required</span>
                             }
                         </div>
-                        {editId === null ? <button className="submit-btn"
-                                                   onClick={this.handleSubmit}>Submit Sub Category</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData} style={{position: 'absolute', bottom: 12}}>
-                                Update
-                            </button>
-                            <button className="reset-btn-normal" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
-                            </button>
+                        {editId === null ? <button className="submit-btn-normal mt-5"
+                                                   onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -481,25 +574,27 @@ class DocumentInputContainer extends Component {
                                         ranges={disabledRanges}
                                         value={document_date}/>
                         </div>
-                        <div className="px-1 mb-20p">
-                            <div className="row align-items-center">
-                                <div className="col-md-4">
-                                    <div className="ui-custom-file">
-                                        <input type="file" onChange={this.handleChange} name={'file_name'}
-                                               className="custom-file-input" id="validatedCustomFile"/>
-                                        <label
-                                            htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
-                                    </div>
-                                    {errorDict && !errorDict.file_name &&
-                                    <>
-                                        <span className="error">File Name Field is required</span>
-                                        <br/>
-                                    </>
-                                    }
-                                    {extError &&
-                                    <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
-                                    }
+                        <div className="px-1 mb-2">
+                            <div className="ui-custom-file">
+                                <input type="file" onChange={this.handleChange} name={'file_name'}
+                                       className="custom-file-input" id="validatedCustomFile"/>
+                                <label htmlFor="validatedCustomFile" style={{width: '100%'}}>{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <div className="bottom text-center" style={{width: '100%'}}>
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
+                            </div>
+                            {errorDict && !errorDict.file_name &&
+                            <>
+                                <span className="error">File Name Field is required</span>
+                                <br/>
+                            </>
+                            }
+                            {extError &&
+                            <span className="error">Only png, jpg, jpeg, doc, docx, pdf, xlsx file format is allowed!</span>
+                            }
+                        </div>
+                        <div className="px-1 mb-2">
+                            <div className="row align-items-center">
                                 <div className="col-md-4">
                                     <div className="custom-control custom-switch">
                                         <input type="checkbox" name="display_notice"
@@ -518,13 +613,10 @@ class DocumentInputContainer extends Component {
                                 </div>
                             </div>
                         </div>
-                        {editId === null ? <button className="submit-btn"
-                                                   onClick={this.handleSubmit}>Submit Documents</button> : <>
-                            <button className="submit-btn mr-2" onClick={this.updateData}>
-                                Update
-                            </button>
-                            <button className="reset-btn-normal  mt-3" onClick={this.emptyStateValue} style={{position: 'absolute', bottom: 12, left: 110}}>Go Back
-                            </button>
+                        {editId === null ? <button className="submit-btn-normal mt-5"
+                                                   onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal cursor-pointer mt-5" onClick={this.emptyStateValue}>Go Back</button>
                         </>}
                     </>
                 );
@@ -537,14 +629,14 @@ class DocumentInputContainer extends Component {
         let errorDict = {};
         const {formType} = this.props;
         const {
-            category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
-            document_date, display_notice, status
+            category_id, category, sub_category_id, sub_category, content_type, title, circular_no, description, file_name,
+            document_date
         } = this.state;
 
         switch (formType) {
             case "DOCUMENTCATEGORY":
                 errorDict = {
-                    category_name: category_name !== ''
+                    category: category !== ''
                 };
                 this.setState({
                     errorDict
@@ -553,7 +645,7 @@ class DocumentInputContainer extends Component {
             case "DOCUMENTSUBCATEGORY":
                 errorDict = {
                     category_id: category_id !== '',
-                    sub_category_name: sub_category_name !== ''
+                    sub_category: sub_category !== ''
                 };
                 this.setState({
                     errorDict
@@ -567,6 +659,7 @@ class DocumentInputContainer extends Component {
                     title: title !== '',
                     circular_no: circular_no !== '',
                     description: description !== '',
+                    document_date: document_date !== '',
                     file_name: (file_name.name ? file_name.name : file_name) !== ''
                 };
                 this.setState({
@@ -582,7 +675,7 @@ class DocumentInputContainer extends Component {
         let data = null;
         const {formType} = this.props;
         const {
-            category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
+            category_id, category, sub_category_id, sub_category, content_type, title, circular_no, description, file_name,
             document_date, display_notice, status, editId
         } = this.state;
 
@@ -590,13 +683,13 @@ class DocumentInputContainer extends Component {
             case "DOCUMENTCATEGORY":
                 return ({
                     id: editId,
-                    category_name: category_name
+                    category_name: category
                 });
             case "DOCUMENTSUBCATEGORY":
                 return ({
                     id: editId,
                     category_id,
-                    sub_category_name
+                    sub_category_name: sub_category
                 });
             case "DOCUMENTLIST":
                 data = new FormData();
@@ -617,164 +710,64 @@ class DocumentInputContainer extends Component {
         }
     };
 
-    tableBody = () => {
+    docDeleteModal = id => {
+        const {allProjectTableData} = this.state;
         const {formType} = this.props;
-        const {allProjects} = this.state;
-        let table_body = '';
+        allProjectTableData.length && allProjectTableData.find(item => {
+            if (item.id === id) {
+                let deleteContentName, deleteModalTitle;
+                if (formType === 'DOCUMENTCATEGORY') {deleteContentName = item.category; deleteModalTitle = 'Delete Category';}
+                if (formType === 'DOCUMENTSUBCATEGORY') {deleteContentName = item.sub_category; deleteModalTitle = 'Delete Sub Category';}
+                if (formType === 'DOCUMENTLIST') {deleteContentName = item.title; deleteModalTitle = 'Delete Document List';}
 
-        switch (formType) {
-            case "DOCUMENTCATEGORY":
-                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.category_name}</td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.category_name,
-                                    deleteModalTitle: 'Delete Category'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            case "DOCUMENTSUBCATEGORY":
-                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.document_category.category_name}</td>
-                        <td>{item.sub_category_name}</td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.sub_category_name,
-                                    deleteModalTitle: 'Delete Sub Category'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            case "DOCUMENTLIST":
-                table_body = allProjects.length > 0 && allProjects.map((item, index) => (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item.document_category.category_name}</td>
-                        <td>{item.document_sub_category.sub_category_name}</td>
-                        <td>{item.title}</td>
-                        <td className="document-description-limit">
-                            <div dangerouslySetInnerHTML={{__html: item.description}}/>
-                        </td>
-                        <td>{item.circular_no}</td>
-                        <td>
-                            <span
-                                className={`badge badge-${item.content_type == 1 ? 'error.css' : 'primary'}`}>{item.content_type == 1 ? 'notice' : 'circular'}</span>
-                        </td>
-                        <td>
-                            <span
-                                className={`badge badge-${item.display_notice ? 'info' : 'warning'}`}>{item.display_notice ? 'on' : 'off'}</span>
-                        </td>
-                        <td>
-                            {item.status ?
-                                <>
-                                    <span className="badge badge-success">
-                                        <i className="far fa-check-circle"></i>
-                                    </span>
-                                </>
-                                :
-                                <>
-                                    <span className="badge badge-danger">
-                                        <i className="far fa-times-circle"></i>
-                                    </span>
-                                </>}
-                        </td>
-                        <td className="d-flex justify-content-center">
-                            <button className="btn btn-info btn-sm mr-2" onClick={() => {
-                                this.updateEdit(item.id)
-                            }}>Edit
-                            </button>
-                            <button type="button" className="btn btn-danger btn-sm" data-toggle="modal"
-                                    data-target="#rowDeleteModal" onClick={() => {
-                                this.setState({
-                                    deleteId: item.id,
-                                    deleteContentName: item.title,
-                                    deleteModalTitle: 'Delete Document List'
-                                });
-                            }}>Delete
-                            </button>
-                        </td>
-                    </tr>
-                ));
-                return table_body;
-            default:
-                return;
-        }
+                this.setState({
+                    deleteId: item.id,
+                    deleteContentName: deleteContentName,
+                    deleteModalTitle: deleteModalTitle
+                });
+            }
+        });
     };
 
     render() {
-        const {title, table_header, headTitle} = this.props;
-        const {error, errorMessage, isLoading, allProjects, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
-
+        const {title, headTitle, formType} = this.props;
+        const {error, errorMessage, isLoading, allProjectTableData, success, successMessage, deleteId, deleteContentName, deleteModalTitle} = this.state;
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({error: false})
-                }}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage}/>
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => {
-                    this.setState({success: false})
-                }}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage}/>
+                }
 
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height overflow-x-hidden position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
                         {this.renderForm()}
                     </div>
-                    <div className="rounded bg-white p-3 min-h-80vh">
+                    <div className="rounded bg-white p-3 admin-input-height">
                         <nav className="navbar text-center mb-2 pl-0 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : allProjects.length > 0 ? <>
-                            <table className="table table-bordered table-striped table-hover text-center">
-                                <thead>
-                                <tr>
-                                    {table_header.map((item, index) => (
-                                        <th key={index}>{item}</th>
-                                    ))}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.tableBody()}
-                                </tbody>
-                            </table>
-                            <div className="modal fade" id="rowDeleteModal" tabIndex="-1" role="dialog"
-                                 aria-labelledby="rowDeleteModal" aria-hidden="true">
+                        {isLoading ? <Spinner/> : allProjectTableData.length > 0 ? <>
+                            <ReactDataTable
+                                dataDisplay
+                                footer
+                                isLoading
+                                shortWidth
+                                pagination
+                                searchable
+                                action
+                                tableData={allProjectTableData}
+                                updateEdit={this.updateEdit}
+                                docDeleteModal={this.docDeleteModal}
+                                sideTable
+                            />
+                            <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
+                                 aria-labelledby="docDeleteModal" aria-hidden="true">
                                 <div className="modal-dialog modal-lg" role="document">
                                     <div className="modal-content">
                                         <div className="modal-header">
@@ -798,7 +791,8 @@ class DocumentInputContainer extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
+                            There are No {title}</h4>}
                     </div>
                 </div>
             </>

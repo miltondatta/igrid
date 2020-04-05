@@ -16,7 +16,7 @@ module.exports = {
       },
       indicatormaster_id: {
         type: Sequelize.INTEGER,
-        references:{
+        references: {
           model: 'mis_indicatormasters',
           key: 'id'
         }

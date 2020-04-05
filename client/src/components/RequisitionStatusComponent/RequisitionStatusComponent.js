@@ -45,7 +45,7 @@ class RequisitionStatusComponent extends Component {
         const {requisitionStatus, viewDetails, requisitionDetailsStatus} = this.state
         console.log(requisitionStatus)
         return (
-            <div className={'bg-white rounded p-2 m-3'}>
+            <div className={'bg-white rounded p-2 admin-input-height m-2'}>
                 <nav className="navbar text-center mb-2 ml-0 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-22px m-0">Requisition Status</p>
                 </nav>
@@ -56,11 +56,22 @@ class RequisitionStatusComponent extends Component {
                     <ReactDataTable
                     tableData={requisitionDetailsStatus}
                     assetList={this.assetList}
-                /> </>: <ReactDataTable
+                    searchable
+                    footer
+                    pagination
+                    dataDisplay
+                    bigTable
+                /> </>: requisitionStatus.length > 0 ?<ReactDataTable
                     tableData={requisitionStatus}
                     assetList={this.assetList}
+                    bigTable
+                    searchable
                     details
-                />}
+                    footer
+                    pagination
+                    dataDisplay
+                /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
+                    are No Data</h4>}
             </div>
         );
     }

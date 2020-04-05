@@ -31,12 +31,29 @@ let upload = multer({
 }).single('file')
 
 
+
+// Get Total Assets
+route.get('/total/assets', (req,res,next) => {
+    Assets.count({
+        distinct: true,
+        col: 'id'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read challans
 route.get('/assets-entry/challan', async (req, res, next) => {
     const [results, metadata] = await db.query(`
-        SELECT challans.id,challans.challan_no,challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
+        SELECT challans.id,challans.challan_date,challans.challan_no, challans.challan_no,challans.received_by,CONCAT(users."firstName", ' ', users."lastName") as added_by,vendors.vendor_name FROM challans
             JOIN vendors ON challans.vendor_id = vendors.id
             JOIN users ON challans.added_by = users.id
+                WHERE challans.is_closed = FALSE
     `)
     res.status(200).json(results)
 })
@@ -57,18 +74,23 @@ route.get('/assets-entry/specific-challan/:id', (req, res, next) => {
 route.get('/assets-entry/assets/:id', async (req, res, next) => {
     console.log(req.params.id, 38)
     const [results, metadata] = await db.query(`
-            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name,asset_sub_categories.sub_category_name,projects.project_name From assets
-            JOIN challans ON assets.challan_id = challans.id
-            JOIN projects ON assets.project_id = projects.id
-            JOIN asset_categories ON assets.asset_category = asset_categories.id
-            JOIN asset_sub_categories ON assets.asset_sub_category = asset_sub_categories.id
-            JOIN asset_types ON assets.asset_type = asset_types.id
-            JOIN conditions ON assets.condition = conditions.id
-            JOIN depreciation_methods ON assets.depreciation_method = depreciation_methods.id
+            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category,asset_sub_categories.sub_category,projects.project From assets
+            Left JOIN challans ON assets.challan_id = challans.id
+            Left JOIN projects ON assets.project_id = projects.id
+            Left JOIN asset_categories ON assets.asset_category = asset_categories.id
+            Left JOIN asset_sub_categories ON assets.asset_sub_category = asset_sub_categories.id
+            Left JOIN asset_types ON assets.asset_type = asset_types.id
+            Left JOIN conditions ON assets.condition = conditions.id
+            Left JOIN depreciation_methods ON assets.depreciation_method = depreciation_methods.id
             WHERE assets.challan_id = ${req.params.id}  
             ORDER BY asset_categories.category_name
         `)
-    res.status(200).json(results)
+
+    if (results.length > 0) {
+        res.status(200).json({results, status: true})
+    } else {
+        res.status(200).json({message: 'No Assets Found'})
+    }
 })
 
 // Read All Assets
@@ -102,7 +124,7 @@ route.get('/assets/user/options/:id', async (req, res, next) => {
     const [data, metaData] = await db.query(`
         SELECT assets.id, CONCAT(assets.product_serial, '_' ,products.product_name) as products from assets
             JOIN products ON assets.product_id = products.id
-            WHERE assets.assign_to = ${req.params.id}
+            WHERE assets.assign_to = ${req.params.id} and is_disposal = false  
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -120,11 +142,12 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
             return res.status(500).json(err)
         }
         const {challan_no, challan_date, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, received_by, added_by, challanComments} = req.body
-        if (challan_no === '' || challan_date === '' || challan_name === '' || challan_description === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' || added_by === '' || challanComments === '') {
+        if (challan_no === '' || challan_date === '' || challan_name === '' || purchase_order_no === '' || purchase_order_date === '' || vendor_id === '' || received_by === '' ||
+            added_by === '') {
             res.status(200).json({message: 'All fields required!'})
         } else {
             let data = {
-                attachment: req.file.filename,
+                attachment: req.file ? req.file.filename : null,
                 challan_no,
                 challan_date,
                 challan_name,
@@ -136,20 +159,32 @@ route.post('/assets-entry/challan/entry', (req, res, next) => {
                 added_by,
                 comments: challanComments,
             }
-            Challan.create(data)
-                .then(resData => {
-                    Vendors.findAll({attributes: ['vendor_name'], where: {id: resData.dataValues.vendor_id}})
-                        .then(resDataInner => {
-                            res.status(200).json({
-                                resId: resData.id,
-                                vendorName: resDataInner[0].dataValues.vendor_name,
-                                message: 'Challan Added Successfully!'
+            console.log(data, 229)
+            Challan.findAll({where: {vendor_id, challan_no}})
+                .then(resChallan => {
+                    if (resChallan.length > 0) {
+                        res.status(200).json({message: 'Challan No Exists', err})
+                    } else {
+                        Challan.create(data)
+                            .then(resData => {
+                                Vendors.findAll({
+                                    attributes: ['vendor_name'],
+                                    where: {id: resData.dataValues.vendor_id}
+                                })
+                                    .then(resDataInner => {
+                                        res.status(200).json({
+                                            resId: resData.id,
+                                            status: true,
+                                            vendorName: resDataInner[0].dataValues.vendor_name,
+                                            message: 'Challan Added Successfully!'
+                                        })
+                                    })
                             })
-                        })
-                })
-                .catch(err => {
-                    console.log(err)
-                    res.status(200).json({message: 'Something went wrong', err})
+                            .catch(err => {
+                                console.log(err)
+                                res.status(200).json({message: 'Something went wrong', err})
+                            })
+                    }
                 })
         }
     })
@@ -179,7 +214,7 @@ route.post('/assets-entry/entry', (req, res, next) => {
         Assets.create(item)
             .then(resData => {
                 if (item.product_serial === '') {
-                    Assets.update({product_serial: resData.id}, {where: {id: resData.id}})
+                    Assets.update({product_serial: 'prod_serial_' + resData.id}, {where: {id: resData.id}})
                         .then(upd => {
                         })
                 }
@@ -190,9 +225,29 @@ route.post('/assets-entry/entry', (req, res, next) => {
             })
             .catch(err => {
                 console.log(err)
-                res.status(200).json({message: 'Something went wrong', err})
+                res.status(500).json({message: 'Something went wrong', err})
             })
     })
+})
+
+// Asset Disposal Report
+route.post('/assets-disposal/report', async (req, res, next) => {
+    const {date_from, date_to, user_id} = req.body
+    const [data, metaData] = await db.query(`
+        SELECT assets.id, assets."createdAt"::timestamp::date as date, CONCAT(users."firstName", ' ', users."lastName") as disposal_by, user_roles.role_name as designation,
+               locations.location_name as location, products.product_name, assets.product_serial, assets.disposal_date::timestamp::date, assets.disposal_reason FROM assets
+        JOIN user_roles ON user_roles.id = assets.disposal_by_role_id
+        JOIN users ON users.id = assets.disposal_by
+        JOIN products ON products.id = assets.product_id
+        JOIN locations ON locations.id = assets.disposal_by_location
+        WHERE assets."createdAt" BETWEEN '${date_from}' AND '${date_to}'  AND assets.disposal_by = ${user_id}
+    `)
+
+    if (data.length > 0) {
+        res.status(200).json({data, status: true})
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
 })
 
 //Update Specific Asset
@@ -205,7 +260,7 @@ route.put('/assets-entry/assets/update/:id', (req, res, next) => {
 
     if (project_id !== '' && asset_category !== '' && asset_sub_category !== '' && cost_of_purchase !== '' && installation_cost !== '' && carrying_cost !== '',
     other_cost !== '' && asset_type !== '' && depreciation_method !== '' && rate !== '' && effective_date !== '' && book_value !== '' && salvage_value !== '' &&
-    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && comments !== '' && barcode !== '') {
+    useful_life !== '' && last_effective_date !== '' && warranty !== '' && last_warranty_date !== '' && condition !== '' && barcode !== '') {
         Assets.update({...req.body}, {where: {id: req.params.id}})
             .then(() => {
                 res.status(200).json({message: 'Asset has been updated'})
@@ -221,8 +276,7 @@ route.put('/assets-entry/assets/update/:id', (req, res, next) => {
 //Update Specific Asset
 route.put('/assets-entry/challan-update/:id', (req, res, next) => {
     const {challan_no, challan_name, challan_description, purchase_order_no, purchase_order_date, vendor_id, attachment, received_by, challanComments, added_by} = req.body
-    if (challan_no !== '' && challan_name !== '' && challan_description !== '' && purchase_order_no !== '' && purchase_order_date !== '' && vendor_id !== '' &&
-        attachment !== '' && received_by !== '' && challanComments !== '' && added_by !== '') {
+    if (challan_no !== '' && challan_name !== '' && purchase_order_no !== '' && purchase_order_date !== '' && vendor_id !== '' && received_by !== '' && added_by !== '') {
         Challan.update({...req.body}, {where: {id: req.params.id}})
             .then(() => {
                 res.status(200).json({message: 'Challan has been updated', status: true})
@@ -265,11 +319,11 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
         if (product_serial) queryText += ' and assets.product_serial = ' + "\'" + product_serial + "\'";
         if (typeof (is_disposal) === "boolean") queryText += ' and assets.is_disposal = ' + is_disposal;
 
-        const data = await db.query(`select distinct on(assets.product_serial) product_serial, 
+        const data = await db.query(`select 
                                assets.id,
                                products.product_name,
-                               asset_categories.category_name,
-                               asset_sub_categories.sub_category_name,
+                               asset_categories.category_name as category,
+                               asset_sub_categories.sub_category_name  as sub_category,
                                assets.product_serial,
                                assets.cost_of_purchase,
                                assets.installation_cost,
@@ -290,13 +344,150 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
                                  join products on assets.product_id = products.id
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                 join conditions on assets.condition = conditions.id
-                        ${queryText} order by assets.product_serial`);
+                                 left join conditions on assets.condition = conditions.id
+                        ${queryText}`);
 
         return res.status(200).json(data);
     } catch (err) {
         console.error(err.message);
         return res.status(500).json(err);
+    }
+});
+
+// Assets Own Stock Data By User ID
+route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+
+        const data = await db.query(`select asset_categories.category_name,
+                                       asset_sub_categories.sub_category_name,
+                                       products.product_name,
+                                       count(distinct assets.id) as quantity
+                                from assets
+                                         join asset_categories on assets.asset_category = asset_categories.id
+                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         join products on assets.product_id = products.id
+                                ${queryText} 
+                                group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Assets Own Stock And Details
+route.post('/assets/all/by/id', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+
+        const [data, metadata] = await db.query(`select
+                                       assets.id,
+                                       products.product_name as product,
+                                       asset_categories.category_name as category,
+                                       asset_sub_categories.sub_category_name as sub_category,
+                                       assets.product_serial,
+                                       assets.cost_of_purchase as purchase_cost,
+                                       assets.installation_cost,
+                                       assets.carrying_cost,
+                                       assets.other_cost,
+                                       assets.rate,
+                                       assets.effective_date,
+                                       assets.book_value,
+                                       assets.salvage_value,
+                                       assets.useful_life,
+                                       assets.warranty,
+                                       conditions.condition_type,
+                                       assets.comments,
+                                       count(distinct assets.id) as quantity
+                                from assets
+                                         join asset_categories on assets.asset_category = asset_categories.id
+                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         join products on assets.product_id = products.id
+                                         join conditions on assets.condition = conditions.id
+                                ${queryText} 
+                                group by assets.id, conditions.condition_type, products.product_name, asset_categories.category_name,
+                                            asset_sub_categories.sub_category_name`);
+
+        if (data.length > 0) {
+            return res.status(200).json({response: data, status: true });
+        } else {
+            return res.status(200).json({message: "No Data Found"});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(200).json({message: err.message});
+    }
+});
+
+// Assets Own Stock Data By User
+route.post('/assets-report/all', async (req, res) => {
+    try {
+        // const [proData, proMetaData] = await db.query(`
+        //     SELECT distinct on (products.id) products.product_name FROM products
+        // `)
+        //
+        // let columnsString = "";
+        // let dataSet = []
+        //
+        // proData.length > 0 && proData.forEach(item => {
+        //     dataSet.push(item.product_name)
+        // })
+        //
+        // dataSet.forEach((item) => {
+        //     columnsString += '"' + item + '"' + " bigint,";
+        // });
+        //
+        // columnsString       =  columnsString.slice(0, -1);
+
+
+        const {location_id} = req.body;
+
+        // const [data, metadata] = await db.query(`SELECT * FROM
+        //         crosstab (
+        //         $$
+        //           select CONCAT(users."firstName", ' ',users."lastName") as user_name, products.id, count(distinct assets.id) as quantity from assets
+        //                         left join products on assets.product_id = products.id
+        //                         join users on users.id = assets.assign_to
+        //                         join user_associate_roles on users.id = user_associate_roles.user_id
+        //                         join locations on locations.id = user_associate_roles.location_id
+        //                 WHERE (locations.id = '${location_id}')
+        //                 GROUP BY products.id, user_name
+        //                 ORDER BY 1,2
+        //         $$
+        //         ) AS ct ( user_name text , ${columnsString})`);
+        //
+        // console.log(data, 404)
+
+        const [data, metadata] = await db.query(`SELECT CONCAT(users."firstName", ' ',users."lastName") as user_name,
+                                                asset_categories.category_name, asset_sub_categories.sub_category_name,
+                                                 products.product_name, count(distinct assets.id) as quantity from assets
+                                            join asset_categories on assets.asset_category = asset_categories.id
+                                            join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                            join products on assets.product_id = products.id
+                                            join users on users.id = assets.assign_to
+                                            join user_associate_roles on users.id = user_associate_roles.user_id
+                                            join locations on locations.id = user_associate_roles.location_id
+                                    where locations.id = ${location_id}
+                                    group by asset_categories.category_name, asset_sub_categories.sub_category_name, products.product_name, users."firstName", users."lastName"`);
+
+        if (data.length > 0) {
+            return res.status(200).json({data, status: true});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(200).json({message: "Something Blew Up!"});
     }
 });
 
@@ -307,7 +498,7 @@ route.get('/assets-category/all/:user_id', async (req, res) => {
         const data = await db.query(`select distinct asset_categories.id, asset_categories.category_name
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
-                        where assign_to = ${user_id} and assets.is_disposal = false`);
+                        where assign_to = ${user_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -324,7 +515,7 @@ route.get('/assets-sub-category/all/:user_id/:category_id', async (req, res) => 
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                        where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} and assets.is_disposal = false`);
+                        where assets.assign_to = ${user_id} and assets.asset_category = ${category_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -343,7 +534,7 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
                                  join products on asset_categories.id = products.category_id
                         where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} 
-                        and assets.asset_sub_category = ${sub_category_id} and assets.is_disposal = false`);
+                        and assets.asset_sub_category = ${sub_category_id}`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -356,9 +547,9 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
 route.post('/get/assets/by/credentials', async (req, res) => {
     try {
         const {user_id, category_id, sub_category_id, product_id} = req.body;
-        const data = await db.query(`select distinct on (product_serial) product_serial, * from assets
+        const data = await db.query(`select * from assets
                         where assign_to = ${user_id} and asset_category = ${category_id} 
-                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} and assets.is_disposal = false order by product_serial`);
+                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} and assets.is_disposal = false`);
 
         return res.status(200).json(data);
     } catch (err) {
@@ -416,7 +607,7 @@ route.post('/asset-transfer/by/credentials', async (req, res) => {
         transferCredential.map((item, index) => {
             Assets.update({assign_to: item.assign_to}, {where: {id: item.id}})
                 .then(() => {
-                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to})
+                    AssetHistory.create({asset_id: item.id, assign_to: item.assign_to, status: 4, assign_from:  item.user_id})
                         .then(() => {
                             if (transferCredential.length === index + 1) return res.status(200).json({
                                 success: true,

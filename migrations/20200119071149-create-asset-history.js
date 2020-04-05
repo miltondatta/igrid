@@ -11,8 +11,14 @@ module.exports = {
       asset_id:{
         type: Sequelize.STRING
       },
+      assign_from:{
+        type: Sequelize.STRING
+      },
       assign_to:{
         type: Sequelize.STRING
+      },
+      status:{
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

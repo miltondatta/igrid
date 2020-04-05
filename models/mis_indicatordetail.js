@@ -1,7 +1,7 @@
 const db = require('../config/db');
 const Sequelize = require('sequelize');
-const mis_indicatormaster = require('./mis_indicatormaster');
 const locations = require('./locations');
+const mis_indicatormaster = require('./mis_indicatormaster');
 
 const mis_indicatordetail = db.define('mis_indicatordetail', {
     item_no: Sequelize.STRING,
@@ -26,5 +26,4 @@ const mis_indicatordetail = db.define('mis_indicatordetail', {
 
 mis_indicatordetail.belongsTo(mis_indicatormaster, {foreignKey: 'indicatormaster_id'});
 mis_indicatordetail.belongsTo(locations, {foreignKey: 'parent_location_id'});
-
 module.exports = mis_indicatordetail;

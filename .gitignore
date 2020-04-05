@@ -201,4 +201,5 @@ public/document
 public/requisition
 public/repair-assets
 public/mis
-
+public/amc-type
+public/lostAssets

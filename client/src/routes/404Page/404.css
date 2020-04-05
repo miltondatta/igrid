@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Audiowide&display=swap');
+
+.lost-container{
+    height: 89%;
+    width: 100%;
+    background: #0769b6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Audiowide', cursive;
+}
+
+.lost-container .lost-first-hole{
+    position: absolute;
+    width: 50rem;
+    height: 50rem;
+    background: #045fa7;
+    left: auto !important;
+    top: auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 5px 20px 40px #003157, inset 5px 0px 5px #0d4b7b, inset 5px 5px 20px #054a7f, 2px 2px 5px #178ae5;
+}
+
+.lost-container .lost-second-hole{
+    position: absolute;
+    width: 35rem;
+    height: 35rem;
+    background: #08528c;
+    left: auto !important;
+    top: auto !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 5px 20px 40px #042946, inset 5px 0px 5px #022c4d, inset 5px 5px 20px #012541, 2px 2px 5px #178ae5;
+}
+
+.lost-container h1{
+    position: absolute;
+    left: auto !important;
+    top: auto !important;
+    color: white;
+    font-size: 8rem;
+}
+
+.lost-container p{
+    color: white;
+    margin-top: 15%;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.lost-container a{
+    color: #7fffe3;
+    font-size: 1rem;
+    padding: 5px 25px;
+    border-radius: 10px;
+    border: 1px solid white;
+}
+
+.lost-container a:hover{
+    border: 1px solid #aaa;
+}

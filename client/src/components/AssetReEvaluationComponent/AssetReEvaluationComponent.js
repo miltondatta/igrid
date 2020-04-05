@@ -36,7 +36,7 @@ class AssetReEvaluationComponent extends Component{
                                     <option>Asus</option>
                                     <option>HP</option>
                                     <option>Dell</option>
-                                </select>
+                                </select> 
                             </div>
                         </div>
                         <div className={'row p-2 align-items-center'}>

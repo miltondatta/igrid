@@ -1,0 +1,74 @@
+.ui-mis-dashboard-container{
+    display: grid;
+    padding: 10px;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ui-mis-dashboard-container .ui-mis-top{
+    width: 100%;
+    padding: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+    background: #d2e0ea;
+}
+
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top{
+    display: grid;
+    padding: 10px;
+    background: #e7eef3;
+    align-items: center;
+    grid-template-columns: 14% 86%;
+}
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top p {
+    color: #555;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top .ui-icon-container-1,
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top .ui-icon-container-2{
+    width: 90px;
+    height: 70px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top .ui-icon-container-1{background: #d6156f; display: flex; justify-content: center;  color: white; font-size: 3rem}
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top .ui-icon-container-2{background: #6533df; display: flex; justify-content: center; color: white; font-size: 3rem}
+
+.ui-mis-dashboard-container .ui-mis-top .ui-mis-body-bottom{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.ui-mis-dashboard-container .ui-mis-top .ui-role-child{
+    display: grid;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #fff;
+    align-content: center;
+    justify-content: center;
+    grid-template-columns: 68% 32%;
+}
+
+.ui-mis-dashboard-container .ui-mis-top .ui-role-child p{
+    height: 100%;
+    margin: 0;
+    font-size: 1.1rem;
+    display: flex;
+}
+
+.ui-mis-dashboard-container .ui-mis-top .ui-role-child p:last-child{
+    color: #fff;
+    width: 90px;
+    height: 70px;
+    display: flex;
+    font-weight: 600;
+    font-size: 2rem;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+}

@@ -259,14 +259,25 @@ exports.documentActiveListData = async (req, res) => {
 
 exports.documentListDataByNotice = async (req, res) => {
     try {
+        let queryObj = {
+            content_type: 1,
+            display_notice: true
+        };
+
+        if (req.params.date) {
+            const document_date = {
+                document_date: {
+                    [Op.gte]: req.params.date
+                }
+            };
+            Object.assign(queryObj, document_date);
+        }
+
         const data = await DocumentList.findAll(
             {
                 attributes: ["id", "category_id", "sub_category_id", "content_type", "title", "circular_no", "description", "file_name", "document_date",
                     "display_notice", "status"],
-                where: {
-                    content_type: 1,
-                    display_notice: true
-                },
+                where: queryObj,
                 order: [['id', 'DESC']]
             }
         );
@@ -344,7 +355,7 @@ exports.documentListSearch = async (req, res) => {
             });
         }
 
-        const data = await db.query(`SELECT document_lists.id as doc_id,
+        const data = await db.query(`SELECT document_lists.id,
                                        document_lists.category_id,
                                        document_lists.sub_category_id,
                                        document_lists.content_type,
@@ -355,9 +366,7 @@ exports.documentListSearch = async (req, res) => {
                                        document_lists.document_date,
                                        document_lists.display_notice,
                                        document_lists.status,
-                                       document_categories.id,
                                        document_categories.category_name,
-                                       document_sub_categories.id as cat_id,
                                        document_sub_categories.sub_category_name
                                 FROM document_lists
                                          JOIN document_categories ON document_lists.category_id = document_categories.id
@@ -376,7 +385,7 @@ exports.documentListFileDownload = async (req, res) => {
     try {
         let file_path = 'public/document/' + req.params.file_name;
         if (!fs.existsSync(file_path)) return res.status(400).json({
-            msg: `${req.params.file_name} File didn\'t found!`,
+            msg: `File didn\'t found!`,
             error: true
         });
 

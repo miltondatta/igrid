@@ -4,45 +4,70 @@ const ComCategory = require('./comcategory')
 const ComSubCategory = require('./comsubcategory')
 
 const Complaints = db.define('complaints', {
-  createdBy:{
+  complaint_no: {
+    type: Sequelize.STRING
+  },
+  created_by: {
     type: Sequelize.INTEGER
   },
-  locationId:{
+  location_id: {
     type: Sequelize.INTEGER
   },
-  roleID:{
+  role_id: {
     type: Sequelize.INTEGER
   },
-  complaint_category:{
+  complaint_category: {
     type: Sequelize.INTEGER,
+    defaultValue: 0,
     references: {
-      model: ComCategory,
+      model: "comCategories",
       key: 'id'
     }
   },
-  complaint_sub_category:{
+  complaint_sub_category: {
     type: Sequelize.INTEGER,
+    defaultValue: 0,
     references: {
-      model: ComSubCategory,
+      model: "comSubCategories",
       key: 'id'
     }
   },
-  assignTO:{
+  problem_details: {
+    type: Sequelize.STRING
+  },
+  asset_id: {
     type: Sequelize.INTEGER,
     defaultValue: null,
     allowNull: true
   },
-  problemDetails:{
-    type: Sequelize.STRING
-  },
-  status:{
-    type: Sequelize.BOOLEAN
-  },
-  solutionDetails:{
+  file_name: {
     type: Sequelize.STRING,
     defaultValue: null,
     allowNull: true
   },
+  assign_to: {
+    type: Sequelize.INTEGER,
+    defaultValue: null,
+    allowNull: true
+  },
+  status: {
+    type: Sequelize.INTEGER
+  },
+  solution_details: {
+    type: Sequelize.STRING,
+    defaultValue: null,
+    allowNull: true
+  },
+  solved_by: {
+    type: Sequelize.STRING,
+    defaultValue: null,
+    allowNull: true
+  },
+  solved_at: {
+    defaultValue: null,
+    allowNull: true,
+    type: Sequelize.DATE
+  }
 })
 
 module.exports = Complaints

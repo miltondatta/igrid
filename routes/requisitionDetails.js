@@ -111,7 +111,7 @@ route.get('/requisition-details', async (req,res,next) => {
     if (pending_requisition_details_id.length) {
         pending_requisition_details_id = pending_requisition_details_id.join(",");
         const [results, metadata] = await db.query(`SELECT DISTINCT ON
-        ( requisition_details.requisition_id ) requisition_details.id,
+        ( requisition_details.requisition_id ) requisition_details.id,  requisition_masters.request_date,
         concat(location_hierarchies.hierarchy_name, '-', locations.location_name) as location_name,
         Concat ( users."firstName", ' ', users."lastName" ) AS request_by,
         user_roles.role_name as role_name,
@@ -141,7 +141,7 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
     let reqId = [];
 
     const [results, metadata] = await db.query(`SELECT DISTINCT ON
-        (requisition_approves.requisition_id) requisition_approves.requisition_details_id,
+        (requisition_approves.requisition_id)
         concat(location_hierarchies.hierarchy_name, '-', locations.location_name) as location_name,
         Concat ( users."firstName", ' ', users."lastName" ) AS request_by,
         user_roles.role_name as role_name,
@@ -154,7 +154,8 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
         JOIN user_roles ON user_roles.id = requisition_masters.role_id
         JOIN locations ON requisition_masters.location_id = locations.id
         JOIN location_hierarchies ON location_hierarchies.id = locations.hierarchy
-    WHERE requisition_approves.location_id = '${location_id}' AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
+    WHERE requisition_approves.requisition_id NOT IN (SELECT requisition_id FROM requisition_approves WHERE requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NOT NULL)
+     AND requisition_approves.location_id = '${location_id}' AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
                     `);
 
     if (results.length > 0) {
@@ -167,14 +168,14 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
 // Read
 route.get('/requisition-details/status/:id', async (req,res,next) => {
     const [data, master] = await db.query(`
-        SELECT requisition_details.id, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name, asset_sub_categories.sub_category_name, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
+        SELECT requisition_details.id, requisition_masters.request_date, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name as category, asset_sub_categories.sub_category_name as sub_category, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
                requisition_details.brand, requisition_details.model, requisition_approves.update_quantity, statuses.status_name FROM requisition_details 
-        JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id
-        JOIN requisition_approves ON requisition_approves.requisition_id = requisition_masters.id
-        JOIN users ON requisition_approves.update_by = users.id
-        JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
-        JOIN asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
-        JOIN statuses ON requisition_approves.status = statuses.id
+        Left JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id
+        Left JOIN requisition_approves ON requisition_approves.requisition_id = requisition_masters.id
+        Left JOIN users ON requisition_approves.update_by = users.id
+        Left JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
+        Left JOIN asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
+        Left JOIN statuses ON requisition_approves.status = statuses.id
         WHERE requisition_masters.id = ${req.params.id}
     `)
     if (data.length > 0) {
@@ -185,8 +186,30 @@ route.get('/requisition-details/status/:id', async (req,res,next) => {
 })
 
 // Read
-route.get('/requisition-details/details/:id', async (req,res,next) => {
+route.get('/requisition-details/details', async (req,res,next) => {
+    const {id, requisition_id}= req.query;
     let reqId = []
+
+
+    const [ress, Metares] = await db.query(`
+                SELECT asset_categories.id as assId, asset_sub_categories.id as subAssId FROM requisition_details
+                 Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
+                 Join users ON requisition_masters.request_by = users.id
+                 Join asset_categories ON requisition_details.asset_category = asset_categories.id
+                 Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
+                    WHERE requisition_details.requisition_id = ${requisition_id}
+    `)
+
+    console.log(ress[0].assId,ress[0].subassid, 202)
+
+    const [av_assets, metaData] = await db.query(`
+        SELECT COUNT(assets.id) as av_assets from assets
+            WHERE assets.assign_to = ${id} AND assets.asset_category = ${ress[0].assid} AND assets.asset_sub_category = ${ress[0].subassid}
+    `)
+
+    console.log(av_assets, 208)
+
+
     const [resultsMain, metadataMain] = await db.query(`
         SELECT requisition_approves.requisition_details_id from requisition_approves
             WHERE requisition_approves.delivery_to IS NOT NULL
@@ -196,15 +219,17 @@ route.get('/requisition-details/details/:id', async (req,res,next) => {
     })
     const [results, metadata] = await db.query(`
         SELECT requisition_details.id, asset_categories.category_name, asset_sub_categories.sub_category_name,requisition_details.brand, requisition_details.model,
-               requisition_details.reason,requisition_details.quantity
+               requisition_details.reason, requisition_details.quantity
         FROM requisition_details
                  Join requisition_masters ON requisition_details.requisition_id = requisition_masters.id
                  Join users ON requisition_masters.request_by = users.id
                  Join asset_categories ON requisition_details.asset_category = asset_categories.id
                  Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
-                    WHERE requisition_details.requisition_id = ${req.params.id}`)
+                    WHERE requisition_details.requisition_id = ${requisition_id}`)
 
         let payLoad = results.filter(item => !reqId.includes(item.id))
+        payLoad[0]['av_assets'] = av_assets[0].av_assets
+    console.log(payLoad, 231)
         if (results.length > 0) {
             res.status(200).json(payLoad)
         } else {

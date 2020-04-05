@@ -11,6 +11,7 @@ import ModelIdOptions from "../../utility/component/modelIdOptions";
 import LocationsOptions from "../../utility/component/locationOptions";
 import ModuleOptions from "../../utility/component/moduleOptions";
 import UserOptions from "../../utility/component/userOptions";
+import {getFileExtension} from "../../utility/custom";
 
 class InstaAdd extends Component {
 
@@ -66,6 +67,7 @@ class InstaAdd extends Component {
                     })
                 } else {
                     this.props.forceUp()
+                    this.props.forceAmc()
                     this.setState({
                         success: true,
                         successMessage: res.data.message,
@@ -121,9 +123,22 @@ class InstaAdd extends Component {
                 [name]: checked
             })
         } else if (name === 'file_name') {
-            this.setState({
-                [name]: files[0],
-            })
+            if (["jpg","jpeg","png","doc","docx","pdf","xlsx"].includes(getFileExtension(files[0].name))) {
+                this.setState({
+                    [name]: files[0],
+                })
+            } else {
+                this.setState({
+                    error: true,
+                    errorMessage: 'Only JPG | JPEG | PNG | DOC | DOCX | PDF | XLSX Files Excepted'
+                }, () => {
+                    setTimeout(() => {
+                        this.setState({
+                            error: false,
+                        })
+                    }, 2300)
+                })
+            }
         } else if(name === 'location_id'){
             this.setState({
                 [name]: value
@@ -148,6 +163,7 @@ class InstaAdd extends Component {
 
     componentDidMount() {
         this.props.forceUp()
+        this.props.forceAmc()
     }
 
     locationApi = (id) => {
@@ -187,7 +203,7 @@ class InstaAdd extends Component {
                                 id={'enCh1'}
                                 name={'description'}
                                 value={description}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`}
+                                className={`ui-custom-textarea `}
                                 onChange={this.handleChange} />
                         </div>
                         <div className="px-1 mb-20p grid-2">
@@ -195,6 +211,9 @@ class InstaAdd extends Component {
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
                                 <label htmlFor="validatedCustomFile">{file_name ? file_name.name : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                </div>
                             </div>
                             <div className="d-flex justify-content-center align-items-center ui-custom-checkbox">
                                 <input
@@ -249,7 +268,7 @@ class InstaAdd extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea `} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Project</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Projects</button>
@@ -481,7 +500,7 @@ class InstaAdd extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea `} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Method</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Method</button>
@@ -491,6 +510,54 @@ class InstaAdd extends Component {
                                     depreciation_code: '',
                                     method_name: '',
                                     description: '',
+                                }, () => {
+                                    this.validate()
+                                })}}>Go Back</button>
+                        </>}
+                    </>
+                )
+            case 'AMCTYPES':
+                return(
+                    <>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Type Name</label>
+                            <input
+                                placeholder='Type Name'
+                                type={'text'}
+                                name={'type_name'}
+                                value={type_name}
+                                onChange={this.handleChange}
+                                className={`ui-custom-input ${(errorDict && !errorDict.type_name) && 'is-invalid'}`} />
+                        </div>
+                        <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Description</label>
+                            <textarea
+                                placeholder={'Description'}
+                                id={'enCh1'}
+                                name={'description'}
+                                value={description}
+                                className={`ui-custom-textarea `}
+                                onChange={this.handleChange} />
+                        </div>
+                        <div className="px-1 mb-20p grid-2">
+                            <div className="ui-custom-file">
+                                <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
+                                       required />
+                                <label htmlFor="validatedCustomFile">{file_name.name ? file_name.name : file_name ? file_name : 'Choose file'}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                </div>
+                            </div>
+                        </div>
+                        {editId === null ? <button className="submit-btn" onClick={this.handleSubmit}>Submit</button> : <>
+                            <button className="submit-btn mt-3 mr-2" onClick={this.updateData}>Update</button>
+                            <button className="reset-btn-normal mt-3" onClick={() => {
+                                this.setState({
+                                    editId: null,
+                                    vendor_name: '',
+                                    file_name: '',
+                                    description: '',
+                                    enlisted: false,
                                 }, () => {
                                     this.validate()
                                 })}}>Go Back</button>
@@ -524,7 +591,7 @@ class InstaAdd extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea `} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Asset Type</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Asset Type</button>
@@ -567,7 +634,7 @@ class InstaAdd extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea `} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Category</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Category</button>
@@ -616,7 +683,7 @@ class InstaAdd extends Component {
                                 name={'description'}
                                 value={description}
                                 onChange={this.handleChange}
-                                className={`ui-custom-textarea ${(errorDict && !errorDict.description) && 'is-invalid'}`} />
+                                className={`ui-custom-textarea `} />
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Sub Category</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Sub Category</button>
@@ -671,7 +738,7 @@ class InstaAdd extends Component {
                         {subLoc}
                         <div className="px-1 mb-20p">
                             <select name={'hierarchy'} value={hierarchy} onChange={this.handleChange} className={`ui-custom-input ${(errorDict && !errorDict.hierarchy) && 'is-invalid'}`}>
-                                <option>Select Hierarchy</option>
+                                <option>Select Type</option>
                                 <HierarchiesOptions />
                             </select>
                         </div>
@@ -767,6 +834,9 @@ class InstaAdd extends Component {
                             <input type="file" name={'file_name'} onChange={this.handleChange} id="validatedCustomFile"
                                    required />
                             <label htmlFor="validatedCustomFile">{image_name ? image_name : 'Choose file...'}</label>
+                            <div className="bottom">
+                                JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                            </div>
                         </div>
                         {editId === null ? <button className="submit-btn" disabled={errorDict && Object.values(errorDict).includes(false)} onClick={this.handleSubmit}>Submit Module</button> : <>
                             <button disabled={errorDict && Object.values(errorDict).includes(false)} className="btn btn-outline-info mt-3 mr-2" onClick={this.updateData}>Update Module</button>
@@ -861,7 +931,7 @@ class InstaAdd extends Component {
                 return errorDict
             case "PROJECT":
                 errorDict = {
-                    description: description !== '',
+                    
                     project_name: project_name !== '',
                     project_code: project_code !== '',
                 }
@@ -883,7 +953,7 @@ class InstaAdd extends Component {
                 errorDict = {
                     depreciation_code: depreciation_code !== '',
                     method_name: method_name !== '',
-                    description: description !== '',
+                    
                 }
                 this.setState({
                     errorDict
@@ -893,7 +963,7 @@ class InstaAdd extends Component {
                 errorDict = {
                     asset_code: asset_code !== '',
                     type_name: type_name !== '',
-                    description: description !== '',
+                    
                 }
                 this.setState({
                     errorDict
@@ -916,7 +986,7 @@ class InstaAdd extends Component {
                 errorDict = {
                     file_name: file_name !== '',
                     vendor_name: vendor_name !== '',
-                    description: description !== '',
+                    
                 }
                 this.setState({
                     errorDict
@@ -925,6 +995,15 @@ class InstaAdd extends Component {
             case "MODELS":
                 errorDict = {
                     model: model !== '',
+                }
+                this.setState({
+                    errorDict
+                })
+                return errorDict
+            case "AMCTYPES":
+                errorDict = {
+                    type_name: type_name !== '',
+                    
                 }
                 this.setState({
                     errorDict
@@ -967,7 +1046,7 @@ class InstaAdd extends Component {
                 return errorDict
             case "ASSETCATEGORY":
                 errorDict = {
-                    description: description !== '',
+                    
                     category_name: category_name !== '',
                     category_code: category_code !== '',
                 }
@@ -977,7 +1056,7 @@ class InstaAdd extends Component {
                 return errorDict
             case "ASSETSUBCATEGORY":
                 errorDict = {
-                    description: description !== '',
+                    
                     category_id: category_id !== '',
                     sub_category_name: sub_category_name !== '',
                     sub_category_code: sub_category_code !== '',
@@ -1028,6 +1107,12 @@ class InstaAdd extends Component {
                 data.append('vendor_name', vendor_name)
                 data.append('description', description)
                 data.append('enlisted', enlisted)
+                return data
+            case "AMCTYPES":
+                data = new FormData()
+                data.append('file', file_name)
+                data.append('type_name', type_name)
+                data.append('description', description)
                 return data
             case "PROJECT":
                 return({

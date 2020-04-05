@@ -48,7 +48,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          location_name: 'Mohera',
+          location_name: 'Branch 01',
           location_code: '05',
           address: 'Branch Office',
           location_lat: 24.1617107,
@@ -57,7 +57,62 @@ module.exports = {
           hierarchy: 5,
           createdAt: new Date(),
           updatedAt: new Date()
-        }
+        },
+        {
+          location_name: 'Brnach 02',
+          location_code: '06',
+          address: 'Branch Office',
+          location_lat: 24.1617102,
+          location_long: 90.0400172,
+          parent_id: 4,
+          hierarchy: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          location_name: 'Brnach 03',
+          location_code: '07',
+          address: 'Branch Office',
+          location_lat: 24.1617103,
+          location_long: 90.0400173,
+          parent_id: 4,
+          hierarchy: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          location_name: 'Brnach 04',
+          location_code: '08',
+          address: 'Branch Office',
+          location_lat: 24.1617104,
+          location_long: 90.0400174,
+          parent_id: 4,
+          hierarchy: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          location_name: 'Brnach 05',
+          location_code: '09',
+          address: 'Branch Office',
+          location_lat: 24.1617105,
+          location_long: 90.0400175,
+          parent_id: 4,
+          hierarchy: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          location_name: 'Brnach 06',
+          location_code: '10',
+          address: 'Branch Office',
+          location_lat: 24.1617106,
+          location_long: 90.0400176,
+          parent_id: 4,
+          hierarchy: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
       ], {});
   },
 

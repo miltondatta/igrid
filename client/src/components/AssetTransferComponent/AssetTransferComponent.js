@@ -8,8 +8,14 @@ import LocationsOptions from "../../utility/component/locationOptions";
 import UserOptionsByLocation from "../../utility/component/userOptionsByLocation";
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import '../../module/data-table-react/reactDataTable.css';
+import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import Spinner from "../../layouts/Spinner";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 class AssetTransferComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -31,24 +37,9 @@ class AssetTransferComponent extends Component {
             isLoading: false,
             transferData: [],
             transferCredential: [],
+            transferTableData: [],
             subLocation: []
         };
-
-        this.table_header = [
-            "Product Serial",
-            "Product",
-            "Category",
-            "Sub Category",
-            "Cost of Purchase",
-            "Book Value",
-            "Salvage Value",
-            "Useful Life",
-            "Warranty",
-            "Last Warranty Date",
-            "Last Effective Date",
-            "Condition Type",
-            "Action"
-        ];
     }
 
     componentDidMount() {
@@ -81,6 +72,12 @@ class AssetTransferComponent extends Component {
         if (isExistTransfer.length) return this.setState({
             error: true,
             errorMessage: 'This Asset is already added in Transfer list!'
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    error: false
+                })
+            }, 2300);
         });
 
         this.setState({isLoading: true}, () => {
@@ -89,12 +86,16 @@ class AssetTransferComponent extends Component {
                     if (!res.data[0].length) return this.setState({
                         error: true,
                         errorMessage: 'There is no asset found for Transfer!',
-                        isLoading: false,
-                        success: false
+                        isLoading: false
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     });
                     this.setState({
                         transferData: [...transferData, ...res.data[0]],
-                        error: false,
                         isLoading: false
                     }, () => {
                         res.data[0].map(item => {
@@ -111,7 +112,24 @@ class AssetTransferComponent extends Component {
                             parent_id: 1,
                             user_id: '',
                             subLocation: []
-                        }, () => this.getSubLocation(this.state.parent_id))
+                        }, () => {
+                            let newTransferObj = {};
+                            this.state.transferData.length > 0 && this.state.transferData.map(item => {
+                                const newObj = {
+                                    id: item.id,
+                                    product_serial: item.product_serial,
+                                    category_name: item.category_name,
+                                    sub_category_name: item.sub_category_name,
+                                    product_name: item.product_name
+                                };
+                                Object.assign(newTransferObj, newObj);
+                            });
+
+                            let transferTableData = [newTransferObj];
+                            this.setState({
+                                transferTableData: [...this.state.transferTableData, ...transferTableData]
+                            }, () => this.getSubLocation(this.state.parent_id))
+                        })
                     })
                 })
                 .catch(err => {
@@ -120,11 +138,12 @@ class AssetTransferComponent extends Component {
         })
     };
 
-    cancelTransfer = index => {
-        const {transferData, transferCredential} = this.state;
+    cancelTransfer = id => {
+        const {transferData, transferCredential, transferTableData} = this.state;
         this.setState({
-            transferData: transferData.filter((item, key) => key !== index),
-            transferCredential: transferCredential.filter((item, key) => key !== index)
+            transferData: transferData.filter(item => item.id !== id),
+            transferCredential: transferCredential.filter(item => item.id !== id),
+            transferTableData: transferTableData.filter(item => item.id !== id)
         });
     };
 
@@ -137,21 +156,27 @@ class AssetTransferComponent extends Component {
                 this.setState({
                     transferData: [],
                     transferCredential: [],
-                    error: false,
                     success: success,
                     successMessage: success && msg
                 }, () => {
-                    window.location.reload();
                     this.emptyStateValue();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2300);
                 })
             })
             .catch(err => {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        success: false,
                         error: error,
                         errorMessage: error && msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false
+                            })
+                        }, 2300);
                     })
                 }
                 console.log(err.response);
@@ -229,33 +254,8 @@ class AssetTransferComponent extends Component {
     render() {
         const {
             category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
-            errorDict, isLoading, transferData, parent_id, subLocation, user_id
+            errorDict, isLoading, transferData, parent_id, subLocation, user_id, transferTableData
         } = this.state;
-
-        const table_body = transferData.length && transferData.map((item, index) => (
-            <tr key={index}>
-                <td>{item.product_serial}</td>
-                <td>{item.product_name}</td>
-                <td>{item.category_name}</td>
-                <td>{item.sub_category_name}</td>
-                <td>{item.cost_of_purchase}</td>
-                <td>{item.book_value}</td>
-                <td>{item.salvage_value}</td>
-                <td>{item.useful_life}</td>
-                <td>{item.warranty}</td>
-                <td>{item.last_warranty_date}</td>
-                <td>{item.last_effective_date}</td>
-                <td>{item.condition_type}</td>
-                <td>
-                    <span className={'btn btn-danger btn-sm cursor-pointer'} onClick={() => this.cancelTransfer(index)}><i
-                        className="fas fa-times"/></span>
-                </td>
-            </tr>
-        ));
-
-        const table_header = this.table_header.length && this.table_header.map((item, index) => (
-            <th key={index} scope="col">{item}</th>
-        ));
 
         let subLocationItem = subLocation.length > 0 && subLocation.map((item, index) => (
             <div className="px-1 mb-2" key={index}>
@@ -269,19 +269,13 @@ class AssetTransferComponent extends Component {
         return (
             <>
                 {error &&
-                <div
-                    className="alert alert-danger mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {errorMessage} <i className="fas fa-times " onClick={() => this.setState({error: false})}></i>
-                </div>}
+                <ErrorModal errorMessage={errorMessage}/>
+                }
                 {success &&
-                <div
-                    className="alert alert-success mx-3 mt-2 mb-0 position-relative d-flex justify-content-between align-items-center"
-                    role="alert">
-                    {successMessage} <i className="fas fa-times " onClick={() => this.setState({success: false})}></i>
-                </div>}
+                <SuccessModal successMessage={successMessage}/>
+                }
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Transfer</p>
                         </nav>
@@ -345,7 +339,7 @@ class AssetTransferComponent extends Component {
                             </select>
                         </div>
                         {subLocationItem}
-                        <div className="px-1 mb-20p">
+                        <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>User</label>
                             <select name={'user_id'} value={user_id}
                                     onChange={this.handleChange}
@@ -357,28 +351,22 @@ class AssetTransferComponent extends Component {
                             <span className="error">User Field is required</span>
                             }
                         </div>
-                        <button onClick={this.addTransfer} className="submit-btn">Add Transfer</button>
+                        <button onClick={this.addTransfer} className="submit-btn-normal mt-5">Add Transfer</button>
                     </div>
-                    <div className="rounded bg-white min-h-80vh p-2">
+                    <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
                         </nav>
-                        {isLoading ? <h2>Loading</h2> : transferData.length ? <>
-                            <table className="table table-bordered table-responsive">
-                                <thead>
-                                <tr>
-                                    {table_header}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {table_body}
-                                </tbody>
-                            </table>
+                        {isLoading ? <Spinner/> : transferTableData.length > 0 ? <>
+                            <ReactDataTable
+                                remove={this.cancelTransfer}
+                                tableData={transferTableData}
+                                bigTable
+                            />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Transfer Asset</h4>}
-                        {transferData.length ?
-                            <button className="submit-btn" data-toggle="modal"
-                                    data-target="#assetTransferModal">Submit</button> : ''}
+                        {transferTableData.length ?
+                            <button className="submit-btn" data-toggle="modal" data-target="#assetTransferModal">Submit</button> : ''}
                     </div>
                     <div className="modal fade" id="assetTransferModal" tabIndex="-1" role="dialog"
                          aria-labelledby="assetTransferModal" aria-hidden="true">

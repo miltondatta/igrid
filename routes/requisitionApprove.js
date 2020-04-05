@@ -45,9 +45,12 @@ route.get('/requisition-approve/specific', async (req,res,next) => {
     let location_id = req.query.location_id;
 
     const [results, metadata] = await db.query(`
-        SELECT requisition_approves.id, CONCAT(users."firstName", ' ', users."lastName") as username, requisition_details.brand, requisition_details.model, requisition_approves.requisition_id, requisition_masters.requisition_no, requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
-               requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, asset_categories.category_name, asset_sub_categories.sub_category_name,
-               user_roles.role_name, locations.location_name,requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
+        SELECT requisition_approves.id, CONCAT(users."firstName", ' ', users."lastName") as username, requisition_details.brand, 
+               requisition_details.model, requisition_approves.requisition_id, requisition_masters.requisition_no, 
+               requisition_approves.requisition_details_id,requisition_approves.role_id, requisition_approves.status,
+               requisition_approves.location_id, requisition_details.asset_sub_category, requisition_details.asset_category, 
+               asset_categories.category_name, asset_sub_categories.sub_category_name, user_roles.role_name, locations.location_name,
+               requisition_approves.update_quantity, requisition_masters.request_by as delivery_to from requisition_approves
             JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
             JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id
             JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
@@ -145,11 +148,15 @@ route.post('/requisition-approve/delivery', (req,res,next) => {
     })
 })
 
-// Create
+// Delivery Report
 route.post('/requisition-approve/delivery/between', async (req,res,next) => {
-    const {date_from, date_to, user_id} = req.body
-    const [data, masterData] = await db.query(`
-    SELECT requisition_approves.id, concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name, requisition_masters.delivery_date, requisition_approves.update_quantity as quantity, concat(users."firstName",' ',users."lastName") as delivery_to, user_roles.role_name as designation, locations.location_name as location FROM requisition_approves
+    try{
+        const {date_from, date_to, user_id} = req.body
+        const [data, masterData] = await db.query(`
+    SELECT requisition_approves.id, concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name,
+     requisition_masters.delivery_date, requisition_approves.update_quantity as quantity,
+      concat(users."firstName",' ',users."lastName") as delivery_to, user_roles.role_name as designation,
+       locations.location_name as location, requisition_approves."createdAt" as date FROM requisition_approves
         JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
         JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
         JOIN users ON users.id = requisition_masters.request_by
@@ -162,10 +169,46 @@ route.post('/requisition-approve/delivery/between', async (req,res,next) => {
                AND requisition_approves.update_by = ${user_id}
     `)
 
-    if(data.length > 0) {
-        res.status(200).json({data, status: true})
-    } else {
-        res.status(200).json({message: 'No Data Found'})
+        if(data.length > 0) {
+            res.status(200).json({data, status: true})
+        } else {
+            res.status(200).json({message: 'No Data Found'})
+        }
+    } catch(err) {
+        console.log(err, 178)
+    }
+})
+
+// Delivery Report For All User
+route.post('/requisition-approve/delivery/all', async (req,res,next) => {
+    try{
+        const {date_from, date_to, location_id} = req.body
+        const [data, masterData] = await db.query(`
+                        SELECT concat(requisition_details.brand, '_', requisition_details.model, '_' , asset_sub_categories.sub_category_name) as item_name,
+                               requisition_approves."createdAt" as delivery_date, requisition_approves.update_quantity as quantity,
+                               concat(delivery_to."firstName",' ',delivery_to."lastName") as delivery_to, concat(delivered_by."firstName",' ',delivered_by."lastName") as delivered_by,
+                               user_roles.role_name as receivers_designation,
+                               locations.location_name as location FROM requisition_approves
+                        JOIN requisition_details ON requisition_approves.requisition_details_id = requisition_details.id
+                        JOIN requisition_masters ON requisition_masters.id = requisition_approves.requisition_id
+                        JOIN users delivery_to ON delivery_to.id = requisition_approves.delivery_to
+                        JOIN users delivered_by ON delivered_by.id = requisition_approves.update_by
+                        JOIN user_associate_roles ON delivery_to.id = user_associate_roles.user_id
+                        JOIN asset_sub_categories ON asset_sub_categories.id = requisition_details.asset_sub_category
+                        JOIN user_roles ON user_roles.id = user_associate_roles.role_id
+                        JOIN locations ON locations.id = requisition_approves.location_id
+                    WHERE requisition_approves."createdAt" BETWEEN '${date_from}' AND '${date_to}' 
+                      AND requisition_approves.delivery_to IS NOT NULL
+                      AND requisition_approves.location_id = ${location_id}
+    `)
+
+        if(data.length > 0) {
+            res.status(200).json({data, status: true})
+        } else {
+            res.status(200).json({message: 'No Data Found'})
+        }
+    } catch(err) {
+        console.log(err, 178)
     }
 })
 
@@ -184,5 +227,133 @@ route.delete('/requisition-approve/delete', (req,res,next) =>   {
             res.status(200).json({message: 'Something went wrong', err})
         })
 })
+
+// Get Logged User Requisition List
+route.post('/my-requisition/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
+
+        const data = await db.query(`select requisition_masters.id,
+                                     requisition_masters.requisition_no,
+                                     locations.location_name, 
+                                     requisition_masters.request_date,
+                                     user_roles.role_name,
+                                     concat(users."firstName", ' ',  users."lastName") request_by
+                                    from requisition_masters
+                                             inner join requisition_approves on requisition_masters.id = requisition_approves.requisition_id
+                                             inner join locations on requisition_masters.location_id = locations.id
+                                             inner join user_roles on requisition_masters.role_id = user_roles.id
+                                             inner join users on requisition_masters.request_by = users.id
+                                    where requisition_approves.delivery_to is not null
+                                      ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+
+// Get Logged User Requisition Details List
+route.post('/my-requisition-details/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
+
+        const data = await db.query(`select
+                    asset_categories.category_name,
+                    asset_sub_categories.sub_category_name,
+                    user_roles.role_name,
+                    locations.location_name,
+                    requisition_approves.update_quantity,
+                    requisition_masters.requisition_no,
+                    requisition_details.brand,
+                    requisition_details.model
+                from requisition_approves
+                         inner join requisition_masters on requisition_approves.requisition_id = requisition_masters.id
+                         inner join requisition_details on requisition_approves.requisition_details_id = requisition_details.id
+                         inner join asset_categories on requisition_details.asset_category = asset_categories.id
+                         inner join asset_sub_categories on requisition_details.asset_sub_category = asset_sub_categories.id
+                         inner join users on requisition_approves.update_by = users.id
+                         inner join user_roles on requisition_approves.role_id = user_roles.id
+                         inner join locations on requisition_approves.location_id = locations.id
+                where delivery_to is not null
+                  ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Get Logged User Delivery Received List
+route.post('/my-received-requisition/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where requisition_approves.delivery_to = ' + user_id;
+
+        const data = await db.query(`select requisition_masters.id,
+                                     requisition_masters.requisition_no,
+                                     locations.location_name, 
+                                     requisition_masters.request_date,
+                                     user_roles.role_name,
+                                     concat(users."firstName", ' ',  users."lastName") request_by
+                                    from requisition_masters
+                                             inner join requisition_approves on requisition_masters.id = requisition_approves.requisition_id
+                                             inner join locations on requisition_masters.location_id = locations.id
+                                             inner join user_roles on requisition_masters.role_id = user_roles.id
+                                             inner join users on requisition_masters.request_by = users.id
+                                      ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Get Logged User Delivery Received Details List
+route.post('/my-received-requisition-details/by/credentials', async (req,res) =>   {
+    try {
+        const {user_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where requisition_approves.delivery_to = ' + user_id;
+
+        const data = await db.query(`select
+                                asset_categories.category_name,
+                                asset_sub_categories.sub_category_name,
+                                user_roles.role_name,
+                                locations.location_name,
+                                requisition_approves.update_quantity,
+                                requisition_masters.requisition_no,
+                                requisition_details.brand,
+                                requisition_details.model
+                            from requisition_approves
+                                     inner join requisition_masters on requisition_approves.requisition_id = requisition_masters.id
+                                     inner join requisition_details on requisition_approves.requisition_details_id = requisition_details.id
+                                     inner join asset_categories on requisition_details.asset_category = asset_categories.id
+                                     inner join asset_sub_categories on requisition_details.asset_sub_category = asset_sub_categories.id
+                                     inner join users on requisition_approves.update_by = users.id
+                                     inner join user_roles on requisition_approves.role_id = user_roles.id
+                                     inner join locations on requisition_approves.location_id = locations.id
+                              ${queryText}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
 
 module.exports = route

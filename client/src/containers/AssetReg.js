@@ -3,9 +3,7 @@ import AssetRegComponent from "../components/AssetRegComponent/AssetRegComponent
 
 const AssetReg = () => {
     return(
-        <div>
             <AssetRegComponent />
-        </div>
     )
 }
 

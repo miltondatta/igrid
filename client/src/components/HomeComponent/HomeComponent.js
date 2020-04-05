@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NoticeBoardComponent from "./NoticeBoardComponent";
 import {homeBanner} from "../../utility/constant";
+import Loader from "../../utility/loader/Loader";
+import LatestUpdateComponent from "./LatestUpdateComponent";
 
 const HomeComponent = () => {
     let settings = {
@@ -30,6 +32,7 @@ const HomeComponent = () => {
             <div className="ui-hometop">
                 <div className={'ui-news'}>
                     <p className={'f-19px f-weight-600 text-grey border-bottom-gray pb-3'}>Latest Updates</p>
+                    <LatestUpdateComponent/>
                 </div>
                 <div className={'w-100 rounded overflow-hidden'}>
                     <Slider {...settings}>
@@ -43,12 +46,20 @@ const HomeComponent = () => {
                     <NoticeBoardComponent />
                 </div>
                 <div className={'ui-home-options'}>
-                    <Link to={'/documents/document-list-search'}>
-                        <div className={'ui-cards ui-document'}>
+                    <Link to={'/asset-dashboard'}>
+                        <div className={'ui-cards ui-asset'}>
                             <div className={'ui-card-left'}>
-                                <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/document_management.png'} alt="document_management"/>
+                                <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/asset.png'} alt="document_management"/>
                             </div>
-                            <p className={'mt-2'}>DOCUMENT MANAGEMENT</p>
+                            <p>ASSET REQUISITION & TRACKING</p>
+                        </div>
+                    </Link>
+                    <Link to={'/mis/dashboard'}>
+                        <div className={'ui-cards ui-mis'}>
+                            <div className={'ui-card-left'}>
+                                <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/mis_report.png'} alt="document_management"/>
+                            </div>
+                            <p>MIS REPORT</p>
                         </div>
                     </Link>
                     <Link to={'/location'}>
@@ -59,20 +70,12 @@ const HomeComponent = () => {
                             <p>LOCATION FINDER</p>
                         </div>
                     </Link>
-                    <Link to={'/request-history'}>
-                        <div className={'ui-cards ui-asset'}>
+                    <Link to={'/documents/document-list-search'}>
+                        <div className={'ui-cards ui-document'}>
                             <div className={'ui-card-left'}>
-                                <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/asset.png'} alt="document_management"/>
+                                <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/document_management.png'} alt="document_management"/>
                             </div>
-                            <p>ASSET REQUISITION & TRACKING</p>
-                        </div>
-                    </Link>
-                    <Link to={'/mis'}>
-                        <div className={'ui-cards ui-mis'}>
-                            <div className={'ui-card-left'}>
-                                <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/mis_report.png'} alt="document_management"/>
-                            </div>
-                            <p>MIS REPORT</p>
+                            <p className={'mt-2'}>DOCUMENT MANAGEMENT</p>
                         </div>
                     </Link>
                 </div>

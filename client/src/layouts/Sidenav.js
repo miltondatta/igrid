@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import React, {Component} from 'react'
 import {withRouter} from 'react-router-dom'
 import {sidenav} from '../utility/constant'
+import {BackEnd_BaseUrl} from "../config/private";
 
 class Sidenav extends Component {
 
@@ -61,7 +62,7 @@ class Sidenav extends Component {
             <div className='h-100 ui-sidenav'>
                 <div className='ui-user-details' style={{justifyContent: sideNav && 'center'}}>
                     {!sideNav && <div>
-                    <img className={'ui-user-avatar'} src={'http://localhost:5000/images/' + image} alt={'user'} />{userName}
+                    <img className={'ui-user-avatar'} src={BackEnd_BaseUrl +'images/' + image} alt={'user'} />{userName}
                     </div>}
                     <i onClick={this.props.handleSideNav} className="fas fa-bars"></i>
                 </div>
@@ -72,7 +73,7 @@ class Sidenav extends Component {
                     {this.renderCategory()}
                     {!sideNav && <small className='ml-4 mb-1 mt-3'>User</small>}
                     <p className={`f-16px ui-cat-title m-0 ${sideNav ? 'text-center' : 'px-4'}`}> <Link to={'/profile'}> <i className={` far fa-address-card  ${sideNav ? 'f-22px' : ' mr-3'}`}></i>{ !sideNav && 'Update Profile'} </Link></p>
-                    <p className={`f-16px ui-cat-title m-0 ${sideNav ? 'text-center' : 'px-4'}`}> <Link to={'/pass-reset'}> <i className={` fas fa-cog ${sideNav ? 'f-22px' : ' mr-3'}`}></i>{ !sideNav && 'Change Password' } </Link></p>
+                    <p className={`f-16px ui-cat-title m-0 ${sideNav ? 'text-center' : 'px-4'}`}> <Link to={'/profile/pass-reset'}> <i className={` fas fa-cog ${sideNav ? 'f-22px' : ' mr-3'}`}></i>{ !sideNav && 'Change Password' } </Link></p>
                     <p onClick={() => {localStorage.removeItem('user')}} className={`f-16px ui-cat-title m-0 ${sideNav ? 'text-center' : 'px-4'}`}> <a href={'/'}><i className={`fas fa-sign-out-alt ${sideNav ? 'f-22px' : 'mr-3'}`}></i>{ !sideNav && 'LOG OUT' }</a></p>
                 </div>
             </div>

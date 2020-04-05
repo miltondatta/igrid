@@ -25,7 +25,9 @@ class AssetCategoryOptions extends Component {
 
     render() {
         const {assetCategory} = this.state
-        if (this.props.stateForceUpdate) {
+        const {stateForceUpdate} = this.props
+        console.log(stateForceUpdate, 28 )
+        if (stateForceUpdate) {
             this.getData()
             this.props.forceUp()
         }

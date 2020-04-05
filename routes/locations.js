@@ -55,25 +55,51 @@ route.get('/locations/child/:id', async (req,res,next) => {
 })
 
 // Read Specific Location
-route.get('/locations/:id', (req,res,next) => {
-    Locations.findAll({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy'], where: {parent_id: req.params.id}})
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
+route.get('/locations/:id', async (req,res,next) => {
+    const [data, metaData] = await db.query(`
+        SELECT locations.id, locations.location_name, locations.location_code, locations.parent_id, locations.hierarchy, location_hierarchies.hierarchy_name FROM locations
+        JOIN location_hierarchies ON locations.hierarchy = location_hierarchies.id
+        WHERE locations.parent_id = ${req.params.id}
+    `)
+        if (data.length > 0) {
+            res.status(200).json(data)
+        } else {
             res.status(200).json({message: 'Something Went Wrong', err})
-        })
+        }
+})
+
+// Read Specific Location With Hierarchy
+route.post('/locations/witHierarchy', async (req,res,next) => {
+    try{
+        const {parentID, hierarchyID} = req.body
+        const [data, metaData] = await db.query(`
+            SELECT locations.id, locations.location_name, locations.location_code, locations.parent_id,
+                   locations.hierarchy, location_hierarchies.hierarchy_name FROM locations
+                    JOIN location_hierarchies ON locations.hierarchy = location_hierarchies.id
+            WHERE locations.parent_id = ${parentID} AND hierarchy = ${hierarchyID}
+        `)
+        if (data.length > 0) {
+            res.status(200).json(data)
+        } else {
+            res.status(200).json({message: 'No Data Found'})
+        }
+    } catch (err) {
+        console.error(err.message);
+    }
 })
 
 // Read Specific Location
-route.get('/locations/render/:id', (req,res,next) => {
-    Locations.findOne({attributes: ['id', 'location_name', 'location_code','parent_id','hierarchy'], where: {parent_id: req.params.id}})
-        .then(resData => {
-            res.status(200).json(resData)
-        })
-        .catch(err => {
-            res.status(200).json({message: 'Something Went Wrong', err})
-        })
+route.get('/locations/render/:id', async (req,res,next) => {
+    const [data, metaData] = await db.query(`
+        SELECT locations.id, locations.location_name, locations.location_code, locations.parent_id, locations.hierarchy, location_hierarchies.hierarchy_name FROM locations
+        JOIN location_hierarchies ON locations.hierarchy = location_hierarchies.id
+        WHERE locations.parent_id = ${req.params.id}
+    `)
+    if (data.length > 0) {
+        res.status(200).json(data)
+    } else {
+        res.status(200).json({message: 'Something Went Wrong'})
+    }
 })
 
 // Update

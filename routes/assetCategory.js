@@ -3,6 +3,21 @@ const AssetCategory = require('../models/asset/assetCategory')
 
 const route = express.Router()
 
+// Get Total Assets
+route.get('/total/asset-category', (req,res,next) => {
+    AssetCategory.count({
+        distinct: true,
+        col: 'category_name'
+    })
+        .then(resData => {
+            res.status(200).json({total: resData, status: true})
+        })
+        .catch(err => {
+            console.log(err, 15)
+            res.status(200).json({message: 'Something Went Wrong', err})
+        })
+})
+
 // Read
 route.get('/asset-category', (req,res,next) => {
     AssetCategory.findAll({attributes: ['id', 'category_name','category_code','description']})
@@ -17,7 +32,7 @@ route.get('/asset-category', (req,res,next) => {
 // Update
 route.put('/asset-category/update/:id', (req,res,next) => {
     const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
+    if(category_name !== '' && category_code !== '') {
         AssetCategory.findAll({where: {id: req.params.id}})
             .then(resData => {
                 if(resData[0].dataValues.category_code === category_code) {
@@ -40,7 +55,7 @@ route.put('/asset-category/update/:id', (req,res,next) => {
 // Create
 route.post('/asset-category/entry', (req,res,next) => {
     const {category_name,category_code,description} = req.body
-    if(category_name !== '' && category_code !== '' && description !== '') {
+    if(category_name !== '' && category_code !== '') {
         AssetCategory.findAll({where: {category_code}})
             .then(resData => {
                 if(resData.length === 0) {

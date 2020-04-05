@@ -7,6 +7,6 @@ const AssetTransfer = () => {
             <AssetTransferComponent />
         </div>
     )
-}
+};
 
-export default AssetTransfer
+export default AssetTransfer;

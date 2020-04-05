@@ -8,10 +8,8 @@ class ImportCSVComponent extends Component {
         super(props);
         this.state = {
             import_data_file: null,
-            error: false,
-            errorMessage: '',
-            successMessage: '',
-            success: false
+            success: null,
+            message: ''
         };
     }
 
@@ -21,39 +19,58 @@ class ImportCSVComponent extends Component {
     }
 
     handleSubmit = (e) => {
-        const { import_data_file } = this.state;
+        const { import_data_file } = this.state;    
+        if(!import_data_file) {
+            this.setState({
+                success: false,
+                message: "Please upload a csv file to submit"
+            });
+            return;
+        }
         const formData = new FormData();
         formData.append('file', import_data_file)
-
         Axios.post(apiUrl() + 'mis/import/csv', formData)
             .then(resData => {
-                if (resData.data.status) {
-                    console.log(resData, 31)
                     this.setState({
                         success: true,
-                        successMessage: resData.data.message
-                    }, () => {
-                        window.location.reload()
-                    })
-                } else {
-                    this.setState({
-                        error: true,
-                        errorMessage: resData.data.message
-                    })
-                }
+                        message: resData.data.message,
+                        import_data_file: null
+                    });                
+            }).catch(err => {
+                this.setState({
+                    success: false,
+                    message: err.response.data.message
+                })
             })
-            .catch(err => {console.log(err)})
 
     }
 
 
     render() {
         const {title, headTitle} = this.props;
-        const { import_data_file, errorMessage, successMessage, success, error }  = this.state;
+        const { import_data_file, success, message }  = this.state;
         return (
             <>
+                {typeof success === "boolean" && !success &&
+                <div
+                    className="alert alert-danger mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
+                    role="alert">
+                    {message} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: null})
+                }}></i>
+                </div>}
+                {success &&
+                <div
+                    className="alert alert-success mx-2 mb-2 position-relative d-flex justify-content-between align-items-center mt-2"
+                    role="alert">
+                    {message} <i className="fas fa-times " onClick={() => {
+                    this.setState({success: null})
+                }}></i>
+                </div>}
+
+
                 <div className="px-2 my-2 ui-dataEntry">
-                    <div className={`bg-white rounded p-2 min-h-80vh position-relative`}>
+                    <div className={`bg-white rounded p-2 admin-input-height position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
@@ -62,11 +79,14 @@ class ImportCSVComponent extends Component {
                                 <input type="file" onChange={this.handleFileChange} name={'import_data_file'} id="validatedCustomFile"
                                     required />
                                 <label htmlFor="validatedCustomFile">{(import_data_file && import_data_file.name) ? import_data_file.name : (import_data_file ? import_data_file : 'Choose file')}</label>
+                                <div className="bottom">
+                                    JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
+                                </div>
                             </div>
                         </div>
-                        <button className="submit-btn" onClick={this.handleSubmit}>Submit</button>
+                        <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button>
                     </div>
-                    <div className="rounded bg-white min-h-80vh">
+                    <div className="rounded bg-white admin-input-height">
                         <nav className="navbar text-center mb-2 pl-3 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>

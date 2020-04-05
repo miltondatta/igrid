@@ -11,19 +11,23 @@ module.exports = {
       data_date: {
         type: Sequelize.DATEONLY
       },
+      year: {
+        defaultValue: 0,
+        type: Sequelize.STRING
+      },
+      month: {
+        defaultValue: 0,
+        type: Sequelize.STRING
+      },
+      day: {
+        defaultValue: 0,
+        type: Sequelize.STRING
+      },
       location_id: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'locations',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       indicatordetails_id: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'mis_indicatordetails',
-          key: 'id'
-        }
+        type: Sequelize.INTEGER
       },
       data_value: {
         type: Sequelize.DOUBLE
