@@ -20,6 +20,7 @@ import {getFileExtension} from "../../utility/custom";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -61,18 +62,18 @@ class ChallanComponent extends Component {
             installation_cost: '',
             carrying_cost: '',
             other_cost: '',
-            asset_type: '',
-            depreciation_method: '',
-            rate: '',
+            asset_type: null,
+            depreciation_method: null,
+            rate: null,
             effective_date: moment(),
-            book_value: '',
-            salvage_value: '',
-            useful_life: '',
+            book_value: null,
+            salvage_value: null,
+            useful_life: null,
             last_effective_date: moment(),
-            warranty: '',
+            warranty: null,
             last_warranty_date: moment(),
-            condition: '',
-            comments: '',
+            condition: null,
+            comments: null,
             barcode: false,
             addAssets: false,
             assign_to: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.id : '',
@@ -597,29 +598,24 @@ class ChallanComponent extends Component {
                             </p> : 'Challan Information'}</p>
                     </nav>
                     <div className="px-2">
-                        {assets.length > 0 ? <ReactDataTable
-                            pagination
-                            footer
-                            bigTable
+                        {assets.length > 0 ?
+                        <PrimeDataTable
                             del={'assets-entry'}
                             deleteModalTitle={'Delete Asset'}
                             updateEdit={this.updateEdit}
-                            tableData={assets}
-                        /> : challans.length > 0 && assets.length === 0 ? <ReactDataTable
-                            details
-                            add
-                            bigTable
-                            searchable
-                            pagination
-                            footer
-                            dataDisplay
-                            addName={'Assets'}
-                            addAssets={this.addAssets}
-                            edit={'specific-challan/'}
-                            updateEdit={this.updateEdit}
-                            assetList={this.assetList}
-                            tableData={challans}
-                        /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
+                            data={assets}
+                        />
+                        : challans.length > 0 && assets.length === 0 ?
+                            <PrimeDataTable
+                                details
+                                add
+                                addName={'Assets'}
+                                addAssets={this.addAssets}
+                                edit={'specific-challan/'}
+                                updateEdit={this.updateEdit}
+                                assetList={this.assetList}
+                                data={challans}
+                            /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
                     </div> </div> :
                         <div>
                             <div className="ui-dataEntry">

@@ -19,6 +19,7 @@ import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import {getFileExtension} from "../../utility/custom";
 import Spinner from "../Spinner";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -1785,18 +1786,31 @@ class AdminInputContainer extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <Spinner/> : dataTableData.length > 0 ? <>
-                            <ReactDataTable
+                            {/*<ReactDataTable*/}
+                            {/*    edit = {formType !== 'COMPLAINT'}*/}
+                            {/*    dataDisplay = {formType !== 'COMPLAINT'}*/}
+                            {/*    footer = {formType !== 'COMPLAINT'}*/}
+                            {/*    isLoading = {formType !== 'COMPLAINT'}*/}
+                            {/*    pagination = {formType !== 'COMPLAINT'}*/}
+                            {/*    searchable = {formType !== 'COMPLAINT'}*/}
+                            {/*    sideTable*/}
+                            {/*    deleteModalTitle={title}*/}
+                            {/*    del={formType !== 'COMPLAINT' ? getApi : false}*/}
+                            {/*    tableData={dataTableData}*/}
+                            {/*    updateEdit={this.updateEdit}*/}
+                            {/*/>*/}
+                            <PrimeDataTable
+                                sideTable
+                                del={formType !== 'COMPLAINT' ? getApi : false}
+                                updateEdit={this.updateEdit}
                                 edit = {formType !== 'COMPLAINT'}
                                 dataDisplay = {formType !== 'COMPLAINT'}
                                 footer = {formType !== 'COMPLAINT'}
                                 isLoading = {formType !== 'COMPLAINT'}
                                 pagination = {formType !== 'COMPLAINT'}
                                 searchable = {formType !== 'COMPLAINT'}
-                                sideTable
+                                data={dataTableData}
                                 deleteModalTitle={title}
-                                del={formType !== 'COMPLAINT' ? getApi : false}
-                                tableData={dataTableData}
-                                updateEdit={this.updateEdit}
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
                     </div>

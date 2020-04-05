@@ -7,6 +7,7 @@ import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import DatePicker from 'react-datepicker2';
 import moment from "moment";
 import Spinner from "../../layouts/Spinner";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -111,15 +112,14 @@ class UserLoginLogComponent extends Component {
                         </button>
                     </div>
                 </div>
-                {isLoading ? <Spinner/> : trackData.length === 0 ? data.length > 0 && <ReactDataTable
-                    track
-                    pagination
-                    footer
-                    searchable
-                    dataDisplay
-                    trackUser={this.trackUser}
-                    tableData={data}
-                /> : <>
+                {isLoading ? <Spinner/> : trackData.length === 0 ? data.length > 0 && <div className={'mt-5'}>
+                    <PrimeDataTable
+                        track
+                        trackUser={this.trackUser}
+                        data={data}
+                    />
+</div>
+                : <>
                     <nav className="navbar text-center mb-2 pl-2 rounded cursor-pointer">
                         <p className="text-dark f-weight-500 f-20px m-0" onClick={() => {
                             this.setState({trackData: []})

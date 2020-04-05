@@ -7,6 +7,7 @@ import SuccessModal from "../../utility/success/successModal";
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ModuleOptions from "../../utility/component/moduleOptions";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class MenuComponent extends Component {
     constructor(props) {
@@ -532,7 +533,21 @@ class MenuComponent extends Component {
                         <p className="text-blue f-weight-700 f-20px m-0">Menu List</p>
                     </nav>
                     {isLoading ? <Spinner/> : menuTableData.length > 0 ? <>
-                            <ReactDataTable
+                            {/*<ReactDataTable*/}
+                            {/*    dataDisplay*/}
+                            {/*    footer*/}
+                            {/*    isLoading*/}
+                            {/*    shortWidth*/}
+                            {/*    pagination*/}
+                            {/*    searchable*/}
+                            {/*    edit*/}
+                            {/*    docDelete*/}
+                            {/*    tableData={menuTableData}*/}
+                            {/*    updateEdit={this.updateEdit}*/}
+                            {/*    docDeleteModal={this.docDeleteModal}*/}
+                            {/*    bigTable*/}
+                            {/*/>*/}
+                            <PrimeDataTable
                                 dataDisplay
                                 footer
                                 isLoading
@@ -541,10 +556,9 @@ class MenuComponent extends Component {
                                 searchable
                                 edit
                                 docDelete
-                                tableData={menuTableData}
+                                data={menuTableData}
                                 updateEdit={this.updateEdit}
                                 docDeleteModal={this.docDeleteModal}
-                                bigTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
                                  aria-labelledby="docDeleteModal" aria-hidden="true">
