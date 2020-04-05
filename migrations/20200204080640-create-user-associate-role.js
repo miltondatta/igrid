@@ -33,6 +33,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('user_associate_roles ');
+      return queryInterface.dropTable('user_associate_roles');
   }
 };
