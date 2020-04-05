@@ -97,7 +97,6 @@ app.use('/api/v1', AssetEntryRouter);
 app.use('/api/v1', ComCategoryRouter);
 app.use('/api/v1', AssetTypesRouter);
 app.use('/api/v1', ConditionsRouter);
-app.use('/api/v1', ComplaintRouter);
 app.use('/api/v1', LostAssetsRouter);
 app.use('/api/v1', DepreciatinRouter);
 app.use('/api/v1', MisDashboardRouter);
@@ -120,6 +119,7 @@ app.use('/api/v1/document/sub/category', DocumentSubCategory);
 app.use('/api/v1/mis/indicator/category', IndicatorCategory);
 app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1/asset-repair', AssetRepair);
+app.use('/api/v1/complaint', ComplaintRouter);
 app.use('/api/v1/complaint/mapping', ComplaintMapping);
 
 
