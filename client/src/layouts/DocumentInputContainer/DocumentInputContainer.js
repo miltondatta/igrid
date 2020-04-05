@@ -11,6 +11,7 @@ import Spinner from "../Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -753,18 +754,12 @@ class DocumentInputContainer extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <Spinner/> : allProjectTableData.length > 0 ? <>
-                            <ReactDataTable
-                                dataDisplay
-                                footer
-                                isLoading
-                                shortWidth
-                                pagination
-                                searchable
+                            <PrimeDataTable
                                 action
-                                tableData={allProjectTableData}
+                                dnger
+                                data={allProjectTableData}
                                 updateEdit={this.updateEdit}
                                 docDeleteModal={this.docDeleteModal}
-                                sideTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
                                  aria-labelledby="docDeleteModal" aria-hidden="true">

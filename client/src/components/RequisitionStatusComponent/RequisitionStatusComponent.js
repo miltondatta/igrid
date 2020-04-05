@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import jwt from "jsonwebtoken";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RequisitionStatusComponent extends Component {
     constructor(props) {
@@ -53,24 +54,17 @@ class RequisitionStatusComponent extends Component {
                     <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                         <p onClick={() => {this.setState({viewDetails: false, requisitionDetailsStatus: []})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
                     </nav>
-                    <ReactDataTable
-                    tableData={requisitionDetailsStatus}
-                    assetList={this.assetList}
-                    searchable
-                    footer
-                    pagination
-                    dataDisplay
-                    bigTable
-                /> </>: requisitionStatus.length > 0 ?<ReactDataTable
-                    tableData={requisitionStatus}
-                    assetList={this.assetList}
-                    bigTable
-                    searchable
-                    details
-                    footer
-                    pagination
-                    dataDisplay
-                /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
+                    <PrimeDataTable
+                        assetList={this.assetList}
+                        data={requisitionDetailsStatus}
+                    />
+
+                </>: requisitionStatus.length > 0 ? <PrimeDataTable
+                        details
+                        assetList={this.assetList}
+                        data={requisitionStatus}
+                    />
+                : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
                     are No Data</h4>}
             </div>
         );

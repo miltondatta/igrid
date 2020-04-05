@@ -1474,7 +1474,7 @@ class AdminInputContainer extends Component {
     validate = () => {
         let errorDict = {}
         const {formType} = this.props
-        const {vendor_name, file_name, description, project_name, project_code, model, brand, category_code,category_name, sub_category_name, order_by,
+        const {vendor_name, com_category_id, com_sub_category_id, project_name, project_code, model, brand, category_code,category_name, sub_category_name, order_by,
             category_id, sub_category_code, sub_category_id, product_name, product_code, brand_id, model_id, depreciation_code, method_name,  module_name, initial_link,
             type_name, asset_code, condition_type, hierarchy_name, hierarchy, parent_id, location_code, location_name, role_desc, role_name, module_id,
             user_id, location_id, role_id, location_heirarchy_id, complaint_status, complaint_name, sub_complaint_name, complain_id, problem_details} = this.state
@@ -1555,6 +1555,8 @@ class AdminInputContainer extends Component {
                 return errorDict
             case "COMPLAINT":
                 errorDict = {
+                    com_category_id: typeof com_category_id !== 'undefined' && com_category_id !== '',
+                    com_sub_category_id: typeof com_sub_category_id !== 'undefined' && com_sub_category_id !== '',
                     problem_details: typeof problem_details !== 'undefined' && problem_details !== '',
                 }
                 this.setState({

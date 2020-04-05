@@ -5,6 +5,7 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import jwt from "jsonwebtoken";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class LostAssetsStatusComponent extends Component {
 
@@ -133,12 +134,14 @@ class LostAssetsStatusComponent extends Component {
                     <nav className="navbar text-center mb-0 mt-1 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Lost Asset Status</p>
                     </nav>
-                    {lostAssets.length > 0 ? <ReactDataTable
-                        feedback={true}
-                        modal = '#lostAsset'
-                        updateEdit={this.updateEdit}
-                        tableData={lostAssets}
-                    /> : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    {lostAssets.length > 0 ?
+                        <PrimeDataTable
+                            feedback={true}
+                            modal = '#lostAsset'
+                            updateEdit={this.updateEdit}
+                            data={lostAssets}
+                        />
+                    : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
             </>
         );

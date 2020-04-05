@@ -25,8 +25,6 @@ class PrimeDataTable extends Component {
             (rowData !== 'id' && rowData !== 'requisition_id' && rowData !== 'file_name') && cols.push({field: rowData, header: rowData.replace('_', " ").replace('_', " ").replace('_', " ")})
         })
 
-        // cols.push({field: 'action', header: 'Action'}
-
         this.setState({
             cols
         })
@@ -118,18 +116,88 @@ class PrimeDataTable extends Component {
         );
     }
 
-    displayData = (rowData, column) => {
-        console.log(rowData, column)
+    actionComment = (rowData, column) => {
+        console.log(rowData, column, 120)
         return(
-            <>{(rowData[column.field] === "" || rowData[column.field] === null) ? 'N/A' : rowData[column.field]}</>
+            <p>
+                <input
+                    type={'text'}
+                    name={'comment'}
+                    placeholder={'Comments'}
+                    className={'ui-req-textarea'}
+                    onChange={(e) => this.props.handleComment(e, rowData.id)}
+                />
+            </p>
+        )
+    }
+
+    actionQuantity = (rowData, column) => {
+        return(
+            <p>
+                {this.props.state[rowData.id] ? <input
+                        className={'ui-transparent-input'}
+                        onChange={(e) => {this.props.handleQuantity(e,rowData.id, 'update_quantity', rowData.quantity )}}
+                    /> :
+                    <input
+                        className={'ui-transparent-input'}
+                        onFocus={() => {this.props.handleState(rowData.id)}}
+                        value={rowData.quantity} />}
+            </p>
+        )
+    }
+
+    actionProduct = (rowData, column) => {
+        const {products} = this.props
+        const filteredCategory = products.length > 0 && products.filter(item => (item.asset_category === parseInt(rowData.asset_category, 10) && item.asset_sub_category === parseInt(rowData.asset_sub_category, 10)))
+        console.log(filteredCategory, 151)
+        const selectAsset = filteredCategory.length > 0 && filteredCategory.map((item, index) => {
+            return(
+                <div>
+                    <input type={'checkbox'}
+                           value={item.id}
+                           id={item.products}
+                           name={item.products}
+                           onChange={(e) => this.props.handleMultiselect(e, rowData.delivery_to)}/>
+                    <label htmlFor={item.products}>{item.products}</label>
+                </div>
+            )
+        })
+
+        return (<div className={'ui-multiselect'}>
+            {selectAsset}
+        </div>)
+    }
+
+    actionDanger = (rowData, column) => {
+        return (
+            <div dangerouslySetInnerHTML={{__html: rowData['description']}} />
+        )
+    }
+
+    displayData = (rowData, column) => {
+        return(
+            <>{(rowData[column.field] === "" || rowData[column.field] === null || rowData[column.field] === " ") ? 'N/A' : rowData[column.field]}</>
         )
     }
 
     render() {
         const {cols} = this.state
-
+        const {edit, del, details, approve, dnger,add, track, remove, feedback, file, docDelete, docDetails, action, productDelivery} = this.props
+        console.log(this.props.data, 129)
         let dynamicColumns = cols.map((col,i) => {
-            return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+            if (productDelivery) {
+                if (col.field === 'category_name' || col.field === 'sub_category_name' || col.field === 'role_name' || col.field === 'location_name' || col.field === 'update_quantity'){
+                    return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                }
+            } else if(dnger) {
+                if (col.field === 'description') {
+                    return <Column body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
+                } else {
+                    return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                }
+            } else {
+                return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+            }
         });
 
         return (
@@ -140,7 +208,10 @@ class PrimeDataTable extends Component {
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     >
                         {dynamicColumns}
-                        <Column body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width: '8em'}}/>
+                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width: '8em'}}/>}
+                        {this.props.handleQuantity && <Column body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
+                        {this.props.handleComment && <Column body={this.actionComment} field={'comment'} header={'Comment'}/>}
+                        {this.props.handleMultiselect && <Column body={this.actionProduct} field={'products'} header={'Products'}/>}
                     </DataTable>
                 </div>
         );

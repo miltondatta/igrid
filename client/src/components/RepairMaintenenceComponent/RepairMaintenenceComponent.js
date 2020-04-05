@@ -12,6 +12,7 @@ import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RepairMaintenenceComponent extends Component {
     constructor(props) {
@@ -19,9 +20,9 @@ class RepairMaintenenceComponent extends Component {
         this.state = {
             user: {},
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             product_id: '',
             product_name: '',
             product_serial: '',
@@ -118,8 +119,8 @@ class RepairMaintenenceComponent extends Component {
                                 const newObj = {
                                     id: item.id,
                                     product_serial: item.product_serial,
-                                    category_name: item.category_name,
-                                    sub_category_name: item.sub_category_name,
+                                    category: item.category,
+                                    sub_category: item.sub_category,
                                     product_name: item.product_name,
                                     cost: estimated_cost,
                                     details: details
@@ -360,12 +361,12 @@ class RepairMaintenenceComponent extends Component {
                             <span className="error">Repair Details Field is required</span>
                             }
                         </div>
-                        <div className="px-1 mb-2 w-50">
+                        <div className="px-1 mb-2 w-100">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'}
                                        className="custom-file-input" id="validatedCustomFile"/>
-                                <label htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
-                                <div className="bottom">
+                                <label className={'w-100'} htmlFor="validatedCustomFile">{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
+                                <div className="bottom w-100">
                                     JPG | JPEG | PNG | DOC | PDF | XLSX Allowed
                                 </div>
                             </div>
@@ -386,15 +387,14 @@ class RepairMaintenenceComponent extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Repair/Maintenance List</p>
                         </nav>
                         {isLoading ? <Spinner/> : repairTableData.length ? <>
-                            <ReactDataTable
+                            <PrimeDataTable
                                 remove={this.cancelRepair}
-                                tableData={repairTableData}
-                                bigTable
+                                data={repairTableData}
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Repair/Maintenance Asset</h4>}
                         {repairData.length ?
-                            <button className="submit-btn" data-toggle="modal"
+                            <button className="submit-btn-normal mt-3" data-toggle="modal"
                                     data-target="#assetRepairModal">Submit</button> : ''}
                     </div>
                     <div className="modal fade" id="assetRepairModal" tabIndex="-1" role="dialog"

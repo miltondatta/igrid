@@ -115,7 +115,11 @@ class ChallanComponent extends Component {
             .then(resData => {
                 if (resData.data.status) {
                     this.setState({
-                        assets: resData.data.results
+                        challans: []
+                    }, () => {
+                        this.setState({
+                            assets: resData.data.data
+                        })
                     })
                 } else {
                     this.setState({
@@ -593,7 +597,7 @@ class ChallanComponent extends Component {
                     <nav className="navbar text-center mb-0 pl-3 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ?
                             <p className={'cursor-pointer mb-0'}
-                               onClick={() => {this.setState({assets: []})}}>
+                               onClick={() => {this.setState({assets: []}, () => {this.getChallanData()})}}>
                                 <i className="fas fa-angle-left"></i> Challan Details
                             </p> : 'Challan Information'}</p>
                     </nav>

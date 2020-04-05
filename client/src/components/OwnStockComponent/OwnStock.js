@@ -6,6 +6,7 @@ import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
 import Spinner from "../../layouts/Spinner";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class OwnStock extends Component {
     constructor(props) {
@@ -96,7 +97,7 @@ class OwnStock extends Component {
                 <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                     <p className="text-blue f-weight-700 f-20px m-0">Own Stock - Product available in my stock</p>
                 </nav>
-                <div className="row ui-top-category mb-4">
+                <div className="row ui-top-category mb-4 mx-0">
                     <div className="col-md-5">
                         <div className="px-1">
                             <label className={'ui-custom-label'}>Category</label>
@@ -128,13 +129,16 @@ class OwnStock extends Component {
                     </div>
                 </div>
                 {isLoading ? <Spinner/> : allData.length > 0 ? <>
-                        <ReactDataTable
-                            dataDisplay
-                            footer
-                            isLoading
-                            pagination
-                            searchable
-                            tableData={allData}
+                        {/*<ReactDataTable*/}
+                        {/*    dataDisplay*/}
+                        {/*    footer*/}
+                        {/*    isLoading*/}
+                        {/*    pagination*/}
+                        {/*    searchable*/}
+                        {/*    tableData={allData}*/}
+                        {/*/>*/}
+                        <PrimeDataTable
+                            data={allData}
                         />
                     </> :
                     <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are

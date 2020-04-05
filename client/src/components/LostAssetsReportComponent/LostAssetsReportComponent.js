@@ -10,6 +10,7 @@ import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -144,9 +145,11 @@ console.log(errorDict , 91)
                             </div>
                         </div>
                     </div>
-                    {typeof deliveryReportData !== 'undefined' && deliveryReportData.length > 0 ? <ReactDataTable
-                        tableData={deliveryReportData}
-                    /> :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    {typeof deliveryReportData !== 'undefined' && deliveryReportData.length > 0 ?
+                        <PrimeDataTable
+                            data={deliveryReportData}
+                        />
+                    :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
 
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={deliveryReportData} />}

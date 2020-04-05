@@ -9,7 +9,7 @@ import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class AssetDisposalComponent extends Component {
     constructor(props) {
@@ -17,9 +17,9 @@ class AssetDisposalComponent extends Component {
         this.state = {
             user: {},
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             product_id: '',
             product_name: '',
             product_serial: '',
@@ -115,8 +115,8 @@ class AssetDisposalComponent extends Component {
                                 const newObj = {
                                     id: item.id,
                                     product_serial: item.product_serial,
-                                    category_name: item.category_name,
-                                    sub_category_name: item.sub_category_name,
+                                    category: item.category,
+                                    sub_category: item.sub_category,
                                     product_name: item.product_name,
                                     disposal_reason: disposal_reason
                                 };
@@ -314,16 +314,15 @@ class AssetDisposalComponent extends Component {
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Disposal List</p>
                         </nav>
-                        {isLoading ? <Spinner/> : disposalData.length ? <>
-                            <ReactDataTable
+                        {isLoading ? <Spinner/> : assetDisposalTableData.length > 0 ? <>
+                            <PrimeDataTable
                                 remove={this.cancelDisposal}
-                                tableData={assetDisposalTableData}
-                                bigTable
+                                data={assetDisposalTableData}
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Disposal Asset</h4>}
                         {disposalData.length ?
-                            <button className="submit-btn" data-toggle="modal"
+                            <button className="submit-btn-normal mt-3" data-toggle="modal"
                                     data-target="#assetDisposalModal">Submit</button> : ''}
                     </div>
                     <div className="modal fade" id="assetDisposalModal" tabIndex="-1" role="dialog"
