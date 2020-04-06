@@ -129,14 +129,6 @@ class OwnStock extends Component {
                     </div>
                 </div>
                 {isLoading ? <Spinner/> : allData.length > 0 ? <>
-                        {/*<ReactDataTable*/}
-                        {/*    dataDisplay*/}
-                        {/*    footer*/}
-                        {/*    isLoading*/}
-                        {/*    pagination*/}
-                        {/*    searchable*/}
-                        {/*    tableData={allData}*/}
-                        {/*/>*/}
                         <PrimeDataTable
                             data={allData}
                         />

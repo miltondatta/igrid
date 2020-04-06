@@ -533,20 +533,6 @@ class MenuComponent extends Component {
                         <p className="text-blue f-weight-700 f-20px m-0">Menu List</p>
                     </nav>
                     {isLoading ? <Spinner/> : menuTableData.length > 0 ? <>
-                            {/*<ReactDataTable*/}
-                            {/*    dataDisplay*/}
-                            {/*    footer*/}
-                            {/*    isLoading*/}
-                            {/*    shortWidth*/}
-                            {/*    pagination*/}
-                            {/*    searchable*/}
-                            {/*    edit*/}
-                            {/*    docDelete*/}
-                            {/*    tableData={menuTableData}*/}
-                            {/*    updateEdit={this.updateEdit}*/}
-                            {/*    docDeleteModal={this.docDeleteModal}*/}
-                            {/*    bigTable*/}
-                            {/*/>*/}
                             <PrimeDataTable
                                 dataDisplay
                                 footer

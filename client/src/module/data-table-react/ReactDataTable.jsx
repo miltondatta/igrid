@@ -124,7 +124,7 @@ class ReactDataTable extends Component {
     }
 
     render() {
-        const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, bigTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
+        const {searchable, shortWidth, exportable, pagination, edit, del, details, approve, modal, sideTable, add, track, deleteModalTitle, dataDisplay, footer, remove,
             feedback, file, docDelete, docDetails, comments, done, action} = this.props
         const {tableData, delId, actualData, dataCount, displayRow, filterByTitle} = this.state
         let title = tableData.length > 0 && Object.keys(tableData[0])[1]

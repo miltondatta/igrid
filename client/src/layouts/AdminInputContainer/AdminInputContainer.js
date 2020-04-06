@@ -1820,19 +1820,6 @@ class AdminInputContainer extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <Spinner/> : dataTableData.length > 0 ? <>
-                            {/*<ReactDataTable*/}
-                            {/*    edit = {formType !== 'COMPLAINT'}*/}
-                            {/*    dataDisplay = {formType !== 'COMPLAINT'}*/}
-                            {/*    footer = {formType !== 'COMPLAINT'}*/}
-                            {/*    isLoading = {formType !== 'COMPLAINT'}*/}
-                            {/*    pagination = {formType !== 'COMPLAINT'}*/}
-                            {/*    searchable = {formType !== 'COMPLAINT'}*/}
-                            {/*    sideTable*/}
-                            {/*    deleteModalTitle={title}*/}
-                            {/*    del={formType !== 'COMPLAINT' ? getApi : false}*/}
-                            {/*    tableData={dataTableData}*/}
-                            {/*    updateEdit={this.updateEdit}*/}
-                            {/*/>*/}
                             <PrimeDataTable
                                 sideTable
                                 del={formType !== 'COMPLAINT' ? getApi : false}
