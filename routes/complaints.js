@@ -107,8 +107,12 @@ router.post('/store', async (req, res) => {
                     db.query(`
                         select user_id
                         from user_associate_roles
-                        where role_id = ${role_id}
-                        limit 1`)
+                        where role_id = (
+                            select role_id
+                            from complaint_mappings
+                            where cat_id = ${complaint_category}
+                            limit 1
+                        ) limit 1`)
                         .then(resUser => {
                             const assign_to = resUser[0].length > 0 ? resUser[0][0].user_id : null;
                             const newComplaint = {

@@ -329,8 +329,8 @@ const AsyncMyComplaintStatus = Loadable({
     loader: () => import('../containers/MyComplaintStatus.js'),
     loading: Loader,
 });
-const AsyncOthersComplaint = Loadable({
-    loader: () => import('../containers/OthersComplaint.js'),
+const AsyncAssignComplaint = Loadable({
+    loader: () => import('../containers/AssignComplaint.js'),
     loading: Loader,
 });
 const AsyncComplaintDetails = Loadable({
@@ -450,7 +450,7 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/menu/assign' component={AsyncMenuAssignContainer}/>
                             <Route exact path='/admin/complaint-mapping' component={AsyncComplaintMapping}/>
                             <Route exact path='/my-complaint-status' component={AsyncMyComplaintStatus}/>
-                            <Route exact path='/others-complaint' component={AsyncOthersComplaint}/>
+                            <Route exact path='/assign-complaint' component={AsyncAssignComplaint}/>
                             <Route exact path='/complaint/details/:id' component={AsyncComplaintDetails}/>
 
 

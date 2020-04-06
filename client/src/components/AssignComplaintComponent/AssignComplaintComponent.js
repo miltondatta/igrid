@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 
-class OthersComplaintComponent extends Component {
+class AssignComplaintComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -87,4 +87,4 @@ class OthersComplaintComponent extends Component {
     }
 }
 
-export default OthersComplaintComponent;
+export default AssignComplaintComponent;

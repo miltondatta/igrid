@@ -2,7 +2,7 @@ import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import {getFileExtension} from "../../utility/custom";
-import ComCategoryByRoleOption from "../../utility/component/comCategoryByRoleOption";
+import ComCategoryOptions from "../../utility/component/comCategoryOption";
 import ComSubCategoryOptions from "../../utility/component/comSubCategoryOptions";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
@@ -172,7 +172,7 @@ class ComplaintComponent extends Component {
                             <select name={'complaint_category'} value={complaint_category} onChange={this.handleChange}
                                     className={`ui-custom-input ${errorDict && !errorDict.complaint_category ? 'is-invalid' : ''}`}>
                                 <option value="">Select Complaint Category</option>
-                                <ComCategoryByRoleOption/>
+                                <ComCategoryOptions/>
                             </select>
                         </div>
                         <div className="px-1 mb-2">
@@ -222,7 +222,7 @@ class ComplaintComponent extends Component {
                         </nav>
                         <div className={'pl-3'}>
                             <ul className={'ul-list-unstyled'}>
-                                <li>1. You will get your assigned Complaint Category and Sub Category.</li>
+                                <li>1. Choose your related Complaint Category and Sub Category.</li>
                                 <li>2. Please write your complaint details clearly for better understanding.</li>
                                 <li>3. Only own asset will be shown on Assets dropdown.</li>
                                 <li>4. Assets and File name field is optional.</li>
