@@ -4,16 +4,16 @@ import Axios from "axios";
 import {apiUrl, apiBaseUrl} from "../../utility/constant";
 import moment from "moment";
 import {getFileExtension} from "../../utility/custom";
+import * as jwt from "jsonwebtoken";
 
 moment.locale('en');
 
 
-class DocumentListDetails extends Component {
+class ComplaintDetailsComponent extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            item: [],
+            item: {},
             isLoading: false,
             fileError: '',
             fileErrorMessage: '',
@@ -22,22 +22,25 @@ class DocumentListDetails extends Component {
     }
 
     componentDidMount() {
-        this.getData();
+        const user = jwt.decode(localStorage.getItem('user')).data;
+        this.setState({user}, () => this.getData());
     }
 
     getData = () => {
         const {id} = this.props.match.params;
+        const {user} = this.state;
         this.setState({
             isLoading: true
         }, () => {
-            Axios.get(apiUrl() + 'document/list/details/' + id)
+            Axios.get(apiUrl() + 'complaint/details/' + id + '/' + user.id)
                 .then(res => {
                     this.setState({
-                        item: res.data
+                        item: res.data[0]
                     }, () => {
-                        let ext = getFileExtension(res.data.file_name);
-                        if (res.data.file_name && ext === 'pdf') {
-                            Axios(apiUrl() + `document/list/pdf/${res.data.file_name}`, {
+                        if (!res.data.length > 0) return;
+                        let ext = getFileExtension(res.data[0].file_name);
+                        if (res.data[0].file_name && ext === 'pdf') {
+                            Axios(apiUrl() + `complaint/pdf/${res.data[0].file_name}`, {
                                 method: "GET",
                                 responseType: "blob"
                             })
@@ -72,10 +75,10 @@ class DocumentListDetails extends Component {
     downloadFile = (e, file_name) => {
         e.preventDefault();
 
-        Axios.get(apiUrl() + 'document/list/download/' + file_name)
+        Axios.get(apiUrl() + 'complaint/download/' + file_name)
             .then(() => {
                 const link = document.createElement('a');
-                link.href = apiUrl() + 'document/list/download/' + file_name;
+                link.href = apiUrl() + 'complaint/download/' + file_name;
                 link.setAttribute('download', file_name);
                 link.click();
 
@@ -97,18 +100,12 @@ class DocumentListDetails extends Component {
 
     render() {
         const {item, fileUrl, fileError, fileErrorMessage} = this.state;
-        const ext = item.file_name && getFileExtension(item.file_name);
+        const ext = item && item.file_name && getFileExtension(item.file_name);
         let images = ['jpg', 'jpeg', 'png'];
 
         return (
             <>
-                {fileError &&
-                <div
-                    className="alert alert-danger mx-1 mb-2 mt-2"
-                    role="alert">
-                    {fileErrorMessage}
-                </div>
-                }
+                {fileError && <div className="alert alert-danger mx-1 mb-2 mt-2" role="alert">{fileErrorMessage}</div>}
                 <div className="ui-document-details-container min-h-86p">
                     <div className="bg-project-blue p-3">
                         <div className="row">
@@ -116,39 +113,43 @@ class DocumentListDetails extends Component {
                                 <table className="table text-white border-less-table">
                                     <tbody>
                                     <tr>
-                                        <th className={'border-bottom-light'}>Category</th>
+                                        <th className={'border-bottom-light'}>Complaint No</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.document_category && item.document_category.category_name}</td>
+                                        <td className={'border-bottom-light'}>{item && item.complaint_no}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th className={'border-bottom-light'}>Sub Category</th>
+                                        <th className={'border-bottom-light'}>Assigned {item && item.bool ? 'to' : 'by'}</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.document_sub_category && item.document_sub_category.sub_category_name}</td>
+                                        <td className={'border-bottom-light'}>{item && item.assign_to}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th className={'border-bottom-light'}>Title</th>
+                                        <th className={'border-bottom-light'}>Complaint Name</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.title}</td>
+                                        <td className={'border-bottom-light'}>{item && item.complaint_name}</td>
                                     </tr>
                                     <tr className={'border border-bottom'}>
-                                        <th className={'border-bottom-light'}>Content Type</th>
+                                        <th className={'border-bottom-light'}>Sub Complaint Name</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.content_type ? 'Notice' : 'Circular'}</td>
+                                        <td className={'border-bottom-light'}>{item && item.sub_complaint_name}</td>
                                     </tr>
+                                    {item && item.product_name &&
                                     <tr className={'border border-bottom'}>
-                                        <th className={'border-bottom-light'}>Circular Number</th>
+                                        <th className={'border-bottom-light'}>Product Name</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.circular_no}</td>
+                                        <td className={'border-bottom-light'}>{item && item.product_name}</td>
                                     </tr>
+                                    }
+                                    {item && item.product_serial &&
                                     <tr className={'border border-bottom'}>
-                                        <th className={'border-bottom-light'}>Display Notice</th>
+                                        <th className={'border-bottom-light'}>Product Serial</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.display_notice ? 'On' : 'Off'}</td>
+                                        <td className={'border-bottom-light'}>{item && item.product_serial}</td>
                                     </tr>
+                                    }
                                     <tr className={'border border-bottom'}>
                                         <th className={'border-bottom-light'}>Status</th>
                                         <th className={'border-bottom-light'}>:</th>
-                                        <td className={'border-bottom-light'}>{item.status ? 'Active' : 'Inactive'}</td>
+                                        <td className={'border-bottom-light'}>{item && item.status_name}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -161,24 +162,26 @@ class DocumentListDetails extends Component {
                                 <div className="col-md-2">
                                     <ul className="ul-list-unstyled pl-1"
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                        <li>Document Date</li>
-                                        <li>Description</li>
+                                        <li>Complaint Date</li>
+                                        <li>Problem Details</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-1 pr-0">
-                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'}
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>:</li>
                                         <li>:</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-9 p-0">
-                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                        <li>{moment(item.document_date).format('MMMM Do YYYY, hh:mm a')}</li>
-                                        <li style={{fontWeight: 400}}
-                                            dangerouslySetInnerHTML={{__html: item.description}}></li>
+                                    <ul className={'ul-list-unstyled'}
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        <li>{item && moment(item.createdAt).format('MMMM Do YYYY, hh:mm a')}</li>
+                                        <li style={{fontWeight: 400}}>{item && item.problem_details}</li>
                                     </ul>
                                 </div>
                             </div>
+                            {item && item.file_name &&
                             <div className="row">
                                 <div className="col-md-2">
                                     <ul className="ul-list-unstyled pl-1"
@@ -187,49 +190,58 @@ class DocumentListDetails extends Component {
                                     </ul>
                                 </div>
                                 <div className="col-md-1 pr-0">
-                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'}
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <li>:</li>
                                     </ul>
                                 </div>
                                 <div className="col-md-6 px-0">
-                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                    <ul className={'ul-list-unstyled'}
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         {!fileError && <li>
-                                            <p className={'text-white'}>{item.file_name}</p>
+                                            <p className={'text-white'}>{item && item.file_name}</p>
                                         </li>}
                                     </ul>
                                 </div>
                                 <div className="col-md-3">
-                                    <ul className={'ul-list-unstyled'} style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                        {!fileError && <li>
-                                            <button className={'ui-document-btn'} onClick={e => this.downloadFile(e, item.file_name)}><i
-                                                className="icofont-download"></i> Download File</button>
+                                    <ul className={'ul-list-unstyled'}
+                                        style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
+                                        {!fileError && item && <li>
+                                            <button className={'ui-document-btn'}
+                                                    onClick={e => this.downloadFile(e, item.file_name)}><i
+                                                className="icofont-download"></i> Download File
+                                            </button>
                                         </li>}
                                     </ul>
                                 </div>
                             </div>
+                            }
                         </div>
-                        {item.file_name && !fileError &&
+                        {item && item.file_name && !fileError &&
                         <div className="row">
                             <div className="col-md-12">
                                 {(ext === 'pdf') ?
-                                <div className="ui-docDetailsFile">
-                                    <iframe id="inlineFrameExample"
-                                            title="Inline Frame Example"
-                                            width="100%"
-                                            height="100%"
-                                            src={fileUrl}>
-                                    </iframe>
-                                </div>
-                                : (images.includes(ext)) ?
-                                <div className="ui-docDetailsFile">
-                                    <img src={`${apiBaseUrl}document/${item.file_name}`} alt="" width="100%"
-                                         height="100%"/>
-                                </div>
-                                :
-                                    <div className="ui-document-preview">
-                                        <img src={process.env.PUBLIC_URL + '/media/image/preview.png'} alt="Preview"/>
-                                        <h3>Document Is Not Viewable! <p onClick={e => this.downloadFile(e, item.file_name)}>Download Here</p></h3>
+                                    <div className="ui-docDetailsFile">
+                                        <iframe id="inlineFrameExample"
+                                                title="Inline Frame Example"
+                                                width="100%"
+                                                height="100%"
+                                                src={fileUrl}>
+                                        </iframe>
                                     </div>
+                                    : (images.includes(ext)) ?
+                                        <div className="ui-docDetailsFile">
+                                            <img src={`${apiBaseUrl}public/${item.file_name}`} alt="" width="100%"
+                                                 height="100%"/>
+                                        </div>
+                                        :
+                                        <div className="ui-document-preview">
+                                            <img src={process.env.PUBLIC_URL + '/media/image/preview.png'}
+                                                 alt="Preview"/>
+                                            <h3>Complaint File Is Not Viewable! <p
+                                                onClick={e => this.downloadFile(e, item.file_name)}>Download Here</p>
+                                            </h3>
+                                        </div>
                                 }
                             </div>
                         </div>
@@ -241,4 +253,4 @@ class DocumentListDetails extends Component {
     }
 }
 
-export default withRouter(DocumentListDetails);
+export default withRouter(ComplaintDetailsComponent);
