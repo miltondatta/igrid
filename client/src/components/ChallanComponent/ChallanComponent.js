@@ -549,7 +549,7 @@ class ChallanComponent extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <button onClick={this.updateChallan} className="submit-btn-normal">Add Challan</button>
+                                <button onClick={this.updateChallan} className="submit-btn-normal mt-3">Add Challan</button>
                             </div>
                             <div className="max-h-80vh bg-white rounded p-3">
                                 <div className={'mb-2'}>

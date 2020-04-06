@@ -86,7 +86,7 @@ class UserLoginLogComponent extends Component {
                     <p className="text-blue f-weight-700 f-22px ml-2 mb-0">Login Logs</p>
                 </nav>
                 <div className="row pl-1">
-                    <div className="col-md-3">
+                    <div className="col-md-5">
                         <label className={'ui-custom-label pl-2'}>From Date</label>
                         <DatePicker timePicker={false}
                                     name={'from_date'}
@@ -96,7 +96,7 @@ class UserLoginLogComponent extends Component {
                                     ranges={disabledRanges}
                                     value={from_date}/>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-5">
                         <label className={'ui-custom-label pl-2'}>To Date</label>
                         <DatePicker timePicker={false}
                                     name={'to_date'}
@@ -106,7 +106,7 @@ class UserLoginLogComponent extends Component {
                                     ranges={disabledRanges}
                                     value={to_date}/>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <button className="submit-btn-normal w-100 h-100 px-4 py-2"
                                 onClick={this.handleSearch}>Search
                         </button>

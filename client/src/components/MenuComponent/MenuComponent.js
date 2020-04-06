@@ -523,7 +523,7 @@ class MenuComponent extends Component {
                             <label className="custom-control-label" htmlFor="switch2">Visibility</label>
                         </div>
                     </div>
-                    {editId === null ? <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button> : <>
+                    {editId === null ? <button className="submit-btn-normal mt-3" onClick={this.handleSubmit}>Submit</button> : <>
                         <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
                         <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back</button>
                     </>}

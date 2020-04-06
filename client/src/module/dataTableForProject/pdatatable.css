@@ -3,6 +3,10 @@ body .p-datatable p{
     word-break: break-word;
 }
 
+body .p-datatable .p-datatable-tbody > tr > td{
+    word-break: break-word;
+}
+
 body .p-datatable .p-datatable-thead > tr > th{
     background: #2184d0 !important;
     color: white !important;
