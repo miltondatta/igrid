@@ -325,6 +325,18 @@ const AsyncComplaintMapping = Loadable({
     loader: () => import('../containers/ComplaintMapping.js'),
     loading: Loader,
 });
+const AsyncMyComplaintStatus = Loadable({
+    loader: () => import('../containers/MyComplaintStatus.js'),
+    loading: Loader,
+});
+const AsyncOthersComplaint = Loadable({
+    loader: () => import('../containers/OthersComplaint.js'),
+    loading: Loader,
+});
+const AsyncComplaintDetails = Loadable({
+    loader: () => import('../containers/ComplaintDetails.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -363,7 +375,7 @@ class MasterRoute extends Component{
                             <Route exact path='/profile' component={AsyncProile}/>
                             <Route exact path='/challan' component={AsyncChallan}/>
                             <Route exact path='/contact' component={AsyncContact}/>
-                            <Route exact path='/complain' component={AsyncComplain}/>
+                            <Route exact path='/complaint' component={AsyncComplain}/>
                             <Route exact path='/admin/brand' component={AsyncBrands}/>
                             <Route exact path='/admin/model' component={AsyncModels}/>
                             <Route exact path='/requisition' component={AsyncAsset} />
@@ -437,6 +449,9 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/menu' component={AsyncMenuContainer}/>
                             <Route exact path='/admin/menu/assign' component={AsyncMenuAssignContainer}/>
                             <Route exact path='/admin/complaint-mapping' component={AsyncComplaintMapping}/>
+                            <Route exact path='/my-complaint-status' component={AsyncMyComplaintStatus}/>
+                            <Route exact path='/others-complaint' component={AsyncOthersComplaint}/>
+                            <Route exact path='/complaint/details/:id' component={AsyncComplaintDetails}/>
 
 
                             {/*404 Page*/}

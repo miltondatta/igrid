@@ -176,9 +176,21 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'Complaints',
-                link: '/complain',
+                link: '/complaint',
                 icon: ""
             },
+            {
+                id: 2,
+                name: 'My Complaint Status',
+                link: '/my-complaint-status',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Others Complaint',
+                link: '/others-complaint',
+                icon: ""
+            }
         ]
     },
 ]
