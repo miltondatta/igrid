@@ -1,8 +1,9 @@
 import './location.css'
 import Axios from 'axios'
 import React, {Component} from 'react';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import {Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 import {apiUrl} from "../../utility/constant";
+import {BackEnd_BaseUrl} from "../../config/private";
 
 class LocationComponent extends Component {
     constructor(props){
@@ -10,7 +11,11 @@ class LocationComponent extends Component {
         this.state={
             branchs: [],
             zoom: 7.1,
+            locationName: '',
+            lcoationAddress: '',
             showMap: false,
+            infoVisible: false,
+            locationImage: '',
             selectedLat: 23.6850,
             selectedLong: 90.3563,
         }
@@ -36,26 +41,26 @@ class LocationComponent extends Component {
         this.setState({
             selectedLat: lat,
             selectedLong: long
-        }, () => {
-            setInterval(() => {
-                if (zoom <= 12) {
-                    zoom++
-                    this.setState({
-                        zoom,
-                    })
-                } else {
-                    clearInterval()
-                }
-            }, 200)
+        })
+    }
+
+    onMarkerClick= (lat, long, locationName, lcoationAddress, locationImage) => {
+        this.setState({
+            locationName,
+            locationImage,
+            lcoationAddress,
+            selectedLat: lat,
+            selectedLong: long,
+            infoVisible: true
         })
     }
 
     render() {
-        const {showMap, zoom, branchs, selectedLat, selectedLong} = this.state
+        const {showMap, zoom, branchs, selectedLat, selectedLong, locationName, lcoationAddress, infoVisible, locationImage} = this.state
         console.log(selectedLat, selectedLong)
         const bnc = branchs.length > 0 && branchs.map(item => (
             <Marker
-                onClick={() => this.handleMarker(item.location_lat, item.location_long)}
+                onClick={() => {this.handleMarker(item.location_lat, item.location_long); this.onMarkerClick(item.location_lat, item.location_long, item.location_name, item.address, item.location_image)}}
                 title={item.location_name}
                 name={item.address}
                 position={{lat: item.location_lat, lng: item.location_long}} />
@@ -73,6 +78,15 @@ class LocationComponent extends Component {
                         }}
                     >
                         {bnc}
+                        <InfoWindow
+                            position={{lat: selectedLat, lng: selectedLong}}
+                            visible={infoVisible}
+                        >
+                            <h3>{locationName}</h3>
+                            <p>{lcoationAddress}</p>
+                            <img style={{width: '200px'}} onClick={this.handleUserOptions}
+                                 src={BackEnd_BaseUrl + 'images/' + locationImage} alt={'user'}/>
+                        </InfoWindow>
                     </Map>
                 </div>
             </div>

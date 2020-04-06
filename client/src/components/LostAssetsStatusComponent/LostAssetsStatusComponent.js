@@ -125,8 +125,8 @@ class LostAssetsStatusComponent extends Component {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
-                                <button type="button" className="submit-btn-normal mt-3" onMouseUp={this.submitFeedback}>Submit</button>
+                                <button type="button" className="reset-btn-normal mt-2" data-dismiss="modal">Close</button>
+                                <button type="button" className="submit-btn-normal mt-2" onMouseUp={this.submitFeedback}>Submit</button>
                             </div>
                         </div>
                     </div>

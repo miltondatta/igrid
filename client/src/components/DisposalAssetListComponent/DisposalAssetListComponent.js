@@ -37,8 +37,8 @@ class DisposalAssetListComponent extends Component {
                             let newObj = {
                                 product_serial: item.product_serial,
                                 product_name: item.product_name,
-                                category_name: item.category_name,
-                                sub_category_name: item.sub_category_name,
+                                category: item.category,
+                                sub_category: item.sub_category,
                                 cost_of_purchase: item.cost_of_purchase,
                                 installation_cost: item.installation_cost,
                                 carrying_cost: item.carrying_cost,
