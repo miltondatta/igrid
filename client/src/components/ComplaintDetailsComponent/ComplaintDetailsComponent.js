@@ -6,6 +6,7 @@ import moment from "moment";
 import {getFileExtension} from "../../utility/custom";
 import * as jwt from "jsonwebtoken";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -422,9 +423,10 @@ class ComplaintDetailsComponent extends Component {
                             <div className="modal-body">
                                 {complaintFeedBackTableData.length > 0 ?
                                     <div className={'overflow-y-auto h-200px'}>
-                                        <ReactDataTable
-                                            tableData={complaintFeedBackTableData}
-                                        /></div> : <h4 className={'no-project px-2 mt-3'}><i
+                                        <PrimeDataTable
+                                            data={complaintFeedBackTableData}
+                                        />
+                                    </div> : <h4 className={'no-project px-2 mt-3'}><i
                                         className="icofont-exclamation-circle"></i> Currently There are No FeedBack
                                     </h4>}
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">

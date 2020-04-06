@@ -5,6 +5,7 @@ import { Bar } from 'react-chartjs-2';
 import { apiUrl } from "../../utility/constant";
 
 class MisDashboardComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -35,11 +36,11 @@ class MisDashboardComponent extends Component {
                         datasets: [
                             {
                                 label: res.data.label,
-                                backgroundColor: 'rgba(255,99,132,0.2)',
-                                borderColor: 'rgba(255,99,132,1)',
+                                backgroundColor: 'rgba(0,0,132,0.6)',
+                                borderColor: 'rgba(50,0,132,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.2)',
-                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                hoverBackgroundColor: 'rgba(0,0,132,0.3)',
+                                hoverBorderColor: 'rgba(50,0,132,1)',
                                 data: res.data.graphDatas
                             }
                         ]
@@ -60,10 +61,10 @@ class MisDashboardComponent extends Component {
                         datasets: [
                             {
                                 label: res.data.label,
-                                backgroundColor: 'rgba(255,99,132,0.4)',
+                                backgroundColor: 'rgba(255,99,0,0.6)',
                                 borderColor: 'rgba(255,99,132,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                                hoverBackgroundColor: 'rgba(255,99,0,0.3)',
                                 hoverBorderColor: 'rgba(255,99,132,1)',
                                 data: res.data.graphDatas
                             }
@@ -85,11 +86,11 @@ class MisDashboardComponent extends Component {
                         datasets: [
                             {
                                 label: res.data.label,
-                                backgroundColor: 'rgba(255,99,132,0.6)',
-                                borderColor: 'rgba(255,99,132,1)',
+                                backgroundColor: 'rgba(25,200,100,0.6)',
+                                borderColor: 'rgba(25,150,100,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.6)',
-                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                hoverBackgroundColor: 'rgba(25,200,100,0.3)',
+                                hoverBorderColor: 'rgba(25,150,100,1)',
                                 data: res.data.graphDatas
                             }
                         ]
@@ -186,44 +187,48 @@ class MisDashboardComponent extends Component {
                         </div>
                     </div>
                 </div>
-
-
-                <Bar
-                    data={this.state.gData1}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false
-                    }}
-                />
-
-                <Bar
-                    data={this.state.gData2}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false
-                    }}
-                />
-
-                <Bar
-                    data={this.state.gData3}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false
-                    }}
-                />
-
-                <Bar
-                    data={this.state.gData4}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false
-                    }}
-                />
-
+                <div className={'ui-mis-graph'}>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData1}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData2}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData3}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData4}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                </div>
             </>
         );
     }

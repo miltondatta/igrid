@@ -4,6 +4,7 @@ import {apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class MyComplaintStatusComponent extends Component {
     constructor(props) {
@@ -70,13 +71,8 @@ class MyComplaintStatusComponent extends Component {
                 </nav>
                 {isLoading ? <Spinner/> : <>
                     {complaintsTableData.length > 0 ?
-                        <ReactDataTable
-                            dataDisplay
-                            footer
-                            isLoading
-                            pagination
-                            searchable
-                            tableData={complaintsTableData}
+                        <PrimeDataTable
+                            data={complaintsTableData}
                             docDetails={this.docDetails}
                         />
                         : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i>
