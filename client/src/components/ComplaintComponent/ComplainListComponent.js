@@ -1,8 +1,9 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import {Map, Marker} from "google-maps-react";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class ComplainListComponent extends Component {
     constructor(props){
@@ -45,15 +46,10 @@ class ComplainListComponent extends Component {
                 <nav className="navbar text-center mb-2 pl-1 rounded">
                     <p className="text-blue f-weight-700 f-22px ml-2 mb-0">User Complaints</p>
                 </nav>
-                <ReactDataTable
-                    pagination
-                    footer
-                    dataDisplay
-                    bigTable
-                    comments
+                {data.length > 0 && <PrimeDataTable
                     done={this.done}
-                    tableData={data}
-                />
+                    data={data}
+                />}
             </div>
         );
     }

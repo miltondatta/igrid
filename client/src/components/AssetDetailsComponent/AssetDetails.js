@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class AssetDetails extends Component {

@@ -202,7 +202,7 @@ class PrimeDataTable extends Component {
 
         return (
                 <div className="content-section implementation mt-3">
-                    <DataTable value={this.props.data} responsive={true} className="p-datatable-customers" dataKey="id" scrollable="true" scrollWidth="700"
+                    <DataTable value={this.props.data} responsive={true} className="p-datatable-customers" dataKey="id"
                                selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({selectedCustomers: e.value})}
                                paginator rows={10} emptyMessage="No customers found" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}

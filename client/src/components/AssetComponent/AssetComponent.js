@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom'
 import {apiUrl} from "../../utility/constant";
 import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import {getFileExtension} from "../../utility/custom";

@@ -7,7 +7,7 @@ import {validateInput} from "../../utility/custom";
 import Spinner from "../Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class MisInputContainer extends Component {

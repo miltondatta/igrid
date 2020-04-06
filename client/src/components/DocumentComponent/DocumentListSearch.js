@@ -5,7 +5,7 @@ import Axios from "axios";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ErrorModal from "../../utility/error/errorModal";
 import {disabledRanges} from "../../utility/custom";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";

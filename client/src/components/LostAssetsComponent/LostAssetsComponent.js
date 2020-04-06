@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import jwt from "jsonwebtoken";
 import TimePicker from 'react-time-picker';
 import AssetListOptions from "../../utility/component/assetsByUserOptions";

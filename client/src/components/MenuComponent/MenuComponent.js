@@ -5,7 +5,7 @@ import {validateInput} from "../../utility/custom";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ModuleOptions from "../../utility/component/moduleOptions";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 

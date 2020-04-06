@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
 import moment from "moment";

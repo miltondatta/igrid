@@ -3,7 +3,7 @@ import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import PrintDelivery from "./PrintDelivery";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 

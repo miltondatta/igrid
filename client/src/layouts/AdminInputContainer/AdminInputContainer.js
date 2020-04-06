@@ -2,7 +2,7 @@ import Axios from "axios";
 import './adminInputContainer.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
 import BrandIdOptions from "../../utility/component/brandIdOptions";

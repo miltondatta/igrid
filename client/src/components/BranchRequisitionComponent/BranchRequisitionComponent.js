@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import jwt from 'jsonwebtoken';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import PrintDelivery from "../DeliveryRequestComponent/PrintDelivery";

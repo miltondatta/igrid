@@ -3,7 +3,8 @@ import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class DisposalAssetListComponent extends Component {
     constructor(props) {
@@ -73,13 +74,8 @@ class DisposalAssetListComponent extends Component {
                     <p className="text-blue f-weight-700 f-20px m-0">Disposal Asset - Asset disposed in my stock</p>
                 </nav>
                 {isLoading ? <Spinner/> : disposalListTableData.length > 0 ? <>
-                        <ReactDataTable
-                            dataDisplay
-                            footer
-                            isLoading
-                            pagination
-                            searchable
-                            tableData={disposalListTableData}
+                        <PrimeDataTable
+                            data={disposalListTableData}
                         />
                     </> :
                     <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are

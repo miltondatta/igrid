@@ -4,7 +4,7 @@ import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import jwt from "jsonwebtoken";
 import moment from "moment";
