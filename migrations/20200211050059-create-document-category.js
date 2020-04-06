@@ -1,27 +1,29 @@
 'use strict';
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up   : (queryInterface, Sequelize) => {
         return queryInterface.createTable('document_categories', {
-            id: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: Sequelize.INTEGER
+            id            : {
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true,
+                type          : Sequelize.INTEGER
             },
-            category_name: {
-                type: Sequelize.STRING(127)
+            category_name : {
+                type : Sequelize.STRING(127)
             },
-            createdAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+            createdAt     : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             },
-            updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+            updatedAt     : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
+    down : (queryInterface, Sequelize) => {
         return queryInterface.dropTable('document_categories');
     }
 };
