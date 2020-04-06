@@ -176,9 +176,21 @@ export const sidenav = [
             {
                 id: 1,
                 name: 'Complaints',
-                link: '/complain',
+                link: '/complaint',
                 icon: ""
             },
+            {
+                id: 2,
+                name: 'My Complaint Status',
+                link: '/my-complaint-status',
+                icon: ""
+            },
+            {
+                id: 3,
+                name: 'Assign Complaint',
+                link: '/assign-complaint',
+                icon: ""
+            }
         ]
     },
 ]
@@ -367,12 +379,6 @@ export const systemAdmin = [
         subCat: true,
         categories: [
             {
-                id: 3,
-                name: 'Complaints',
-                link: '/admin/complaint',
-                icon: ""
-            },
-            {
                 id: 1,
                 name: 'Complaint Category',
                 link: '/admin/complain-category',
@@ -385,7 +391,7 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 4,
+                id: 3,
                 name: 'Complaint Mapping',
                 link: '/admin/complaint-mapping',
                 icon: ""

@@ -5,6 +5,6 @@ const Complaint = () => {
     return(
         <ComplaintComponent />
     )
-}
+};
 
-export default Complaint
+export default Complaint;

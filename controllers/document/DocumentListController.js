@@ -8,6 +8,11 @@ const fs = require('fs');
 const db = require('../../config/db');
 const moment = require('moment');
 const keywordExtractor = require('keyword-extractor');
+const dir = './public/document';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

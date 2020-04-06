@@ -92,6 +92,25 @@ router.post('/update', async (req, res) => {
 });
 
 /*
+    @route          get api/v1/complaint/mapping/by/:role_id
+    @desc           Get Complaint Mapping By Role ID
+    @access         Private
+ */
+router.get('/by/:role_id', async (req, res) => {
+    try {
+        const role_id = req.params.role_id;
+
+        const complaint_mapping = await ComplaintMapping.findAll({attributes: [], include: [{model: ComplaintCategory, attributes: ["id", "complaint_name"]}], where: {role_id: role_id}});
+        if (!complaint_mapping) return res.status(400).json({msg: 'Complaint Mapping didn\'t found!', error: true});
+
+        return res.status(200).json(complaint_mapping);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: err});
+    }
+});
+
+/*
     @route          POST api/v1/complaint/mapping/delete/
     @desc           Delete Complaint Mapping
     @access         Private

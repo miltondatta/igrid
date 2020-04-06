@@ -1,67 +1,69 @@
 'use strict';
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up   : (queryInterface, Sequelize) => {
         return queryInterface.createTable('document_lists', {
-            id: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: Sequelize.INTEGER
+            id              : {
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true,
+                type          : Sequelize.INTEGER
             },
-            category_id: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'document_categories',
-                    key: 'id'
+            category_id     : {
+                type       : Sequelize.INTEGER,
+                references : {
+                    model : 'document_categories',
+                    key   : 'id'
                 }
             },
-            sub_category_id: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'document_sub_categories',
-                    key: 'id'
+            sub_category_id : {
+                type       : Sequelize.INTEGER,
+                references : {
+                    model : 'document_sub_categories',
+                    key   : 'id'
                 }
             },
-            content_type: {
-                type: Sequelize.INTEGER
+            content_type    : {
+                type : Sequelize.INTEGER
             },
-            title: {
-                type: Sequelize.STRING(127)
+            title           : {
+                type : Sequelize.STRING(127)
             },
-            circular_no: {
-                type: Sequelize.STRING(127)
+            circular_no     : {
+                type : Sequelize.STRING(127)
             },
-            description: {
-                type: Sequelize.STRING(3000)
+            description     : {
+                type : Sequelize.STRING(3000)
             },
-            keyword: {
-                type: Sequelize.STRING(3000)
+            keyword         : {
+                type : Sequelize.STRING(3000)
             },
-            file_name: {
-                type: Sequelize.STRING(127)
+            file_name       : {
+                type : Sequelize.STRING(127)
             },
-            document_date: {
-                type: Sequelize.DATE
+            document_date   : {
+                type : Sequelize.DATE
             },
-            display_notice: {
-                type: Sequelize.BOOLEAN,
-                defaultValue: false
+            display_notice  : {
+                type         : Sequelize.BOOLEAN,
+                defaultValue : false
             },
-            status: {
-                type: Sequelize.BOOLEAN,
-                defaultValue: true
+            status          : {
+                type         : Sequelize.BOOLEAN,
+                defaultValue : true
             },
-            createdAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+            createdAt       : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             },
-            updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+            updatedAt       : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
+    down : (queryInterface, Sequelize) => {
         return queryInterface.dropTable('document_lists');
     }
 };

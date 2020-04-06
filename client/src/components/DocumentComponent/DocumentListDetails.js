@@ -104,7 +104,7 @@ class DocumentListDetails extends Component {
             <>
                 {fileError &&
                 <div
-                    className="alert alert-danger mx-1 mb-2"
+                    className="alert alert-danger mx-1 mb-2 mt-2"
                     role="alert">
                     {fileErrorMessage}
                 </div>

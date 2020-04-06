@@ -42,7 +42,7 @@ class DocumentListSearch extends Component {
         };
 
         this.content_types = ['Notice', 'Circular'];
-        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Title', 'Description', 'Circular No', 'Document Date', 'Content Type', 'File', 'Details'];
+        this.table_header = ['Serial No', 'Category Name', 'Sub Category Name', 'Title','Circular No', 'Document Date', 'Content Type', 'File', 'Details'];
     }
 
     componentDidMount() {
@@ -143,7 +143,6 @@ class DocumentListSearch extends Component {
                                 category_name: item.category_name,
                                 sub_category_name: item.sub_category_name,
                                 title: item.title,
-                                description: item.description,
                                 circular_no: item.circular_no,
                                 content_type: item.content_type === 1 ? 'notice' : 'circular',
                                 file_name: item.file_name
