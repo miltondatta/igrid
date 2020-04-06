@@ -187,16 +187,16 @@ class PrimeDataTable extends Component {
         let dynamicColumns = cols.map((col,i) => {
             if (productDelivery) {
                 if (col.field === 'category_name' || col.field === 'sub_category_name' || col.field === 'role_name' || col.field === 'location_name' || col.field === 'update_quantity'){
-                    return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else if(dnger) {
                 if (col.field === 'description') {
-                    return <Column body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
+                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
                 } else {
-                    return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else {
-                return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
             }
         });
 
@@ -208,7 +208,7 @@ class PrimeDataTable extends Component {
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     >
                         {dynamicColumns}
-                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width: '8em'}}/>}
+                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column filter={false} body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width: '8em'}}/>}
                         {this.props.handleQuantity && <Column body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
                         {this.props.handleComment && <Column body={this.actionComment} field={'comment'} header={'Comment'}/>}
                         {this.props.handleMultiselect && <Column body={this.actionProduct} field={'products'} header={'Products'}/>}

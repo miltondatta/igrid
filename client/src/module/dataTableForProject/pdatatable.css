@@ -32,8 +32,12 @@ body .p-datatable .p-datatable-tbody > tr:nth-child(odd){
 body .p-datatable .p-datatable-tbody > tr:nth-child(even){
     background: #ffffff !important;
 }
+body .p-datatable .p-sortable-column .p-sortable-column-icon,
+body .p-datatable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon{
+    color: white !important;
+}
 
-
+body .p-inputtext{text-transform: capitalize}
 
 body .p-paginator {
     background-color: #ffffff;
