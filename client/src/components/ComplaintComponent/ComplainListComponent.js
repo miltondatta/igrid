@@ -16,7 +16,7 @@ class ComplainListComponent extends Component {
     }
 
     componentDidMount() {
-        Axios.get(apiUrl() + 'complaints/list')
+        Axios.get(apiUrl() + 'complaintslist')
             .then(res => {
                 if(res.data.message) {
 
@@ -47,6 +47,7 @@ class ComplainListComponent extends Component {
                     <p className="text-blue f-weight-700 f-22px ml-2 mb-0">User Complaints</p>
                 </nav>
                 {data.length > 0 && <PrimeDataTable
+                    comments
                     done={this.done}
                     data={data}
                 />}

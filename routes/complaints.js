@@ -20,10 +20,10 @@ route.get('/complaints/:id', async (req,res,next) => {
 });
 
 // Read
-route.get('/complaints/list', async (req,res,next) => {
+route.get('/complaintslist', async (req,res,next) => {
     const [data, metaData] = await db.query(`
         SELECT complaints.id, CONCAT(users."firstName", ' ', users."lastName") as username, "comCategories".complaint_name, "comSubCategories".sub_complaint_name,
-               complaints."problemDetails" as problemDetails,"complaints"."solutionDetails" as solution FROM complaints
+               complaints."problem_details" as problemDetails,"complaints"."solutionDetails" as solution FROM complaints
                  JOIN "comCategories" ON "comCategories".id = complaints.complaint_category
                  JOIN "comSubCategories" ON "comSubCategories".id = complaints.complaint_sub_category
                  JOIN users ON users.id = complaints."createdBy"

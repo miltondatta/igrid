@@ -14,6 +14,7 @@ class PrimeDataTable extends Component {
         super(props);
         this.state = {
             cols: [],
+            comments: '',
             selectedCustomers: null
         };
     }
@@ -131,6 +132,14 @@ class PrimeDataTable extends Component {
         )
     }
 
+    handleChange = (e) => {
+        const {actualData} = this.state
+        const {name, value} = e.target
+        this.setState({
+            [name]: value
+        })
+    }
+
     actionQuantity = (rowData, column) => {
         return(
             <p>
@@ -174,6 +183,27 @@ class PrimeDataTable extends Component {
         )
     }
 
+    actionComComments = (rowData, column) => {
+        return (
+            <div className={'form-group w-75 m-0'}>
+                <input
+                    className={'form-control'}
+                    placeholder={'Comments'}
+                    onChange={this.handleChange}
+                    name={'comments'} />
+            </div>
+        )
+    }
+
+    actionComDone = (rowData, column) => {
+        return (
+            <p>
+                <button className={'btn btn-success p-1 px-2'} onClick={() => {this.props.done(this.state.comments, rowData.id)}}>
+                    <i className="fas fa-edit"></i></button>
+            </p>
+        )
+    }
+
     displayData = (rowData, column) => {
         return(
             <>{(rowData[column.field] === "" || rowData[column.field] === null || rowData[column.field] === " ") ? 'N/A' : rowData[column.field]}</>
@@ -212,6 +242,8 @@ class PrimeDataTable extends Component {
                         {this.props.handleQuantity && <Column body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
                         {this.props.handleComment && <Column body={this.actionComment} field={'comment'} header={'Comment'}/>}
                         {this.props.handleMultiselect && <Column body={this.actionProduct} field={'products'} header={'Products'}/>}
+                        {this.props.comments && <Column body={this.actionComComments} field={'solution'} header={'Edit Solution'}/>}
+                        {this.props.done && <Column body={this.actionComDone} field={'action'} header={'Action'}/>}
                     </DataTable>
                 </div>
         );
