@@ -38,7 +38,7 @@ class MisDashboardComponent extends Component {
                                 backgroundColor: 'rgba(255,99,132,0.2)',
                                 borderColor: 'rgba(255,99,132,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                                hoverBackgroundColor: 'rgba(255,99,132,0.2)',
                                 hoverBorderColor: 'rgba(255,99,132,1)',
                                 data: res.data.graphDatas
                             }
@@ -60,7 +60,7 @@ class MisDashboardComponent extends Component {
                         datasets: [
                             {
                                 label: res.data.label,
-                                backgroundColor: 'rgba(255,99,132,0.2)',
+                                backgroundColor: 'rgba(255,99,132,0.4)',
                                 borderColor: 'rgba(255,99,132,1)',
                                 borderWidth: 1,
                                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -85,10 +85,10 @@ class MisDashboardComponent extends Component {
                         datasets: [
                             {
                                 label: res.data.label,
-                                backgroundColor: 'rgba(255,99,132,0.2)',
+                                backgroundColor: 'rgba(255,99,132,0.6)',
                                 borderColor: 'rgba(255,99,132,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                                hoverBackgroundColor: 'rgba(255,99,132,0.6)',
                                 hoverBorderColor: 'rgba(255,99,132,1)',
                                 data: res.data.graphDatas
                             }
@@ -110,10 +110,10 @@ class MisDashboardComponent extends Component {
                         datasets: [
                             {
                                 label: res.data.label,
-                                backgroundColor: 'rgba(255,99,132,0.2)',
+                                backgroundColor: 'rgba(255,99,132,0.8)',
                                 borderColor: 'rgba(255,99,132,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                                hoverBackgroundColor: 'rgba(255,99,132,0.2)',
                                 hoverBorderColor: 'rgba(255,99,132,1)',
                                 data: res.data.graphDatas
                             }
