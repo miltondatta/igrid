@@ -1,8 +1,8 @@
 import './misDashboard.css'
 import Axios from 'axios'
-import React, {Component} from 'react';
-import {Bar} from 'react-chartjs-2';
-import {apiUrl} from "../../utility/constant";
+import React, { Component } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { apiUrl } from "../../utility/constant";
 
 class MisDashboardComponent extends Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class MisDashboardComponent extends Component {
         this.state = {
             roles: [],
             locations: [],
-            gData1: []  
+            gData1: []
         }
     }
 
@@ -20,31 +20,35 @@ class MisDashboardComponent extends Component {
     }
 
     drawGraph1 = () => {
-        let gdata = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-              {
-                label: 'My First dataset',
-                backgroundColor: 'rgba(255,99,132,0.2)',
-                borderColor: 'rgba(255,99,132,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                hoverBorderColor: 'rgba(255,99,132,1)',
-                data: [65, 59, 80, 81, 56, 55, 40]
-              }
-            ]
-          };
-
-         this.setState({
-             gData1: gdata
-         });
+        Axios.get(apiUrl() + 'mis/dashboard/graph/data', { params: { indicatordetails_id: 1 } })
+            .then(res => {
+                if (res.data.status) {
+                    let gdata = {
+                        labels: res.data.graphLabels,
+                        datasets: [
+                            {
+                                label: 'My First dataset',
+                                backgroundColor: 'rgba(255,99,132,0.2)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                borderWidth: 1,
+                                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                data: res.data.graphDatas
+                            }
+                        ]
+                    };
+                    this.setState({
+                        gData1: gdata
+                    });
+                }
+            })
     }
 
 
     getMisDashboardData = () => {
         Axios.get(apiUrl() + 'mis-dashboard/info')
             .then(res => {
-                if(res.data.status){
+                if (res.data.status) {
                     this.setState({
                         roles: res.data.payload.roles,
                         locations: res.data.payload.locations
@@ -54,21 +58,21 @@ class MisDashboardComponent extends Component {
     }
 
     render() {
-        const {roles, locations} = this.state
+        const { roles, locations } = this.state
         let colors = ['#cc1d66', '#6f1dcc', '#1d92cc', '#4aa59c', '#cc9a1d', '#cc6f1d', '#cc1d1d', '#486e27']
         const rolesBox = roles.length > 0 && roles.map((item, index) => {
-            return(
+            return (
                 <div key={index} className={'ui-role-child'}>
                     <p>{item.role_name}</p>
-                    <p style={{backgroundColor: colors[Math.floor(Math.random() * colors.length)]}}>{item.cnt}</p>
+                    <p style={{ backgroundColor: colors[Math.floor(Math.random() * colors.length)] }}>{item.cnt}</p>
                 </div>
             )
         })
         const locationsBox = locations.length > 0 && locations.map((item, index) => {
-            return(
+            return (
                 <div key={index} className={'ui-role-child'}>
                     <p>{item.hierarchy_name}</p>
-                    <p style={{backgroundColor: colors[Math.floor(Math.random() * colors.length)]}}>{item.cnt}</p>
+                    <p style={{ backgroundColor: colors[Math.floor(Math.random() * colors.length)] }}>{item.cnt}</p>
                 </div>
             )
         })
@@ -108,7 +112,7 @@ class MisDashboardComponent extends Component {
                     options={{
                         maintainAspectRatio: false
                     }}
-                /> 
+                />
 
             </>
         );
