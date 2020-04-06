@@ -1,38 +1,40 @@
 'use strict';
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up   : (queryInterface, Sequelize) => {
         return queryInterface.createTable('complaint_mappings', {
-            id: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: Sequelize.INTEGER
+            id        : {
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true,
+                type          : Sequelize.INTEGER
             },
-            role_id: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'user_roles',
-                    key: 'id'
+            role_id   : {
+                type       : Sequelize.INTEGER,
+                references : {
+                    model : 'user_roles',
+                    key   : 'id'
                 }
             },
-            cat_id: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'comCategories',
-                    key: 'id'
+            cat_id    : {
+                type       : Sequelize.INTEGER,
+                references : {
+                    model : 'comCategories',
+                    key   : 'id'
                 }
             },
-            createdAt: {
-                allowNull: false,
-                type: Sequelize.DATE
+            createdAt : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             },
-            updatedAt: {
-                allowNull: false,
-                type: Sequelize.DATE
+            updatedAt : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
+    down : (queryInterface, Sequelize) => {
         return queryInterface.dropTable('complaint_mappings');
     }
 };
