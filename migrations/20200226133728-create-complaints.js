@@ -39,6 +39,11 @@ module.exports = {
       problem_details: {
         type: Sequelize.STRING
       },
+      asset_id: {
+        type: Sequelize.INTEGER,
+        defaultValue: null,
+        allowNull: true
+      },
       file_name: {
         type: Sequelize.STRING,
         defaultValue: null,

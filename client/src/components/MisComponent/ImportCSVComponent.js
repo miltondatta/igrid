@@ -74,7 +74,7 @@ class ImportCSVComponent extends Component {
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">{headTitle}</p>
                         </nav>
-                        <div className="mb-20p grid-2">
+                        <div className="grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleFileChange} name={'import_data_file'} id="validatedCustomFile"
                                     required />
@@ -84,7 +84,7 @@ class ImportCSVComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button>
+                        <button className="submit-btn-normal mt-3" onClick={this.handleSubmit}>Submit</button>
                     </div>
                     <div className="rounded bg-white admin-input-height">
                         <nav className="navbar text-center mb-2 pl-3 rounded">

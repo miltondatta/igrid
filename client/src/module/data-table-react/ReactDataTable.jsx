@@ -247,7 +247,7 @@ class ReactDataTable extends Component {
                         </div>
                     </div>}
                 </div>
-                {tableData.length > 0 ? <div id={'__table_react'} className={'table'}>
+                {tableData.length > 0 ? <div id={'__table_react'} className={`${sideTable ? 'sideTable' : 'table'}`}>
                     <div className={'thead'}>
                         <div className={'d-flex align-items-center'}>
                             <p className={'w-60px'}>

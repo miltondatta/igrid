@@ -5,6 +5,7 @@
     border-radius: 5px;
     margin: 0 auto;
 }
+.reactDataTable .sideTable,
 .reactDataTable .table{
     width: 98vw;
     margin-bottom: 1rem;
@@ -19,18 +20,20 @@
 
 .reactDataTable .tbody p,
 .reactDataTable .thead p{
-    color: #0f88e7;
+    color: white;
     font-size: 14px;
     flex-basis: 12%;
-    padding: 11px 3px;
+    padding: 10px 3px;
     font-weight: 600;
     margin: 0;
+    word-break: break-word;
     text-transform: capitalize;
     border-color: transparent !important;
     flex-shrink: 1;
 }
 .reactDataTable .thead p{
-    background: #d4edff;
+    background:#2184d0;
+    word-break: break-word;
 }
 
 .reactDataTable .tbody p{color: #555; font-size: 14px;}
@@ -46,10 +49,10 @@
 }
 
 .tbody .ui-tbody-child p{
-    height: 48px;
+    min-height: 35px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 1px 0 1px 4px;
+    padding: 1px 0 1px 5px;
 }
 
 .tbody .ui-tbody-child{
@@ -68,7 +71,7 @@
     align-items: center;
 }
 .thead{
-    background: #d4edff;
+    background: #2184d0;
     border: 1px solid #abc2d4;
     overflow: hidden;
 }
@@ -150,10 +153,12 @@
 
 @media only screen and (max-width: 1950px) {
     .reactDataTable .table{width: 97.5vw}
+    .reactDataTable .sideTable{width: 63.2vw}
 }
 
 @media only screen and (max-width: 1750px) {
     .reactDataTable .table{width: 97.5vw}
+    .reactDataTable .sideTable{width: 62.9vw}
     .reactDataTable .thead div p:first-child{flex-basis: 63px}
 }
 
@@ -168,5 +173,6 @@
 
 @media only screen and (max-width: 1360px) {
     .reactDataTable .table{width: 96vw}
+    .reactDataTable .sideTable{width: 62vw}
     .reactDataTable .tbody p{font-size: 13px}
 }

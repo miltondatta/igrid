@@ -12,6 +12,7 @@ import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RepairMaintenenceComponent extends Component {
     constructor(props) {
@@ -19,9 +20,9 @@ class RepairMaintenenceComponent extends Component {
         this.state = {
             user: {},
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             product_id: '',
             product_name: '',
             product_serial: '',
@@ -118,8 +119,8 @@ class RepairMaintenenceComponent extends Component {
                                 const newObj = {
                                     id: item.id,
                                     product_serial: item.product_serial,
-                                    category_name: item.category_name,
-                                    sub_category_name: item.sub_category_name,
+                                    category: item.category,
+                                    sub_category: item.sub_category,
                                     product_name: item.product_name,
                                     cost: estimated_cost,
                                     details: details
@@ -386,15 +387,14 @@ class RepairMaintenenceComponent extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">Asset Repair/Maintenance List</p>
                         </nav>
                         {isLoading ? <Spinner/> : repairTableData.length ? <>
-                            <ReactDataTable
+                            <PrimeDataTable
                                 remove={this.cancelRepair}
-                                tableData={repairTableData}
-                                bigTable
+                                data={repairTableData}
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Repair/Maintenance Asset</h4>}
                         {repairData.length ?
-                            <button className="submit-btn" data-toggle="modal"
+                            <button className="submit-btn-normal mt-3" data-toggle="modal"
                                     data-target="#assetRepairModal">Submit</button> : ''}
                     </div>
                     <div className="modal fade" id="assetRepairModal" tabIndex="-1" role="dialog"

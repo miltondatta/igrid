@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RepairMaintenanceListComponent extends Component {
     constructor(props) {
@@ -37,8 +38,8 @@ class RepairMaintenanceListComponent extends Component {
                             let newObj = {
                                 product_serial: item.product_serial,
                                 product_name: item.product_name,
-                                category_name: item.category_name,
-                                sub_category: item.sub_category_name,
+                                category: item.category,
+                                sub_category: item.sub_category,
                                 book_value: item.book_value,
                                 salvage_value: item.salvage_value,
                                 useful_life: item.useful_life,
@@ -94,15 +95,9 @@ class RepairMaintenanceListComponent extends Component {
                     <p className="text-blue f-weight-700 f-20px m-0">Repair & Maintenance Asset - Repair & Maintenance Asset in my stock</p>
                 </nav>
                 {isLoading ? <Spinner/> : repairMaintenanceTableData.length > 0 ? <>
-                        <ReactDataTable
-                            dataDisplay
-                            footer
-                            bigTable
-                            isLoading
-                            pagination
-                            searchable
+                        <PrimeDataTable
                             file={this.fileDownload}
-                            tableData={repairMaintenanceTableData}
+                            data={repairMaintenanceTableData}
                         />
                     </> :
                     <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are

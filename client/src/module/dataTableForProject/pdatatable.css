@@ -1,0 +1,51 @@
+body .p-datatable p{
+    margin: 0;
+    word-break: break-word;
+}
+
+body .p-datatable .p-datatable-tbody > tr > td{
+    word-break: break-word;
+}
+
+body .p-datatable .p-datatable-thead > tr > th{
+    background: #2184d0 !important;
+    color: white !important;
+    border: none !important;
+    text-align: justify;
+    text-transform: capitalize;
+}
+
+.p-datatable .p-datatable-tbody > tr{
+    border: 1px solid #aecfe8 !important;
+}
+
+body .p-datatable .p-datatable-tbody > tr > td {
+    background: transparent;
+    border: none;
+    padding: 0.429em 0.857em;
+}
+
+body .p-datatable .p-datatable-tbody > tr:nth-child(odd){
+    background: #e3f0f9 !important;
+}
+
+body .p-datatable .p-datatable-tbody > tr:nth-child(even){
+    background: #ffffff !important;
+}
+
+
+
+body .p-paginator {
+    background-color: #ffffff;
+    border: 1px solid #c8c8c8;
+    padding: 10px 0;
+}
+
+.p-datatable .ui-all-action {
+    text-align: center;
+    font-size: 16px;
+}
+
+.p-datatable .ui-all-action span{
+    margin: 0 5px;
+}

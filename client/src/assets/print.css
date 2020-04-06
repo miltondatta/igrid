@@ -43,6 +43,7 @@
 .ui-print .print-body .delivery-info{
     margin-bottom: 20%;
 }
+.ui-print .print-body .sideTable,
 .ui-print .print-body .table{
     display: grid;
     margin-bottom: 0;
@@ -98,6 +99,7 @@
     .ui-print .print-body .delivery-info{
         margin-bottom: 20%;
     }
+    .ui-print .print-body .sideTable,
     .ui-print .print-body .table{
         display: grid;
         margin-bottom: 0;

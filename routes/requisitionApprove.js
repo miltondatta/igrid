@@ -236,7 +236,7 @@ route.post('/my-requisition/by/credentials', async (req,res) =>   {
         let queryText = '';
         if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
 
-        const data = await db.query(`select requisition_masters.id,
+        const [data, metaData] = await db.query(`select requisition_masters.id,
                                      requisition_masters.requisition_no,
                                      locations.location_name, 
                                      requisition_masters.request_date,
@@ -250,7 +250,7 @@ route.post('/my-requisition/by/credentials', async (req,res) =>   {
                                     where requisition_approves.delivery_to is not null
                                       ${queryText}`);
 
-        return res.status(200).json(data);
+        return res.status(200).json({resData: data});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json(err);
@@ -266,7 +266,7 @@ route.post('/my-requisition-details/by/credentials', async (req,res) =>   {
         let queryText = '';
         if (user_id) queryText = 'and requisition_approves.update_by = ' + user_id;
 
-        const data = await db.query(`select
+        const [data, metaData] = await db.query(`select
                     asset_categories.category_name,
                     asset_sub_categories.sub_category_name,
                     user_roles.role_name,

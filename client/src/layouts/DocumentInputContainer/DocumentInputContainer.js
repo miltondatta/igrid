@@ -11,6 +11,7 @@ import Spinner from "../Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 ClassicEditor.defaultConfig = {
     toolbar: {
@@ -44,9 +45,9 @@ class DocumentInputContainer extends Component {
             allProjects: [],
             allProjectTableData: [],
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             content_type: '',
             title: '',
             circular_no: '',
@@ -94,9 +95,9 @@ class DocumentInputContainer extends Component {
                 const {success, msg} = res.data;
                 this.setState({
                     category_id: '',
-                    category_name: '',
+                    category: '',
                     sub_category_id: '',
-                    sub_category_name: '',
+                    sub_category: '',
                     content_type: 0,
                     title: '',
                     circular_no: '',
@@ -156,7 +157,7 @@ class DocumentInputContainer extends Component {
                                 res.data.length > 0 && res.data.map(item => {
                                     let newObj = {
                                         id: item.id,
-                                        category_name: item.category_name
+                                        category: item.category_name
                                     };
                                     allProjectTableData.push(newObj);
                                 });
@@ -168,8 +169,8 @@ class DocumentInputContainer extends Component {
                                 res.data.length > 0 && res.data.map(item => {
                                     let newObj = {
                                         id: item.id,
-                                        category_name: item.document_category.category_name,
-                                        sub_category_name: item.sub_category_name
+                                        category: item.document_category.category_name,
+                                        sub_category: item.sub_category_name
                                     };
                                     allProjectTableData.push(newObj);
                                 });
@@ -182,8 +183,8 @@ class DocumentInputContainer extends Component {
                                     let newObj = {
                                         id: item.id,
                                         document_date: moment(item.document_date).format('YYYY-MM-DD'),
-                                        category_name: item.document_category.category_name,
-                                        sub_category_name: item.document_sub_category.sub_category_name,
+                                        category: item.document_category.category_name,
+                                        sub_category: item.document_sub_category.sub_category_name,
                                         title: item.title,
                                         description: item.description,
                                         circular_no: item.circular_no,
@@ -336,9 +337,9 @@ class DocumentInputContainer extends Component {
     emptyStateValue = () => {
         return this.setState({
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             content_type: 0,
             title: '',
             circular_no: '',
@@ -417,7 +418,7 @@ class DocumentInputContainer extends Component {
     renderForm = () => {
         const {formType} = this.props;
         const {
-            category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
+            category_id, category, sub_category_id, sub_category, content_type, title, circular_no, description, file_name,
             document_date, display_notice, status, editId, errorDict, documentSubCategory, extError
         } = this.state;
 
@@ -431,11 +432,11 @@ class DocumentInputContainer extends Component {
                                 placeholder='Enter Document Category Name'
                                 type={'text'}
                                 name={'category_name'}
-                                value={category_name}
+                                value={category}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
                         </div>
-                        {errorDict && !errorDict.category_name &&
+                        {errorDict && !errorDict.category &&
                         <span className="error">Document Category Field is required</span>
                         }
                         {editId === null ? <button className="submit-btn-normal mt-5"
@@ -468,10 +469,10 @@ class DocumentInputContainer extends Component {
                                 placeholder='Sub Category Name'
                                 type={'text'}
                                 name={'sub_category_name'}
-                                value={sub_category_name}
+                                value={sub_category}
                                 onChange={this.handleChange}
                                 className={`ui-custom-input`}/>
-                            {errorDict && !errorDict.sub_category_name &&
+                            {errorDict && !errorDict.sub_category &&
                             <span className="error">Sub Category Name Field is required</span>
                             }
                         </div>
@@ -629,14 +630,14 @@ class DocumentInputContainer extends Component {
         let errorDict = {};
         const {formType} = this.props;
         const {
-            category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
+            category_id, category, sub_category_id, sub_category, content_type, title, circular_no, description, file_name,
             document_date
         } = this.state;
 
         switch (formType) {
             case "DOCUMENTCATEGORY":
                 errorDict = {
-                    category_name: category_name !== ''
+                    category: category !== ''
                 };
                 this.setState({
                     errorDict
@@ -645,7 +646,7 @@ class DocumentInputContainer extends Component {
             case "DOCUMENTSUBCATEGORY":
                 errorDict = {
                     category_id: category_id !== '',
-                    sub_category_name: sub_category_name !== ''
+                    sub_category: sub_category !== ''
                 };
                 this.setState({
                     errorDict
@@ -675,7 +676,7 @@ class DocumentInputContainer extends Component {
         let data = null;
         const {formType} = this.props;
         const {
-            category_id, category_name, sub_category_id, sub_category_name, content_type, title, circular_no, description, file_name,
+            category_id, category, sub_category_id, sub_category, content_type, title, circular_no, description, file_name,
             document_date, display_notice, status, editId
         } = this.state;
 
@@ -683,13 +684,13 @@ class DocumentInputContainer extends Component {
             case "DOCUMENTCATEGORY":
                 return ({
                     id: editId,
-                    category_name: category_name
+                    category_name: category
                 });
             case "DOCUMENTSUBCATEGORY":
                 return ({
                     id: editId,
                     category_id,
-                    sub_category_name
+                    sub_category_name: sub_category
                 });
             case "DOCUMENTLIST":
                 data = new FormData();
@@ -716,8 +717,8 @@ class DocumentInputContainer extends Component {
         allProjectTableData.length && allProjectTableData.find(item => {
             if (item.id === id) {
                 let deleteContentName, deleteModalTitle;
-                if (formType === 'DOCUMENTCATEGORY') {deleteContentName = item.category_name; deleteModalTitle = 'Delete Category';}
-                if (formType === 'DOCUMENTSUBCATEGORY') {deleteContentName = item.sub_category_name; deleteModalTitle = 'Delete Sub Category';}
+                if (formType === 'DOCUMENTCATEGORY') {deleteContentName = item.category; deleteModalTitle = 'Delete Category';}
+                if (formType === 'DOCUMENTSUBCATEGORY') {deleteContentName = item.sub_category; deleteModalTitle = 'Delete Sub Category';}
                 if (formType === 'DOCUMENTLIST') {deleteContentName = item.title; deleteModalTitle = 'Delete Document List';}
 
                 this.setState({
@@ -753,18 +754,12 @@ class DocumentInputContainer extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">{title}</p>
                         </nav>
                         {isLoading ? <Spinner/> : allProjectTableData.length > 0 ? <>
-                            <ReactDataTable
-                                dataDisplay
-                                footer
-                                isLoading
-                                shortWidth
-                                pagination
-                                searchable
+                            <PrimeDataTable
                                 action
-                                tableData={allProjectTableData}
+                                dnger
+                                data={allProjectTableData}
                                 updateEdit={this.updateEdit}
                                 docDeleteModal={this.docDeleteModal}
-                                bigTable={formType === 'DOCUMENTLIST'}
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
                                  aria-labelledby="docDeleteModal" aria-hidden="true">

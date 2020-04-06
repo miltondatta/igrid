@@ -485,7 +485,7 @@ class AssetRegComponent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <button onClick={this.addChallan} className="submit-btn-normal">Add Challan</button>
+                        <button onClick={this.addChallan} className="submit-btn-normal mt-3">Add Challan</button>
                     </div>
                     <div className="admin-input-height bg-white rounded p-3">
                         <div className={'mb-2'}>

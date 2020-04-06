@@ -11,6 +11,7 @@ import {getFileExtension} from "../../utility/custom";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -282,8 +283,8 @@ class LostAssetsComponent extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">Lost Asset List</p>
                         </nav>
                         {isLoading ? <h2>Loading</h2> : lostAssets.length > 0 ? <>
-                                <ReactDataTable
-                                    tableData={lostAssets}
+                                <PrimeDataTable
+                                    data={lostAssets}
                                 />
                             </> :
                             <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently

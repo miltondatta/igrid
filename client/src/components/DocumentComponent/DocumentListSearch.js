@@ -8,6 +8,7 @@ import Spinner from "../../layouts/Spinner";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import {disabledRanges} from "../../utility/custom";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -407,14 +408,9 @@ class DocumentListSearch extends Component {
                                 <nav className="navbar text-center mb-2 pl-2 rounded">
                                     <p className="text-dark f-weight-500 f-20px m-0">Document Search</p>
                                 </nav>
-                                <ReactDataTable
-                                    dataDisplay
-                                    footer
-                                    isLoading
-                                    pagination
-                                    searchable
-                                    tableData={searchTableData}
-                                    bigTable
+                                <PrimeDataTable
+                                    dnger
+                                    data={searchTableData}
                                     file={this.fileDownload}
                                     docDetails={this.docDetails}
                                 />

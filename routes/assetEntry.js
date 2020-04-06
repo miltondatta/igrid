@@ -74,7 +74,7 @@ route.get('/assets-entry/specific-challan/:id', (req, res, next) => {
 route.get('/assets-entry/assets/:id', async (req, res, next) => {
     console.log(req.params.id, 38)
     const [results, metadata] = await db.query(`
-            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category,asset_sub_categories.sub_category,projects.project From assets
+            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name as category,asset_sub_categories.sub_category_name as sub_category,projects.project_name as project From assets
             Left JOIN challans ON assets.challan_id = challans.id
             Left JOIN projects ON assets.project_id = projects.id
             Left JOIN asset_categories ON assets.asset_category = asset_categories.id
@@ -87,7 +87,7 @@ route.get('/assets-entry/assets/:id', async (req, res, next) => {
         `)
 
     if (results.length > 0) {
-        res.status(200).json({results, status: true})
+        res.status(200).json({data: results, status: true})
     } else {
         res.status(200).json({message: 'No Assets Found'})
     }
