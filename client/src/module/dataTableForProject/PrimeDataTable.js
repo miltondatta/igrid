@@ -163,9 +163,32 @@ class PrimeDataTable extends Component {
             )
         })
 
-        return (<div className={'ui-multiselect'}>
-            {selectAsset}
-        </div>)
+        return (
+            <>
+                <button
+                    className={"btn btn-info btn-sm"}
+                    data-toggle="modal"
+                    data-target="#deliverProduct">Products</button>
+                <div className="modal fade" id="deliverProduct" tabIndex="-1" role="dialog"
+                     aria-labelledby="rowDeleteModal" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Deliver Products</h5>
+                                <button type="button" className="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <div className={'ui-multiselect'}>
+                                    {selectAsset}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>)
     }
 
     actionDanger = (rowData, column) => {
@@ -187,31 +210,31 @@ class PrimeDataTable extends Component {
         let dynamicColumns = cols.map((col,i) => {
             if (productDelivery) {
                 if (col.field === 'category_name' || col.field === 'sub_category_name' || col.field === 'role_name' || col.field === 'location_name' || col.field === 'update_quantity'){
-                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else if(dnger) {
                 if (col.field === 'description') {
-                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
+                    return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
                 } else {
-                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else {
-                return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
             }
         });
 
         return (
                 <div className="content-section implementation mt-3">
-                    <DataTable value={this.props.data} responsive={true} className="p-datatable-customers" dataKey="id"
+                    <DataTable value={this.props.data} responsive={true} className="p-datatable-customers" dataKey="id" scrollable={true}
                                selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({selectedCustomers: e.value})}
                                paginator rows={10} emptyMessage="No customers found" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     >
                         {dynamicColumns}
-                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column filter={false} body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width: '8em'}}/>}
-                        {this.props.handleQuantity && <Column body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
-                        {this.props.handleComment && <Column body={this.actionComment} field={'comment'} header={'Comment'}/>}
-                        {this.props.handleMultiselect && <Column body={this.actionProduct} field={'products'} header={'Products'}/>}
+                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column filter={false} body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width:'200px', height: '45px'}}/>}
+                        {this.props.handleQuantity && <Column style={{width:'200px', height: '45px'}} body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
+                        {this.props.handleComment && <Column style={{width:'200px', height: '45px'}} body={this.actionComment} field={'comment'} header={'Comment'}/>}
+                        {this.props.handleMultiselect && <Column style={{width:'200px', height: '45px'}} body={this.actionProduct} field={'products'} header={'Products'}/>}
                     </DataTable>
                 </div>
         );
