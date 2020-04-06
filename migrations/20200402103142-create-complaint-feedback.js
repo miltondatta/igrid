@@ -9,10 +9,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       complaint_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'complaints',
+          key: 'id'
+        }
       },
       feedback: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000)
       },
       file_name: {
         type: Sequelize.STRING

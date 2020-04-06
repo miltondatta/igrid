@@ -37,7 +37,7 @@ module.exports = {
         }
       },
       problem_details: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000)
       },
       asset_id: {
         type: Sequelize.INTEGER,
