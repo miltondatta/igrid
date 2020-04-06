@@ -175,7 +175,7 @@ export const sidenav = [
         categories: [
             {
                 id: 1,
-                name: 'Complaints',
+                name: 'New Complaint',
                 link: '/complaint',
                 icon: ""
             },

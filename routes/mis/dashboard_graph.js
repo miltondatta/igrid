@@ -14,7 +14,7 @@ route.get('/mis/dashboard/graph/data', async(req, res) => {
     let graphLabels         = [];          
 
     while (start_date < end_date) {
-        graphLabels.push(moment(start_date).format('MMM_YY'));
+        graphLabels.push(moment(start_date).format('MMM YY'));
         columnsString           += " SUM(case when data_date ='" + start_date + "' then data_value else 0 end) AS " + moment(start_date).format('MMM_YY') + ","; 
         start_date               = moment(start_date).add(1, 'M').endOf('month').format('YYYY-MM-DD');
     }
@@ -27,9 +27,17 @@ route.get('/mis/dashboard/graph/data', async(req, res) => {
 
     let graphData = Object.values(results[0]);
 
+    const [resultsLabel, metadataLabel] = await db.query(`SELECT indicator_name
+    FROM mis_indicatordetails 
+    WHERE id = '${indicatordetails_id}'`);
+
+    let indicator_name = resultsLabel[0].indicator_name;
+
     let finalResult = {
         graphLabels: graphLabels,
-        graphDatas: graphData
+        graphDatas: graphData,
+        label: indicator_name,
+        status: true
     };
     return res.status(200).json(finalResult);
 });
