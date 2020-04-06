@@ -3,7 +3,7 @@ import axios from "axios";
 import {apiBaseUrl, apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ErrorModal from "../../utility/error/errorModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 

@@ -9,7 +9,7 @@ import UserOptionsByLocation from "../../utility/component/userOptionsByLocation
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import '../../module/data-table-react/reactDataTable.css';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import Spinner from "../../layouts/Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";

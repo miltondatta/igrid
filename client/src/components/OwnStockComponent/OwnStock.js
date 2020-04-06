@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
 import Spinner from "../../layouts/Spinner";
@@ -129,14 +129,6 @@ class OwnStock extends Component {
                     </div>
                 </div>
                 {isLoading ? <Spinner/> : allData.length > 0 ? <>
-                        {/*<ReactDataTable*/}
-                        {/*    dataDisplay*/}
-                        {/*    footer*/}
-                        {/*    isLoading*/}
-                        {/*    pagination*/}
-                        {/*    searchable*/}
-                        {/*    tableData={allData}*/}
-                        {/*/>*/}
                         <PrimeDataTable
                             data={allData}
                         />

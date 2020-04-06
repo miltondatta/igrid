@@ -2,7 +2,7 @@ import './UserLogin.css';
 import Axios from 'axios';
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import DatePicker from 'react-datepicker2';
 import moment from "moment";

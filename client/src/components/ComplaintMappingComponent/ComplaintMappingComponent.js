@@ -1,7 +1,7 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
@@ -302,19 +302,6 @@ class ComplaintMappingComponent extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">Complaint Mapping List</p>
                         </nav>
                         {isLoading ? <Spinner/> : tableData.length > 0 ? <>
-                            {/*<ReactDataTable*/}
-                            {/*    dataDisplay*/}
-                            {/*    footer*/}
-                            {/*    isLoading*/}
-                            {/*    shortWidth*/}
-                            {/*    pagination*/}
-                            {/*    searchable*/}
-                            {/*    edit*/}
-                            {/*    docDelete*/}
-                            {/*    tableData={tableData}*/}
-                            {/*    updateEdit={this.updateEdit}*/}
-                            {/*    docDeleteModal={this.docDeleteModal}*/}
-                            {/*/>*/}
                             <PrimeDataTable
                                 edit
                                 docDelete

@@ -1,7 +1,7 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ProjectOptions from "../../utility/component/projectOptions";
 import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";

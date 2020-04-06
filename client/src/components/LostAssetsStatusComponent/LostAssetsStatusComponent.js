@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import jwt from "jsonwebtoken";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
@@ -111,9 +111,11 @@ class LostAssetsStatusComponent extends Component {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {lostAsFB.length > 0 ? <div className={'overflow-y-auto h-200px'}> <ReactDataTable
-                                    tableData = {lostAsFB}
-                                /> </div>: <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                                {lostAsFB.length > 0 ? <div className={'overflow-y-auto h-200px'}>
+                                    <PrimeDataTable
+                                        data={lostAsFB}
+                                    />
+                                </div>: <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Your Feedback</p>

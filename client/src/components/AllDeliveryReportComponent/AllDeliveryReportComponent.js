@@ -6,7 +6,7 @@ import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import jwt from "jsonwebtoken";
 import SuccessModal from "../../utility/success/successModal";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import moment from "moment";
 import DatePicker from "react-datepicker2";

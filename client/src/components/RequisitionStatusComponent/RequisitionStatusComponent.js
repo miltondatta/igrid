@@ -2,7 +2,7 @@ import Axios from 'axios'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import jwt from "jsonwebtoken";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RequisitionStatusComponent extends Component {
