@@ -120,7 +120,6 @@ route.get('/mis/basic/report/daily', async(req, res) => {
         var end_date    = moment(date_to).endOf('month').format('YYYY-MM-DD');
         
         let columnsString   = "";
-        let dateIn          = "";
 
         while (start_date1 <= end_date) {
             monthArray.push(start_date);
