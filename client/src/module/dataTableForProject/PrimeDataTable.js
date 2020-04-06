@@ -217,16 +217,16 @@ class PrimeDataTable extends Component {
         let dynamicColumns = cols.map((col,i) => {
             if (productDelivery) {
                 if (col.field === 'category_name' || col.field === 'sub_category_name' || col.field === 'role_name' || col.field === 'location_name' || col.field === 'update_quantity'){
-                    return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else if(dnger) {
                 if (col.field === 'description') {
-                    return <Column body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
+                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
                 } else {
-                    return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else {
-                return <Column body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
             }
         });
 
