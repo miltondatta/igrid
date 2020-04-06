@@ -1,6 +1,7 @@
 import './misDashboard.css'
 import Axios from 'axios'
 import React, {Component} from 'react';
+import {Bar} from 'react-chartjs-2';
 import {apiUrl} from "../../utility/constant";
 
 class MisDashboardComponent extends Component {
@@ -8,13 +9,37 @@ class MisDashboardComponent extends Component {
         super(props);
         this.state = {
             roles: [],
-            locations: []
+            locations: [],
+            gData1: []  
         }
     }
 
     componentDidMount() {
-        this.getMisDashboardData()
+        this.getMisDashboardData();
+        this.drawGraph1();
     }
+
+    drawGraph1 = () => {
+        let gdata = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [
+              {
+                label: 'My First dataset',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: [65, 59, 80, 81, 56, 55, 40]
+              }
+            ]
+          };
+
+         this.setState({
+             gData1: gdata
+         });
+    }
+
 
     getMisDashboardData = () => {
         Axios.get(apiUrl() + 'mis-dashboard/info')
@@ -75,6 +100,16 @@ class MisDashboardComponent extends Component {
                         </div>
                     </div>
                 </div>
+
+                <Bar
+                    data={this.state.gData1}
+                    width={100}
+                    height={50}
+                    options={{
+                        maintainAspectRatio: false
+                    }}
+                /> 
+
             </>
         );
     }

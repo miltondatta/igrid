@@ -22,6 +22,13 @@ route.get('/mis/dashboard/graph/data', async(req, res) => {
     FROM mis_imported_datas 
     WHERE indicatordetails_id = '${indicatordetails_id}'
     GROUP BY indicatordetails_id`);
+
+    let finalResult = [];
+    results[0].forEach(element => {
+        console.log(element);
+    });
+
+
     return res.status(200).json(results);
 });
 
