@@ -27,9 +27,17 @@ route.get('/mis/dashboard/graph/data', async(req, res) => {
 
     let graphData = Object.values(results[0]);
 
+    const [resultsLabel, metadataLabel] = await db.query(`SELECT indicator_name
+    FROM mis_indicatordetails 
+    WHERE id = '${indicatordetails_id}'`);
+
+    let indicator_name = resultsLabel[0].indicator_name;
+
     let finalResult = {
         graphLabels: graphLabels,
-        graphDatas: graphData
+        graphDatas: graphData,
+        label: indicator_name,
+        status: true
     };
     return res.status(200).json(finalResult);
 });
