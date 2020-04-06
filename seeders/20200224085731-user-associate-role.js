@@ -12,7 +12,7 @@ module.exports = {
         },{
           user_id: 2,
           location_id: 1,
-          role_id: 2,
+          role_id: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },{

@@ -1,34 +1,36 @@
 'use strict';
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up   : (queryInterface, Sequelize) => {
         return queryInterface.createTable('document_sub_categories', {
-            id: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: Sequelize.INTEGER
+            id                : {
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true,
+                type          : Sequelize.INTEGER
             },
-            category_id: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'document_categories',
-                    key: 'id'
+            category_id       : {
+                type       : Sequelize.INTEGER,
+                references : {
+                    model : 'document_categories',
+                    key   : 'id'
                 }
             },
-            sub_category_name: {
-                type: Sequelize.STRING(127)
+            sub_category_name : {
+                type : Sequelize.STRING(127)
             },
-            createdAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+            createdAt         : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             },
-            updatedAt: {
-                allowNull: true,
-                type: Sequelize.DATE
+            updatedAt         : {
+                allowNull    : true,
+                type         : Sequelize.DATE,
+                defaultValue : Sequelize.NOW
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
+    down : (queryInterface, Sequelize) => {
         return queryInterface.dropTable('document_sub_categories');
     }
 };
