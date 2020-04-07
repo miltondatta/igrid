@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class AssetListComponent extends Component{
     render(){
@@ -190,11 +191,9 @@ class AssetListComponent extends Component{
                         <p className="navbar-brand m-0">Asset List</p>
                     </nav>
                     <div>
-                        <ReactDataTable
-                            exportable
-                            searchable
-                            tableData={data}
-                        />
+                        {data.length > 0 && <PrimeDataTable
+                            data={data}
+                        />}
                     </div>
                 </div>
             </>

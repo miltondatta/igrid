@@ -5,18 +5,26 @@ import { Bar } from 'react-chartjs-2';
 import { apiUrl } from "../../utility/constant";
 
 class MisDashboardComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             roles: [],
             locations: [],
-            gData1: []
+            gData1: [],
+            gData2: [],
+            gData3: [],
+            gData4: [],
         }
     }
 
+    
     componentDidMount() {
         this.getMisDashboardData();
         this.drawGraph1();
+        this.drawGraph2();
+        this.drawGraph3();
+        this.drawGraph4();
     }
 
     drawGraph1 = () => {
@@ -27,18 +35,93 @@ class MisDashboardComponent extends Component {
                         labels: res.data.graphLabels,
                         datasets: [
                             {
-                                label: 'My First dataset',
-                                backgroundColor: 'rgba(255,99,132,0.2)',
-                                borderColor: 'rgba(255,99,132,1)',
+                                label: res.data.label,
+                                backgroundColor: 'rgba(0,0,132,0.6)',
+                                borderColor: 'rgba(50,0,132,1)',
                                 borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                hoverBackgroundColor: 'rgba(0,0,132,0.3)',
+                                hoverBorderColor: 'rgba(50,0,132,1)',
                                 data: res.data.graphDatas
                             }
                         ]
                     };
                     this.setState({
                         gData1: gdata
+                    });
+                }
+            })
+    }
+
+    drawGraph2 = () => {
+        Axios.get(apiUrl() + 'mis/dashboard/graph/data', { params: { indicatordetails_id: 6 } })
+            .then(res => {
+                if (res.data.status) {
+                    let gdata = {
+                        labels: res.data.graphLabels,
+                        datasets: [
+                            {
+                                label: res.data.label,
+                                backgroundColor: 'rgba(255,99,0,0.6)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                borderWidth: 1,
+                                hoverBackgroundColor: 'rgba(255,99,0,0.3)',
+                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                data: res.data.graphDatas
+                            }
+                        ]
+                    };
+                    this.setState({
+                        gData2: gdata
+                    });
+                }
+            })
+    }
+
+    drawGraph3 = () => {
+        Axios.get(apiUrl() + 'mis/dashboard/graph/data', { params: { indicatordetails_id: 12 } })
+            .then(res => {
+                if (res.data.status) {
+                    let gdata = {
+                        labels: res.data.graphLabels,
+                        datasets: [
+                            {
+                                label: res.data.label,
+                                backgroundColor: 'rgba(25,200,100,0.6)',
+                                borderColor: 'rgba(25,150,100,1)',
+                                borderWidth: 1,
+                                hoverBackgroundColor: 'rgba(25,200,100,0.3)',
+                                hoverBorderColor: 'rgba(25,150,100,1)',
+                                data: res.data.graphDatas
+                            }
+                        ]
+                    };
+                    this.setState({
+                        gData3: gdata
+                    });
+                }
+            })
+    }
+
+    drawGraph4 = () => {
+        Axios.get(apiUrl() + 'mis/dashboard/graph/data', { params: { indicatordetails_id: 16 } })
+            .then(res => {
+                if (res.data.status) {
+                    let gdata = {
+                        labels: res.data.graphLabels,
+                        datasets: [
+                            {
+                                label: res.data.label,
+                                backgroundColor: 'rgba(255,99,132,0.8)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                borderWidth: 1,
+                                hoverBackgroundColor: 'rgba(255,99,132,0.2)',
+                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                data: res.data.graphDatas
+                            }
+                        ]
+                    };
+                    this.setState({
+                        gData4: gdata
                     });
                 }
             })
@@ -104,16 +187,48 @@ class MisDashboardComponent extends Component {
                         </div>
                     </div>
                 </div>
-
-                <Bar
-                    data={this.state.gData1}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false
-                    }}
-                />
-
+                <div className={'ui-mis-graph'}>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData1}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData2}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData3}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                    <div className={'ui-mis-gsection'}>
+                        <Bar
+                            data={this.state.gData4}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                    </div>
+                </div>
             </>
         );
     }

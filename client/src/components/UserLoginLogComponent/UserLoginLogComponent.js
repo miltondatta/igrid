@@ -2,11 +2,12 @@ import './UserLogin.css';
 import Axios from 'axios';
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import DatePicker from 'react-datepicker2';
 import moment from "moment";
 import Spinner from "../../layouts/Spinner";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -85,7 +86,7 @@ class UserLoginLogComponent extends Component {
                     <p className="text-blue f-weight-700 f-22px ml-2 mb-0">Login Logs</p>
                 </nav>
                 <div className="row pl-1">
-                    <div className="col-md-3">
+                    <div className="col-md-5">
                         <label className={'ui-custom-label pl-2'}>From Date</label>
                         <DatePicker timePicker={false}
                                     name={'from_date'}
@@ -95,7 +96,7 @@ class UserLoginLogComponent extends Component {
                                     ranges={disabledRanges}
                                     value={from_date}/>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-5">
                         <label className={'ui-custom-label pl-2'}>To Date</label>
                         <DatePicker timePicker={false}
                                     name={'to_date'}
@@ -105,21 +106,20 @@ class UserLoginLogComponent extends Component {
                                     ranges={disabledRanges}
                                     value={to_date}/>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                         <button className="submit-btn-normal w-100 h-100 px-4 py-2"
                                 onClick={this.handleSearch}>Search
                         </button>
                     </div>
                 </div>
-                {isLoading ? <Spinner/> : trackData.length === 0 ? data.length > 0 && <ReactDataTable
-                    track
-                    pagination
-                    footer
-                    searchable
-                    dataDisplay
-                    trackUser={this.trackUser}
-                    tableData={data}
-                /> : <>
+                {isLoading ? <Spinner/> : trackData.length === 0 ? data.length > 0 && <div className={'mt-5'}>
+                    <PrimeDataTable
+                        track
+                        trackUser={this.trackUser}
+                        data={data}
+                    />
+</div>
+                : <>
                     <nav className="navbar text-center mb-2 pl-2 rounded cursor-pointer">
                         <p className="text-dark f-weight-500 f-20px m-0" onClick={() => {
                             this.setState({trackData: []})

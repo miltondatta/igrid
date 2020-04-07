@@ -8,6 +8,7 @@ import * as jwt from "jsonwebtoken";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -448,18 +449,18 @@ class ComplaintDetailsComponent extends Component {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {this.state.feedbackSuccess && <div className="alert alert-success mx-1 mb-2"
-                                                                    role="alert">{this.state.feedbackSuccessMessage}</div>}
-                                {this.state.feedbackError && <div className="alert alert-danger mx-1 mb-2"
-                                                                  role="alert">{this.state.feedbackErrorMessage}</div>}
+                                {this.state.feedbackSuccess && <div className="alert alert-success" role="alert">
+                                    {this.state.feedbackSuccessMessage}
+                                </div>}
+                                {this.state.feedbackError && <div className="alert alert-danger" role="alert">
+                                    {this.state.feedbackErrorMessage}
+                                </div>}
                                 {complaintFeedBackTableData.length > 0 ?
-                                    <div className={'overflow-y-auto h-200px'}>
-                                        <ReactDataTable
-                                            tableData={complaintFeedBackTableData}
-                                            file={this.fileDownload}
-                                        /></div> : <h4 className={'no-project px-2 mt-3'}><i
-                                        className="icofont-exclamation-circle"></i> Currently There are No FeedBack
-                                    </h4>}
+                                    <PrimeDataTable
+                                        data={complaintFeedBackTableData}
+                                        file={this.fileDownload}
+                                    />
+                                    : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No FeedBack</h4>}
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Your Feedback</p>
                                 </nav>

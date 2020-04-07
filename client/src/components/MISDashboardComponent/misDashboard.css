@@ -51,7 +51,7 @@
     background: #fff;
     align-content: center;
     justify-content: center;
-    grid-template-columns: 68% 32%;
+    grid-template-columns: 62% 38%;
 }
 
 .ui-mis-dashboard-container .ui-mis-top .ui-role-child p{
@@ -71,4 +71,41 @@
     border-radius: 5px;
     align-items: center;
     justify-content: center;
+}
+
+.ui-mis-graph{
+    display: grid;
+    grid-template-columns: repeat(4, 24.5%);
+    height: 450px;
+    height: 450px;
+    grid-gap: 10px;
+    background: white;
+    margin: 10px;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.ui-mis-graph .ui-mis-gsection{
+    width: 100%;
+}
+
+@media only screen and (max-width: 1600px) {
+    .ui-mis-dashboard-container .ui-mis-top .ui-role-child{
+        grid-template-columns: 56% 44%;
+    }
+    .ui-mis-graph {
+        grid-template-columns: repeat(2, 49.5%);
+        height: max-content;
+    }
+}
+
+@media only screen and (max-width: 1380px) {
+    .ui-mis-dashboard-container .ui-mis-top .ui-mis-body-bottom {
+        grid-template-columns: repeat(2, 49.5%);
+        height: max-content;
+    }
+
+    .ui-mis-dashboard-container .ui-mis-top .ui-role-child{
+        grid-template-columns: 62% 38%;
+    }
 }

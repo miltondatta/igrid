@@ -3,8 +3,9 @@ import Axios from 'axios'
 import jwt from "jsonwebtoken";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import PrintDelivery from "./PrintDelivery";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class DeliveryRequestComponent extends Component {
 
@@ -147,67 +148,33 @@ class DeliveryRequestComponent extends Component {
     }
 
     render() {
-        const {resData, reqDetails, showDetails, printDelivery, assetsList} = this.state
-        let tableData = resData.length > 0 && resData.map((item, index) => {
-            return(
-                <div key={index + 10} className={'ui-tbody-child'}>
-                    <div className={'d-flex align-items-center'}>
-                        <p className={'w-60px'}>{index + 1}</p>
-                        <p>{item.category_name}</p>
-                        <p>{item.sub_category_name}</p>
-                        <p>{item.role_name}</p>
-                        <p>{item.location_name}</p>
-                        <p>{item.update_quantity}</p>
-                        <p>
-                            {this.availableAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
-                        </p>
-                        <p style={{width: 350, overflow: "visible"}}>
-                            <div className={'ui-multiselect'}>
-                                {this.subAssets(item.asset_category, item.asset_sub_category, item.delivery_to)}
-                            </div>
-                        </p>
-                    </div>
-                </div>
-            )
-        })
+        const {resData, reqDetails, showDetails, printDelivery, products} = this.state
 
         return (
             <div className={'bg-white p-3 rounded m-2 admin-input-height'}>
                 {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
                 {showDetails ?  <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
+                        <p onClick={() => {this.setState({resData: []}, () => {this.setState({showDetails: false, detailedData: [], })})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
                     </nav>
-                    <div className={'reactDataTable mb-20p'}>
-                        <div className={'table'}>
-                            <div className={'thead'}>
-                                <div className={'d-flex align-items-center'}>
-                                    <p className={'w-60px'}>No</p>
-                                    <p>Category</p>
-                                    <p>Sub Category</p>
-                                    <p>Role</p>
-                                    <p>Location</p>
-                                    <p>Quantity</p>
-                                    <p>Av. Quantity</p>
-                                    <p style={{width: 350}}>Product</p>
-                                </div>
-                            </div>
-                            <div className={'tbody'}>
-                                {tableData}
-                            </div>
-                        </div>
-                    </div>
-                    <button className="submit-btn" onClick={this.customizeData}>Deliver</button>
+                    {resData.length > 0 && <PrimeDataTable
+                        data={resData}
+                        productDelivery
+                        products={products}
+                        handleMultiselect={this.handleChange}
+                    />}
+                    <button className="submit-btn-normal mt-3" onClick={this.customizeData}>Deliver</button>
                 </> : <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-22px m-0">Delivery Request</p>
                     </nav>
                     {
-                        reqDetails.length > 0 ? <ReactDataTable
+                        reqDetails.length > 0 ? <PrimeDataTable
+                            data={reqDetails}
                             details={'reqHistory'}
                             assetList={this.assetList}
-                            tableData={reqDetails}
-                        /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>
+                            subAssets={this.subAssets}
+                        />  : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>
                     }
                 </>}
             </div>

@@ -4,9 +4,10 @@ import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ModuleOptions from "../../utility/component/moduleOptions";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class MenuAssignComponent extends Component {
     constructor(props) {
@@ -429,19 +430,12 @@ class MenuAssignComponent extends Component {
                         <p className="text-blue f-weight-700 f-20px m-0">Menu Assign List</p>
                     </nav>
                     {isLoading ? <Spinner/> : menuAssignTableData.length > 0 ? <>
-                            <ReactDataTable
-                                dataDisplay
-                                footer
-                                isLoading
-                                shortWidth
-                                pagination
-                                searchable
+                            <PrimeDataTable
                                 edit
                                 docDelete
-                                tableData={menuAssignTableData}
+                                data={menuAssignTableData}
                                 updateEdit={this.updateEdit}
                                 docDeleteModal={this.docDeleteModal}
-                                bigTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
                                  aria-labelledby="docDeleteModal" aria-hidden="true">

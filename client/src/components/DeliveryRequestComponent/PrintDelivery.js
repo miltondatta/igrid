@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 class PrintDelivery extends Component {
+
     componentDidMount() {
         let printable = document.getElementById('ui-print').innerHTML
         document.body.innerHTML = printable

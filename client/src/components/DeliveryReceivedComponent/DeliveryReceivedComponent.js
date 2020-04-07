@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import jwt from 'jsonwebtoken';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import '../../assets/print.css';
 import PrintDelivery from "../DeliveryRequestComponent/PrintDelivery";
 import Spinner from "../../layouts/Spinner";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class DeliveryReceivedComponent extends Component {
     constructor(props) {
@@ -36,11 +37,11 @@ class DeliveryReceivedComponent extends Component {
             axios.post(apiUrl() + 'my-received-requisition/by/credentials', {user_id: id})
                 .then(res => {
                     this.setState({
-                        deliveryReceivedData: res.data[0],
+                        deliveryReceivedData: res.data.resData,
                         isLoading: false
                     }, () => {
                         let deliveryReceivedTableData = [];
-                        res.data[0].map(item => {
+                        res.data.resData.map(item => {
                             const newObj = {
                                 id: item.id,
                                 requisition_no: item.requisition_no,
@@ -66,13 +67,14 @@ class DeliveryReceivedComponent extends Component {
         }, () => {
             axios.post(apiUrl() + '/my-received-requisition-details/by/credentials', {user_id: this.state.user.id})
                 .then(res => {
+                    console.log(res.data, 70)
                     this.setState({
                         viewDetails: true,
-                        deliveryReceivedDetailsData: res.data[0],
+                        deliveryReceivedDetailsData: res.data.resData,
                         isLoading: false
                     }, () => {
                         let deliveryReceivedDetailsTableData = [];
-                        res.data[0].map(item => {
+                        res.data.resData.map(item => {
                             const newObj = {
                                 category_name: item.category_name,
                                 sub_category_name: item.sub_category_name,
@@ -86,7 +88,7 @@ class DeliveryReceivedComponent extends Component {
                             let printData = [];
                             const {userName} = this.state.user;
 
-                            res.data[0].map(item => {
+                            res.data.resData.map(item => {
                                 const newObj = {
                                     brand: item.brand,
                                     model: item.model,
@@ -116,30 +118,31 @@ class DeliveryReceivedComponent extends Component {
 
     render() {
         const {deliveryReceivedTableData, viewDetails, deliveryReceivedDetailsTableData, printDelivery, printData, isLoading} = this.state;
+        console.log(deliveryReceivedDetailsTableData, deliveryReceivedTableData, 120)
         return (
             <div className={'bg-white rounded admin-input-height p-2 m-2'}>
                 {printDelivery && <PrintDelivery resData={printData} comeBack={this.comeBack}/>}
                 <nav className="navbar text-center mb-2 ml-0 pl-2 rounded">
-                    <p className="text-blue f-weight-700 f-22px m-0">Delivery Received</p>
+                    {viewDetails ?                         <p onClick={() => {
+                        this.setState({viewDetails: false, requisitionDetailsData: []})
+                    }} className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i
+                        className="fas fa-chevron-circle-left mr-2"/>Go Back</p> : <p className="text-blue f-weight-700 f-22px m-0">Delivery Received</p>}
                 </nav>
                 {isLoading ? <Spinner/> : viewDetails ? <>
-                    <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
-                        <p onClick={() => {
-                            this.setState({viewDetails: false, requisitionDetailsData: []})
-                        }} className="text-blue cursor-pointer f-weight-700 f-20px m-0"><i
-                            className="fas fa-chevron-circle-left"/>Go Back</p>
-                    </nav>
-                    <ReactDataTable
-                        tableData={deliveryReceivedDetailsTableData}
+                    {deliveryReceivedDetailsTableData.length > 0 && <PrimeDataTable
                         assetList={this.assetList}
-                    />
-                    <button className='submit-btn-normal' onClick={() => this.setState({printDelivery: true})}>Print
+                        data={deliveryReceivedDetailsTableData}
+                    />}
+
+                    <button className='submit-btn-normal mt-3' onClick={() => this.setState({printDelivery: true})}>Print
                     </button>
-                </> : <ReactDataTable
-                    tableData={deliveryReceivedTableData}
-                    assetList={this.assetList}
-                    details
-                />}
+                </> :
+                    deliveryReceivedTableData.length > 0 && <PrimeDataTable
+                        details
+                        assetList={this.assetList}
+                        data={deliveryReceivedTableData}
+                    />
+                }
             </div>
         );
     }
