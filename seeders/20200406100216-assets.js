@@ -6,7 +6,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -46,7 +46,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -86,7 +86,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -126,7 +126,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -166,7 +166,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -206,7 +206,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -246,7 +246,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -286,7 +286,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -326,7 +326,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -366,7 +366,7 @@ module.exports = {
             {
                 "challan_id"            : 1,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -406,7 +406,7 @@ module.exports = {
             {
                 "challan_id"            : 2,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 4,
@@ -446,7 +446,7 @@ module.exports = {
             {
                 "challan_id"            : 2,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -486,7 +486,7 @@ module.exports = {
             {
                 "challan_id"            : 2,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -526,7 +526,7 @@ module.exports = {
             {
                 "challan_id"            : 2,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -566,7 +566,7 @@ module.exports = {
             {
                 "challan_id"            : 2,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 6,
@@ -606,7 +606,7 @@ module.exports = {
             {
                 "challan_id"            : 3,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -646,7 +646,7 @@ module.exports = {
             {
                 "challan_id"            : 3,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -686,7 +686,7 @@ module.exports = {
             {
                 "challan_id"            : 3,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -726,7 +726,7 @@ module.exports = {
             {
                 "challan_id"            : 3,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -766,7 +766,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -806,7 +806,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -846,7 +846,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -886,7 +886,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -926,7 +926,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -966,7 +966,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -1006,7 +1006,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -1046,7 +1046,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -1086,7 +1086,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -1126,7 +1126,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -1166,7 +1166,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -1206,7 +1206,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -1246,7 +1246,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -1286,7 +1286,7 @@ module.exports = {
             {
                 "challan_id"            : 5,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -1326,7 +1326,7 @@ module.exports = {
             {
                 "challan_id"            : 4,
                 "project_id"            : 2,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 14,
                 "asset_category"        : 3,
                 "asset_sub_category"    : 7,
@@ -1366,7 +1366,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1406,7 +1406,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1446,7 +1446,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1486,7 +1486,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1526,7 +1526,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1566,7 +1566,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1606,7 +1606,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1646,7 +1646,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1686,7 +1686,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1726,7 +1726,7 @@ module.exports = {
             {
                 "challan_id"            : 6,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -1766,7 +1766,7 @@ module.exports = {
             {
                 "challan_id"            : 7,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 4,
@@ -1806,7 +1806,7 @@ module.exports = {
             {
                 "challan_id"            : 7,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -1846,7 +1846,7 @@ module.exports = {
             {
                 "challan_id"            : 7,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -1886,7 +1886,7 @@ module.exports = {
             {
                 "challan_id"            : 7,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -1926,7 +1926,7 @@ module.exports = {
             {
                 "challan_id"            : 7,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 6,
@@ -1966,7 +1966,7 @@ module.exports = {
             {
                 "challan_id"            : 8,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -2006,7 +2006,7 @@ module.exports = {
             {
                 "challan_id"            : 8,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -2046,7 +2046,7 @@ module.exports = {
             {
                 "challan_id"            : 8,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -2086,7 +2086,7 @@ module.exports = {
             {
                 "challan_id"            : 8,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -2126,7 +2126,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2166,7 +2166,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2206,7 +2206,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2246,7 +2246,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2286,7 +2286,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2326,7 +2326,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2366,7 +2366,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2406,7 +2406,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2446,7 +2446,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2486,7 +2486,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -2526,7 +2526,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -2566,7 +2566,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -2606,7 +2606,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -2646,7 +2646,7 @@ module.exports = {
             {
                 "challan_id"            : 10,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -2686,7 +2686,7 @@ module.exports = {
             {
                 "challan_id"            : 9,
                 "project_id"            : 3,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 14,
                 "asset_category"        : 3,
                 "asset_sub_category"    : 7,
@@ -2726,7 +2726,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -2766,7 +2766,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -2806,7 +2806,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -2846,7 +2846,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -2886,7 +2886,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -2926,7 +2926,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -2966,7 +2966,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -3006,7 +3006,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -3046,7 +3046,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -3086,7 +3086,7 @@ module.exports = {
             {
                 "challan_id"            : 11,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 1,
                 "asset_category"        : 1,
                 "asset_sub_category"    : 1,
@@ -3126,7 +3126,7 @@ module.exports = {
             {
                 "challan_id"            : 12,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 4,
@@ -3166,7 +3166,7 @@ module.exports = {
             {
                 "challan_id"            : 12,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -3206,7 +3206,7 @@ module.exports = {
             {
                 "challan_id"            : 12,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -3246,7 +3246,7 @@ module.exports = {
             {
                 "challan_id"            : 12,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 5,
@@ -3286,7 +3286,7 @@ module.exports = {
             {
                 "challan_id"            : 12,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 8,
                 "asset_category"        : 2,
                 "asset_sub_category"    : 6,
@@ -3326,7 +3326,7 @@ module.exports = {
             {
                 "challan_id"            : 13,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -3366,7 +3366,7 @@ module.exports = {
             {
                 "challan_id"            : 13,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -3406,7 +3406,7 @@ module.exports = {
             {
                 "challan_id"            : 13,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -3446,7 +3446,7 @@ module.exports = {
             {
                 "challan_id"            : 13,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 19,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 10,
@@ -3486,7 +3486,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3526,7 +3526,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3566,7 +3566,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3606,7 +3606,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3646,7 +3646,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3686,7 +3686,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3726,7 +3726,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3766,7 +3766,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3806,7 +3806,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3846,7 +3846,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 16,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 9,
@@ -3886,7 +3886,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -3926,7 +3926,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -3966,7 +3966,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -4006,7 +4006,7 @@ module.exports = {
             {
                 "challan_id"            : 15,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 22,
                 "asset_category"        : 4,
                 "asset_sub_category"    : 11,
@@ -4046,7 +4046,7 @@ module.exports = {
             {
                 "challan_id"            : 14,
                 "project_id"            : 5,
-                "assign_to"             : 1,
+                "assign_to"             : 6,
                 "product_id"            : 14,
                 "asset_category"        : 3,
                 "asset_sub_category"    : 7,
