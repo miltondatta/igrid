@@ -86,16 +86,21 @@
 
 .ui-mis-graph .ui-mis-gsection{
     width: 100%;
-    height: 450px;
+    height: 455px;
 }
 
 @media only screen and (max-width: 1600px) {
     .ui-mis-dashboard-container .ui-mis-top .ui-role-child{
         grid-template-columns: 56% 44%;
     }
-    .ui-mis-graph {
-        grid-template-columns: repeat(2, 49.5%);
-        height: max-content;
+    .ui-mis-graph{
+        height: 360px
+    }
+    .ui-mis-graph .ui-mis-gsection{
+        height: 340px;
+    }
+    .ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top{
+        grid-template-columns: 18% 82%;
     }
 }
 
@@ -104,8 +109,25 @@
         grid-template-columns: repeat(2, 49.5%);
         height: max-content;
     }
-
+    .ui-mis-graph{
+        height: 340px
+    }
+    .ui-mis-graph .ui-mis-gsection{
+        height: 320px;
+    }
+    .ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top{
+        grid-template-columns: 20% 80%;
+    }
     .ui-mis-dashboard-container .ui-mis-top .ui-role-child{
         grid-template-columns: 62% 38%;
+    }
+}
+
+@media only screen and (max-width: 1180px) {
+    .ui-mis-graph{
+        height: 320px
+    }
+    .ui-mis-graph .ui-mis-gsection{
+        height: 300px;
     }
 }
