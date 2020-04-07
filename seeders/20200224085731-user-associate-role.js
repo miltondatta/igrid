@@ -51,6 +51,18 @@ module.exports = {
         role_id: 7,
         createdAt: new Date(),
         updatedAt: new Date()
+      },{
+        user_id: 9,
+        location_id: 1,
+        role_id: 8,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        user_id: 10,
+        location_id: 1,
+        role_id: 9,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 

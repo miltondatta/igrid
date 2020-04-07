@@ -23,11 +23,10 @@ class NoticeBoardComponent extends Component {
     }
 
     setNoticeOption = (input) => {
-        const {noticeAndCircular, notice, circular} = this.state;
         this.setState({
-            noticeAndCircular: (input === 'all') && !noticeAndCircular,
-            notice: (input === 'notice') && !notice,
-            circular: (input === 'circular') && !circular
+            noticeAndCircular: (input === 'all') && true,
+            notice: (input === 'notice') && true,
+            circular: (input === 'circular') && true
         }, () => {
             this.getData();
         });
