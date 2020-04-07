@@ -6,12 +6,13 @@ import {withRouter} from 'react-router-dom'
 import {apiUrl} from "../../utility/constant";
 import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import {getFileExtension} from "../../utility/custom";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -300,11 +301,12 @@ class AssetComponent extends Component{
                         <nav className="navbar text-center mb-2 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Submit Requisition</p>
                         </nav>
-                        {arrayData.length > 0 ? <ReactDataTable
-                            shortWidth
-                            remove={this.removeItemFromList}
-                            tableData={arrayData}
-                        /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                        {arrayData.length > 0 ?
+                            <PrimeDataTable
+                                remove={this.removeItemFromList}
+                                data={arrayData}
+                            />
+                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 
                         {arrayData.length > 0 && <button type="submit" onClick={this.sendRequisition} className="submit-btn">Submit</button>}
                     </div>

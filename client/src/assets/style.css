@@ -108,6 +108,7 @@ select:focus{
    border-radius: 5px;
    border: 1.2px solid #e7e7e7;
    -webkit-appearance: checkbox !important;
+   -moz-appearance: initial !important;
    font-size: 15px;
 }
 .ui-custom-input .react-time-picker__wrapper{
@@ -685,6 +686,7 @@ label:focus,
 {
    outline:0px !important;
    -webkit-appearance:none;
+   -moz-appearance:none;
    box-shadow: none !important;
 }
 

@@ -49,6 +49,8 @@ const DocumentCategory = require('./routes/document/document_category');
 const IndicatorSubCategory = require('./routes/mis/indicator_sub_category');
 const DocumentSubCategory = require('./routes/document/document_sub_category');
 const ComplaintMapping = require('./routes/complaint_mapping');
+const ComplaintFeedback = require('./routes/complaint_feedback');
+const ComplaintForward = require('./routes/complaint_forward');
 
 
 // Database Connection
@@ -79,6 +81,8 @@ app.use(express.static(path.join(__dirname, 'public/vendor')));
 app.use(express.static(path.join(__dirname, 'public/modules')));
 app.use(express.static(path.join(__dirname, 'public/document')));
 app.use(express.static(path.join(__dirname, 'public/repair-assets')));
+app.use(express.static(path.join(__dirname, 'public/complaints')));
+app.use(express.static(path.join(__dirname, 'public/complaint_feedbacks')));
 
 
 // Route Defination
@@ -123,6 +127,8 @@ app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1/asset-repair', AssetRepair);
 app.use('/api/v1/complaint', ComplaintRouter);
 app.use('/api/v1/complaint/mapping', ComplaintMapping);
+app.use('/api/v1/complaint/feedback', ComplaintFeedback);
+app.use('/api/v1/complaint/forward', ComplaintForward);
 
 
 module.exports = app;

@@ -1,7 +1,7 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ProjectOptions from "../../utility/component/projectOptions";
 import AssetCategoryOptions from "../../utility/component/assetCategoryOptions";
 import AssetSubCategoryOptions from "../../utility/component/assetSubCategoryOptions";
@@ -20,6 +20,7 @@ import {getFileExtension} from "../../utility/custom";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 moment.locale('en');
 
@@ -61,18 +62,18 @@ class ChallanComponent extends Component {
             installation_cost: '',
             carrying_cost: '',
             other_cost: '',
-            asset_type: '',
-            depreciation_method: '',
-            rate: '',
+            asset_type: null,
+            depreciation_method: null,
+            rate: null,
             effective_date: moment(),
-            book_value: '',
-            salvage_value: '',
-            useful_life: '',
+            book_value: null,
+            salvage_value: null,
+            useful_life: null,
             last_effective_date: moment(),
-            warranty: '',
+            warranty: null,
             last_warranty_date: moment(),
-            condition: '',
-            comments: '',
+            condition: null,
+            comments: null,
             barcode: false,
             addAssets: false,
             assign_to: jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data.id : '',
@@ -114,7 +115,11 @@ class ChallanComponent extends Component {
             .then(resData => {
                 if (resData.data.status) {
                     this.setState({
-                        assets: resData.data.results
+                        challans: []
+                    }, () => {
+                        this.setState({
+                            assets: resData.data.data
+                        })
                     })
                 } else {
                     this.setState({
@@ -544,7 +549,7 @@ class ChallanComponent extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <button onClick={this.updateChallan} className="submit-btn-normal">Add Challan</button>
+                                <button onClick={this.updateChallan} className="submit-btn-normal mt-3">Add Challan</button>
                             </div>
                             <div className="max-h-80vh bg-white rounded p-3">
                                 <div className={'mb-2'}>
@@ -592,34 +597,29 @@ class ChallanComponent extends Component {
                     <nav className="navbar text-center mb-0 pl-3 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">{assets.length > 0 ?
                             <p className={'cursor-pointer mb-0'}
-                               onClick={() => {this.setState({assets: []})}}>
+                               onClick={() => {this.setState({assets: []}, () => {this.getChallanData()})}}>
                                 <i className="fas fa-angle-left"></i> Challan Details
                             </p> : 'Challan Information'}</p>
                     </nav>
                     <div className="px-2">
-                        {assets.length > 0 ? <ReactDataTable
-                            pagination
-                            footer
-                            bigTable
+                        {assets.length > 0 ?
+                        <PrimeDataTable
                             del={'assets-entry'}
                             deleteModalTitle={'Delete Asset'}
                             updateEdit={this.updateEdit}
-                            tableData={assets}
-                        /> : challans.length > 0 && assets.length === 0 ? <ReactDataTable
-                            details
-                            add
-                            bigTable
-                            searchable
-                            pagination
-                            footer
-                            dataDisplay
-                            addName={'Assets'}
-                            addAssets={this.addAssets}
-                            edit={'specific-challan/'}
-                            updateEdit={this.updateEdit}
-                            assetList={this.assetList}
-                            tableData={challans}
-                        /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
+                            data={assets}
+                        />
+                        : challans.length > 0 && assets.length === 0 ?
+                            <PrimeDataTable
+                                details
+                                add
+                                addName={'Assets'}
+                                addAssets={this.addAssets}
+                                edit={'specific-challan/'}
+                                updateEdit={this.updateEdit}
+                                assetList={this.assetList}
+                                data={challans}
+                            /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
                     </div> </div> :
                         <div>
                             <div className="ui-dataEntry">

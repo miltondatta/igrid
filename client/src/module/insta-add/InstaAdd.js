@@ -206,7 +206,7 @@ class InstaAdd extends Component {
                                 className={`ui-custom-textarea `}
                                 onChange={this.handleChange} />
                         </div>
-                        <div className="px-1 mb-20p grid-2">
+                        <div className="px-1 grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />
@@ -539,7 +539,7 @@ class InstaAdd extends Component {
                                 className={`ui-custom-textarea `}
                                 onChange={this.handleChange} />
                         </div>
-                        <div className="px-1 mb-20p grid-2">
+                        <div className="px-1 grid-2">
                             <div className="ui-custom-file">
                                 <input type="file" onChange={this.handleChange} name={'file_name'} id="validatedCustomFile"
                                        required />

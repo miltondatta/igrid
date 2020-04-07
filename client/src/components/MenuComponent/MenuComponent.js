@@ -5,8 +5,9 @@ import {validateInput} from "../../utility/custom";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import ModuleOptions from "../../utility/component/moduleOptions";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class MenuComponent extends Component {
     constructor(props) {
@@ -522,7 +523,7 @@ class MenuComponent extends Component {
                             <label className="custom-control-label" htmlFor="switch2">Visibility</label>
                         </div>
                     </div>
-                    {editId === null ? <button className="submit-btn-normal" onClick={this.handleSubmit}>Submit</button> : <>
+                    {editId === null ? <button className="submit-btn-normal mt-3" onClick={this.handleSubmit}>Submit</button> : <>
                         <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
                         <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back</button>
                     </>}
@@ -532,7 +533,7 @@ class MenuComponent extends Component {
                         <p className="text-blue f-weight-700 f-20px m-0">Menu List</p>
                     </nav>
                     {isLoading ? <Spinner/> : menuTableData.length > 0 ? <>
-                            <ReactDataTable
+                            <PrimeDataTable
                                 dataDisplay
                                 footer
                                 isLoading
@@ -541,10 +542,9 @@ class MenuComponent extends Component {
                                 searchable
                                 edit
                                 docDelete
-                                tableData={menuTableData}
+                                data={menuTableData}
                                 updateEdit={this.updateEdit}
                                 docDeleteModal={this.docDeleteModal}
-                                bigTable
                             />
                             <div className="modal fade" id="docDeleteModal" tabIndex="-1" role="dialog"
                                  aria-labelledby="docDeleteModal" aria-hidden="true">

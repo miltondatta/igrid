@@ -74,7 +74,7 @@ route.get('/assets-entry/specific-challan/:id', (req, res, next) => {
 route.get('/assets-entry/assets/:id', async (req, res, next) => {
     console.log(req.params.id, 38)
     const [results, metadata] = await db.query(`
-            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category,asset_sub_categories.sub_category,projects.project From assets
+            SELECT assets.id,assets.product_serial, depreciation_methods.method_name,conditions.condition_type,asset_types.type_name,asset_categories.category_name as category,asset_sub_categories.sub_category_name as sub_category,projects.project_name as project From assets
             Left JOIN challans ON assets.challan_id = challans.id
             Left JOIN projects ON assets.project_id = projects.id
             Left JOIN asset_categories ON assets.asset_category = asset_categories.id
@@ -87,7 +87,7 @@ route.get('/assets-entry/assets/:id', async (req, res, next) => {
         `)
 
     if (results.length > 0) {
-        res.status(200).json({results, status: true})
+        res.status(200).json({data: results, status: true})
     } else {
         res.status(200).json({message: 'No Assets Found'})
     }
@@ -412,10 +412,10 @@ route.post('/assets/all/by/id', async (req, res) => {
                                        assets.comments,
                                        count(distinct assets.id) as quantity
                                 from assets
-                                         join asset_categories on assets.asset_category = asset_categories.id
-                                         join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                         join products on assets.product_id = products.id
-                                         join conditions on assets.condition = conditions.id
+                                         left join asset_categories on assets.asset_category = asset_categories.id
+                                         left join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         left join products on assets.product_id = products.id
+                                         left join conditions on assets.condition = conditions.id
                                 ${queryText} 
                                 group by assets.id, conditions.condition_type, products.product_name, asset_categories.category_name,
                                             asset_sub_categories.sub_category_name`);
@@ -532,7 +532,7 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                 join products on asset_categories.id = products.category_id
+                                 join products on assets.product_id = products.id
                         where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} 
                         and assets.asset_sub_category = ${sub_category_id}`);
 

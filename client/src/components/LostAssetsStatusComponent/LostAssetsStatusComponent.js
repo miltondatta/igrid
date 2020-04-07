@@ -1,10 +1,11 @@
 import Axios from 'axios'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import jwt from "jsonwebtoken";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class LostAssetsStatusComponent extends Component {
 
@@ -110,9 +111,11 @@ class LostAssetsStatusComponent extends Component {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {lostAsFB.length > 0 ? <div className={'overflow-y-auto h-200px'}> <ReactDataTable
-                                    tableData = {lostAsFB}
-                                /> </div>: <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                                {lostAsFB.length > 0 ? <div className={'overflow-y-auto h-200px'}>
+                                    <PrimeDataTable
+                                        data={lostAsFB}
+                                    />
+                                </div>: <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Your Feedback</p>
@@ -122,8 +125,8 @@ class LostAssetsStatusComponent extends Component {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
-                                <button type="button" className="submit-btn-normal" onMouseUp={this.submitFeedback}>Submit</button>
+                                <button type="button" className="reset-btn-normal mt-2" data-dismiss="modal">Close</button>
+                                <button type="button" className="submit-btn-normal mt-2" onMouseUp={this.submitFeedback}>Submit</button>
                             </div>
                         </div>
                     </div>
@@ -133,12 +136,14 @@ class LostAssetsStatusComponent extends Component {
                     <nav className="navbar text-center mb-0 mt-1 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Lost Asset Status</p>
                     </nav>
-                    {lostAssets.length > 0 ? <ReactDataTable
-                        feedback={true}
-                        modal = '#lostAsset'
-                        updateEdit={this.updateEdit}
-                        tableData={lostAssets}
-                    /> : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    {lostAssets.length > 0 ?
+                        <PrimeDataTable
+                            feedback={true}
+                            modal = '#lostAsset'
+                            updateEdit={this.updateEdit}
+                            data={lostAssets}
+                        />
+                    : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
             </>
         );

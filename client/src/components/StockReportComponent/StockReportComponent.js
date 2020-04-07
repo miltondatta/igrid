@@ -5,10 +5,11 @@ import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class StockReportComponent extends Component {
 
@@ -185,9 +186,11 @@ class StockReportComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    {typeof allData !== 'undefined' && allData.length > 0 ? <ReactDataTable
-                        tableData={allData}
-                    /> :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    {typeof allData !== 'undefined' && allData.length > 0 ?
+                        <PrimeDataTable
+                            data={allData}
+                        />
+                    :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
 
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={allData} />}

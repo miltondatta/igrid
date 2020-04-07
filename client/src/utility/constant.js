@@ -175,7 +175,7 @@ export const sidenav = [
         categories: [
             {
                 id: 1,
-                name: 'Complaints',
+                name: 'New Complaint',
                 link: '/complaint',
                 icon: ""
             },
@@ -444,6 +444,13 @@ export const misCategory = [
         icon: 'fab fa-fort-awesome',
         subCat: false,
         link: '/mis/dashboard'
+    },
+    {
+        id: 12,
+        name: 'Extended Dashboard',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/mis/extended-dashboard'
     },
     {
         id: 11,

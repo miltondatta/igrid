@@ -9,10 +9,11 @@ import UserOptionsByLocation from "../../utility/component/userOptionsByLocation
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import '../../module/data-table-react/reactDataTable.css';
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+
 import Spinner from "../../layouts/Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class AssetTransferComponent extends Component {
 
@@ -21,9 +22,9 @@ class AssetTransferComponent extends Component {
         this.state = {
             user: {},
             category_id: '',
-            category_name: '',
+            category: '',
             sub_category_id: '',
-            sub_category_name: '',
+            sub_category: '',
             product_id: '',
             product_name: '',
             product_serial: '',
@@ -118,8 +119,8 @@ class AssetTransferComponent extends Component {
                                 const newObj = {
                                     id: item.id,
                                     product_serial: item.product_serial,
-                                    category_name: item.category_name,
-                                    sub_category_name: item.sub_category_name,
+                                    category: item.category,
+                                    sub_category: item.sub_category,
                                     product_name: item.product_name
                                 };
                                 Object.assign(newTransferObj, newObj);
@@ -358,15 +359,14 @@ class AssetTransferComponent extends Component {
                             <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
                         </nav>
                         {isLoading ? <Spinner/> : transferTableData.length > 0 ? <>
-                            <ReactDataTable
+                            <PrimeDataTable
                                 remove={this.cancelTransfer}
-                                tableData={transferTableData}
-                                bigTable
+                                data={transferTableData}
                             />
                         </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
                             There are No Transfer Asset</h4>}
                         {transferTableData.length ?
-                            <button className="submit-btn" data-toggle="modal" data-target="#assetTransferModal">Submit</button> : ''}
+                            <button className="submit-btn-normal mt-3" data-toggle="modal" data-target="#assetTransferModal">Submit</button> : ''}
                     </div>
                     <div className="modal fade" id="assetTransferModal" tabIndex="-1" role="dialog"
                          aria-labelledby="assetTransferModal" aria-hidden="true">

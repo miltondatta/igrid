@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken";
 import './RequestHistoryCom.css'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import SuccessModal from "../../utility/success/successModal";
 import ErrorModal from "../../utility/error/errorModal";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RequestHistoryComponent extends Component {
     constructor(props){
@@ -26,6 +26,10 @@ class RequestHistoryComponent extends Component {
     }
 
     componentDidMount() {
+        this.getData()
+    }
+
+    getData = () => {
         let user_data = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         Axios.get(apiUrl() + 'requisition-details', {
             params: user_data
@@ -39,10 +43,11 @@ class RequestHistoryComponent extends Component {
     }
 
     handleComment = (e, ind) => {
+        console.log(e, ind)
         const {value, name} = e.target
         const {reqDetails} = this.state
         let commentedReqDetails = reqDetails.length > 0 && reqDetails.map((item, index) => {
-            if (index === ind) {
+            if (item.id === ind) {
                 item[name] = value
             }
             return item
@@ -62,11 +67,15 @@ class RequestHistoryComponent extends Component {
             .then(res => {
                 if(res.data.length > 0) {
                     this.setState({
-                        detailedData: res.data,
-                        showDetails: true
+                        data: []
                     }, () => {
-                        res.data.forEach(item => {
-                            this.handleChange({target: {value: null}},item.id, 'update_quantity', item.quantity, id )
+                        this.setState({
+                            detailedData: res.data,
+                            showDetails: true
+                        }, () => {
+                            res.data.forEach(item => {
+                                this.handleChange({target: {value: null}},item.id, 'update_quantity', item.quantity, id )
+                            })
                         })
                     })
                 }
@@ -94,6 +103,12 @@ class RequestHistoryComponent extends Component {
             .catch(err => {
                 console.log(err)
             })
+    }
+
+    handleState = (id) => {
+        this.setState({
+            [id]: true
+        })
     }
 
     handleChange = (e, requisition_details_id, type, quantity, requisition_id) => {
@@ -194,44 +209,47 @@ class RequestHistoryComponent extends Component {
                     <nav className="navbar text-center mb-2 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0" >Requisition List</p>
                     </nav>
-                        {data.length > 0 ? <ReactDataTable
-                            details={'reqHistory'}
-                            assetList={this.assetList}
-                            tableData={data}
-                            bigTable
-                            searchable
-                            footer
-                            pagination
-                            dataDisplay
-
-                        /> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                        {data.length > 0 ?
+                            <PrimeDataTable
+                                details={'reqHistory'}
+                                assetList={this.assetList}
+                                data={data}
+                            />
+                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                     </> : <>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
-                            <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
+                            <p onClick={() => {this.setState({showDetails: false, detailedData: []}, () => {this.getData()})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>
                         </nav>
 
-                        <div className={'reactDataTable'}>
-                            <div className={'table'}>
-                                <div className={'thead'}>
-                                    <div className={'d-flex align-items-center'}>
-                                        <p className={'w-60px'}>No</p>
-                                        <p>Category</p>
-                                        <p>Sub Category</p>
-                                        <p>Brand</p>
-                                        <p>Model</p>
-                                        <p>Reasons</p>
-                                        <p>Stock</p>
-                                        <p>Quantity</p>
-                                        <p>Comment</p>
-                                    </div>
-                                    <div className={'d-flex align-items-center'}> </div>
-                                </div>
-                                <div className={'tbody'}>
-                                    {tableData}
-                                </div>
-                            </div>
-                        </div>
-                        <button className="submit-btn-normal" onClick={this.submitApprove}>Approve</button>
+                       {detailedData.length > 0 && <PrimeDataTable
+                            data={detailedData}
+                            handleState={this.handleState}
+                            handleComment={this.handleComment}
+                            handleQuantity={this.handleChange}
+                            state={this.state}
+                        />}
+                        {/*<div className={'reactDataTable'}>*/}
+                        {/*    <div className={'table'}>*/}
+                        {/*        <div className={'thead'}>*/}
+                        {/*            <div className={'d-flex align-items-center'}>*/}
+                        {/*                <p className={'w-60px'}>No</p>*/}
+                        {/*                <p>Category</p>*/}
+                        {/*                <p>Sub Category</p>*/}
+                        {/*                <p>Brand</p>*/}
+                        {/*                <p>Model</p>*/}
+                        {/*                <p>Reasons</p>*/}
+                        {/*                <p>Stock</p>*/}
+                        {/*                <p>Quantity</p>*/}
+                        {/*                <p>Comment</p>*/}
+                        {/*            </div>*/}
+                        {/*            <div className={'d-flex align-items-center'}> </div>*/}
+                        {/*        </div>*/}
+                        {/*        <div className={'tbody'}>*/}
+                        {/*            {tableData}*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        <button className="submit-btn-normal mt-3" onClick={this.submitApprove}>Approve</button>
                     </>}
                 </div>
             </div>
