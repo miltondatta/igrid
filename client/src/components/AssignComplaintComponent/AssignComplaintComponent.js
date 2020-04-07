@@ -3,8 +3,8 @@ import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import moment from "moment";
 
 class AssignComplaintComponent extends Component {
     constructor(props) {
@@ -41,7 +41,8 @@ class AssignComplaintComponent extends Component {
                                 sub_complaint_name: item.sub_complaint_name,
                                 problem_details: item.problem_details,
                                 product: item.product_name ? item.product_name + '-' + item.product_serial : 'N/A',
-                                status_name: item.status_name
+                                status_name: item.status_name,
+                                createdAt: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
                             };
                             complaintsTableData.push(newObj);
                         });

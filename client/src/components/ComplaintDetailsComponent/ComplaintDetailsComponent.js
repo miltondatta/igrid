@@ -5,10 +5,11 @@ import {apiUrl, apiBaseUrl} from "../../utility/constant";
 import moment from "moment";
 import {getFileExtension} from "../../utility/custom";
 import * as jwt from "jsonwebtoken";
-import ReactDataTable from "../../module/data-table-react/ReactDataTable";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import UserRoleOptions from "../../utility/component/userRoleOptions";
+import UserOptionsByRole from "../../utility/component/userOptionsByRole";
 
 moment.locale('en');
 
@@ -19,8 +20,13 @@ class ComplaintDetailsComponent extends Component {
         this.state = {
             complaintFeedBackAllData: [],
             complaintFeedBackTableData: [],
+            complaintForwardAllData: [],
+            complaintForwardTableData: [],
             feedback: '',
             file_name: '',
+            role_id: '',
+            fw_to: '',
+            solution_details: '',
             item: {},
             success: false,
             successMessage: '',
@@ -79,7 +85,13 @@ class ComplaintDetailsComponent extends Component {
                 .then(() => {
                     this.setState({
                         isLoading: false
-                    }, () => this.getComplaintFeedBackData())
+                    }, () => {
+                        const {item} = this.state;
+                        if (item && Object.values(item).length > 0) {
+                            this.getComplaintFeedBackData();
+                            this.getComplaintForwardData();
+                        }
+                    })
                 })
                 .catch(err => {
                     console.log(err.response);
@@ -89,7 +101,6 @@ class ComplaintDetailsComponent extends Component {
 
     getComplaintFeedBackData = () => {
         const {id} = this.state.item;
-        if (!id) return;
 
         this.setState({
             isLoading: true
@@ -109,11 +120,43 @@ class ComplaintDetailsComponent extends Component {
                                 sub_complaint_name: item.sub_complaint_name,
                                 feedback: item.feedback,
                                 feedback_by: item.feedback_by,
-                                file_name: item.file_name
+                                file_name: item.file_name,
+                                createdAt: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
                             };
                             complaintFeedBackTableData.push(newObj);
                         });
                         this.setState({complaintFeedBackTableData});
+                    })
+                })
+                .catch(err => {
+                    console.log(err.response);
+                })
+        })
+    };
+
+    getComplaintForwardData = () => {
+        const {id} = this.state.item;
+
+        this.setState({
+            isLoading: true
+        }, () => {
+            Axios.post(apiUrl() + 'complaint/forward/all/by/credential', {complaint_id: id})
+                .then(res => {
+                    this.setState({
+                        complaintForwardAllData: res.data,
+                        isLoading: false,
+                        complaintForwardTableData: []
+                    }, () => {
+                        const complaintForwardTableData = res.data.length > 0 && res.data.map(item => {
+                            return {
+                                complaint_name: item.complaint_name,
+                                sub_complaint_name: item.sub_complaint_name,
+                                forward_by: item.forward_by,
+                                forward_to: item.forward_to,
+                                createdAt: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
+                            };
+                        });
+                        this.setState({complaintForwardTableData});
                     })
                 })
                 .catch(err => {
@@ -148,8 +191,9 @@ class ComplaintDetailsComponent extends Component {
             })
     };
 
-    handleChange = (e) => {
+    handleChange = (e, formType) => {
         const {name, value, files} = e.target;
+        if (!value) return;
 
         if (name === 'file_name') {
             if (!files.length) return;
@@ -159,60 +203,143 @@ class ComplaintDetailsComponent extends Component {
             this.setState({
                 file_name: files[0],
                 extError: false
-            }, () => this.validate());
+            }, () => this.validate(formType));
         } else {
             this.setState({
                 [name]: value
-            }, () => this.validate());
+            }, () => this.validate(formType));
         }
     };
 
     handleSubmit = formType => {
-        if (Object.values(this.validate()).includes(false)) return;
-        Axios.post(apiUrl() + 'complaint/feedback/store', this.getApiData(formType))
-            .then(res => {
-                const {success, msg} = res.data;
-                this.setState({
-                    complaintFeedBackTableData: [],
-                    feedbackSuccess: success,
-                    feedbackSuccessMessage: msg,
-                    feedbackError: false
-                }, () => {
-                    document.getElementById('validatedCustomFile').value = '';
-                })
-            })
-            .then(() => {
-                this.setState({
-                    feedback: '',
-                    file_name: ''
-                });
-                this.getComplaintFeedBackData();
-            })
-            .catch(err => {
-                const {error, msg} = err.response.data;
-                if (msg) {
+        if (Object.values(this.validate(formType)).includes(false)) return;
+
+        if (formType === 'FEEDBACK') {
+            Axios.post(apiUrl() + 'complaint/feedback/store', this.getApiData(formType))
+                .then(res => {
+                    const {success, msg} = res.data;
                     this.setState({
-                        feedbackError: error,
-                        feedbackErrorMessage: error && msg,
-                        feedbackSuccess: false
+                        complaintFeedBackTableData: [],
+                        feedbackSuccess: success,
+                        feedbackSuccessMessage: msg,
+                        feedbackError: false
+                    }, () => {
+                        document.getElementById('validatedCustomFile').value = '';
                     })
-                }
-                console.log(err.response);
-            })
+                })
+                .then(() => {
+                    this.setState({
+                        feedback: '',
+                        file_name: ''
+                    });
+                    this.getData();
+                })
+                .catch(err => {
+                    const {error, msg} = err.response.data;
+                    if (msg) {
+                        this.setState({
+                            feedbackError: error,
+                            feedbackErrorMessage: error && msg,
+                            feedbackSuccess: false
+                        })
+                    }
+                    console.log(err.response);
+                })
+        } else if (formType === 'FORWARD') {
+            Axios.post(apiUrl() + 'complaint/forward/store', this.getApiData(formType))
+                .then(res => {
+                    const {success, msg} = res.data;
+                    this.setState({
+                        complaintForwardTableData: [],
+                        forwardSuccess: success,
+                        forwardSuccessMessage: msg,
+                        forwardError: false
+                    })
+                })
+                .then(() => {
+                    this.setState({
+                        role_id: '',
+                        fw_to: ''
+                    });
+                    this.getData();
+                })
+                .catch(err => {
+                    const {error, msg} = err.response.data;
+                    if (msg) {
+                        this.setState({
+                            forwardError: error,
+                            forwardErrorMessage: error && msg,
+                            forwardSuccess: false
+                        })
+                    }
+                    console.log(err.response);
+                })
+        } else if (formType === 'CANCEL') {
+            Axios.post(apiUrl() + 'complaint/update', this.getApiData(formType))
+                .then(res => {
+                    const {success, msg} = res.data;
+                    this.setState({
+                        success: success,
+                        successMessage: msg
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false
+                            })
+                        }, 2300);
+                    })
+                })
+                .then(() => {
+                    this.setState({
+                        solution_details: ''
+                    });
+                    this.getData();
+                })
+                .catch(err => {
+                    const {error, msg} = err.response.data;
+                    if (msg) {
+                        this.setState({
+                            error: error,
+                            errorMessage: error && msg
+                        }, () => {
+                            setTimeout(() => {
+                                this.setState({
+                                    error: false
+                                })
+                            }, 2300);
+                        })
+                    }
+                    console.log(err.response);
+                })
+        }
+
     };
 
-    validate = () => {
-        const {feedback} = this.state;
-        let errorDict = {
-            feedback: feedback !== ''
-        };
+    validate = formType => {
+        const {feedback, role_id, fw_to, solution_details} = this.state;
+        let errorDict = {};
+
+        if (formType === 'FEEDBACK') {
+            errorDict = {
+                feedback: feedback !== ''
+            };
+        } else if (formType === 'FORWARD') {
+            errorDict = {
+                role_id: role_id !== '',
+                fw_to: fw_to !== ''
+            };
+        } else if (formType === 'CANCEL') {
+            errorDict = {
+                solution_details: solution_details !== ''
+            };
+        }
 
         this.setState({errorDict});
         return errorDict;
     };
 
     getApiData = formType => {
-        const {feedback, file_name, user, item} = this.state;
+        const {feedback, file_name, user, item, fw_to, solution_details} = this.state;
         let data = '';
 
         if (formType === 'FEEDBACK') {
@@ -221,6 +348,18 @@ class ComplaintDetailsComponent extends Component {
             data.append('feedback', feedback);
             data.append('file', file_name);
             data.append('feedback_by', user.id);
+        } else if (formType === 'FORWARD') {
+            data = {
+                complaint_id: item.id,
+                fw_by: user.id,
+                fw_to
+            }
+        } else if (formType === 'CANCEL') {
+            data = {
+                id: item.id,
+                solution_details: solution_details,
+                solved_by: user.id
+            }
         }
         return data;
     };
@@ -251,7 +390,7 @@ class ComplaintDetailsComponent extends Component {
     render() {
         const {
             complaintFeedBackTableData, item, file_name, feedback, fileUrl, fileError, extError, fileErrorMessage,
-            error, errorMessage, success, successMessage, errorDict
+            error, errorMessage, success, successMessage, errorDict, role_id, fw_to, solution_details
         } = this.state;
         const ext = item && item.file_name && getFileExtension(item.file_name);
         let images = ['jpg', 'jpeg', 'png'];
@@ -360,13 +499,17 @@ class ComplaintDetailsComponent extends Component {
                                 <div className="col-md-2 pl-0">
                                     <ul className={'ul-list-unstyled'}
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                        <button className={'submit-btn-normal bg-success w-100'}>Forward</button>
+                                        <button className={'submit-btn-normal bg-success w-100'} data-toggle={'modal'}
+                                                data-target={'#complaintForward'}>Forward
+                                        </button>
                                     </ul>
                                 </div>
                                 <div className="col-md-2 pl-0">
                                     <ul className={'ul-list-unstyled'}
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
-                                        <button className={'reset-btn-normal w-100'}>Cancel</button>
+                                        <button className={'reset-btn-normal w-100'} data-toggle={'modal'}
+                                                data-target={'#complaintCancel'}>Cancel
+                                        </button>
                                     </ul>
                                 </div>
                             </div>
@@ -460,18 +603,22 @@ class ComplaintDetailsComponent extends Component {
                                         data={complaintFeedBackTableData}
                                         file={this.fileDownload}
                                     />
-                                    : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No FeedBack</h4>}
+                                    : <h4 className={'no-project px-2 mt-3'}><i
+                                        className="icofont-exclamation-circle"></i> Currently There are No FeedBack
+                                    </h4>}
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Your Feedback</p>
                                 </nav>
                                 <div>
-                                    <textarea name="feedback" value={feedback} onChange={this.handleChange}
+                                    <textarea name="feedback" value={feedback}
+                                              onChange={e => this.handleChange(e, 'FEEDBACK')}
                                               placeholder={'Your Feedback'}
-                                              className={`ui-custom-textarea ${errorDict && !errorDict.feedback ? 'is-invalid' : ''}`}
+                                              className={`ui-custom-textarea ${errorDict && (errorDict.feedback === false) && 'is-invalid'}`}
                                               style={{height: '100px'}}/>
                                 </div>
                                 <div className="ui-custom-file">
-                                    <input type="file" onChange={this.handleChange} name={'file_name'}
+                                    <input type="file" onChange={e => this.handleChange(e, 'FEEDBACK')}
+                                           name={'file_name'}
                                            className={`custom-file-input`} id="validatedCustomFile"/>
                                     <label htmlFor="validatedCustomFile"
                                            style={{width: '100%'}}>{file_name ? file_name.name ? file_name.name.substr(0, 20) + '...' : file_name.substr(0, 20) + '...' : 'Choose File'}</label>
@@ -487,6 +634,91 @@ class ComplaintDetailsComponent extends Component {
                                 <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
                                 <button type="button" className="submit-btn-normal"
                                         onClick={() => this.handleSubmit('FEEDBACK')}>Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="modal fade lost-asset-modal" id="complaintForward" tabIndex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Complaint Forward</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                {this.state.forwardSuccess && <div className="alert alert-success" role="alert">
+                                    {this.state.forwardSuccessMessage}
+                                </div>}
+                                {this.state.forwardError && <div className="alert alert-danger" role="alert">
+                                    {this.state.forwardErrorMessage}
+                                </div>}
+                                {this.state.complaintForwardTableData.length > 0 ?
+                                    <PrimeDataTable
+                                        data={this.state.complaintForwardTableData}
+                                    />
+                                    : <h4 className={'no-project px-2 mt-3'}><i
+                                        className="icofont-exclamation-circle"></i> Currently There are No Forward
+                                    </h4>}
+                                <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
+                                    <p className="text-blue f-weight-700 f-20px m-0">Forward To Another User</p>
+                                </nav>
+                                <div className="mb-2">
+                                    <label htmlFor="inputPassword4" className={'ui-custom-label'}>User Role</label>
+                                    <select name={'role_id'} value={role_id}
+                                            onChange={e => this.handleChange(e, 'FORWARD')}
+                                            className={`ui-custom-input ${errorDict && (errorDict.role_id === false) && 'is-invalid'}`}>
+                                        <option value="">Select User Role</option>
+                                        <UserRoleOptions/>
+                                    </select>
+                                </div>
+                                <div className="mb-2">
+                                    <label htmlFor="inputPassword4" className={'ui-custom-label'}>User</label>
+                                    <select name={'fw_to'} value={fw_to} onChange={e => this.handleChange(e, 'FORWARD')}
+                                            className={`ui-custom-input ${errorDict && (errorDict.fw_to === false) && 'is-invalid'}`}>
+                                        <option value="">Select User</option>
+                                        <UserOptionsByRole role_id={role_id}/>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
+                                <button type="button" className="submit-btn-normal"
+                                        onClick={() => this.handleSubmit('FORWARD')}>Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="modal fade lost-asset-modal" id="complaintCancel" tabIndex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Complaint Cancel</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
+                                    <p className="text-blue f-weight-700 f-20px m-0">Solution Details</p>
+                                </nav>
+                                <textarea name="solution_details" value={solution_details}
+                                          onChange={e => this.handleChange(e, 'CANCEL')}
+                                          placeholder={'Solution Details'}
+                                          className={`ui-custom-textarea ${errorDict && (errorDict.solution_details === false) && 'is-invalid'}`}
+                                          style={{height: '150px'}}/>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
+                                <button type="button" className="submit-btn-normal"
+                                        onClick={() => this.handleSubmit('CANCEL')} data-dismiss="modal">Submit
                                 </button>
                             </div>
                         </div>

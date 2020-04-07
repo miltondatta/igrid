@@ -134,7 +134,7 @@ router.post('/store', async (req, res) => {
                                     msg: 'Please try again with full information!',
                                     error: true
                                 });
-                            return res.status(200).json({msg: 'New Complaint saved successfully.', success: true});
+                                return res.status(200).json({msg: 'New Complaint saved successfully.', success: true});
                             }).catch(err => {
                                 console.error(err.message);
                                 return res.status(500).json({msg: err});
@@ -167,8 +167,15 @@ router.get('/details/:id/:user_id', async (req, res) => {
         queryText = 'where complaints.id = ' + id;
 
         const complaint = await Complaint.findOne({where: {id: id, created_by: user_id}});
-        if (complaint) {queryText += ' and complaints.created_by = ' + user_id; join_text = 'left join users on complaints.assign_to = users.id'; is_assign_to = true}
-        else {queryText += ' and complaints.assign_to = ' + user_id; join_text = 'left join users on complaints.created_by = users.id'; is_assign_to = false}
+        if (complaint) {
+            queryText += ' and complaints.created_by = ' + user_id;
+            join_text = 'left join users on complaints.assign_to = users.id';
+            is_assign_to = true
+        } else {
+            queryText += ' and complaints.assign_to = ' + user_id;
+            join_text = 'left join users on complaints.created_by = users.id';
+            is_assign_to = false
+        }
 
         const [data] = await db.query(`select complaints.id,
                                    concat(users."firstName", ' ', users."lastName") as assign_to,
@@ -206,7 +213,10 @@ router.get('/details/:id/:user_id', async (req, res) => {
 router.get("/pdf/:file_name", async (req, res) => {
     try {
         let file_path = 'public/complaints/' + req.params.file_name;
-        if (!fs.existsSync(file_path)) return res.status(400).json({msg: `${req.params.file_name} File didn\'t found!`, error: true});
+        if (!fs.existsSync(file_path)) return res.status(400).json({
+            msg: `${req.params.file_name} File didn\'t found!`,
+            error: true
+        });
 
         let file = fs.createReadStream("public/complaints/" + req.params.file_name);
         return file.pipe(res);
@@ -238,47 +248,22 @@ router.get('/download/:file_name', async (req, res) => {
     @desc           Update Complaint Data
     @access         Private
  */
-/*router.post('/update', async (req, res) => {
+router.post('/update', async (req, res) => {
     try {
-        const {id, role_id, cat_id} = req.body;
-        const updateComplaintMapping = {role_id, cat_id};
+        const {id, solution_details, solved_by} = req.body;
+        const updateComplaint = {solution_details, solved_by, solved_at: new Date(), status: 8}; // status = Solved
 
         const status = await Complaint.findOne({where: {id}});
         if (!status) return res.status(400).json({msg: 'This Complaint didn\'t found!', error: true});
 
-        const complaint_mapping_exist = await Complaint.findAll({where: {role_id, cat_id}});
-        if (complaint_mapping_exist.length > 0) return res.status(400).json({msg: 'This Complaint is already exist!', error: true});
-
-        const complaint = await Complaint.update(updateComplaintMapping, {where: {id}});
+        const complaint = await Complaint.update(updateComplaint, {where: {id}});
         if (!complaint) return res.status(400).json({msg: 'Please try again with full information!', error: true});
 
-        return res.status(200).json({msg: 'Complaint Information updated successfully.', success: true});
+        return res.status(200).json({msg: 'Complaint canceled successfully.', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err});
     }
-});*/
-
-/*
-    @route          POST api/v1/complaint/delete/
-    @desc           Delete Complaint
-    @access         Private
- */
-/*router.delete('/delete', async (req, res) => {
-    try {
-        const {id} = req.body;
-
-        const status = await Complaint.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Complaint didn\'t found!', error: true});
-
-        const complaint = await Complaint.destroy({where: {id}});
-        if (!complaint) return res.status(400).json({msg: 'Please try again!', error: true});
-
-        return res.status(200).json({msg: 'One Complaint deleted successfully!', success: true});
-    } catch (err) {
-        console.error(err.message);
-        return res.status(500).json({msg: err});
-    }
-});*/
+});
 
 module.exports = router;

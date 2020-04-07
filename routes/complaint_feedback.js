@@ -45,7 +45,8 @@ router.post('/all/by/credential', async (req, res) => {
            complaint_feedbacks.file_name,
            "comCategories".complaint_name,
            "comSubCategories".sub_complaint_name,
-           concat(users."firstName", ' ', users."lastName") feedback_by
+           concat(users."firstName", ' ', users."lastName") feedback_by,
+               complaint_feedbacks."createdAt"
         from complaint_feedbacks
         inner join complaints on complaint_feedbacks.complaint_id = complaints.id
         inner join "comCategories" on complaints.complaint_category = "comCategories".id

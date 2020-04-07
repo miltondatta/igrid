@@ -67,10 +67,10 @@ router.post('/store', async (req, res) => {
         if(!status) res.status(400).json({msg: 'Please try again with full information!', error: true});
 
         // status = In Progress
-        const complaint_status_update = Complaint.update({status: 7}, {where: {id: complaint_id}});
+        const complaint_status_update = Complaint.update({assign_to: fw_to, status: 7}, {where: {id: complaint_id}});
         if(!complaint_status_update) res.status(400).json({msg: 'Please try again with full information!', error: true});
 
-        return res.status(200).json({msg: 'New Complaint Forward saved successfully.', success: true});
+        return res.status(200).json({msg: 'Complaint Forwarded successfully.', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err});
