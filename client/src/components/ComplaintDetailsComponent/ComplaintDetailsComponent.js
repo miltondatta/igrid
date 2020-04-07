@@ -274,7 +274,7 @@ class ComplaintDetailsComponent extends Component {
                     }
                     console.log(err.response);
                 })
-        } else if (formType === 'CANCEL') {
+        } else if (formType === 'CLOSE') {
             Axios.post(apiUrl() + 'complaint/update', this.getApiData(formType))
                 .then(res => {
                     const {success, msg} = res.data;
@@ -328,7 +328,7 @@ class ComplaintDetailsComponent extends Component {
                 role_id: role_id !== '',
                 fw_to: fw_to !== ''
             };
-        } else if (formType === 'CANCEL') {
+        } else if (formType === 'CLOSE') {
             errorDict = {
                 solution_details: solution_details !== ''
             };
@@ -354,7 +354,7 @@ class ComplaintDetailsComponent extends Component {
                 fw_by: user.id,
                 fw_to
             }
-        } else if (formType === 'CANCEL') {
+        } else if (formType === 'CLOSE') {
             data = {
                 id: item.id,
                 solution_details: solution_details,
@@ -508,7 +508,7 @@ class ComplaintDetailsComponent extends Component {
                                     <ul className={'ul-list-unstyled'}
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
                                         <button className={'reset-btn-normal w-100'} data-toggle={'modal'}
-                                                data-target={'#complaintCancel'}>Cancel
+                                                data-target={'#complaintClose'}>Close
                                         </button>
                                     </ul>
                                 </div>
@@ -695,12 +695,12 @@ class ComplaintDetailsComponent extends Component {
                     </div>
                 </div>
 
-                <div className="modal fade lost-asset-modal" id="complaintCancel" tabIndex="-1" role="dialog"
+                <div className="modal fade lost-asset-modal" id="complaintClose" tabIndex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Complaint Cancel</h5>
+                                <h5 className="modal-title" id="exampleModalLabel">Complaint Close</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -710,15 +710,15 @@ class ComplaintDetailsComponent extends Component {
                                     <p className="text-blue f-weight-700 f-20px m-0">Solution Details</p>
                                 </nav>
                                 <textarea name="solution_details" value={solution_details}
-                                          onChange={e => this.handleChange(e, 'CANCEL')}
+                                          onChange={e => this.handleChange(e, 'CLOSE')}
                                           placeholder={'Solution Details'}
                                           className={`ui-custom-textarea ${errorDict && (errorDict.solution_details === false) && 'is-invalid'}`}
                                           style={{height: '150px'}}/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
-                                <button type="button" className="submit-btn-normal"
-                                        onClick={() => this.handleSubmit('CANCEL')} data-dismiss="modal">Submit
+                                <button type="button" className="submit-btn-normal" id={'complaintCloseSubmitButton'}
+                                        onClick={() => this.handleSubmit('CLOSE')} data-dismiss={solution_details ? 'modal' : ''}>Submit
                                 </button>
                             </div>
                         </div>
