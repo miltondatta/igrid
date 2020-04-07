@@ -199,7 +199,8 @@ class PrimeDataTable extends Component {
 
     displayData = (rowData, column) => {
         return(
-            <>{(rowData[column.field] === "" || rowData[column.field] === null || rowData[column.field] === " ") ? 'N/A' : rowData[column.field]}</>
+            <>{(rowData[column.field] === "" || rowData[column.field] === null || rowData[column.field] === " ") ? 'N/A' :
+                (rowData[column.field] === false || rowData[column.field] === true) ? ((rowData[column.field] === false || rowData[column.field] === true) ? 'False' :  'True') : rowData[column.field]}</>
         )
     }
 
