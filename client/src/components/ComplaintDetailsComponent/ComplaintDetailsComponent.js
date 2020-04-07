@@ -86,8 +86,11 @@ class ComplaintDetailsComponent extends Component {
                     this.setState({
                         isLoading: false
                     }, () => {
-                        this.getComplaintFeedBackData();
-                        this.getComplaintForwardData();
+                        const {item} = this.state;
+                        if (item && Object.values(item).length > 0) {
+                            this.getComplaintFeedBackData();
+                            this.getComplaintForwardData();
+                        }
                     })
                 })
                 .catch(err => {
@@ -98,7 +101,6 @@ class ComplaintDetailsComponent extends Component {
 
     getComplaintFeedBackData = () => {
         const {id} = this.state.item;
-        if (!id) return;
 
         this.setState({
             isLoading: true
@@ -134,7 +136,6 @@ class ComplaintDetailsComponent extends Component {
 
     getComplaintForwardData = () => {
         const {id} = this.state.item;
-        if (!id) return;
 
         this.setState({
             isLoading: true
