@@ -6,6 +6,8 @@ import moment from "moment";
 import {getFileExtension} from "../../utility/custom";
 import * as jwt from "jsonwebtoken";
 import ReactDataTable from "../../module/data-table-react/ReactDataTable";
+import ErrorModal from "../../utility/error/errorModal";
+import SuccessModal from "../../utility/success/successModal";
 
 moment.locale('en');
 
@@ -105,7 +107,8 @@ class ComplaintDetailsComponent extends Component {
                                 complaint_name: item.complaint_name,
                                 sub_complaint_name: item.sub_complaint_name,
                                 feedback: item.feedback,
-                                feedback_by: item.feedback_by
+                                feedback_by: item.feedback_by,
+                                file_name: item.file_name
                             };
                             complaintFeedBackTableData.push(newObj);
                         });
@@ -169,7 +172,12 @@ class ComplaintDetailsComponent extends Component {
             .then(res => {
                 const {success, msg} = res.data;
                 this.setState({
-                    complaintFeedBackTableData: []
+                    complaintFeedBackTableData: [],
+                    feedbackSuccess: success,
+                    feedbackSuccessMessage: msg,
+                    feedbackError: false
+                }, () => {
+                    document.getElementById('validatedCustomFile').value = '';
                 })
             })
             .then(() => {
@@ -183,14 +191,9 @@ class ComplaintDetailsComponent extends Component {
                 const {error, msg} = err.response.data;
                 if (msg) {
                     this.setState({
-                        error: error,
-                        errorMessage: error && msg
-                    }, () => {
-                        setTimeout(() => {
-                            this.setState({
-                                error: false
-                            })
-                        }, 2300);
+                        feedbackError: error,
+                        feedbackErrorMessage: error && msg,
+                        feedbackSuccess: false
                     })
                 }
                 console.log(err.response);
@@ -221,16 +224,41 @@ class ComplaintDetailsComponent extends Component {
         return data;
     };
 
+    fileDownload = (e, file_name) => {
+        e.preventDefault();
+        Axios.get(apiUrl() + 'complaint/feedback/download/' + file_name)
+            .then(() => {
+                const link = document.createElement('a');
+                link.href = apiUrl() + 'complaint/feedback/download/' + file_name;
+                link.setAttribute('download', file_name);
+                link.click();
+                this.setState({feedbackError: false});
+            })
+            .catch(err => {
+                const {error, msg} = err.response.data;
+                if (msg) {
+                    this.setState({
+                        feedbackError: error,
+                        feedbackErrorMessage: error && msg,
+                        feedbackSuccess: false
+                    })
+                }
+                console.log(err.response);
+            })
+    };
+
     render() {
         const {
             complaintFeedBackTableData, item, file_name, feedback, fileUrl, fileError, extError, fileErrorMessage,
-            error, errorMessage, errorDict
+            error, errorMessage, success, successMessage, errorDict
         } = this.state;
         const ext = item && item.file_name && getFileExtension(item.file_name);
         let images = ['jpg', 'jpeg', 'png'];
 
         return (
             <>
+                {success && <SuccessModal successMessage={successMessage}/>}
+                {error && <ErrorModal errorMessage={errorMessage}/>}
                 {fileError && <div className="alert alert-danger mx-1 mb-2 mt-2" role="alert">{fileErrorMessage}</div>}
                 <div className="ui-document-details-container min-h-86p">
                     <div className="bg-project-blue p-3">
@@ -420,10 +448,15 @@ class ComplaintDetailsComponent extends Component {
                                 </button>
                             </div>
                             <div className="modal-body">
+                                {this.state.feedbackSuccess && <div className="alert alert-success mx-1 mb-2"
+                                                                    role="alert">{this.state.feedbackSuccessMessage}</div>}
+                                {this.state.feedbackError && <div className="alert alert-danger mx-1 mb-2"
+                                                                  role="alert">{this.state.feedbackErrorMessage}</div>}
                                 {complaintFeedBackTableData.length > 0 ?
                                     <div className={'overflow-y-auto h-200px'}>
                                         <ReactDataTable
                                             tableData={complaintFeedBackTableData}
+                                            file={this.fileDownload}
                                         /></div> : <h4 className={'no-project px-2 mt-3'}><i
                                         className="icofont-exclamation-circle"></i> Currently There are No FeedBack
                                     </h4>}
@@ -451,7 +484,8 @@ class ComplaintDetailsComponent extends Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
-                                <button type="button" className="submit-btn-normal" onClick={() => this.handleSubmit('FEEDBACK')}>Submit
+                                <button type="button" className="submit-btn-normal"
+                                        onClick={() => this.handleSubmit('FEEDBACK')}>Submit
                                 </button>
                             </div>
                         </div>

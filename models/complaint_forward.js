@@ -1,12 +1,10 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const complaint_forward = sequelize.define('complaint_forward', {
-    complaint_id: DataTypes.INTEGER,
-    fw_by: DataTypes.INTEGER,
-    fw_to: DataTypes.INTEGER
-  }, {});
-  complaint_forward.associate = function(models) {
-    // associations can be defined here
-  };
-  return complaint_forward;
-};
+const db = require('../config/db');
+const Sequelize = require('sequelize');
+
+const complaint_forward = db.define('complaint_forward', {
+    complaint_id: Sequelize.INTEGER,
+    fw_by: Sequelize.INTEGER,
+    fw_to: Sequelize.INTEGER
+});
+
+module.exports = complaint_forward;

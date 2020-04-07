@@ -4,8 +4,8 @@ const fs = require('fs');
 const dir = './public/complaint_feedbacks';
 const db = require('../config/db');
 const multer = require('multer');
-const Complaint = require('../models/complaints');
 const ComplaintFeedback = require('../models/complaint_feedback');
+const Complaint = require('../models/complaints');
 
 if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
@@ -88,7 +88,15 @@ router.post('/store', async (req, res) => {
 
             ComplaintFeedback.create(newFeedback).then(resCreate => {
                 if (!resCreate) return res.status(400).json({msg: 'Please try again with full information!', error: true});
-                return res.status(200).json({msg: 'New Complaint Feedback saved successfully.', success: true});
+                // status = In Progress
+                Complaint.update({status: 7}, {where: {id: complaint_id}})
+                    .then(resUpdate => {
+                        if(!resUpdate) res.status(400).json({msg: 'Please try again with full information!', error: true});
+                        return res.status(200).json({msg: 'New Complaint Feedback saved successfully.', success: true});
+                    }).catch(err => {
+                    console.error(err.message);
+                    return res.status(500).json({msg: err});
+                });
             }).catch(err => {
                 console.error(err.message);
                 return res.status(500).json({msg: err});
@@ -101,89 +109,20 @@ router.post('/store', async (req, res) => {
 });
 
 /*
-    @route          get api/v1/complaint/feedback/edit/:id
-    @desc           Get Complaint Feedback By ID
+    @route          GET api/v1/complaint/feedback/download/:file_name
+    @desc           Download Complaint Feedback File
     @access         Private
  */
-/*router.get('/edit/:id', async (req, res) => {
+router.get('/download/:file_name', async (req, res) => {
     try {
-        const id = req.params.id;
+        let file_path = 'public/complaint_feedbacks/' + req.params.file_name;
+        if (!fs.existsSync(file_path)) return res.status(400).json({msg: `File didn\'t found!`, error: true});
 
-        const complaint_mapping = await ComplaintFeedback.findOne({include: [{model: UserRole, attributes: ["role_name"]}, {model: ComplaintCategory, attributes: ["complaint_name"]}], where: {id}});
-        if (!complaint_mapping) return res.status(400).json({msg: 'Complaint Feedback didn\'t found!', error: true});
-
-        return res.status(200).json(complaint_mapping);
+        return res.download(file_path);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).json({msg: err});
+        return res.status(500).json({msg: 'Server Error!'});
     }
-});*/
-
-/*
-    @route          POST api/v1/complaint/feedback/update/
-    @desc           Update Complaint Feedback Data
-    @access         Private
- */
-/*router.post('/update', async (req, res) => {
-    try {
-        const {id, role_id, cat_id} = req.body;
-        const updateComplaintMapping = {role_id, cat_id};
-
-        const status = await ComplaintFeedback.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Complaint Feedback didn\'t found!', error: true});
-
-        const complaint_mapping_exist = await ComplaintFeedback.findAll({where: {role_id, cat_id}});
-        if (complaint_mapping_exist.length > 0) return res.status(400).json({msg: 'This Complaint Feedback is already exist!', error: true});
-
-        const complaint_mapping = await ComplaintFeedback.update(updateComplaintMapping, {where: {id}});
-        if (!complaint_mapping) return res.status(400).json({msg: 'Please try again with full information!', error: true});
-
-        return res.status(200).json({msg: 'Complaint Feedback Information updated successfully.', success: true});
-    } catch (err) {
-        console.error(err.message);
-        return res.status(500).json({msg: err});
-    }
-});*/
-
-/*
-    @route          get api/v1/complaint/feedback/by/:role_id
-    @desc           Get Complaint Feedback By Role ID
-    @access         Private
- */
-/*router.get('/by/:role_id', async (req, res) => {
-    try {
-        const role_id = req.params.role_id;
-
-        const complaint_mapping = await ComplaintFeedback.findAll({attributes: [], include: [{model: ComplaintCategory, attributes: ["id", "complaint_name"]}], where: {role_id: role_id}});
-        if (!complaint_mapping) return res.status(400).json({msg: 'Complaint Feedback didn\'t found!', error: true});
-
-        return res.status(200).json(complaint_mapping);
-    } catch (err) {
-        console.error(err.message);
-        return res.status(500).json({msg: err});
-    }
-});*/
-
-/*
-    @route          POST api/v1/complaint/feedback/delete/
-    @desc           Delete Complaint Feedback
-    @access         Private
- */
-/*router.delete('/delete', async (req, res) => {
-    try {
-        const {id} = req.body;
-
-        const status = await ComplaintFeedback.findOne({where: {id}});
-        if (!status) return res.status(400).json({msg: 'This Complaint Feedback didn\'t found!', error: true});
-
-        const complaint_mapping = await ComplaintFeedback.destroy({where: {id}});
-        if (!complaint_mapping) return res.status(400).json({msg: 'Please try again!', error: true});
-
-        return res.status(200).json({msg: 'One Complaint Feedback deleted successfully!', success: true});
-    } catch (err) {
-        console.error(err.message);
-        return res.status(500).json({msg: err});
-    }
-});*/
+});
 
 module.exports = router;
