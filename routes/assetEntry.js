@@ -532,7 +532,7 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
                         from assets
                                  join asset_categories on assets.asset_category = asset_categories.id
                                  join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
-                                 join products on asset_categories.id = products.category_id
+                                 join products on assets.product_id = products.id
                         where assets.assign_to = ${user_id} and assets.asset_category = ${category_id} 
                         and assets.asset_sub_category = ${sub_category_id}`);
 
