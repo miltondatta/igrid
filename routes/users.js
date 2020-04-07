@@ -291,4 +291,18 @@ router.get('/user/:id', (req,res) => {
         .catch(err => {console.log(err); res.status(404).send(err)})
 });
 
+// Get All User By Role Id
+router.get('/user/options/by/:role_id', async (req,res) => {
+    if (!req.params.role_id) return res.status(400).json({msg: 'Role id field is required!', error: true});
+    const [data] = await db.query(`
+        select id, concat(users."firstName", ' ', users."lastName") as user_name
+        from users
+        where users.id in (select user_id
+                           from user_associate_roles
+                           where role_id = ${req.params.role_id})
+    `);
+
+    return res.status(200).json(data);
+});
+
 module.exports = router;
