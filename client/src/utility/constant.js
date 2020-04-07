@@ -446,6 +446,13 @@ export const misCategory = [
         link: '/mis/dashboard'
     },
     {
+        id: 12,
+        name: 'Extended Dashboard',
+        icon: 'fab fa-fort-awesome',
+        subCat: false,
+        link: '/mis/extended-dashboard'
+    },
+    {
         id: 11,
         name: 'Basic Reports',
         icon: 'fas fa-map-marked-alt',
