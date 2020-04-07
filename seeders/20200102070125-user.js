@@ -107,6 +107,32 @@ module.exports = {
           is_verified: false,
           createdAt: new Date(),
           updatedAt: new Date()
+        },
+        {
+          firstName: 'Hardware',
+          lastName: 'Manager',
+          email: 'hw@example.com',
+          phone_number: '01234567891',
+          password: bcrypt.hashSync('123456', 10),
+          pin: '1008',
+          address: 'Dhaka',
+          image: 'default.png',
+          is_verified: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          firstName: 'Software',
+          lastName: 'Manager',
+          email: 'sw@example.com',
+          phone_number: '01234567891',
+          password: bcrypt.hashSync('123456', 10),
+          pin: '1009',
+          address: 'Dhaka',
+          image: 'default.png',
+          is_verified: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
     ], {})
   },
