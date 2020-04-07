@@ -1,7 +1,7 @@
 import './misDashboard.css'
 import Axios from 'axios'
 import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, HorizontalBar, Line, Radar } from 'react-chartjs-2';
 import { apiUrl } from "../../utility/constant";
 
 class MisDashboardComponent extends Component {
@@ -199,7 +199,7 @@ class MisDashboardComponent extends Component {
                         />
                     </div>
                     <div className={'ui-mis-gsection'}>
-                        <Bar
+                        <HorizontalBar
                             data={this.state.gData2}
                             width={100}
                             height={50}
@@ -209,7 +209,7 @@ class MisDashboardComponent extends Component {
                         />
                     </div>
                     <div className={'ui-mis-gsection'}>
-                        <Bar
+                        <Line
                             data={this.state.gData3}
                             width={100}
                             height={50}
@@ -219,7 +219,7 @@ class MisDashboardComponent extends Component {
                         />
                     </div>
                     <div className={'ui-mis-gsection'}>
-                        <Bar
+                        <Radar
                             data={this.state.gData4}
                             width={100}
                             height={50}
