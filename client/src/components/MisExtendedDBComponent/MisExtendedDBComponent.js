@@ -36,7 +36,6 @@ class MisExtendedDbComponent extends Component {
             this.setState({
                 [name]: value,
                 [nam]: value,
-                indicatorOptions: []
             }, () => {
                 this.validate()
                 this.getIndicator()
@@ -77,16 +76,22 @@ class MisExtendedDbComponent extends Component {
     }
 
     validate = () => {
-        const {date_from, date_to, parentID} = this.state
+        const {date_from, date_to, parentID, indicator} = this.state
         let errorDict = {
             date_from: typeof date_from !== 'undefined' && date_from !== '',
             date_to: typeof date_to !== 'undefined' && date_to !== '',
-            parentID: typeof parentID !== 'undefined' && parentID !== 0
+            parentID: typeof parentID !== 'undefined' && parentID !== 0,
+            indicator: typeof indicator !== 'undefined' && indicator.length > 0,
         }
         this.setState({
             errorDict
         })
         return errorDict
+    }
+
+    handleSubmit = () => {
+        if (Object.values(this.validate()).includes(false)) return;
+        const { parentID, date_from, date_to,} = this.state
     }
 
     render() {
@@ -139,9 +144,9 @@ class MisExtendedDbComponent extends Component {
                                             onChange={date => this.setState({date_to: date})}
                                             value={date_to}/>
                             </div>
-                            {indicatorOptions.length > 0 && <div className={'ui-section'}>
+                            <div className={`ui-section ${errorDict && !errorDict.indicator && 'red-select'}`}>
                                 <MultiSelect value={indicator} options={indicatorOptions} placeholder="Choose Indicator" onChange={(e) => this.setState({indicator: e.value})} />
-                            </div>}
+                            </div>
                         </div>
                         <div className="ui-btn-container rounded px-2">
                             <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
