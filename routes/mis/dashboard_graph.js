@@ -42,4 +42,15 @@ route.get('/mis/dashboard/graph/data', async(req, res) => {
     return res.status(200).json(finalResult);
 });
 
+route.get('/mis/extended-dashboard/indicator/:id', async (req, res, next) => {
+    const [data, metaData] = await db.query(`
+        select id, indicator_name from mis_indicatordetails where parent_location_id = ${req.params.id}
+    `)
+    if (data.length > 0) {
+        res.status(200).json({data, status: true})
+    } else {
+        res.status(200).json({message: 'No Data Found'})
+    }
+})
+
 module.exports = route
