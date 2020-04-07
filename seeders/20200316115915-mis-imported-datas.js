@@ -250,7 +250,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4065321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
@@ -490,7 +490,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4055321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
@@ -970,7 +970,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4045321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
@@ -1210,7 +1210,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4035321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
@@ -1450,7 +1450,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4025321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
@@ -1690,7 +1690,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4015321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
@@ -1930,7 +1930,7 @@ module.exports = {
           year: 2020,
           month: '03',
           day: 31,
-          data_value: 4005321,
+          data_value: 4075321,
           createdAt: new Date(),
           updatedAt: new Date()
         },{
