@@ -448,7 +448,7 @@ export const misCategory = [
     {
         id: 12,
         name: 'Extended Dashboard',
-        icon: 'fab fa-fort-awesome',
+        icon: 'fas fa-tachometer-alt',
         subCat: false,
         link: '/mis/extended-dashboard'
     },

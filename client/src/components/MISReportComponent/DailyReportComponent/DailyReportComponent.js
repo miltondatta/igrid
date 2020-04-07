@@ -189,7 +189,7 @@ class DailyReportComponent extends Component {
         return (
             <>
                 {error &&
-                <ErrorModal ops errorMessage={errorMessage}/>
+                    <ErrorModal ops errorMessage={errorMessage}/>
                 }
                 <div className="ui-mis-report">
                     <div className="ui-top-container">
