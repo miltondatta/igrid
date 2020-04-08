@@ -259,7 +259,7 @@ router.post('/update', async (req, res) => {
         const complaint = await Complaint.update(updateComplaint, {where: {id}});
         if (!complaint) return res.status(400).json({msg: 'Please try again with full information!', error: true});
 
-        return res.status(200).json({msg: 'Complaint canceled successfully.', success: true});
+        return res.status(200).json({msg: 'Complaint closed successfully.', success: true});
     } catch (err) {
         console.error(err.message);
         return res.status(500).json({msg: err});
