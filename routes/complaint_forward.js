@@ -24,6 +24,7 @@ router.post('/all/by/credential', async (req, res) => {
             select "comCategories".complaint_name,
                 "comSubCategories".sub_complaint_name,
                 concat(users."firstName", ' ', users."lastName") forward_by,
+                complaint_forwards.fw_by,
                 complaint_forwards."createdAt"
             from complaint_forwards
                      inner join complaints on complaint_forwards.complaint_id = complaints.id
@@ -39,6 +40,7 @@ router.post('/all/by/credential', async (req, res) => {
                 sub_complaint_name: item.sub_complaint_name,
                 forward_by: item.forward_by,
                 forward_to: forward_to_data[index].forward_to,
+                fw_by: item.fw_by,
                 createdAt: item.createdAt
             }
         });

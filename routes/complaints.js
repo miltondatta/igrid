@@ -187,7 +187,8 @@ router.get('/details/:id/:user_id', async (req, res) => {
                                    assets.product_serial,
                                    complaints.file_name,
                                    statuses.status_name,
-                                    complaints."createdAt",
+                                   complaints.status,
+                                   complaints."createdAt",
                                    ${is_assign_to}
                             from complaints
                                      inner join "comCategories" on complaints.complaint_category = "comCategories".id
