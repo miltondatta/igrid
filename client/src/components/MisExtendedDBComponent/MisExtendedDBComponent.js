@@ -6,6 +6,7 @@ import {MultiSelect} from 'primereact/multiselect';
 import moment from "moment";
 import React, {Component} from 'react';
 import DatePicker from 'react-datepicker2';
+import { Bar, HorizontalBar, Line, Radar } from 'react-chartjs-2';
 import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
@@ -22,7 +23,8 @@ class MisExtendedDbComponent extends Component {
             date_to: moment(),
             hierarchies: [],
             indicatorOptions: [],
-            indicator: []
+            indicator: [],
+            graphDatas: []
         }
     }
 
@@ -102,30 +104,34 @@ class MisExtendedDbComponent extends Component {
 
         Axios.post(apiUrl() + 'mis/extended/dashboard/graph/data', requestParams)
             .then(res => {
-                if (res.data.status) {
-                    let gdata = {
-                        labels: res.data.graphLabels,
-                        datasets: [
-                            {
-                                label: res.data.label,
-                                backgroundColor: 'rgba(255,99,0,0.6)',
-                                borderColor: 'rgba(255,99,132,1)',
-                                borderWidth: 1,
-                                hoverBackgroundColor: 'rgba(255,99,0,0.3)',
-                                hoverBorderColor: 'rgba(255,99,132,1)',
-                                data: res.data.graphDatas
-                            }
-                        ]
-                    };
-                    this.setState({
-                        gData2: gdata
+                    let resDatas       = res.data; 
+                    let tempGraphDatas = [];
+
+                    resDatas.forEach(element => {
+                        let gdata = {
+                            labels: element.graphLabels,
+                            datasets: [
+                                {
+                                    label: element.label,
+                                    backgroundColor: 'rgba(255,99,0,0.6)',
+                                    borderColor: 'rgba(255,99,132,1)',
+                                    borderWidth: 1,
+                                    hoverBackgroundColor: 'rgba(255,99,0,0.3)',
+                                    hoverBorderColor: 'rgba(255,99,132,1)',
+                                    data: element.graphDatas
+                                }
+                            ]
+                        };
+                        tempGraphDatas.push(gdata);
                     });
-                }
+                    this.setState({
+                       graphDatas: tempGraphDatas
+                    });
             });
     }
 
     render() {
-        const {hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator} = this.state
+        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator} = this.state
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -143,7 +149,23 @@ class MisExtendedDbComponent extends Component {
             )
         })
 
-        
+        const drawGraph = graphDatas.length > 0 && graphDatas.map(item => {
+            return (
+                <div className={'ui-mis-gsection'}>
+                    <Line
+                        data={item}
+                        width={100}
+                        height={50}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </div>
+            )    
+        }) 
+
+       
+
         return (
             <>
                 {error &&
@@ -184,6 +206,12 @@ class MisExtendedDbComponent extends Component {
                         </div>
                     </div>
                 </div>
+
+
+                <div className={'ui-mis-graph'}> 
+                    { drawGraph }            
+                </div>            
+
             </>
         );
     }
