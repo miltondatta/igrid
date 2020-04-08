@@ -113,7 +113,7 @@
 @media only screen and (max-width: 1720px) {
     .ui-asset-dashboard-body .ui-asset-body-top{
         padding: 30px 20px;
-        grid-template-columns: 22% 78%;
+        grid-template-columns: 24% 76%;
     }
 }
 
@@ -126,7 +126,16 @@
         grid-template-columns: 40% 60%;
     }
     .ui-asset-dashboard-body .ui-asset-body-top{
-        grid-template-columns: 20% 80%;
+        grid-template-columns: 30% 70%;
+    }
+    .ui-asset-dashboard-body .ui-asset-body-bottom{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ui-asset-dashboard-body .ui-asset-body-bottom div:last-child{
+        grid-column: 1/3;
+    }
+    .ui-asset-dashboard-body .ui-asset-body-bottom div{
+        height: 7.5rem
     }
 }
 
@@ -147,16 +156,13 @@
         width: 40px;
     }
     .ui-asset-dashboard-body .ui-asset-body-top{
-        grid-template-columns: 25% 75%;
-    }
-    .ui-asset-dashboard-body .ui-asset-body-bottom{
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 35% 65%;
     }
 }
 
 @media only screen and (max-width: 960px) {
     .ui-asset-dashboard-body .ui-asset-body-top{
-        grid-template-columns: 30% 70%;
+        grid-template-columns: 40% 60%;
     }
 }
 
@@ -173,6 +179,9 @@
     }
     .ui-asset-dashboard-body .ui-asset-body-bottom{
         grid-template-columns: repeat(1, 1fr);
+    }
+    .ui-asset-dashboard-body .ui-asset-body-bottom div:last-child{
+        grid-column: 1;
     }
     .ui-asset-dashboard .ui-asset-dashboard-top {
         grid-template-columns: repeat(2, 1fr);

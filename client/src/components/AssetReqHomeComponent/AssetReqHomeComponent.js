@@ -19,12 +19,13 @@ class AssetReqHomeComponent extends Component {
             closedRequisition: 0,
             pendingRequisition: 0,
             inProgressRequisition: 0,
+            complaintStatus: []
         }
     }
 
     componentDidMount() {
+        this.getComplaintStatus()
         this.getPendingRequisition()
-
     }
 
     getPendingRequisition = () => {
@@ -49,9 +50,44 @@ class AssetReqHomeComponent extends Component {
             })
     }
 
+    getComplaintStatus = () => {
+        const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        Axios.get(apiUrl() + 'complaint/db/complaint-status/' + id)
+            .then(res => {
+                if (res.data.status) {
+                    this.setState({
+                        complaintStatus: res.data.data
+                    })
+                }
+            })
+    }
 
     render() {
-        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets, totalTransfer} = this.state
+        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets, totalTransfer, complaintStatus} = this.state
+        const dispComplaint = complaintStatus.length > 0 ? Object.keys(complaintStatus[0]).map((item, index) => {
+            return(
+                <>
+                    <div key={index}>
+                        <p>{complaintStatus[0][item]}</p>
+                        <p className={'f-capitalize'}>{item.replace('_', ' ')}</p>
+                    </div>
+                </>
+            )
+        }) :
+                <>
+                    <div>
+                        <p>0</p>
+                        <p className={'f-capitalize'}>pending</p>
+                    </div>
+                    <div>
+                        <p>0</p>
+                        <p className={'f-capitalize'}>in progress</p>
+                    </div>
+                    <div>
+                        <p>0</p>
+                        <p className={'f-capitalize'}>solved</p>
+                    </div>
+                </>
         return (
             <div className={'ui-asset-dashboard p-4'}>
                 <div className="ui-asset-dashboard-top">
@@ -159,18 +195,7 @@ class AssetReqHomeComponent extends Component {
                             <p>Complaints</p>
                         </div>
                         <div className={'ui-asset-body-bottom'}>
-                            <div>
-                                <p>{totalTransfer}</p>
-                                <p>Transfer</p>
-                            </div>
-                            <div>
-                                <p>{totaldisposal}</p>
-                                <p>Lost</p>
-                            </div>
-                            <div>
-                                <p>{totallostassets}</p>
-                                <p>Disposal</p>
-                            </div>
+                            {dispComplaint}
                         </div>
                     </div>
                 </div>
