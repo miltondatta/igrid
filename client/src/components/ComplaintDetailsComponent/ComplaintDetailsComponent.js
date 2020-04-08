@@ -55,6 +55,7 @@ class ComplaintDetailsComponent extends Component {
         }, () => {
             Axios.get(apiUrl() + 'complaint/details/' + id + '/' + user.id)
                 .then(res => {
+                    if (res.data.length < 1) {this.props.history.push('/assign-complaint'); window.location.reload()}
                     this.setState({
                         item: res.data[0]
                     }, () => {
@@ -394,7 +395,7 @@ class ComplaintDetailsComponent extends Component {
         } = this.state;
         const ext = item && item.file_name && getFileExtension(item.file_name);
         let images = ['jpg', 'jpeg', 'png'];
-        const forward_check = complaintForwardAllData.length > 0 && complaintForwardAllData.map(item => item.fw_by === user.id);
+        const forward_check = complaintForwardAllData.length > 0 ? complaintForwardAllData.filter(item => item.fw_by === user.id) : [];
 
         return (
             <>
@@ -667,7 +668,7 @@ class ComplaintDetailsComponent extends Component {
                                     : <h4 className={'no-project px-2 mt-3'}><i
                                         className="icofont-exclamation-circle"></i> Currently There are No Forward
                                     </h4>}
-                                {(!forward_check || forward_check.length < 1) &&
+                                {item && item.status !== 8 && forward_check.length < 1 &&
                                 <>
                                     <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                         <p className="text-blue f-weight-700 f-20px m-0">Forward To Another User</p>
@@ -695,7 +696,7 @@ class ComplaintDetailsComponent extends Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
-                                {(!forward_check || forward_check.length < 1) &&
+                                {item && item.status !== 8 && forward_check.length < 1 &&
                                 <button type="button" className="submit-btn-normal"
                                         onClick={() => this.handleSubmit('FORWARD')}>Submit
                                 </button>
