@@ -91,13 +91,41 @@ class MisExtendedDbComponent extends Component {
 
     handleSubmit = () => {
         if (Object.values(this.validate()).includes(false)) return;
-        const { parentID, date_from, date_to,} = this.state
+        const { parentID, date_from, date_to, indicator} = this.state
+
+        let requestParams = {
+            parentID: parentID,
+            date_from: date_from,
+            date_to: date_to,
+            indicator_ids: indicator
+        };
+
+        Axios.post(apiUrl() + 'mis/dashboard/graph/data', requestParams)
+            .then(res => {
+                if (res.data.status) {
+                    let gdata = {
+                        labels: res.data.graphLabels,
+                        datasets: [
+                            {
+                                label: res.data.label,
+                                backgroundColor: 'rgba(255,99,0,0.6)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                borderWidth: 1,
+                                hoverBackgroundColor: 'rgba(255,99,0,0.3)',
+                                hoverBorderColor: 'rgba(255,99,132,1)',
+                                data: res.data.graphDatas
+                            }
+                        ]
+                    };
+                    this.setState({
+                        gData2: gdata
+                    });
+                }
+            });
     }
 
     render() {
         const {hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator} = this.state
-
-        console.log(indicator, 95)
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -115,8 +143,7 @@ class MisExtendedDbComponent extends Component {
             )
         })
 
-        console.log(indicatorOptions)
-
+        
         return (
             <>
                 {error &&
