@@ -62,16 +62,16 @@
     display: grid;
     grid-gap: 10px;
     margin-top: 10px;
-    grid-template-columns: 49.7% 49.8%;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 
 .ui-asset-dashboard-body .ui-asset-body-top{
     display: grid;
-    padding: 32px 32px 25px;
+    padding: 32px 32px 50px;
     background: #dce9f3;
     align-items: center;
-    grid-template-columns: 14% 86%;
+    grid-template-columns: 20% 80%;
 }
 
 .ui-asset-dashboard-body .ui-asset-body-bottom{
@@ -86,7 +86,7 @@
 
 .ui-asset-dashboard-body .ui-asset-body-bottom div{
     width: 100%;
-    height: 15rem;
+    height: 10rem;
     border-radius: 10px;
     background: #ecf7ff;
     margin: auto;
@@ -113,7 +113,7 @@
 @media only screen and (max-width: 1720px) {
     .ui-asset-dashboard-body .ui-asset-body-top{
         padding: 30px 20px;
-        grid-template-columns: 18% 82%;
+        grid-template-columns: 22% 78%;
     }
 }
 
