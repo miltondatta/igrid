@@ -162,9 +162,7 @@ class MisExtendedDbComponent extends Component {
                     />
                 </div>
             )    
-        }) 
-
-       
+        })
 
         return (
             <>
@@ -205,13 +203,10 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
+                    {graphDatas.length > 0 && <div className={'ui-mis-graph'}>
+                        { drawGraph }
+                    </div>}
                 </div>
-
-
-                <div className={'ui-mis-graph'}> 
-                    { drawGraph }            
-                </div>            
-
             </>
         );
     }
