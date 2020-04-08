@@ -267,4 +267,40 @@ router.post('/update', async (req, res) => {
     }
 });
 
+/*
+    @route          POST api/v1/complaint/update/
+    @desc           Update Complaint Data
+    @access         Private
+ */
+router.post('/report/between', async (req, res) => {
+    try {
+        const {date_from, date_to, user_id} = req.body;
+        const [data] = await db.query(`
+            select complaints.complaint_no,
+                   "comCategories".complaint_name,
+                   "comSubCategories".sub_complaint_name,
+                   products.product_name,
+                   assets.product_serial,
+                   statuses.status_name,
+                   complaints.solved_by,
+                   complaints.solved_at,
+                   complaints."createdAt"
+            from complaints
+                     inner join "comCategories" on complaints.complaint_category = "comCategories".id
+                     inner join "comSubCategories" on complaints.complaint_sub_category = "comSubCategories".id
+                     inner join statuses on complaints.status = statuses.id
+                     left join assets on complaints.asset_id = assets.id
+                     left join products on assets.product_id = products.id
+            where complaints."createdAt" >= '${date_from}' and 
+                                complaints."createdAt" <= '${date_to}' 
+            and complaints.created_by = ${user_id}
+        `);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: err});
+    }
+});
+
 module.exports = router;
