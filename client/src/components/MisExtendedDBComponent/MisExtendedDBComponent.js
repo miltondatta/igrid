@@ -100,7 +100,7 @@ class MisExtendedDbComponent extends Component {
             indicator_ids: indicator
         };
 
-        Axios.post(apiUrl() + 'mis/dashboard/graph/data', requestParams)
+        Axios.post(apiUrl() + 'mis/extended/dashboard/graph/data', requestParams)
             .then(res => {
                 if (res.data.status) {
                     let gdata = {
