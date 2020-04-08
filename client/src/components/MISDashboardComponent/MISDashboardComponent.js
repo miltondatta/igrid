@@ -127,7 +127,6 @@ class MisDashboardComponent extends Component {
             })
     }
 
-
     getMisDashboardData = () => {
         Axios.get(apiUrl() + 'mis-dashboard/info')
             .then(res => {

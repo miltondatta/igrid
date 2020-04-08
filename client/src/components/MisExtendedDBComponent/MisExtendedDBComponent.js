@@ -108,16 +108,20 @@ class MisExtendedDbComponent extends Component {
                     let tempGraphDatas = [];
 
                     resDatas.forEach(element => {
+                        let colorHolder = ['rgba(155,48,255,.6)','rgba(255,222,0,.6)','rgba(102,205,170,.6)','rgba(11,152,222,.6)','rgba(204,65,37,.6)','rgba(254,200,255,.6)','rgba(102,102,153,.6)']
+                        let hoverColorHolder = ['rgba(155,48,255,.3)','rgba(255,222,0,.3)','rgba(102,205,170,.3)','rgba(11,152,222,.3)','rgba(204,65,37,.3)','rgba(254,200,255,.3)','rgba(102,102,153,.3)']
+                        let randomCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))]
+                        let randomHover =  hoverColorHolder[Math.floor((Math.random() * hoverColorHolder.length))]
                         let gdata = {
                             labels: element.graphLabels,
                             datasets: [
                                 {
                                     label: element.label,
-                                    backgroundColor: 'rgba(255,99,0,0.6)',
-                                    borderColor: 'rgba(255,99,132,1)',
+                                    backgroundColor: randomCol,
+                                    borderColor: 'black',
                                     borderWidth: 1,
-                                    hoverBackgroundColor: 'rgba(255,99,0,0.3)',
-                                    hoverBorderColor: 'rgba(255,99,132,1)',
+                                    hoverBackgroundColor: randomHover,
+                                    hoverBorderColor: 'black',
                                     data: element.graphDatas
                                 }
                             ]
@@ -149,10 +153,13 @@ class MisExtendedDbComponent extends Component {
             )
         })
 
+        const gHolder = [Bar, HorizontalBar, Radar, Line]
+
         const drawGraph = graphDatas.length > 0 && graphDatas.map(item => {
+            const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
             return (
                 <div className={'ui-mis-gsection'}>
-                    <Line
+                    <RandomGraps
                         data={item}
                         width={100}
                         height={50}
