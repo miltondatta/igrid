@@ -190,6 +190,12 @@ export const sidenav = [
                 name: 'Assign Complaint',
                 link: '/assign-complaint',
                 icon: ""
+            },
+            {
+                id: 4,
+                name: 'Complaint Report',
+                link: '/complaint-report',
+                icon: ""
             }
         ]
     },

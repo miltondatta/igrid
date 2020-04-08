@@ -359,7 +359,7 @@ class ComplaintDetailsComponent extends Component {
             data = {
                 id: item.id,
                 solution_details: solution_details,
-                solved_by: user.id
+                solved_by: user.userName
             }
         }
         return data;

@@ -341,6 +341,10 @@ const AsyncMisExtendedDB = Loadable({
     loader: () => import('../containers/MisExtendedDB.js'),
     loading: Loader,
 });
+const AsyncComplaintReport = Loadable({
+    loader: () => import('../containers/ComplaintReport.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -457,6 +461,7 @@ class MasterRoute extends Component{
                             <Route exact path='/my-complaint-status' component={AsyncMyComplaintStatus}/>
                             <Route exact path='/assign-complaint' component={AsyncAssignComplaint}/>
                             <Route exact path='/complaint/details/:id' component={AsyncComplaintDetails}/>
+                            <Route exact path='/complaint-report' component={AsyncComplaintReport}/>
 
 
                             {/*404 Page*/}
