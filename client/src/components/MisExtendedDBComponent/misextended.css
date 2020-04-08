@@ -16,3 +16,5 @@ body .p-multiselect .p-multiselect-label.p-placeholder{
 body .p-multiselect .p-multiselect-label{
     max-width: 250px;
 }
+
+.red-select .p-multiselect{border: 2px solid red}

@@ -65,6 +65,7 @@ class LocationComponent extends Component {
                 name={item.address}
                 position={{lat: item.location_lat, lng: item.location_long}} />
         ))
+        console.log(bnc)
         return (
             <div className={'ui-location-finder'}>
                 <div className={'ui-map-div'}>
