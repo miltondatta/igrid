@@ -176,7 +176,7 @@ route.get('/requisition-details/status/:id', async (req,res,next) => {
         Left JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
         Left JOIN asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
         Left JOIN statuses ON requisition_approves.status = statuses.id
-        WHERE requisition_masters.id = ${req.params.id} AND requisition_details.requisition_id = ${req.params.id}  AND  requisition_approves.requisition_id = ${req.params.id}  ORDER BY requisition_approves.id;
+        WHERE requisition_masters.id = ${req.params.id} AND requisition_details.requisition_id = ${req.params.id}  ORDER BY requisition_approves.id;
     `)
     if (data.length > 0) {
         res.status(200).json(data)

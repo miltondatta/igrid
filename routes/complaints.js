@@ -206,6 +206,32 @@ router.get('/details/:id/:user_id', async (req, res) => {
     }
 });
 
+
+router.get('/db/complaint-status/:user_id', async (req, res) => {
+    try {
+        const [data, metaData] = await db.query(`select distinct
+                    (Select COUNT(complaints.id) as pending from complaints
+                                                                     JOIN statuses on complaints.status = statuses.id
+                     where complaints.status = 6 and created_by = ${req.params.user_id}),
+                    (Select COUNT(complaints.id) as in_progress from complaints
+                                                                         JOIN statuses on complaints.status = statuses.id
+                     where complaints.status = 7 and created_by = ${req.params.user_id}),
+                    (Select COUNT(complaints.id) as solved from complaints
+                                                                    JOIN statuses on complaints.status = statuses.id
+                     where complaints.status = 8 and created_by = ${req.params.user_id})
+                    from complaints`);
+
+        if (data.length > 0) {
+            return res.status(200).json({data, status: true});
+        } else {
+            return res.status(200).json({message: 'No Data Found'});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({msg: err});
+    }
+});
+
 /*
     @route          GET api/v1/complaint/pdf/:file_name
     @desc           Serve Pdf file as Blob Data

@@ -6,6 +6,7 @@ import {MultiSelect} from 'primereact/multiselect';
 import moment from "moment";
 import React, {Component} from 'react';
 import DatePicker from 'react-datepicker2';
+import { Bar, HorizontalBar, Line, Radar } from 'react-chartjs-2';
 import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
@@ -22,7 +23,8 @@ class MisExtendedDbComponent extends Component {
             date_to: moment(),
             hierarchies: [],
             indicatorOptions: [],
-            indicator: []
+            indicator: [],
+            graphDatas: []
         }
     }
 
@@ -91,13 +93,45 @@ class MisExtendedDbComponent extends Component {
 
     handleSubmit = () => {
         if (Object.values(this.validate()).includes(false)) return;
-        const { parentID, date_from, date_to,} = this.state
+        const { parentID, date_from, date_to, indicator} = this.state
+
+        let requestParams = {
+            parentID: parentID,
+            date_from: date_from,
+            date_to: date_to,
+            indicator_ids: indicator
+        };
+
+        Axios.post(apiUrl() + 'mis/extended/dashboard/graph/data', requestParams)
+            .then(res => {
+                    let resDatas       = res.data; 
+                    let tempGraphDatas = [];
+
+                    resDatas.forEach(element => {
+                        let gdata = {
+                            labels: element.graphLabels,
+                            datasets: [
+                                {
+                                    label: element.label,
+                                    backgroundColor: 'rgba(255,99,0,0.6)',
+                                    borderColor: 'rgba(255,99,132,1)',
+                                    borderWidth: 1,
+                                    hoverBackgroundColor: 'rgba(255,99,0,0.3)',
+                                    hoverBorderColor: 'rgba(255,99,132,1)',
+                                    data: element.graphDatas
+                                }
+                            ]
+                        };
+                        tempGraphDatas.push(gdata);
+                    });
+                    this.setState({
+                       graphDatas: tempGraphDatas
+                    });
+            });
     }
 
     render() {
-        const {hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator} = this.state
-
-        console.log(indicator, 95)
+        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator} = this.state
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -115,7 +149,20 @@ class MisExtendedDbComponent extends Component {
             )
         })
 
-        console.log(indicatorOptions)
+        const drawGraph = graphDatas.length > 0 && graphDatas.map(item => {
+            return (
+                <div className={'ui-mis-gsection'}>
+                    <Line
+                        data={item}
+                        width={100}
+                        height={50}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </div>
+            )    
+        })
 
         return (
             <>
@@ -156,6 +203,9 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
+                    {graphDatas.length > 0 && <div className={'ui-mis-graph'}>
+                        { drawGraph }
+                    </div>}
                 </div>
             </>
         );

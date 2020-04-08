@@ -18,3 +18,32 @@ body .p-multiselect .p-multiselect-label{
 }
 
 .red-select .p-multiselect{border: 2px solid red}
+
+
+.ui-mis-graph{
+    display: grid;
+    grid-template-columns: repeat(4, 24.5%);
+    height: max-content;
+    grid-gap: 10px;
+    background: white;
+    margin: 10px;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.ui-mis-graph .ui-mis-gsection{
+    width: 100%;
+    height: 455px;
+}
+
+@media only screen and (max-width: 1380px) {
+    .ui-mis-graph .ui-mis-gsection{
+        height: 320px;
+    }
+}
+
+@media only screen and (max-width: 1180px) {
+    .ui-mis-graph .ui-mis-gsection{
+        height: 300px;
+    }
+}
