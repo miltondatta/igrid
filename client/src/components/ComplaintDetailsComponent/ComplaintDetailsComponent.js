@@ -121,7 +121,7 @@ class ComplaintDetailsComponent extends Component {
                                 feedback: item.feedback,
                                 feedback_by: item.feedback_by,
                                 file_name: item.file_name,
-                                createdAt: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
+                                feedback_at: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
                             };
                             complaintFeedBackTableData.push(newObj);
                         });
@@ -153,7 +153,7 @@ class ComplaintDetailsComponent extends Component {
                                 sub_complaint_name: item.sub_complaint_name,
                                 forward_by: item.forward_by,
                                 forward_to: item.forward_to,
-                                createdAt: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
+                                forwarded_at: moment(item.createdAt).format('YYYY-MM-DD h:mm:ss a')
                             };
                         });
                         this.setState({complaintForwardTableData});
@@ -390,10 +390,11 @@ class ComplaintDetailsComponent extends Component {
     render() {
         const {
             complaintFeedBackTableData, item, file_name, feedback, fileUrl, fileError, extError, fileErrorMessage,
-            error, errorMessage, success, successMessage, errorDict, role_id, fw_to, solution_details
+            error, errorMessage, success, successMessage, errorDict, role_id, fw_to, solution_details, complaintForwardAllData, user
         } = this.state;
         const ext = item && item.file_name && getFileExtension(item.file_name);
         let images = ['jpg', 'jpeg', 'png'];
+        const forward_check = complaintForwardAllData.length > 0 && complaintForwardAllData.map(item => item.fw_by === user.id);
 
         return (
             <>
@@ -504,6 +505,7 @@ class ComplaintDetailsComponent extends Component {
                                         </button>
                                     </ul>
                                 </div>
+                                {item && item.status !== 8 &&
                                 <div className="col-md-2 pl-0">
                                     <ul className={'ul-list-unstyled'}
                                         style={{fontWeight: 600, fontSize: 18, lineHeight: 1.8}}>
@@ -512,6 +514,7 @@ class ComplaintDetailsComponent extends Component {
                                         </button>
                                     </ul>
                                 </div>
+                                }
                             </div>
                             {item && item.file_name &&
                             <div className="row">
@@ -664,37 +667,45 @@ class ComplaintDetailsComponent extends Component {
                                     : <h4 className={'no-project px-2 mt-3'}><i
                                         className="icofont-exclamation-circle"></i> Currently There are No Forward
                                     </h4>}
-                                <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
-                                    <p className="text-blue f-weight-700 f-20px m-0">Forward To Another User</p>
-                                </nav>
-                                <div className="mb-2">
-                                    <label htmlFor="inputPassword4" className={'ui-custom-label'}>User Role</label>
-                                    <select name={'role_id'} value={role_id}
-                                            onChange={e => this.handleChange(e, 'FORWARD')}
-                                            className={`ui-custom-input ${errorDict && (errorDict.role_id === false) && 'is-invalid'}`}>
-                                        <option value="">Select User Role</option>
-                                        <UserRoleOptions/>
-                                    </select>
-                                </div>
-                                <div className="mb-2">
-                                    <label htmlFor="inputPassword4" className={'ui-custom-label'}>User</label>
-                                    <select name={'fw_to'} value={fw_to} onChange={e => this.handleChange(e, 'FORWARD')}
-                                            className={`ui-custom-input ${errorDict && (errorDict.fw_to === false) && 'is-invalid'}`}>
-                                        <option value="">Select User</option>
-                                        <UserOptionsByRole role_id={role_id}/>
-                                    </select>
-                                </div>
+                                {(!forward_check || forward_check.length < 1) &&
+                                <>
+                                    <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
+                                        <p className="text-blue f-weight-700 f-20px m-0">Forward To Another User</p>
+                                    </nav>
+                                    <div className="mb-2">
+                                        <label htmlFor="inputPassword4" className={'ui-custom-label'}>User Role</label>
+                                        <select name={'role_id'} value={role_id}
+                                                onChange={e => this.handleChange(e, 'FORWARD')}
+                                                className={`ui-custom-input ${errorDict && (errorDict.role_id === false) && 'is-invalid'}`}>
+                                            <option value="">Select User Role</option>
+                                            <UserRoleOptions/>
+                                        </select>
+                                    </div>
+                                    <div className="mb-2">
+                                        <label htmlFor="inputPassword4" className={'ui-custom-label'}>User</label>
+                                        <select name={'fw_to'} value={fw_to}
+                                                onChange={e => this.handleChange(e, 'FORWARD')}
+                                                className={`ui-custom-input ${errorDict && (errorDict.fw_to === false) && 'is-invalid'}`}>
+                                            <option value="">Select User</option>
+                                            <UserOptionsByRole role_id={role_id}/>
+                                        </select>
+                                    </div>
+                                </>
+                                }
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
+                                {(!forward_check || forward_check.length < 1) &&
                                 <button type="button" className="submit-btn-normal"
                                         onClick={() => this.handleSubmit('FORWARD')}>Submit
                                 </button>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
 
+                {item && item.status !== 8 &&
                 <div className="modal fade lost-asset-modal" id="complaintClose" tabIndex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
@@ -718,12 +729,14 @@ class ComplaintDetailsComponent extends Component {
                             <div className="modal-footer">
                                 <button type="button" className="reset-btn-normal" data-dismiss="modal">Close</button>
                                 <button type="button" className="submit-btn-normal" id={'complaintCloseSubmitButton'}
-                                        onClick={() => this.handleSubmit('CLOSE')} data-dismiss={solution_details ? 'modal' : ''}>Submit
+                                        onClick={() => this.handleSubmit('CLOSE')}
+                                        data-dismiss={solution_details ? 'modal' : ''}>Submit
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
+                }
             </>
         );
     }
