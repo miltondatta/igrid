@@ -170,7 +170,7 @@ class AssetReqHomeComponent extends Component {
                             </div>
                             <p>Asset</p>
                         </div>
-                        <div className={'ui-asset-body-bottom'}>
+                        <div className={'ui-asset-body-bottom ui-assets'}>
                             <div>
                                 <p>{totalTransfer}</p>
                                 <p>Transfer</p>
@@ -188,8 +188,8 @@ class AssetReqHomeComponent extends Component {
                     <div className={'ui-body'}>
                         <div className={'ui-asset-body-top'}>
                             <div>
-                                <div className="ui-icon-container-2">
-                                    <i className="fab fa-laravel"></i>
+                                <div className="ui-icon-container-3">
+                                    <i className="fas fa-flag-checkered"></i>
                                 </div>
                             </div>
                             <p>Complaints</p>

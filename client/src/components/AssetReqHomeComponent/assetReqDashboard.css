@@ -33,6 +33,7 @@
 
 .ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-1,
 .ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-2,
+.ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-3,
     .ui-asset-dashboard .ui-asset-dashboard-top .ui-img-container{
         width: 90px;
         height: 90px;
@@ -53,6 +54,7 @@
 
 .ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-1{background: #df7a33; display: flex; justify-content: center;  color: white; font-size: 3rem}
 .ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-2{background: #6533df; display: flex; justify-content: center; color: white; font-size: 3rem}
+.ui-asset-dashboard-body .ui-asset-body-top .ui-icon-container-3{background: #df3333; display: flex; justify-content: center; color: white; font-size: 3rem}
 
 .ui-asset-dashboard .ui-asset-dashboard-top .ui-top-section .ui-img-container img{
     width: 50px;
@@ -102,7 +104,8 @@
     transform: translateY(-1.5px);
 }
 .ui-asset-dashboard-body .ui-asset-body-bottom div p:last-child{font-size: 1.1rem}
-.ui-asset-dashboard-body div:last-child div:last-child div p:first-child{color: #6533df}
+.ui-asset-dashboard-body .ui-assets div p:first-child{color: #6533df !important;}
+.ui-asset-dashboard-body div:last-child div:last-child div p:first-child{color: #df3333}
 .ui-asset-dashboard-body .ui-asset-body-bottom div p:first-child{font-size: 3.5rem; font-weight: 700; color: #df7a33}
 
 
