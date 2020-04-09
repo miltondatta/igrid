@@ -4,9 +4,10 @@ import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './misextended.css'
-import { WidthProvider, Responsive } from "react-grid-layout";
+import GridLayout, { WidthProvider, Responsive } from "react-grid-layout";
 import {MultiSelect} from 'primereact/multiselect';
 import moment from "moment";
+import {Dropdown} from 'primereact/dropdown';
 import React, {Component} from 'react';
 import DatePicker from 'react-datepicker2';
 import { Bar, HorizontalBar, Line, Radar } from 'react-chartjs-2';
@@ -24,6 +25,8 @@ class MisExtendedDbComponent extends Component {
         super(props);
         this.state = {
             parentID: 0,
+            selectedGraps: '',
+            selectGrapsInd: '',
             error: false,
             date_from: moment(),
             date_to: moment(),
@@ -140,8 +143,15 @@ class MisExtendedDbComponent extends Component {
             });
     }
 
+    removeGraph = (ind) => {
+        const graphDatasCstom = this.state.graphDatas
+        this.setState({
+            graphDatas: graphDatasCstom.filter((item, index) => index !== ind)
+        })
+    }
+
     render() {
-        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator} = this.state
+        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator, selectedGraps, selectGrapsInd} = this.state
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -159,33 +169,57 @@ class MisExtendedDbComponent extends Component {
             )
         })
 
+
+        const layout = [];
+        let incX = 0
+        let incY = 0
+        graphDatas.length > 0 && graphDatas.forEach((item, index) => {
+            if (incX <= 12) {
+                layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: 3})
+                incX += 3
+            } else {
+                incX = 0
+            }
+        })
+
+
+
         const gHolder = [Bar, HorizontalBar, Radar, Line]
 
-        const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
-            const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
-            return (
-                <div className={'ui-mis-gsection'} key={index}>
-                    <RandomGraps
-                        data={item}
-                        width={100}
-                        height={50}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
-                </div>
-            )    
-        })
-
-        const layout = [
-            {i: 'a', x: 0, y: 0, w: 1, h: 2, static: true},
-            {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
-            {i: 'c', x: 4, y: 0, w: 1, h: 2}
+        const chartTypes = [
+            {name: 'Bar', code: Bar},
+            {name: 'HorizontalBar', code: HorizontalBar},
+            {name: 'Radar', code: Radar},
+            {name: 'Line', code: Line}
         ];
 
-        graphDatas.length > 0 && graphDatas.forEach((item, index) => {
-            layout.push({i: index, x: 0, y: 0, w: 4, h: 2})
+        const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
+            const RandomGraps = (selectedGraps !== '' && selectGrapsInd === index) ? selectedGraps.code : gHolder[Math.floor((Math.random() * gHolder.length))]
+            console.log(RandomGraps)
+            return (
+                <div className={'ui-mis-gsection'} key={index.toString()}>
+                    <div className={'ui-graph-container'}>
+                        <div className={'ui-top'}>
+                            <h5 className={'p-2'}>{item.datasets[0].label}</h5>
+                            <Dropdown optionLabel="name" value={selectedGraps} options={chartTypes} onChange={(e) => {this.setState({selectedGraps: e.value, selectGrapsInd: index})}} placeholder="Graphs"/>
+                            <i onClick={() => {this.removeGraph(index)}} className="icofont-brand-nexus"></i>
+                        </div>
+                        <div className={'ui-graph-holder'}>
+                            <RandomGraps
+                                data={item}
+                                width={100}
+                                height={50}
+                                options={{
+                                    maintainAspectRatio: false
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )
         })
+
+
         return (
             <>
                 {error &&
@@ -225,21 +259,9 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
-
-                    {graphDatas.length > 0 && <div className={'ui-mis-graph'}>
-                        { drawGraph }
-                    </div>}
-                    {/*<div className={'p-2'}>*/}
-                    {/*    <ResponsiveReactGridLayout>*/}
-                    {/*        <div style={{backgroundColor: 'red'}} key="a">a</div>*/}
-                    {/*        <div style={{backgroundColor: 'red'}} key="b">b</div>*/}
-                    {/*        <div style={{backgroundColor: 'red'}} key="c">c</div>*/}
-
-                    {/*        <div style={{backgroundColor: 'red'}} key="d">a</div>*/}
-                    {/*        <div style={{backgroundColor: 'red'}} key="e">b</div>*/}
-                    {/*        <div style={{backgroundColor: 'red'}} key="f">c</div>*/}
-                    {/*    </ResponsiveReactGridLayout>*/}
-                    {/*</div>*/}
+                        {drawGraph && <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={window.innerWidth}>
+                            {drawGraph}
+                        </GridLayout>}
                 </div>
             </>
         );
