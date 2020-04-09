@@ -1,0 +1,44 @@
+'use strict';
+
+module.exports = {
+    up : (queryInterface, Sequelize) => {
+        return queryInterface.bulkInsert('complaints', [
+            {
+                "complaint_no"           : "c-1001",
+                "created_by"             : 7,
+                "location_id"            : 5,
+                "role_id"                : 6,
+                "complaint_category"     : 1,
+                "complaint_sub_category" : 2,
+                "problem_details"        : "Our two-ton ac is not working.",
+                "asset_id"               : 17,
+                "file_name"              : "1586425498140-ReferenceCard.pdf",
+                "assign_to"              : 9,
+                "status"                 : 8,
+                "solution_details"       : "solved.",
+                "solved_by"              : "Hardware Manager",
+                "solved_at"              : "2010-04-09 17:42:01.461000 +00:00"
+            },
+            {
+                "complaint_no"           : "c-1002",
+                "created_by"             : 7,
+                "location_id"            : 5,
+                "role_id"                : 6,
+                "complaint_category"     : 1,
+                "complaint_sub_category" : 1,
+                "problem_details"        : "Need to color",
+                "asset_id"               : 11,
+                "file_name"              : "1586427872884-ReferenceCard.pdf",
+                "assign_to"              : 10,
+                "status"                 : 7,
+                "solution_details"       : null,
+                "solved_by"              : null,
+                "solved_at"              : null
+            }
+        ], {});
+    },
+    
+    down : (queryInterface, Sequelize) => {
+        return queryInterface.bulkDelete('challans', null, {});
+    }
+};
