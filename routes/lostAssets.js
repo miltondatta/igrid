@@ -135,7 +135,7 @@ route.post('/lost-assets/entry', (req, res, next) => {
                         police_station,
                         gd_no,
                         gd_date,
-                        gd_other_file: req.file.filename ? req.file.filename : null
+                        gd_other_file: req.file ? req.file.filename : null
                     };
 
                     LostAsset.create(newLostAsset)
@@ -143,7 +143,7 @@ route.post('/lost-assets/entry', (req, res, next) => {
                             res.status(200).json({message: 'Data Saved Successfully', status: true});
                         })
                         .catch(err => {
-                            console.log(err);
+                            console.log(err, 146);
                             res.status(200).json({message: 'Something went wrong', err});
                         })
                 } else {
@@ -151,7 +151,7 @@ route.post('/lost-assets/entry', (req, res, next) => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                console.log(err, 154);
                 res.status(200).json({message: 'Something went wrong', err})
             });
     })

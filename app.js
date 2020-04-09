@@ -51,6 +51,7 @@ const DocumentSubCategory = require('./routes/document/document_sub_category');
 const ComplaintMapping = require('./routes/complaint_mapping');
 const ComplaintFeedback = require('./routes/complaint_feedback');
 const ComplaintForward = require('./routes/complaint_forward');
+const AssetLifeCycle   = require('./routes/asset_life_cycle');
 
 
 // Database Connection
@@ -127,8 +128,8 @@ app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1/asset-repair', AssetRepair);
 app.use('/api/v1/complaint', ComplaintRouter);
 app.use('/api/v1/complaint/mapping', ComplaintMapping);
-app.use('/api/v1/complaint/feedback', ComplaintFeedback);
+app.use('/api/v1/complaint/feedback', ComplaintFeedback); 
 app.use('/api/v1/complaint/forward', ComplaintForward);
-
+app.use('/api/v1/', AssetLifeCycle);
 
 module.exports = app;
