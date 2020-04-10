@@ -121,7 +121,11 @@ class MisExtendedDbComponent extends Component {
                         let hoverColorHolder = ['rgba(155,48,255,.3)','rgba(255,222,0,.3)','rgba(102,205,170,.3)','rgba(11,152,222,.3)','rgba(204,65,37,.3)','rgba(254,200,255,.3)','rgba(102,102,153,.3)']
                         let randomCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))]
                         let randomHover =  hoverColorHolder[Math.floor((Math.random() * hoverColorHolder.length))]
+
+                        const gHolder = [Bar, HorizontalBar, Radar, Line]
+                        const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
                         let gdata = {
+                            chart: RandomGraps,
                             labels: element.graphLabels,
                             datasets: [
                                 {
@@ -174,17 +178,15 @@ class MisExtendedDbComponent extends Component {
         let incX = 0
         let incY = 0
         graphDatas.length > 0 && graphDatas.forEach((item, index) => {
-            if (incX <= 12) {
-                layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: 3})
+            layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: window.innerWidth < 1300 ? 2.5 : 3})
+            if (incX <= 6) {
                 incX += 3
             } else {
                 incX = 0
             }
         })
 
-
-
-        const gHolder = [Bar, HorizontalBar, Radar, Line]
+        console.log(this.state, 190)
 
         const chartTypes = [
             {name: 'Bar', code: Bar},
@@ -194,18 +196,17 @@ class MisExtendedDbComponent extends Component {
         ];
 
         const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
-            const RandomGraps = (selectedGraps !== '' && selectGrapsInd === index) ? selectedGraps.code : gHolder[Math.floor((Math.random() * gHolder.length))]
-            console.log(RandomGraps)
+            const RandomG =  this.state[index] ? this.state[index].code : item.chart
             return (
                 <div className={'ui-mis-gsection'} key={index.toString()}>
                     <div className={'ui-graph-container'}>
                         <div className={'ui-top'}>
                             <h5 className={'p-2'}>{item.datasets[0].label}</h5>
-                            <Dropdown optionLabel="name" value={selectedGraps} options={chartTypes} onChange={(e) => {this.setState({selectedGraps: e.value, selectGrapsInd: index})}} placeholder="Graphs"/>
+                            <div className={'ui-dropdown'}><Dropdown optionLabel="name" value={this.state[index]} options={chartTypes} onChange={(e) => {this.setState({[index]: e.value, selectGrapsInd: index})}} placeholder="Graphs"/></div>
                             <i onClick={() => {this.removeGraph(index)}} className="icofont-brand-nexus"></i>
                         </div>
                         <div className={'ui-graph-holder'}>
-                            <RandomGraps
+                            <RandomG
                                 data={item}
                                 width={100}
                                 height={50}
@@ -218,7 +219,6 @@ class MisExtendedDbComponent extends Component {
                 </div>
             )
         })
-
 
         return (
             <>
@@ -259,7 +259,7 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
-                        {drawGraph && <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={window.innerWidth}>
+                        {graphDatas.length > 0 && <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={window.innerWidth}>
                             {drawGraph}
                         </GridLayout>}
                 </div>
