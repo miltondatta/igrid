@@ -16,7 +16,6 @@ import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 
-
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class MisExtendedDbComponent extends Component {
@@ -28,12 +27,15 @@ class MisExtendedDbComponent extends Component {
             selectedGraps: '',
             selectGrapsInd: '',
             error: false,
+            hideSideBar: false,
             date_from: moment(),
             date_to: moment(),
             hierarchies: [],
             indicatorOptions: [],
             indicator: [],
-            graphDatas: []
+            graphDatas: [],
+            hideGraph: [],
+            listIndicatorHolder: [],
         }
     }
 
@@ -116,6 +118,12 @@ class MisExtendedDbComponent extends Component {
                     let resDatas       = res.data; 
                     let tempGraphDatas = [];
 
+                    if (resDatas.length > 0) {
+                        this.setState({
+                            listIndicatorHolder: indicator
+                        })
+                    }
+
                     resDatas.forEach(element => {
                         let colorHolder = ['rgba(155,48,255,.6)','rgba(255,222,0,.6)','rgba(102,205,170,.6)','rgba(11,152,222,.6)','rgba(204,65,37,.6)','rgba(254,200,255,.6)','rgba(102,102,153,.6)']
                         let hoverColorHolder = ['rgba(155,48,255,.3)','rgba(255,222,0,.3)','rgba(102,205,170,.3)','rgba(11,152,222,.3)','rgba(204,65,37,.3)','rgba(254,200,255,.3)','rgba(102,102,153,.3)']
@@ -126,6 +134,7 @@ class MisExtendedDbComponent extends Component {
                         const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
                         let gdata = {
                             chart: RandomGraps,
+                            borderBottom: randomCol,
                             labels: element.graphLabels,
                             datasets: [
                                 {
@@ -148,14 +157,27 @@ class MisExtendedDbComponent extends Component {
     }
 
     removeGraph = (ind) => {
-        const graphDatasCstom = this.state.graphDatas
+        if (this.state.hideGraph.includes(ind)){
+            let hg = this.state.hideGraph.filter(item => item !== ind)
+            console.log(hg, 155)
+            this.setState({
+                hideGraph: hg
+            })
+        } else {
+            this.setState({
+                hideGraph: [...this.state.hideGraph, ind]
+            })
+        }
+    }
+
+    hideSidebar = () => {
         this.setState({
-            graphDatas: graphDatasCstom.filter((item, index) => index !== ind)
+            hideSideBar: !this.state.hideSideBar
         })
     }
 
     render() {
-        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator, selectedGraps, selectGrapsInd} = this.state
+        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator, hideGraph, listIndicatorHolder, hideSideBar} = this.state
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -173,20 +195,18 @@ class MisExtendedDbComponent extends Component {
             )
         })
 
-
         const layout = [];
         let incX = 0
         let incY = 0
+
         graphDatas.length > 0 && graphDatas.forEach((item, index) => {
-            layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: window.innerWidth < 1300 ? 2.5 : 3})
+            layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: window.innerWidth <= 1440 ? 2 : 3})
             if (incX <= 6) {
                 incX += 3
             } else {
                 incX = 0
             }
         })
-
-        console.log(this.state, 190)
 
         const chartTypes = [
             {name: 'Bar', code: Bar},
@@ -198,7 +218,7 @@ class MisExtendedDbComponent extends Component {
         const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
             const RandomG =  this.state[index] ? this.state[index].code : item.chart
             return (
-                <div className={'ui-mis-gsection'} key={index.toString()}>
+                <div className={'ui-mis-gsection'} key={index.toString()} style={{borderBottom: `3px solid ${item.borderBottom}`, display: hideGraph.includes(index) ? 'none' : 'block'}}>
                     <div className={'ui-graph-container'}>
                         <div className={'ui-top'}>
                             <h5 className={'p-2'}>{item.datasets[0].label}</h5>
@@ -218,6 +238,21 @@ class MisExtendedDbComponent extends Component {
                     </div>
                 </div>
             )
+        })
+
+        const listIndicator = indicatorOptions.length > 0 && indicatorOptions.map((item, index) => {
+            if (listIndicatorHolder.includes(item.value)) {
+                return(
+                    <div key={index} style={{display: hideSideBar && 'block', textAlign: hideSideBar && 'center'}}>
+                        <p style={{display: hideSideBar ? 'none' : 'block'}}>{item.label}</p>
+                        {hideGraph.includes(index) ?
+                            <i onClick={() => {this.removeGraph(index)}} style={{color: '#ccc'}} className="fas fa-eye"></i>
+                            :
+                            <i onClick={() => {this.removeGraph(index)}} className="fas fa-eye"></i>
+                        }
+                    </div>
+                )
+            }
         })
 
         return (
@@ -259,9 +294,23 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
-                        {graphDatas.length > 0 && <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={window.innerWidth}>
-                            {drawGraph}
-                        </GridLayout>}
+                    {graphDatas.length > 0 && <div className="ui-mis-body" style={{gridTemplateColumns: hideSideBar && '3.5% 96.5%'}}>
+                        <div className="ui-side-logs">
+                            <div className={'ui-title'} style={{display: hideSideBar && 'block', textAlign: hideSideBar && 'center'}}>
+                                <p style={{display: hideSideBar ? 'none' : 'block'}}>Indicators</p>
+                                {!hideSideBar ? <i onClick={this.hideSidebar} className="fas fa-bars"></i> :
+                                <i onClick={this.hideSidebar} className="fas fa-chevron-circle-right"></i>}
+                            </div>
+                            <div className={'ui-body'}>
+                                {listIndicator}
+                            </div>
+                        </div>
+                        <div className={'ui-graphholder-main'}>
+                            <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={hideSideBar ? window.innerWidth * .965 : window.innerWidth * .8}>
+                                {drawGraph}
+                            </GridLayout>
+                        </div>
+                    </div>}
                 </div>
             </>
         );

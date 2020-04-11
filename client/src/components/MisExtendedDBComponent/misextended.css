@@ -22,8 +22,10 @@ body .p-multiselect .p-multiselect-label{
 
 .ui-mis-gsection{
     background: white;
-    border-radius: 5px;
+    border-radius: 5px;box-shadow: 0 0 5px 2px #e2e2e2;
+    box-shadow: 0 0 5px 2px #e2e2e2;
 }
+
 .ui-mis-gsection .ui-graph-container{
     height: 100%;
 }
@@ -39,7 +41,8 @@ body .p-multiselect .p-multiselect-label{
 }
 
 .ui-mis-gsection .ui-graph-container .ui-top h5{
-    font-size: 17px;
+    color: #777;
+    font-size: 16px;
 }
 
 .ui-mis-gsection .ui-graph-container .ui-top i {
@@ -62,6 +65,83 @@ body .p-multiselect .p-multiselect-label{
     border: 1px solid #d8d8d8 !important;
 }
 
+.ui-mis-report{
+    transition: .5s all;
+}
+
+.ui-mis-report .ui-mis-body{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% 80%
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs{
+    margin: 10px 0 10px 10px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 2px #e2e2e2;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-title{
+    padding: 10px;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 18px;
+    font-weight: 500;
+    color: #666;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 60% 40%;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-title p{
+    margin: 0;
+}
+
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-title i{
+    text-align: right;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-body div{
+    padding: 10px 5px;
+    background: #e6f3f5;
+    margin: 5px;
+    border-radius: 5px;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    color: #666;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-body div p{
+    font-weight: 500;
+    margin: 0;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-body div i{
+    text-align: right;
+}
+
+.ui-graphholder-main{
+    height: 75vh;
+    overflow-y: auto;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs{
+    height: 72vh;
+    overflow-y: auto;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs::-webkit-scrollbar,
+.ui-graphholder-main::-webkit-scrollbar{
+    display: none;
+}
+
+@media only screen and (max-width: 1440px) {
+    .ui-mis-gsection .ui-graph-container{height: 90%}
+    .ui-mis-gsection .ui-graph-container .ui-top{grid-template-columns: 60% 33% 7%;}
+}
+
 @media only screen and (max-width: 1380px) {
     .ui-mis-graph .ui-mis-gsection{
         height: 300px;
@@ -79,4 +159,22 @@ body .p-multiselect .p-multiselect-label{
     .ui-mis-graph .ui-mis-gsection{
         height: 280px;
     }
+}
+
+@media only screen and (max-height: 900px){
+    .ui-mis-report .ui-mis-body{height: 97%}
+    .ui-graphholder-main{height: 72vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 70vh;}
+}
+
+@media only screen and (max-height: 800px){
+    .ui-mis-report .ui-mis-body{height: 92%}
+    .ui-graphholder-main{height: 68vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 67vh;}
+}
+
+@media only screen and (max-height: 768px){
+    .ui-mis-report .ui-mis-body{height: 90%}
+    .ui-graphholder-main{height: 67vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 65vh;}
 }
