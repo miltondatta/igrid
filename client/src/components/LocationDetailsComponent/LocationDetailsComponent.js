@@ -2,6 +2,7 @@ import Axios from 'axios'
 import React, {Component} from 'react';
 import {apiUrl} from "../../utility/constant";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import {BackEnd_BaseUrl} from "../../config/private";
 
 class LocationDetailsComponent extends Component {
     constructor(props){
@@ -12,6 +13,7 @@ class LocationDetailsComponent extends Component {
             lcoationAddress: '',
             detLocation: [],
             showMap: false,
+            locationImage: '',
             infoVisible: false,
             selectedLat: 23.6850,
             selectedLong: 90.3563,
@@ -42,9 +44,10 @@ class LocationDetailsComponent extends Component {
             })
     }
 
-    onMarkerClick= (lat, long, locationName, lcoationAddress) => {
+    onMarkerClick= (lat, long, locationName, lcoationAddress, locationImage) => {
         this.setState({
             locationName,
+            locationImage,
             lcoationAddress,
             selectedLat: lat,
             selectedLong: long,
@@ -52,16 +55,17 @@ class LocationDetailsComponent extends Component {
     }
 
     render() {
-        const {selectedLat, selectedLong, zoom, detLocation, locationName, lcoationAddress, infoVisible} = this.state
+        const {selectedLat, selectedLong, zoom, detLocation, locationName, lcoationAddress, infoVisible, locationImage} = this.state
         const location = detLocation.length > 0 && detLocation.map((item, index) => (
-                <Marker
-                    onClick={(e) => {this.handleMarker(item.id); this.onMarkerClick(item.location_lat, item.location_long, item.location_name, item.address)}}
-                    key={index}
-                    icon={{
-                        url: process.env.PUBLIC_URL + `/media/image/marker_${item.parent_id}.png`
-                    }}
-                    position={{lat: item.location_lat, lng: item.location_long}} />
-            ))
+            <Marker
+                onClick={(e) => {this.handleMarker(item.id); this.onMarkerClick(item.location_lat, item.location_long, item.location_name, item.address, item.location_image)}}
+                key={index}
+                title={item.location_name}
+                icon={{
+                    url: process.env.PUBLIC_URL + `/media/image/marker_${item.parent_id}.png`
+                }}
+                position={{lat: item.location_lat, lng: item.location_long}} />
+        ))
         return (
             <div className={'ui-location-finder'}>
                 <div className={'ui-map-div'}>
@@ -81,6 +85,8 @@ class LocationDetailsComponent extends Component {
                         >
                             <h3>{locationName}</h3>
                             <p>{lcoationAddress}</p>
+                            <img style={{width: '200px'}} onClick={this.handleUserOptions}
+                                 src={BackEnd_BaseUrl + 'images/' + locationImage} alt={'user'}/>
                         </InfoWindow>
                     </Map>
                 </div>
