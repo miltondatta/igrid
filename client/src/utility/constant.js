@@ -578,3 +578,16 @@ export const homeBanner = [
         img: "/media/banner/b_4.png"
     },
 ];
+
+export const colorHolder = [
+    ['#fff2e6','#ffe6cc','#ffd9b3','#ffcc99','#ffbf80','#ffb366','#ffa64d','#ff9933','#ff8c1a','#ff8000','#e67300','#cc6600', '#fff2e6','#ffe6cc','#ffd9b3','#ffcc99','#ffbf80','#ffb366','#ffa64d','#ff9933','#ff8c1a','#ff8000','#e67300','#cc6600', '#fff2e6','#ffe6cc','#ffd9b3','#ffcc99','#ffbf80','#ffb366','#ffa64d','#ff9933','#ff8c1a','#ff8000','#e67300','#cc6600'],
+    ['#cce6ff','#b3d9ff','#b3d9ff','#80bfff','#66b3ff','#4da6ff','#3399ff','#1a8cff','#0080ff','#0073e6','#0066cc','#0059b3', '#cce6ff','#b3d9ff','#b3d9ff','#80bfff','#66b3ff','#4da6ff','#3399ff','#1a8cff','#0080ff','#0073e6','#0066cc','#0059b3', '#cce6ff','#b3d9ff','#b3d9ff','#80bfff','#66b3ff','#4da6ff','#3399ff','#1a8cff','#0080ff','#0073e6','#0066cc','#0059b3'],
+    ['#ffe6ff','#ffccff','#ffb3ff','#ff99ff','#ff80ff','#ff66ff','#ff4dff','#ff33ff','#ff1aff','#ff00ff','#e600e6','#cc00cc', '#ffe6ff','#ffccff','#ffb3ff','#ff99ff','#ff80ff','#ff66ff','#ff4dff','#ff33ff','#ff1aff','#ff00ff','#e600e6','#cc00cc', '#ffe6ff','#ffccff','#ffb3ff','#ff99ff','#ff80ff','#ff66ff','#ff4dff','#ff33ff','#ff1aff','#ff00ff','#e600e6','#cc00cc'],
+    ["#ffe6f2","#ffcce6","#ffb3d9","#ff99cc","#ff80bf","#ff66b3","#ff4da6","#ff3399","#ff1a8c","#ff0080","#e60073","#cc0066", "#ffe6f2","#ffcce6","#ffb3d9","#ff99cc","#ff80bf","#ff66b3","#ff4da6","#ff3399","#ff1a8c","#ff0080","#e60073","#cc0066", "#ffe6f2","#ffcce6","#ffb3d9","#ff99cc","#ff80bf","#ff66b3","#ff4da6","#ff3399","#ff1a8c","#ff0080","#e60073","#cc0066"],
+    ["#e6faff","#ccf5ff","#b3f0ff","#99ebff","#80e5ff","#66e0ff","#4ddbff","#33d6ff","#1ad1ff","#00ccff","#00b8e6","#00a3cc", "#e6faff","#ccf5ff","#b3f0ff","#99ebff","#80e5ff","#66e0ff","#4ddbff","#33d6ff","#1ad1ff","#00ccff","#00b8e6","#00a3cc", "#e6faff","#ccf5ff","#b3f0ff","#99ebff","#80e5ff","#66e0ff","#4ddbff","#33d6ff","#1ad1ff","#00ccff","#00b8e6","#00a3cc"],
+    ["#f9ecec","#f2d9d9","#ecc6c6","#e6b3b3","#df9f9f","#d98c8c","#d27979","#cc6666","#c65353","#bf4040","#ac3939","#993333", "#f9ecec","#f2d9d9","#ecc6c6","#e6b3b3","#df9f9f","#d98c8c","#d27979","#cc6666","#c65353","#bf4040","#ac3939","#993333", "#f9ecec","#f2d9d9","#ecc6c6","#e6b3b3","#df9f9f","#d98c8c","#d27979","#cc6666","#c65353","#bf4040","#ac3939","#993333"],
+    ["#f9f2ec","#f2e6d9","#ecd9c6","#e6ccb3","#dfbf9f","#d9b38c","#d2a679","#cc9966","#c68c53","#bf8040","#ac7339","#996633", "#f9f2ec","#f2e6d9","#ecd9c6","#e6ccb3","#dfbf9f","#d9b38c","#d2a679","#cc9966","#c68c53","#bf8040","#ac7339","#996633", "#f9f2ec","#f2e6d9","#ecd9c6","#e6ccb3","#dfbf9f","#d9b38c","#d2a679","#cc9966","#c68c53","#bf8040","#ac7339","#996633"],
+    ["#f7e6ff","#eeccff","#e6b3ff","#dd99ff","#d580ff","#cc66ff","#c44dff","#bb33ff","#b31aff","#aa00ff","#9900e6","#8800cc", "#f7e6ff","#eeccff","#e6b3ff","#dd99ff","#d580ff","#cc66ff","#c44dff","#bb33ff","#b31aff","#aa00ff","#9900e6","#8800cc", "#f7e6ff","#eeccff","#e6b3ff","#dd99ff","#d580ff","#cc66ff","#c44dff","#bb33ff","#b31aff","#aa00ff","#9900e6","#8800cc"],
+]
+
+export const singleColor = ['#ffcc99','#80bfff','#ff99ff',"#ff99cc","#99ebff","#e6b3b3","#e6ccb3","#dd99ff"]

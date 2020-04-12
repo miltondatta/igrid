@@ -10,10 +10,10 @@ import moment from "moment";
 import {Dropdown} from 'primereact/dropdown';
 import React, {Component} from 'react';
 import DatePicker from 'react-datepicker2';
-import { Bar, HorizontalBar, Line, Radar } from 'react-chartjs-2';
+import { Bar, HorizontalBar, Line, Radar, Pie, Doughnut, Polar } from 'react-chartjs-2';
 import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import Axios from "axios";
-import {apiUrl} from "../../utility/constant";
+import {apiUrl, colorHolder, singleColor} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -125,12 +125,12 @@ class MisExtendedDbComponent extends Component {
                     }
 
                     resDatas.forEach(element => {
-                        let colorHolder = ['rgba(155,48,255,.6)','rgba(255,222,0,.6)','rgba(102,205,170,.6)','rgba(11,152,222,.6)','rgba(204,65,37,.6)','rgba(254,200,255,.6)','rgba(102,102,153,.6)']
+                        let randomSingleCol =  singleColor[Math.floor((Math.random() * singleColor.length))]
                         let hoverColorHolder = ['rgba(155,48,255,.3)','rgba(255,222,0,.3)','rgba(102,205,170,.3)','rgba(11,152,222,.3)','rgba(204,65,37,.3)','rgba(254,200,255,.3)','rgba(102,102,153,.3)']
                         let randomCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))]
                         let randomHover =  hoverColorHolder[Math.floor((Math.random() * hoverColorHolder.length))]
 
-                        const gHolder = [Bar, HorizontalBar, Radar, Line]
+                        const gHolder = [Bar, HorizontalBar, Radar, Line,  Pie, Doughnut]
                         const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
                         let gdata = {
                             chart: RandomGraps,
@@ -139,11 +139,11 @@ class MisExtendedDbComponent extends Component {
                             datasets: [
                                 {
                                     label: element.label,
-                                    backgroundColor: randomCol,
+                                    backgroundColor: (RandomGraps === Radar || RandomGraps === Line) ? randomSingleCol : randomCol,
                                     borderColor: 'black',
                                     borderWidth: 1,
                                     hoverBackgroundColor: randomHover,
-                                    hoverBorderColor: 'black',
+                                    hoverBorderColor: 'white',
                                     data: element.graphDatas
                                 }
                             ]
@@ -177,7 +177,7 @@ class MisExtendedDbComponent extends Component {
     }
 
     render() {
-        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator, hideGraph, listIndicatorHolder, hideSideBar} = this.state
+        const {graphDatas ,hierarchies, parentID, date_from, date_to, errorMessage, error, errorDict, indicatorOptions, indicator, hideGraph, listIndicatorHolder, hideSideBar, selectGrapsInd} = this.state
 
         const locations = hierarchies.length > 0 && hierarchies.map(item => {
             return (
@@ -210,13 +210,29 @@ class MisExtendedDbComponent extends Component {
 
         const chartTypes = [
             {name: 'Bar', code: Bar},
+            {name: 'Pie', code: Pie},
+            {name: 'Polar', code: Polar},
+            {name: 'Doughnut', code: Doughnut},
             {name: 'HorizontalBar', code: HorizontalBar},
             {name: 'Radar', code: Radar},
             {name: 'Line', code: Line}
         ];
 
+
+
         const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
-            const RandomG =  this.state[index] ? this.state[index].code : item.chart
+            let RandomG =  this.state[index] ? this.state[index].code : item.chart
+            let randomCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))]
+            let randomSingleCol =  singleColor[Math.floor((Math.random() * singleColor.length))]
+            if (selectGrapsInd === index) {
+                if (RandomG === Radar || RandomG === Line){
+                    item.datasets[0].backgroundColor = randomSingleCol
+                    console.log(item.datasets[0].backgroundColor, 232)
+                } else {
+                    item.datasets[0].backgroundColor = randomCol
+                }
+            }
+
             return (
                 <div className={'ui-mis-gsection'} key={index.toString()} style={{borderBottom: `3px solid ${item.borderBottom}`, display: hideGraph.includes(index) ? 'none' : 'block'}}>
                     <div className={'ui-graph-container'}>
