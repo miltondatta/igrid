@@ -1,7 +1,10 @@
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import './misextended.css'
+import { WidthProvider, Responsive } from "react-grid-layout";
 import {MultiSelect} from 'primereact/multiselect';
 import moment from "moment";
 import React, {Component} from 'react';
@@ -11,6 +14,9 @@ import LocationsWithHOptions from "../../utility/component/locationWithHierarchy
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
+
+
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class MisExtendedDbComponent extends Component {
 
@@ -155,10 +161,10 @@ class MisExtendedDbComponent extends Component {
 
         const gHolder = [Bar, HorizontalBar, Radar, Line]
 
-        const drawGraph = graphDatas.length > 0 && graphDatas.map(item => {
+        const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
             const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
             return (
-                <div className={'ui-mis-gsection'}>
+                <div className={'ui-mis-gsection'} key={index}>
                     <RandomGraps
                         data={item}
                         width={100}
@@ -171,6 +177,15 @@ class MisExtendedDbComponent extends Component {
             )    
         })
 
+        const layout = [
+            {i: 'a', x: 0, y: 0, w: 1, h: 2, static: true},
+            {i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4},
+            {i: 'c', x: 4, y: 0, w: 1, h: 2}
+        ];
+
+        graphDatas.length > 0 && graphDatas.forEach((item, index) => {
+            layout.push({i: index, x: 0, y: 0, w: 4, h: 2})
+        })
         return (
             <>
                 {error &&
@@ -210,9 +225,21 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
+
                     {graphDatas.length > 0 && <div className={'ui-mis-graph'}>
                         { drawGraph }
                     </div>}
+                    {/*<div className={'p-2'}>*/}
+                    {/*    <ResponsiveReactGridLayout>*/}
+                    {/*        <div style={{backgroundColor: 'red'}} key="a">a</div>*/}
+                    {/*        <div style={{backgroundColor: 'red'}} key="b">b</div>*/}
+                    {/*        <div style={{backgroundColor: 'red'}} key="c">c</div>*/}
+
+                    {/*        <div style={{backgroundColor: 'red'}} key="d">a</div>*/}
+                    {/*        <div style={{backgroundColor: 'red'}} key="e">b</div>*/}
+                    {/*        <div style={{backgroundColor: 'red'}} key="f">c</div>*/}
+                    {/*    </ResponsiveReactGridLayout>*/}
+                    {/*</div>*/}
                 </div>
             </>
         );

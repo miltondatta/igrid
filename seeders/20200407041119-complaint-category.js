@@ -12,6 +12,11 @@ module.exports = {
         status: true,
         createdAt: new Date(),
         updatedAt: new Date()
+      },{
+        complaint_name: 'Office Equipment Problem',
+        status: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 
