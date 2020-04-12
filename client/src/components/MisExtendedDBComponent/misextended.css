@@ -176,5 +176,5 @@ body .p-multiselect .p-multiselect-label{
 @media only screen and (max-height: 768px){
     .ui-mis-report .ui-mis-body{height: 90%}
     .ui-graphholder-main{height: 67vh;}
-    .ui-mis-report .ui-mis-body .ui-side-logs{height: 65vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 64.5vh;}
 }

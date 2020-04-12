@@ -128,18 +128,19 @@ class MisExtendedDbComponent extends Component {
                         let randomSingleCol =  singleColor[Math.floor((Math.random() * singleColor.length))]
                         let hoverColorHolder = ['rgba(155,48,255,.3)','rgba(255,222,0,.3)','rgba(102,205,170,.3)','rgba(11,152,222,.3)','rgba(204,65,37,.3)','rgba(254,200,255,.3)','rgba(102,102,153,.3)']
                         let randomCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))]
+                        let borderBotCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))][colorHolder.length - 1]
                         let randomHover =  hoverColorHolder[Math.floor((Math.random() * hoverColorHolder.length))]
 
                         const gHolder = [Bar, HorizontalBar, Radar, Line,  Pie, Doughnut]
                         const RandomGraps = gHolder[Math.floor((Math.random() * gHolder.length))]
                         let gdata = {
                             chart: RandomGraps,
-                            borderBottom: randomCol,
+                            borderBottom: borderBotCol,
                             labels: element.graphLabels,
                             datasets: [
                                 {
                                     label: element.label,
-                                    backgroundColor: (RandomGraps === Radar || RandomGraps === Line) ? randomSingleCol : randomCol,
+                                    backgroundColor: (RandomGraps === Radar || RandomGraps === Line) ? randomSingleCol : (RandomGraps === Doughnut) ? singleColor : randomCol,
                                     borderColor: 'black',
                                     borderWidth: 1,
                                     hoverBackgroundColor: randomHover,
@@ -199,14 +200,35 @@ class MisExtendedDbComponent extends Component {
         let incX = 0
         let incY = 0
 
-        graphDatas.length > 0 && graphDatas.forEach((item, index) => {
-            layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: window.innerWidth <= 1440 ? 2 : 3})
-            if (incX <= 6) {
-                incX += 3
-            } else {
-                incX = 0
-            }
-        })
+        if ( window.innerWidth <= 1024) {
+            graphDatas.length > 0 && graphDatas.forEach((item, index) => {
+                layout.push({i: index.toString(), x: incX, y: incY, w: 6, h: 3})
+                if (incX <= 6) {
+                    incX += 6
+                } else {
+                    incX = 0
+                }
+            })
+        } else if ( window.innerWidth <= 1440) {
+            graphDatas.length > 0 && graphDatas.forEach((item, index) => {
+                layout.push({i: index.toString(), x: incX, y: incY, w: 4, h: 3})
+                if (incX <= 8) {
+                    incX += 4
+                } else {
+                    incX = 0
+                }
+            })
+        } else {
+            graphDatas.length > 0 && graphDatas.forEach((item, index) => {
+                layout.push({i: index.toString(), x: incX, y: incY, w: 3, h: 3})
+                if (incX <= 6) {
+                    incX += 3
+                } else {
+                    incX = 0
+                }
+            })
+        }
+
 
         const chartTypes = [
             {name: 'Bar', code: Bar},
@@ -218,8 +240,6 @@ class MisExtendedDbComponent extends Component {
             {name: 'Line', code: Line}
         ];
 
-
-
         const drawGraph = graphDatas.length > 0 && graphDatas.map((item, index) => {
             let RandomG =  this.state[index] ? this.state[index].code : item.chart
             let randomCol =  colorHolder[Math.floor((Math.random() * colorHolder.length))]
@@ -227,7 +247,8 @@ class MisExtendedDbComponent extends Component {
             if (selectGrapsInd === index) {
                 if (RandomG === Radar || RandomG === Line){
                     item.datasets[0].backgroundColor = randomSingleCol
-                    console.log(item.datasets[0].backgroundColor, 232)
+                } else if (RandomG === Doughnut) {
+                    item.datasets[0].backgroundColor = singleColor
                 } else {
                     item.datasets[0].backgroundColor = randomCol
                 }
@@ -310,7 +331,7 @@ class MisExtendedDbComponent extends Component {
                             </button>
                         </div>
                     </div>
-                    {graphDatas.length > 0 && <div className="ui-mis-body" style={{gridTemplateColumns: hideSideBar && '3.5% 96.5%'}}>
+                    {graphDatas.length > 0 && <div className="ui-mis-body" style={{gridTemplateColumns: hideSideBar &&(window.innerWidth <= 1250 ?  '5.5% 94.5%' : '3.5% 96.5%')}}>
                         <div className="ui-side-logs">
                             <div className={'ui-title'} style={{display: hideSideBar && 'block', textAlign: hideSideBar && 'center'}}>
                                 <p style={{display: hideSideBar ? 'none' : 'block'}}>Indicators</p>
@@ -322,7 +343,7 @@ class MisExtendedDbComponent extends Component {
                             </div>
                         </div>
                         <div className={'ui-graphholder-main'}>
-                            <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={hideSideBar ? window.innerWidth * .965 : window.innerWidth * .8}>
+                            <GridLayout className="layout" layout={layout} cols={12} rowHeight={120} width={hideSideBar ? (window.innerWidth <= 1250 ? window.innerWidth * .945 : window.innerWidth * .965) : window.innerWidth * .8}>
                                 {drawGraph}
                             </GridLayout>
                         </div>

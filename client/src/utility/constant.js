@@ -590,4 +590,4 @@ export const colorHolder = [
     ["#f7e6ff","#eeccff","#e6b3ff","#dd99ff","#d580ff","#cc66ff","#c44dff","#bb33ff","#b31aff","#aa00ff","#9900e6","#8800cc", "#f7e6ff","#eeccff","#e6b3ff","#dd99ff","#d580ff","#cc66ff","#c44dff","#bb33ff","#b31aff","#aa00ff","#9900e6","#8800cc", "#f7e6ff","#eeccff","#e6b3ff","#dd99ff","#d580ff","#cc66ff","#c44dff","#bb33ff","#b31aff","#aa00ff","#9900e6","#8800cc"],
 ]
 
-export const singleColor = ['#ffcc99','#80bfff','#ff99ff',"#ff99cc","#99ebff","#e6b3b3","#e6ccb3","#dd99ff"]
+export const singleColor = ['#ffcc99','#80bfff','#ff99ff',"#ff99cc","#99ebff","#e6b3b3","#e6ccb3","#dd99ff", '#ff8c1a','#0080ff','#ff1aff',"#ff1a8c","#1ad1ff","#c65353","#c68c53","#b31aff", '#ffcc99','#80bfff','#ff99ff',"#ff99cc","#99ebff","#e6b3b3","#e6ccb3","#dd99ff", '#ff8c1a','#0080ff','#ff1aff',"#ff1a8c","#1ad1ff","#c65353","#c68c53","#b31aff"]
