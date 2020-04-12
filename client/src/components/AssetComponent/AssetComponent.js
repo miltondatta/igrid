@@ -92,10 +92,10 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
+        if (Object.values(this.validate()).includes(false)) return;
         if (this.state.reqMaster === '') {
             this.handleReqMaster()
         }
-        if (Object.values(this.validate()).includes(false)) return;
         const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory, expected_date, brand, model, upload_file, details, reason} = this.state
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             const length = productSet.length
