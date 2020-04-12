@@ -76,7 +76,6 @@ class AssetComponent extends Component{
     }
 
     componentDidMount() {
-        this.handleReqMaster()
         Axios.get(apiUrl() + 'asset-category')
             .then(resData => {
                 this.setState({
@@ -93,8 +92,10 @@ class AssetComponent extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log(this.validate(), 89)
         if (Object.values(this.validate()).includes(false)) return;
+        if (this.state.reqMaster === '') {
+            this.handleReqMaster()
+        }
         const {asset_category, asset_sub_category, quantity, productSet, assetSubCategory, assetCategory, expected_date, brand, model, upload_file, details, reason} = this.state
         if (asset_category !== 0 && asset_sub_category !== 0 && quantity !== '') {
             const length = productSet.length
@@ -235,10 +236,10 @@ class AssetComponent extends Component{
         return(
             <>
                 {error &&
-                    <ErrorModal errorMessage={errorMessage} />
+                <ErrorModal errorMessage={errorMessage} />
                 }
                 {success &&
-                    <SuccessModal successMessage={successMessage} />
+                <SuccessModal successMessage={successMessage} />
                 }
                 <div className={'ui-dataEntry p-2'}>
                     <div className={'bg-white rounded p-2 admin-input-height position-relative'}>
@@ -306,7 +307,7 @@ class AssetComponent extends Component{
                                 remove={this.removeItemFromList}
                                 data={arrayData}
                             />
-                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                            : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
 
                         {arrayData.length > 0 && <button type="submit" onClick={this.sendRequisition} className="submit-btn">Submit</button>}
                     </div>
