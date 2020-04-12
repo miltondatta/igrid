@@ -1,22 +1,22 @@
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-import 'primereact/resources/themes/nova-light/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import './misextended.css'
-import GridLayout, { WidthProvider, Responsive } from "react-grid-layout";
-import {MultiSelect} from 'primereact/multiselect';
-import moment from "moment";
-import {Dropdown} from 'primereact/dropdown';
-import React, {Component} from 'react';
-import DatePicker from 'react-datepicker2';
-import { Bar, HorizontalBar, Line, Radar, Pie, Doughnut, Polar } from 'react-chartjs-2';
-import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import Axios from "axios";
-import {apiUrl, colorHolder, singleColor} from "../../utility/constant";
+import moment from "moment";
+import 'primeicons/primeicons.css';
+import React, {Component} from 'react';
+import 'react-resizable/css/styles.css';
+import 'react-grid-layout/css/styles.css';
+import GridLayout from "react-grid-layout";
+import DatePicker from 'react-datepicker2';
+import {Dropdown} from 'primereact/dropdown';
+import 'primereact/resources/primereact.min.css';
+import {MultiSelect} from 'primereact/multiselect';
 import ErrorModal from "../../utility/error/errorModal";
+import 'primereact/resources/themes/nova-light/theme.css';
+import {apiUrl, colorHolder, singleColor} from "../../utility/constant";
+import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
+import { Bar, HorizontalBar, Line, Radar, Pie, Doughnut, Polar } from 'react-chartjs-2';
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+// Custom CSS. Order is very Important
+import './misextended.css'
 
 class MisExtendedDbComponent extends Component {
 
