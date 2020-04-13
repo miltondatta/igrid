@@ -115,18 +115,18 @@ export const sidenav = [
                 link: '/lost-assets-status',
                 icon: ""
             },
-            {
-                id: 15,
-                name: 'Repair & Maintenance',
-                link: '/asset-repair',
-                icon: ""
-            },
-            {
-                id: 16,
-                name: 'Repair & Maintenance List',
-                link: '/asset-repair-list',
-                icon: ""
-            },
+            // {
+            //     id: 15,
+            //     name: 'Repair & Maintenance',
+            //     link: '/asset-repair',
+            //     icon: ""
+            // },
+            // {
+            //     id: 16,
+            //     name: 'Repair & Maintenance List',
+            //     link: '/asset-repair-list',
+            //     icon: ""
+            // },
         ]
     },
     {
@@ -176,12 +176,12 @@ export const report = [
                 link: '/report/asset-disposal-report',
                 icon: ""
             },
-            {
-                id: 4,
-                name: 'Maintenance Report',
-                link: '/report/maintenance-report',
-                icon: ""
-            }
+            // {
+            //     id: 4,
+            //     name: 'Maintenance Report',
+            //     link: '/report/maintenance-report',
+            //     icon: ""
+            // }
         ]
     },
 ]

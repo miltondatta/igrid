@@ -20,7 +20,7 @@ route.get('/requisition-master', (req,res,next) => {
 route.get('/requisition/total/:id', async (req,res,next) => {
     try{
         const [data, metaData] = await db.query(`
-            Select (Select COUNT(id) from requisition_masters WHERE status = 0 and request_by = ${req.params.id}) as pending,
+            Select distinct (Select COUNT(id) from requisition_masters WHERE status = 0 and request_by = ${req.params.id}) as pending,
                 (Select COUNT(id) from requisition_masters WHERE status = 2 and request_by = ${req.params.id}) as in_progress,
                  (Select COUNT(id) from requisition_masters WHERE status = 3 and request_by = ${req.params.id}) as closed,
                  (Select COUNT(id) from assets) as registered_assets,
