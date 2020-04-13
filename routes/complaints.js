@@ -7,10 +7,10 @@ const route = express.Router()
 // Read
 route.get('/complaints/:id', async (req,res,next) => {
     const [data, metaData] = await db.query(`
-        SELECT complaints.id, "comCategories".complaint_name, "comSubCategories".sub_complaint_name, "complaints"."status", "complaints"."solutionDetails" as solution FROM complaints
+        SELECT complaints.id, "comCategories".complaint_name, "comSubCategories".sub_complaint_name, "complaints"."status", "complaints"."solution_details" as solution FROM complaints
             JOIN "comCategories" ON "comCategories".id = complaints.complaint_category
             JOIN "comSubCategories" ON "comSubCategories".id = complaints.complaint_sub_category
-            WHERE complaints."createdBy" = ${req.params.id}
+            WHERE complaints."created_by" = ${req.params.id}
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -23,10 +23,10 @@ route.get('/complaints/:id', async (req,res,next) => {
 route.get('/complaintslist', async (req,res,next) => {
     const [data, metaData] = await db.query(`
         SELECT complaints.id, CONCAT(users."firstName", ' ', users."lastName") as username, "comCategories".complaint_name, "comSubCategories".sub_complaint_name,
-               complaints."problem_details" as problemDetails,"complaints"."solutionDetails" as solution FROM complaints
+               complaints."problem_details" as problemDetails,"complaints"."solution_details" as solution FROM complaints
                  JOIN "comCategories" ON "comCategories".id = complaints.complaint_category
                  JOIN "comSubCategories" ON "comSubCategories".id = complaints.complaint_sub_category
-                 JOIN users ON users.id = complaints."createdBy"
+                 JOIN users ON users.id = complaints."created_by"
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -49,9 +49,9 @@ route.get('/complaints-options', (req,res,next) => {
 
 // Update
 route.put('/complaints/update/:id', (req,res,next) => {
-    const {solutionDetails, status} = req.body
-    if(solutionDetails) {
-        Complaints.update({solutionDetails, status}, {where: {id: req.params.id}})
+    const {solution_details, status} = req.body
+    if(solution_details) {
+        Complaints.update({solution_details, status}, {where: {id: req.params.id}})
             .then(resData => {
                 res.status(200).json({resData, message: 'Data Saved Successfully', status: true})
             })
