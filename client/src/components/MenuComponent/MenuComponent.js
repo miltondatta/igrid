@@ -515,7 +515,7 @@ class MenuComponent extends Component {
                         </div>
                     </div>
                     }
-                    <div className="px-1 mb-20p">
+                    <div className="px-1 mb-2">
                         <div className="custom-control custom-switch">
                             <input type="checkbox" name="visible"
                                    className="custom-control-input" onChange={this.handleChange}
@@ -523,9 +523,9 @@ class MenuComponent extends Component {
                             <label className="custom-control-label" htmlFor="switch2">Visibility</label>
                         </div>
                     </div>
-                    {editId === null ? <button className="submit-btn-normal mt-3" onClick={this.handleSubmit}>Submit</button> : <>
-                        <button className="submit-btn-normal mr-2" onClick={this.updateData}>Update</button>
-                        <button className="reset-btn-normal" onClick={this.emptyStateValue}>Go Back</button>
+                    {editId === null ? <button className="submit-btn-normal mt-5" onClick={this.handleSubmit}>Submit</button> : <>
+                        <button className="submit-btn-normal mr-2 mt-5" onClick={this.updateData}>Update</button>
+                        <button className="reset-btn-normal mt-5" onClick={this.emptyStateValue}>Go Back</button>
                     </>}
                 </div>
                 <div className="rounded bg-white admin-input-height">

@@ -240,7 +240,7 @@ export const systemAdmin = [
             },
             {
                 id: 15,
-                name: 'Assign User Role ',
+                name: 'Assign User Role',
                 link: '/admin/user-associate-role',
                 icon: ""
             },
@@ -257,7 +257,7 @@ export const systemAdmin = [
                 icon: ""
             },
             {
-                id: 8,
+                id: 9,
                 name: 'Menu Assign',
                 link: '/admin/menu/assign',
                 icon: ""
@@ -522,7 +522,8 @@ export const documentNav = [
         id: 11,
         name: 'Advance Search',
         link: '/documents/document-list-search',
-        icon: "fas fa-search"
+        icon: "fas fa-search",
+        subCat: false,
     },
     {
         id: 12,
