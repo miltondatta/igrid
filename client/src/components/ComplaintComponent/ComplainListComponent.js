@@ -30,7 +30,7 @@ class ComplainListComponent extends Component {
 
     done = (val, id) => {
         console.log(val, 31)
-        const payload = {solutionDetails: val, status: true}
+        const payload = {solution_details: val, status: 8}
         Axios.put(apiUrl() + 'complaints/update/'+ id, payload)
             .then(res => {
                 if (res.data.status) {

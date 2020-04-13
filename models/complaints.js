@@ -48,7 +48,7 @@ const Complaints = db.define('complaints', {
   status: {
     type: Sequelize.INTEGER
   },
-  solutionDetails: {
+  solution_details: {
     type: Sequelize.STRING,
     defaultValue: null,
     allowNull: true
