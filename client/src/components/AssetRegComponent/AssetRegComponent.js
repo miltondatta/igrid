@@ -362,24 +362,12 @@ class AssetRegComponent extends Component {
         } else if (forr === 'assets') {
             errorDict = {
                 product_id: typeof product_id !== 'undefined' && product_id !== '',
-                amc_charge: is_amc ? typeof amc_charge !== 'undefined' && amc_charge !== '' : true,
-                amc_expire_date: is_amc ? typeof amc_expire_date !== 'undefined' && amc_expire_date !== '' : true,
-                amc_type: is_amc ? typeof amc_type !== 'undefined' && amc_type !== '' : true,
                 asset_category: typeof asset_category !== 'undefined' && asset_category !== '',
                 asset_sub_category: typeof asset_sub_category !== 'undefined' && asset_sub_category !== '',
                 cost_of_purchase: typeof cost_of_purchase !== 'undefined' && cost_of_purchase !== '',
                 installation_cost: typeof installation_cost !== 'undefined' && installation_cost !== '',
                 carrying_cost: typeof carrying_cost !== 'undefined' && carrying_cost !== '',
                 other_cost: typeof other_cost !== 'undefined' && other_cost !== '',
-            }
-            if (is_amc){
-                errorDict['amc_charge'] =  typeof amc_charge !== 'undefined' && amc_charge !== ''
-                errorDict['amc_expire_date'] =  typeof amc_expire_date !== 'undefined' && amc_expire_date !== ''
-                errorDict['amc_type'] =  typeof amc_type !== 'undefined' && amc_type !== ''
-            } else {
-                errorDict['amc_charge'] = true
-                errorDict['amc_expire_date'] = true
-                errorDict['amc_type'] = true
             }
             this.setState({
                 errorDictAsset: errorDict
@@ -626,18 +614,6 @@ class AssetRegComponent extends Component {
                                         </div>
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
-                                                <label className={'ui-custom-label'}>Project</label>
-                                                <select className={`ui-custom-input w-100`} onChange={this.handleChange} name={'project_id'} value={project_id}>
-                                                    <option>Select Project</option>
-                                                    <ProjectOptions forceUp={this.forceUp} stateForceUpdate={this.state.forceUpd} />
-                                                </select>
-                                                <button onClick={() => {this.setState({formType: 'PROJECT', getApi: 'projects', headTitle: 'Project Information'})}} type="button" className="add-button" data-toggle="modal" data-target="#rowDeleteModal">
-                                                    <i className="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Product</label>
                                                 <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.asset_sub_category && 'is-invalid'}`} onChange={this.handleChange} name={'product_id'} value={product_id} >
                                                     <option>Product</option>
@@ -683,53 +659,6 @@ class AssetRegComponent extends Component {
                                                    placeholder={'Other Cost'}
                                                    className={`ui-custom-input ${errorDictAsset && !errorDictAsset.other_cost && 'is-invalid'}`}/>
                                         </div>
-                                        <div className="mb-2 mt-3 pl-4 d-flex align-items-center ui-custom-checkbox">
-                                            <div className="ui-custom-checkbox">
-                                                <input
-                                                    type={'checkbox'}
-                                                    checked={this.state.is_amc}
-                                                    id={'is_amc'}
-                                                    name={'is_amc'}
-                                                    onChange={this.handleChange} />
-                                                <label htmlFor="is_amc" className={'mb-0'}>IS AMC</label>
-                                            </div>
-                                        </div>
-                                        {this.state.is_amc && <>
-                                            <div className={'mb-1'}>
-                                                <div className="input-grid">
-                                                    <label className={'ui-custom-label'}>AMC Type</label>
-                                                    <select className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_type && 'is-invalid'}`}
-                                                            onChange={this.handleChange} name={'amc_type'} value={amc_type}>
-                                                        <option>AMC Types</option>
-                                                        <AMCTypeOptions forceUp={this.amc} stateForceUpdate={this.state.amc}/>
-                                                    </select>
-                                                    <button
-                                                        onClick={() => {this.setState({formType: 'AMCTYPES', getApi: 'amc_types', headTitle: 'AMC Type Information'})}}
-                                                        type="button"
-                                                        className="add-button"
-                                                        data-toggle="modal"
-                                                        data-target="#rowDeleteModal">
-                                                        <i className="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Charge</label>
-                                                <input type={'number'}
-                                                       value={amc_charge}
-                                                       onChange={this.handleChange} name={'amc_charge'}
-                                                       placeholder={'AMC Charge'}
-                                                       className={`ui-custom-input ${errorDictAsset && !errorDictAsset.amc_charge && 'is-invalid'}`}/>
-                                            </div>
-                                            <div className={'mb-1'}>
-                                                <label className={'ui-custom-label'}>AMC Expire Date</label>
-                                                <DatePicker timePicker={false}
-                                                            name={'amc_expire_date'}
-                                                            className={`ui-custom-input w-100 ${errorDictAsset && !errorDictAsset.amc_expire_date && 'is-invalid'}`}
-                                                            inputFormat="DD/MM/YYYY"
-                                                            onChange={date => this.setState({amc_expire_date: date})}
-                                                            value={amc_expire_date}/>
-                                            </div></>}
                                     </div>
                                     <div className={'bg-white p-2 rounded mb-2 border-blue'}>
                                         <div className={'mb-1'}>
@@ -742,44 +671,44 @@ class AssetRegComponent extends Component {
                                     </div>
                                 </div>
                                 <div className="col-md-6 pl-1">
+                                    {/*<div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>*/}
+                                    {/*    <h5>Insurance Information</h5>*/}
+                                    {/*    <div className={'mb-1'}>*/}
+                                    {/*        <label className={'ui-custom-label'}>Value of Insurance</label>*/}
+                                    {/*        <input type="number"*/}
+                                    {/*               value={insurance_value}*/}
+                                    {/*               onChange={this.handleChange} name={'insurance_value'}*/}
+                                    {/*               placeholder={'Value of Insurance'}*/}
+                                    {/*               className={`ui-custom-input w-100`}/>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={'mb-1'}>*/}
+                                    {/*        <label className={'ui-custom-label'}>Value of Premium</label>*/}
+                                    {/*        <input type="number"*/}
+                                    {/*               value={insurance_premium}*/}
+                                    {/*               onChange={this.handleChange} name={'insurance_premium'}*/}
+                                    {/*               placeholder={'Value of Premium'}*/}
+                                    {/*               className={`ui-custom-input w-100`}/>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={'mb-1'}>*/}
+                                    {/*        <label className={'ui-custom-label'}>Insurance Company</label>*/}
+                                    {/*        <input type="text"*/}
+                                    {/*               value={insurance_company}*/}
+                                    {/*               onChange={this.handleChange} name={'insurance_company'}*/}
+                                    {/*               placeholder={'Insurance Company'}*/}
+                                    {/*               className={`ui-custom-input w-100`}/>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className={'mb-1'}>*/}
+                                    {/*        <label className={'ui-custom-label'}>Expire Date</label>*/}
+                                    {/*        <DatePicker timePicker={false}*/}
+                                    {/*                    name={'insurance_expire_date'}*/}
+                                    {/*                    className={`ui-custom-input w-100`}*/}
+                                    {/*                    inputFormat="DD/MM/YYYY"*/}
+                                    {/*                    onChange={date => this.setState({insurance_expire_date: date})}*/}
+                                    {/*                    value={insurance_expire_date}/>*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
                                     <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
-                                        <h5>Insurance Information</h5>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Value of Insurance</label>
-                                            <input type="number"
-                                                   value={insurance_value}
-                                                   onChange={this.handleChange} name={'insurance_value'}
-                                                   placeholder={'Value of Insurance'}
-                                                   className={`ui-custom-input w-100`}/>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Value of Premium</label>
-                                            <input type="number"
-                                                   value={insurance_premium}
-                                                   onChange={this.handleChange} name={'insurance_premium'}
-                                                   placeholder={'Value of Premium'}
-                                                   className={`ui-custom-input w-100`}/>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Insurance Company</label>
-                                            <input type="text"
-                                                   value={insurance_company}
-                                                   onChange={this.handleChange} name={'insurance_company'}
-                                                   placeholder={'Insurance Company'}
-                                                   className={`ui-custom-input w-100`}/>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Expire Date</label>
-                                            <DatePicker timePicker={false}
-                                                        name={'insurance_expire_date'}
-                                                        className={`ui-custom-input w-100`}
-                                                        inputFormat="DD/MM/YYYY"
-                                                        onChange={date => this.setState({insurance_expire_date: date})}
-                                                        value={insurance_expire_date}/>
-                                        </div>
-                                    </div>
-                                    <div className={'bg-white p-2 rounded mb-2 mr-1 border-blue'}>
-                                        <h5>Depreciation & Others</h5>
+                                        <h5>Others Information</h5>
                                         <div className={'mb-1'}>
                                             <div className="input-grid">
                                                 <label className={'ui-custom-label'}>Asset Type</label>
@@ -816,23 +745,23 @@ class AssetRegComponent extends Component {
                                                 </button>
                                             </div>
                                         </div>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Rate</label>
-                                            <input type="number"
-                                                   value={rate}
-                                                   onChange={this.handleChange} name={'rate'}
-                                                   placeholder={'Rate'}
-                                                   className={`ui-custom-input w-100`}/>
-                                        </div>
-                                        <div className={'mb-1'}>
-                                            <label className={'ui-custom-label'}>Effective Date</label>
-                                            <DatePicker timePicker={false}
-                                                        name={'effective_date'}
-                                                        className={`ui-custom-input w-100`}
-                                                        inputFormat="DD/MM/YYYY"
-                                                        onChange={date => this.setState({effective_date: date})}
-                                                        value={effective_date}/>
-                                        </div>
+                                        {/*<div className={'mb-1'}>*/}
+                                        {/*    <label className={'ui-custom-label'}>Rate</label>*/}
+                                        {/*    <input type="number"*/}
+                                        {/*           value={rate}*/}
+                                        {/*           onChange={this.handleChange} name={'rate'}*/}
+                                        {/*           placeholder={'Rate'}*/}
+                                        {/*           className={`ui-custom-input w-100`}/>*/}
+                                        {/*</div>*/}
+                                        {/*<div className={'mb-1'}>*/}
+                                        {/*    <label className={'ui-custom-label'}>Effective Date</label>*/}
+                                        {/*    <DatePicker timePicker={false}*/}
+                                        {/*                name={'effective_date'}*/}
+                                        {/*                className={`ui-custom-input w-100`}*/}
+                                        {/*                inputFormat="DD/MM/YYYY"*/}
+                                        {/*                onChange={date => this.setState({effective_date: date})}*/}
+                                        {/*                value={effective_date}/>*/}
+                                        {/*</div>*/}
                                         <div className={'mb-1'}>
                                             <label className={'ui-custom-label'}>Book Value</label>
                                             <input type="number"

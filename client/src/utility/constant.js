@@ -261,12 +261,12 @@ export const systemAdmin = [
                 link: '/admin/asset-sub-category',
                 icon: ""
             },
-            {
-                id: 1,
-                name: 'Project',
-                link: '/admin/project',
-                icon: ""
-            },
+            // {
+            //     id: 1,
+            //     name: 'Project',
+            //     link: '/admin/project',
+            //     icon: ""
+            // },
             {
                 id: 2,
                 name: 'Vendor',
@@ -309,12 +309,12 @@ export const systemAdmin = [
                 link: '/admin/assign-locations',
                 icon: ""
             },
-            {
-                id: 17,
-                name: 'AMC Types',
-                link: '/admin/amc-types',
-                icon: ""
-            },
+            // {
+            //     id: 17,
+            //     name: 'AMC Types',
+            //     link: '/admin/amc-types',
+            //     icon: ""
+            // },
         ]
     },
     {
