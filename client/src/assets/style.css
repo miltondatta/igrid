@@ -84,6 +84,10 @@ select:focus{
    z-index: 5;
 }
 
+.ui-notice-container{
+   height: 215px;
+}
+
 .list-unstyled-notice{
    background: white;
    border-radius: 5px;

@@ -131,3 +131,18 @@
         height: 300px;
     }
 }
+
+@media only screen and (max-width: 1080px) {
+    .ui-mis-graph{
+        height: 270px
+    }
+    .ui-mis-dashboard-container .ui-mis-top .ui-mis-body-top{
+        grid-template-columns: 24% 76%;
+    }
+    .ui-mis-dashboard-container .ui-mis-top .ui-role-child{
+        grid-template-columns: 58% 42%;
+    }
+    .ui-mis-graph .ui-mis-gsection{
+        height: 250px;
+    }
+}

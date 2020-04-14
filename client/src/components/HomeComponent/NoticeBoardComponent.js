@@ -65,15 +65,16 @@ class NoticeBoardComponent extends Component {
         )) : <p>No Data to Display</p>;
 
         return (
+            <>
             <div className={'ui-noticeboard'}>
-                <div className={'p-2 overflow-hidden h-215px'}>
+                <div className={'p-2 overflow-hidden ui-notice-container'}>
                     <div className="ui-notice">
                         <div className="noticeText">
                             {allNotice}
                         </div>
                     </div>
                 </div>
-                <div className="ui-home">
+                {window.innerWidth > 1220 && <div className="ui-home">
                     <ul className="d-flex list-unstyled-notice">
                         <li className={`btn ${noticeAndCircular ? 'btn-info' : 'btn-outline-info'} `}
                             onClick={() => this.setNoticeOption('all')}>All
@@ -85,8 +86,22 @@ class NoticeBoardComponent extends Component {
                             onClick={() => this.setNoticeOption('circular')}>Circular
                         </li>
                     </ul>
-                </div>
+                </div>}
             </div>
+                {window.innerWidth <= 1220 && <div className="ui-home-responsive">
+                    <ul className="d-flex list-unstyled-notice">
+                        <li className={`btn ${noticeAndCircular ? 'btn-info' : 'btn-outline-info'} `}
+                            onClick={() => this.setNoticeOption('all')}>All
+                        </li>
+                        <li className={`ml-2 btn ${notice ? 'btn-info' : 'btn-outline-info'} `}
+                            onClick={() => this.setNoticeOption('notice')}>Notice
+                        </li>
+                        <li className={`ml-2 btn ${circular ? 'btn-info' : 'btn-outline-info'} `}
+                            onClick={() => this.setNoticeOption('circular')}>Circular
+                        </li>
+                    </ul>
+                </div>}
+            </>
         );
     }
 }
