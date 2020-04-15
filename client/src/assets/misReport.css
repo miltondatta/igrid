@@ -15,7 +15,7 @@
 .ui-mis-report .ui-top-container .ui-btn-container{
     width: 100%;
     display: flex;
-    padding: 0 0 12px;
+    padding: 10px;
     justify-content: center;
 }
 
@@ -126,4 +126,16 @@
 .ui-mis-report .ui-report-container .ui-report-header{
     position: sticky;
     top: 0;
+}
+
+
+.ui-other-report .ui-top-container .ui-btn-container button,
+.ui-other-report .ui-top-container .ui-selects-container div{
+    flex-basis: 100%;
+    margin: 0 7px;
+}
+
+
+.ui-other-report .ui-top-container .ui-btn-container button{
+    width: 220px;
 }

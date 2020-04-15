@@ -142,15 +142,15 @@ class AllAssetReportCompoenent extends Component {
                 {error &&
                     <ErrorModal ops errorMessage={errorMessage} />
                 }
-                <div className="ui-mis-report">
+                <div className="ui-mis-report ui-other-report">
                     <div className="ui-top-container">
                         <div className={'ui-selects-container'}>
                             {locations}
                         </div>
                         <div className="ui-btn-container rounded">
-                            <button onClick={this.getUserAssets} className={'mx-2 report-submit-btn'}>Submit</button>
-                            <button className={'mx-2 report-reset-btn'}>Reset</button>
-                            <div className={'position-relative'}>
+                            <button onClick={this.getUserAssets} className={'report-submit-btn'}>Submit</button>
+                            <button className={'report-reset-btn'}>Reset</button>
+                            <div className={'position-relative w-25'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
                                     <button className={`${typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]] ? 'p-0' : null)}`}>{(typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]]) ? <ReactExcelExport misReport excelData={assetReport} /> : 'Excel')}</button>

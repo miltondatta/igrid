@@ -199,6 +199,26 @@ export const sidenav = [
             }
         ]
     },
+    {
+        id: 20,
+        name: 'Report',
+        icon: 'icofont-chart-histogram',
+        subCat: true,
+        categories: [
+            {
+                id: 1,
+                name: 'Delivery Report (All)',
+                link: '/delivery-report/all',
+                icon: ""
+            },
+            {
+                id: 2,
+                name: 'Assets Report (All)',
+                link: '/asset-report/all',
+                icon: ""
+            },
+        ]
+    },
 ]
 
 export const systemAdmin = [
@@ -402,26 +422,6 @@ export const systemAdmin = [
                 link: '/admin/complaint-mapping',
                 icon: ""
             }
-        ]
-    },
-    {
-        id: 20,
-        name: 'Report',
-        icon: 'icofont-chart-histogram',
-        subCat: true,
-        categories: [
-            {
-                id: 1,
-                name: 'Delivery Report (All)',
-                link: '/admin/delivery-report/all',
-                icon: ""
-            },
-            {
-                id: 2,
-                name: 'Assets Report (All)',
-                link: '/admin/asset-report/all',
-                icon: ""
-            },
         ]
     },
 ];
