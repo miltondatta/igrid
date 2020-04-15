@@ -212,10 +212,10 @@ class Topnav extends Component {
                             <Link to={'/'}>
                                 <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
                             </Link>
-                            <span className={`text-white ui-nav-init-link ml-5 mr-2 `}>Site Map</span>
-                            <Link to={'/contact'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'contact' && 'link-active'}`}>Contact Us</span></Link>
+                            {/*<span className={`text-white ui-nav-init-link ml-5 mr-2 `}>Site Map</span>*/}
+                            <Link to={'/contact'}><span className={`text-white ui-nav-init-link ml-5 mx-2 ${moduleName[0] === 'contact' && 'link-active'}`}>Contact Us</span></Link>
                             <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
-                            <span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>
+                            {/*<span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>*/}
                         </div>
                         <div className={'text-white ui-user-nav h-100'}>
                             {toggleNotification && <div className="ui-notification" style={{right: userType === 0 ? '33.5%' : '33.5%'}}>
