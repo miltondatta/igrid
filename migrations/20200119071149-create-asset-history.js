@@ -9,13 +9,13 @@ module.exports = {
                 type          : Sequelize.INTEGER
             },
             asset_id    : {
-                type : Sequelize.STRING
+                type : Sequelize.INTEGER
             },
             assign_from : {
-                type : Sequelize.STRING
+                type : Sequelize.INTEGER
             },
             assign_to   : {
-                type : Sequelize.STRING
+                type : Sequelize.INTEGER
             },
             status      : {
                 type : Sequelize.INTEGER

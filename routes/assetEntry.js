@@ -543,6 +543,57 @@ route.get('/assets-product/all/:user_id/:category_id/:sub_category_id', async (r
     }
 });
 
+// Assets Sub Category List By Category ID
+route.get('/assets-sub-category/all/:category_id', async (req, res) => {
+    try {
+        const {category_id} = req.params;
+        const [data] = await db.query(`select distinct asset_sub_categories.id, asset_sub_categories.sub_category_name
+                        from assets
+                                 join asset_categories on assets.asset_category = asset_categories.id
+                                 join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                        where assets.asset_category = ${category_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Assets Product List By Category and Sub Category ID
+route.get('/assets-product/all/:category_id/:sub_category_id', async (req, res) => {
+    try {
+        const {category_id, sub_category_id} = req.params;
+        const [data] = await db.query(`select distinct products.id, products.product_name
+                        from assets
+                                 join asset_categories on assets.asset_category = asset_categories.id
+                                 join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                 join products on assets.product_id = products.id
+                        where assets.asset_category = ${category_id} 
+                        and assets.asset_sub_category = ${sub_category_id}`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
+// Get Assets By Category, Sub Category and Product ID
+route.post('/get/assets/by/category/sub-category/product', async (req, res) => {
+    try {
+        const {category_id, sub_category_id, product_id} = req.body;
+        const data = await db.query(`select * from assets
+                        where asset_category = ${category_id} 
+                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} and assets.is_disposal = false`);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
 // Get Assets By User, Category, Sub Category and Product ID
 route.post('/get/assets/by/credentials', async (req, res) => {
     try {

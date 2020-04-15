@@ -849,3 +849,48 @@ label:focus,
 .ck.ck-editor__editable_inline {
    height: 120px;
 }
+
+.asset-life-cycle-list-basic li {
+   padding-left: 10px;
+   padding-top: 6px;
+}
+
+.asset-life-cycle-list-nav {
+    background-color: #1985A2;
+ }
+
+.asset-life-cycle-list {
+   border-left: 2px solid #1985A2;
+}
+
+.asset-life-cycle-list li {
+   color: #1985A2;
+}
+
+.asset-life-cycle-deliver-list-nav {
+   background-color: #019683;
+}
+
+.asset-life-cycle-deliver-list {
+   border-left: 2px solid #019683;
+}
+
+.asset-life-cycle-deliver-list li {
+   color: #019683;
+}
+
+.asset-life-cycle-transfer-list-nav {
+   background-color: #6E9949;
+}
+
+.asset-life-cycle-transfer-list {
+   border-left: 2px solid #6E9949;
+}
+
+.asset-life-cycle-transfer-list li {
+   color: #6E9949;
+}
+
+.asset-life-cycle-repair-list-nav {
+   background-color: #bf7c33;
+}

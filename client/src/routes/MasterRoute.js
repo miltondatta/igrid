@@ -345,6 +345,10 @@ const AsyncComplaintReport = Loadable({
     loader: () => import('../containers/ComplaintReport.js'),
     loading: Loader,
 });
+const AsyncAssetLifeCycle = Loadable({
+    loader: () => import('../containers/AssetLifeCycle.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -462,6 +466,7 @@ class MasterRoute extends Component{
                             <Route exact path='/assign-complaint' component={AsyncAssignComplaint}/>
                             <Route exact path='/complaint/details/:id' component={AsyncComplaintDetails}/>
                             <Route exact path='/complaint-report' component={AsyncComplaintReport}/>
+                            <Route exact path='/asset-life-cycle' component={AsyncAssetLifeCycle}/>
 
 
                             {/*404 Page*/}

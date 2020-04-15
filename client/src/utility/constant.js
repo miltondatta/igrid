@@ -127,6 +127,12 @@ export const sidenav = [
                 link: '/asset-repair-list',
                 icon: ""
             },
+            {
+                id: 18,
+                name: 'Asset Life Cycle',
+                link: '/asset-life-cycle',
+                icon: ""
+            },
         ]
     },
     {
