@@ -16,7 +16,7 @@ const route = express.Router();
     4   =   Location Finder
 */
 
-route.get('/menu/get', async (req, res) => {
+route.get('/menu/get/:role_id', async (req, res) => {
     try {
         let mainMenus = await getMenuByParent(0);
         let subMenu = await getAllSubMenu();

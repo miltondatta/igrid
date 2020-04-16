@@ -6,7 +6,6 @@ import {
     documentNav,
     sidenav,
     systemAdmin,
-    misNav,
     apiUrl,
     locationCategory,
     misCategory,
@@ -22,7 +21,8 @@ class Topnav extends Component {
             currentHover: '',
             notification: '',
             showUserOption: false,
-            toggleNotification: false
+            toggleNotification: false,
+            menuData: []
         }
     }
 
@@ -42,7 +42,8 @@ class Topnav extends Component {
     }
 
     componentDidMount() {
-        this.getNotification()
+        this.getNotification();
+        this.getMenu();
     }
 
     getNotification = () => {
@@ -57,6 +58,16 @@ class Topnav extends Component {
                     })
                 }
 
+            })
+    }
+
+    getMenu = () => {
+        const { id, role_id } = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        id !== null && Axios.get(apiUrl() + 'menu/get/' + role_id)
+            .then(res => {
+                this.setState({
+                    menuData: res.data
+                })
             })
     }
 
@@ -182,7 +193,7 @@ class Topnav extends Component {
 
     render() {
         const {home} = this.props
-        const {showUserOption, toggleNotification, notification} = this.state
+        const {showUserOption, toggleNotification, notification, menuData} = this.state 
         const moduleName = window.location.pathname.replace('/', '').split('/')
         let breadCrumb = moduleName.map((item, index) => (
             <>
