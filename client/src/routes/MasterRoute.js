@@ -445,16 +445,16 @@ class MasterRoute extends Component{
                             <Route exact path='/admin/depreciation-methods' component={AsyncDepMethod}/>
                             <Route exact path='/asset-reevaluation' component={AsyncAssetReEvaluation}/>
                             <Route exact path='/documents/document-list' component={AsyncDocumentList}/>
+                            <Route exact path='/delivery-report/all' component={AsyncAllDeliveryReport}/>
                             <Route exact path='/asset-repair-list' component={AsyncRepairMaintenanceList}/>
                             <Route exact path='/mis/fortnightly-report' component={AsyncFortnightlyReport}/>
-                            <Route exact path='/asset-transfer-request' component={AsyncAssetTransferRequest}/>
                             <Route exact path='/admin/complain-category' component={AsyncComplaintCategory}/>
                             <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>
                             <Route exact path='/asset-disposal-report' component={AsyncAssetDisposalReport}/>
                             <Route exact path='/documents/details/:id' component={AsyncDocumentListDetails}/>
                             <Route exact path='/delivery-received' component={AsyncDeliveryReceivedContainer}/>
                             <Route exact path='/admin/user-associate-role' component={AsyncUserAssociateRole}/>
-                            <Route exact path='/delivery-report/all' component={AsyncAllDeliveryReport}/>
+                            <Route exact path='/asset-transfer-request' component={AsyncAssetTransferRequest}/>
                             <Route exact path='/documents/document-category' component={AsyncDocumentCategory}/>
                             <Route exact path='/admin/mis/indicator/list' component={AsyncIndicatorSubCategory}/>
                             <Route exact path='/asset-disposal-list' component={AsyncDisposalAssetListContainer}/>
