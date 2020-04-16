@@ -186,7 +186,7 @@ class MonthlyReportComponent extends Component {
                 {error &&
                 <ErrorModal ops errorMessage={errorMessage} />
                 }
-                <div className="ui-mis-report">
+                <div className="ui-mis-report ui-other-report">
                     <div className="ui-top-container">
                         <div className={'ui-selects-container'}>
                             {locations}
@@ -212,8 +212,8 @@ class MonthlyReportComponent extends Component {
                             </div>
                         </div>
                         <div className="ui-btn-container rounded">
-                            <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
-                            <button className={'mx-2 report-reset-btn'}>Reset</button>
+                            <button onClick={this.handleSubmit} className={'report-submit-btn'}>Submit</button>
+                            <button className={'report-reset-btn'}>Reset</button>
                             <div className={'position-relative'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>

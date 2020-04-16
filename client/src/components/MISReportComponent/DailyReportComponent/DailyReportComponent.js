@@ -191,7 +191,7 @@ class DailyReportComponent extends Component {
                 {error &&
                     <ErrorModal ops errorMessage={errorMessage}/>
                 }
-                <div className="ui-mis-report">
+                <div className="ui-mis-report ui-other-report">
                     <div className="ui-top-container">
                         <div className={'ui-selects-container'}>
                             {locations}
@@ -217,8 +217,8 @@ class DailyReportComponent extends Component {
                             </div>
                         </div>
                         <div className="ui-btn-container rounded">
-                            <button onClick={this.handleSubmit} className={'mx-2 report-submit-btn'}>Submit</button>
-                            <button className={'mx-2 report-reset-btn'} onClick={() => {
+                            <button onClick={this.handleSubmit} className={'report-submit-btn'}>Submit</button>
+                            <button className={'report-reset-btn'} onClick={() => {
                                 window.location.reload()
                             }}>Reset
                             </button>

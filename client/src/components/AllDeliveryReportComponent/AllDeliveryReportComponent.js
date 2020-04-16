@@ -159,7 +159,7 @@ class AllDeliveryReportComponent extends Component {
                 {error &&
                 <ErrorModal ops errorMessage={errorMessage}/>
                 }
-                <div className="ui-mis-report">
+                <div className="ui-mis-report ui-other-report">
                     <div className="ui-top-container">
                         <div className={'ui-selects-container'}>
                             {locations}
