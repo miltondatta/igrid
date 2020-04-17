@@ -8,6 +8,7 @@ import AssetListByCategorySubCategoryProductOptions from "../../utility/componen
 import ErrorModal from "../../utility/error/errorModal";
 import Spinner from "../../layouts/Spinner";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import moment from "moment";
 
 class AssetLifeCycleComponent extends Component {
     constructor(props) {
@@ -213,7 +214,7 @@ class AssetLifeCycleComponent extends Component {
                         </ul>
 
                         <nav className="navbar pl-2 asset-life-cycle-deliver-list-nav">
-                            <p className="f-weight-500 f-20px m-0 text-light"><i className="icofont-clock-time"/> Deliver History</p>
+                            <p className="f-weight-500 f-20px m-0 text-light"><i className="icofont-clock-time"/> Delivery History</p>
                         </nav>
                         <ul className={'ul-list-unstyled asset-life-cycle-deliver-list asset-life-cycle-list-basic ml-3'}>
                             <li> <i className="icofont-location-pin"/> Deliver From {assetLifeCycleData.asset_delivery !== undefined ? <><span className={'font-weight-bold'}>-</span> {assetLifeCycleData.asset_delivery.deliver_from ? assetLifeCycleData.asset_delivery.deliver_from : 'N/A'}</> : ''}</li>
@@ -223,29 +224,84 @@ class AssetLifeCycleComponent extends Component {
                         <nav className="navbar pl-2 asset-life-cycle-transfer-list-nav">
                             <p className="f-weight-500 f-20px m-0 text-light"><i className="fas fa-arrows-alt-h"/> Transfer History</p>
                         </nav>
-                        <ul className={'ul-list-unstyled asset-life-cycle-transfer-list asset-life-cycle-list-basic ml-3'}>
-                            {assetLifeCycleData.asset_transfer !== undefined ? assetLifeCycleData.asset_transfer.length > 0 && assetLifeCycleData.asset_transfer.map((item, index) => (
-                                <React.Fragment key={index}>
-                                    <li><i className="icofont-location-pin"/> Transfer From {item.transfer_from !== undefined ? <><span className={'font-weight-bold'}>-</span> {item.transfer_from}</> : ''}</li>
-                                    <li><i className="icofont-location-pin"/> Transfer To {item.transfer_to !== undefined ? <><span className={'font-weight-bold'}>-</span> {item.transfer_to}</> : ''}</li>
-                                </React.Fragment>
-                            )) :
-                                <div>
-                                    <li><i className="icofont-location-pin"/> Transfer From</li>
-                                    <li><i className="icofont-location-pin"/> Transfer To</li>
-                                </div>
-                            }
-                        </ul>
+                        <table className="table table-bordered asset-life-cycle-transfer-table">
+                            <thead>
+                                <tr>
+                                    <th>SERIAL NO</th>
+                                    <th>TRANSFER FROM</th>
+                                    <th>TRANSFER TO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {isLoading ? <Spinner/> : assetLifeCycleData.asset_transfer !== undefined ? assetLifeCycleData.asset_transfer.length > 0 ? assetLifeCycleData.asset_transfer.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.transfer_from}</td>
+                                    <td>{item.transfer_to}</td>
+                                </tr>
+                            )) : <tr><td className={'no-project text-center'} colSpan={3}><i className="icofont-exclamation-circle"/> Currently There are No Transfer Asset</td></tr>
+                                : <tr><td className={'no-project text-center'} colSpan={3}><i className="icofont-exclamation-circle"/> Currently There are No Transfer Asset</td></tr>}
+                            </tbody>
+                        </table>
 
                         <nav className="navbar pl-2 asset-life-cycle-repair-list-nav">
-                            <p className="f-weight-500 f-20px m-0 text-light"><i className="icofont-ui-settings"/> Maintenance & Repair</p>
+                            <p className="f-weight-500 f-20px m-0 text-light"><i className="icofont-ui-settings"/> Maintenance & Repair History</p>
                         </nav>
-                        {isLoading ? <Spinner/> : assetRepairMaintenanceTableData.length > 0 ? <>
-                            <PrimeDataTable
-                                data={assetRepairMaintenanceTableData}
-                                file={this.fileDownload}
-                            />
-                        </> : <h4 className={'no-project px-2 mt-2'}><i className="icofont-exclamation-circle"/> Currently There are No Maintenance & Repair Asset</h4>}
+                        <table className="table table-bordered asset-life-cycle-repair-table">
+                            <thead>
+                                <tr>
+                                    <th>LOCATION</th>
+                                    <th>DESIGNATION</th>
+                                    <th>USER</th>
+                                    <th>COST</th>
+                                    <th>DETAILS</th>
+                                    <th>FILE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {isLoading ? <Spinner/> : assetRepairMaintenanceTableData.length > 0 ? assetRepairMaintenanceTableData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.location}</td>
+                                    <td>{item.designation}</td>
+                                    <td>{item.user}</td>
+                                    <td>{item.cost}</td>
+                                    <td>{item.details}</td>
+                                    <td onClick={ e => {this.fileDownload(e, item.file_name)}}>
+                                        <span className="cursor-pointer w-125px "><i className="fas fa-download"/></span>
+                                    </td>
+                                </tr>
+                            )) : <tr><td className={'no-project text-center'} colSpan={6}><i className="icofont-exclamation-circle"/> Currently There are No Maintenance & Repair Asset</td></tr>}
+                            </tbody>
+                        </table>
+
+                        <nav className="navbar pl-2 asset-life-cycle-disposal-list-nav">
+                            <p className="f-weight-500 f-20px m-0 text-light"><i className="icofont-basket"/> Disposal History</p>
+                        </nav>
+                        <table className="table table-bordered asset-life-cycle-disposal-table">
+                            <thead>
+                            <tr>
+                                <th>LOCATION</th>
+                                <th>DESIGNATION</th>
+                                <th>DISPOSAL FROM</th>
+                                <th>DISPOSAL TO</th>
+                                <th>REASON</th>
+                                <th>DATE</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {isLoading ? <Spinner/> : assetLifeCycleData.asset_disposal !== undefined ? assetLifeCycleData.asset_disposal.length > 0 ? assetLifeCycleData.asset_disposal.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.location}</td>
+                                        <td>{item.designation}</td>
+                                        <td>{item.disposal_from}</td>
+                                        <td>{item.disposal_to}</td>
+                                        <td>{item.reason}</td>
+                                        <td>{moment(item.date).format('YYYY-MM-DD')}</td>
+                                    </tr>
+                                )) : <tr><td className={'no-project text-center'} colSpan={7}><i className="icofont-exclamation-circle"/> Currently There are No Disposal Asset</td></tr>
+                                : <tr><td className={'no-project text-center'} colSpan={7}><i className="icofont-exclamation-circle"/> Currently There are No Disposal Asset</td></tr>}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </>

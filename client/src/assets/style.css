@@ -891,6 +891,22 @@ label:focus,
    color: #6E9949;
 }
 
+.asset-life-cycle-disposal-list-nav {
+   background-color: #aea73a;
+}
+
 .asset-life-cycle-repair-list-nav {
    background-color: #bf7c33;
+}
+
+.asset-life-cycle-transfer-table, .asset-life-cycle-transfer-table td {
+   color: #6E9949;
+}
+
+.asset-life-cycle-repair-table, .asset-life-cycle-repair-table td {
+   color: #bf7c33;
+}
+
+.asset-life-cycle-disposal-table, .asset-life-cycle-disposal-table td {
+   color: #aea73a;
 }
