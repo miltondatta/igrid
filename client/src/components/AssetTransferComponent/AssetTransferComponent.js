@@ -233,11 +233,13 @@ class AssetTransferComponent extends Component {
     getSubLocation = id => {
         const {subLocation} = this.state;
         if (subLocation.filter(item => item.parent_id === parseInt(id)).length) return false;
-        axios.get(apiUrl() + 'locations/' + id)
+        axios.get(apiUrl() + 'locations/render/' + id)
             .then(resData => {
-                this.setState({
-                    subLocation: [...subLocation, ...resData.data]
-                })
+                if (resData.data.length > 0) {
+                    this.setState({
+                        subLocation: [...subLocation, ...resData.data]
+                    })
+                }
             })
     };
 
@@ -262,7 +264,7 @@ class AssetTransferComponent extends Component {
             <div className="px-1 mb-2" key={index}>
                 <label className={'ui-custom-label'}>Select Sub Location {item.location_name}</label>
                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
-                    <option value="">Select Sub Location {item.location_name}</option>
+                    <option value="">Select Sub Location {item.hierarchy_name}</option>
                     <LocationsOptions selectedId={item.parent_id}/>
                 </select>
             </div>));
@@ -346,7 +348,7 @@ class AssetTransferComponent extends Component {
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select User</option>
-                                <UserOptionsByLocation location_id={parent_id && parent_id - 1}/>
+                                <UserOptionsByLocation location_id={parent_id && parent_id}/>
                             </select>
                             {errorDict && !errorDict.user_id &&
                             <span className="error">User Field is required</span>

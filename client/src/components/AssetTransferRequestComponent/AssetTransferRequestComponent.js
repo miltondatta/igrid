@@ -20,6 +20,8 @@ class AssetTransferRequestComponent extends Component {
             successMessage: '',
             error: false,
             errorMessage: '',
+            category_id: '',
+            sub_category_id: '',
             details: '',
             errorDict: null,
             subLocation: [],
@@ -72,17 +74,6 @@ class AssetTransferRequestComponent extends Component {
         if (name === 'parent_id') this.getSubLocation(value);
     };
 
-    getSubLocation = id => {
-        const {subLocation} = this.state;
-        if (subLocation.filter(item => item.parent_id === parseInt(id)).length) return false;
-        axios.get(apiUrl() + 'locations/' + id)
-            .then(resData => {
-                this.setState({
-                    subLocation: [...subLocation, ...resData.data]
-                })
-            })
-    };
-
     getFormData = () => {
         const {category_id, sub_category_id, user: {id}, details} = this.state;
 
@@ -115,25 +106,13 @@ class AssetTransferRequestComponent extends Component {
         });
 
         this.setState({isLoading: true}, () => {
-            axios.post(apiUrl() + 'assets-entry/all/by/credentials', this.getFormData())
+            axios.get(apiUrl() + `cat-subcat-name/${newTransfer.category_id}/${newTransfer.sub_category_id}`)
                 .then(res => {
-                    if (res.data[0].length < 0) return this.setState({
-                        error: true,
-                        errorMessage: 'There is no asset found for Transfer!',
-                        isLoading: false
-                    }, () => {
-                        setTimeout(() => {
-                            this.setState({
-                                error: false
-                            })
-                        }, 2300);
-                    });
                     this.setState({
-                        transferData: [...transferData, ...res.data[0]],
+                        transferData: [...transferData, res.data],
                         isLoading: false
                     }, () => {
                         if (user_id) Object.assign(newTransfer, {request_to: user_id});
-
                         this.setState({
                             transferCredential: [...transferCredential, newTransfer],
                             parent_id: 1,
@@ -141,11 +120,11 @@ class AssetTransferRequestComponent extends Component {
                             subLocation: []
                         }, () => {
                             let newTransferObj = {};
-                            this.state.transferData.length > 0 && this.state.transferData.map(item => {
+                            this.state.transferData.length > 0 && this.state.transferData.map((item, index) => {
                                 const newObj = {
-                                    id: item.id,
-                                    category: item.category,
-                                    sub_category: item.sub_category,
+                                    id: index,
+                                    category: item[0].category_name,
+                                    sub_category: item[0].sub_category,
                                     details: this.state.details
                                 };
                                 Object.assign(newTransferObj, newObj);
@@ -154,7 +133,16 @@ class AssetTransferRequestComponent extends Component {
                             let transferTableData = [newTransferObj];
                             this.setState({
                                 transferTableData: [...this.state.transferTableData, ...transferTableData]
-                            }, () => this.getSubLocation(this.state.parent_id))
+                            }, () => {
+                                console.log(transferTableData, 138)
+                                this.setState({
+                                    category_id: '',
+                                    sub_category_id: '',
+                                    parent_id: '',
+                                    details: '',
+                                    user_id: ''
+                                })
+                            })
                         })
                     })
                 })
@@ -170,15 +158,37 @@ class AssetTransferRequestComponent extends Component {
         console.log(transferCredential, 178)
     }
 
+    getSubLocation = id => {
+        const {subLocation, hierarchy} = this.state;
+        if (subLocation.filter(item => item.parent_id === parseInt(id)).length) return false;
+        axios.get(apiUrl() + 'locations/render/' + id)
+            .then(resData => {
+                if (resData.data.length > 0) {
+                    this.setState({
+                        subLocation: [...subLocation, ...resData.data],
+                    })
+                }
+            })
+    };
+
+    cancelTransfer = id => {
+        const {transferData, transferCredential, transferTableData} = this.state;
+        this.setState({
+            transferData: transferData.filter((item, index) => index !== id),
+            transferCredential: transferCredential.filter((item, index) => index !== id),
+            transferTableData: transferTableData.filter((item, index) => index !== id)
+        });
+    };
+
     render() {
         const {
-            category_id, sub_category_id, success, successMessage, error, errorMessage, details,
+            category_id, sub_category_id, success, successMessage, error, errorMessage, details, transferCredential,
             errorDict, isLoading, transferData, parent_id, subLocation, user_id, transferTableData
         } = this.state;
 
         let subLocationItem = subLocation.length > 0 && subLocation.map((item, index) => (
             <div className="px-1 mb-2" key={index}>
-                <label className={'ui-custom-label'}>Select Sub Location {item.location_name}</label>
+                <label className={'ui-custom-label'}>Select Sub Location {item.hierarchy_name}</label>
                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
                     <option value="">Select Sub Location {item.location_name}</option>
                     <LocationsOptions selectedId={item.parent_id}/>
@@ -243,7 +253,7 @@ class AssetTransferRequestComponent extends Component {
                                     onChange={this.handleChange}
                                     className={`ui-custom-input ${errorDict && !errorDict.user_id && 'is-invalid'}`}>
                                 <option value="">Select User</option>
-                                <UserOptionsByLocation location_id={parent_id && parent_id - 1}/>
+                                <UserOptionsByLocation location_id={parent_id && parent_id}/>
                             </select>
                         </div>
                         <button onClick={this.addTransfer} className="submit-btn-normal mt-5">Add Request</button>
@@ -276,14 +286,14 @@ class AssetTransferRequestComponent extends Component {
                                 </div>
                                 <div className="modal-body">
                                     <p>Are you sure you want to
-                                        transfer {transferData.length > 1 ? 'these assets' : 'this asset'} ?</p>
+                                        request {transferCredential.length > 1 ? 'these assets' : 'this asset'} ?</p>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary"
                                             data-dismiss="modal">Cancel
                                     </button>
                                     <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                            onClick={this.handleSubmit}>Transfer Now
+                                            onClick={this.handleSubmit}>Request Now
                                     </button>
                                 </div>
                             </div>

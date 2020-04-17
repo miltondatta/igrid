@@ -354,6 +354,23 @@ route.post('/assets-entry/all/by/credentials', async (req, res) => {
     }
 });
 
+// Get Category Name and Subcategory Name
+route.get('/cat-subcat-name/:catId/:subId', async (req, res) => {
+    try {
+        console.log(req.params.catId, req.params.subId, 360)
+        const [data, metaData] = await db.query(`
+            Select
+                (Select category_name from asset_categories where id = ${req.params.catId}),
+                (Select sub_category_name from asset_sub_categories where id = ${req.params.subId}) as sub_category
+        `);
+
+        return res.status(200).json(data);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json(err);
+    }
+});
+
 // Assets Own Stock Data By User ID
 route.post('/assets-own-stock/all/by/credentials', async (req, res) => {
     try {
