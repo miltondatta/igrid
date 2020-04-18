@@ -602,7 +602,7 @@ route.post('/get/assets/by/category/sub-category/product', async (req, res) => {
         const {category_id, sub_category_id, product_id} = req.body;
         const data = await db.query(`select * from assets
                         where asset_category = ${category_id} 
-                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id} and assets.is_disposal = false`);
+                        and asset_sub_category = ${sub_category_id} and product_id = ${product_id}`);
 
         return res.status(200).json(data);
     } catch (err) {

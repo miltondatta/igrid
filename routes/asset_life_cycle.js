@@ -19,12 +19,33 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
               and status = 3
     `);
 
+    const [asset_disposal_from] = await db.query(`
+        select locations.location_name,
+               user_roles.role_name,
+               concat(users."firstName", ' ', users."lastName") as disposal_by,
+               assets.disposal_date,
+               assets.disposal_reason
+        from assets
+                 inner join locations on assets.disposal_by_location = locations.id
+                 inner join user_roles on assets.disposal_by_role_id = user_roles.id
+                 inner join users on assets.disposal_by = users.id
+        where assets.id = ${asset_id};
+    `);
+
+    const [asset_disposal_to] = await db.query(`
+        select concat(users."firstName", ' ', users."lastName") as disposal_to
+            from asset_histories
+                     left join users on asset_histories.assign_to = users.id
+            where asset_id = ${asset_id}
+              and assign_from = ${asset.disposal_by}
+              and status = 5
+    `);
+
     const [asset_transfer_from] = await db.query(`
         select concat(users."firstName", ' ', users."lastName") as assign_from
             from asset_histories
                      left join users on asset_histories.assign_from = users.id
             where asset_id = ${asset_id}
-              and assign_to = ${asset.assign_to}
               and status = 4
     `);
 
@@ -33,7 +54,6 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
             from asset_histories
                      left join users on asset_histories.assign_to = users.id
             where asset_id = ${asset_id}
-              and assign_to = ${asset.assign_to}
               and status = 4
     `);
 
@@ -70,7 +90,7 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
     `);
 
     const data = asset_data.length > 0 && asset_data.map((item, index) => {
-        let obj, asset_transfer;
+        let obj, asset_transfer, asset_disposal;
         obj = {
             cost_of_purchase: item.cost_of_purchase,
             installation_cost: item.installation_cost,
@@ -88,6 +108,17 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
             }
         };
 
+        asset_disposal = asset_disposal_from.length > 0 ? asset_disposal_from.map((item, key) => {
+            return {
+                location: item.location_name,
+                designation: item.role_name,
+                date: item.disposal_date,
+                reason: item.disposal_reason,
+                disposal_from: item.disposal_by,
+                disposal_to: asset_disposal_to.length > 0 ? asset_disposal_to[key].disposal_to : ''
+            };
+        }) : [];
+
         asset_transfer = asset_transfer_from.length > 0 ? asset_transfer_from.map((val, key) => {
             return {
                 transfer_from: val.assign_from,
@@ -95,6 +126,7 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
             };
         }) : [];
 
+        obj.asset_disposal = asset_disposal;
         obj.asset_transfer = asset_transfer;
         obj.asset_repair_maintenance = asset_repair_maintenance;
         return obj;
