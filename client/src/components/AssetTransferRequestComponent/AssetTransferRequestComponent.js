@@ -154,8 +154,34 @@ class AssetTransferRequestComponent extends Component {
 
     handleSubmit = () => {
         const {transferCredential} = this.state;
-
         console.log(transferCredential, 178)
+        axios.post(apiUrl() + 'transfer-request/entry', transferCredential)
+            .then(res => {
+                if (res.data.status){
+                    this.setState({
+                        transferTableData: [],
+                        success: true,
+                        successMessage: res.data.message,
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false,
+                            })
+                        }, 2300)
+                    })
+                } else {
+                    this.setState({
+                        error: true,
+                        errorMessage: res.data.message,
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                error: false,
+                            })
+                        }, 2300)
+                    })
+                }
+            })
     }
 
     getSubLocation = id => {

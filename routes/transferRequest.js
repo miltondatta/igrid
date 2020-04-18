@@ -34,17 +34,23 @@ route.put('/transfer-request/update/:id', (req,res,next) => {
 
 // Create
 route.post('/transfer-request/entry', (req,res,next) => {
-    const {details, request_from, request_to, category_id, sub_category_id} = req.body
-    if(details === '' || request_from === '' || request_to === '' || category_id === '' || sub_category_id === '') {
-        res.status(200).json({message: 'All fields required!'})
-    } else {
-        TransferRequest.create(req.body)
-            .then(resData => {
-                res.status(200).json(resData)
-            })
-            .catch(err => {
-                res.status(200).json({message: 'Something went wrong', err})
-            })
+    console.log(req.body, 37)
+    if (req.body.length > 0) {
+        req.body.forEach(item => {
+            const {details, request_from, request_to, category_id, sub_category_id} = item
+            if(details === '' || request_from === '' || request_to === '' || category_id === '' || sub_category_id === '') {
+                res.status(200).json({message: 'All fields required!'})
+            } else {
+                TransferRequest.create(item)
+                    .then(resData => {
+                        res.status(200).json({message: 'Request Sent Successfully!', status: true})
+                    })
+                    .catch(err => {
+                        console.log(err, 48)
+                        res.status(200).json({message: 'Something went wrong', err})
+                    })
+            }
+        })
     }
 })
 
