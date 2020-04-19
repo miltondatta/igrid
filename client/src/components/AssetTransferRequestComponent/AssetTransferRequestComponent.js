@@ -23,6 +23,7 @@ class AssetTransferRequestComponent extends Component {
             category_id: '',
             sub_category_id: '',
             details: '',
+            quantity: '',
             errorDict: null,
             subLocation: [],
             transferData: [],
@@ -38,14 +39,15 @@ class AssetTransferRequestComponent extends Component {
 
     validate = () => {
         const {
-            category_id, sub_category_id, parent_id, user_id, details} = this.state;
+            category_id, sub_category_id, parent_id, user_id, details, quantity} = this.state;
 
         let errorDict = {
             category_id: typeof category_id !== 'undefined' && category_id !== '',
             sub_category_id: typeof sub_category_id !== 'undefined' && sub_category_id !== '',
             parent_id: typeof parent_id !== 'undefined' && parent_id !== '',
             details: typeof details !== 'undefined' && details !== '',
-            user_id: typeof user_id !== 'undefined' && user_id !== ''
+            user_id: typeof user_id !== 'undefined' && user_id !== '',
+            quantity: typeof quantity !== 'undefined' && quantity !== ''
         };
 
         this.setState({errorDict});
@@ -75,12 +77,13 @@ class AssetTransferRequestComponent extends Component {
     };
 
     getFormData = () => {
-        const {category_id, sub_category_id, user: {id}, details} = this.state;
+        const {category_id, sub_category_id, user: {id}, details, quantity} = this.state;
 
         return {
             request_from: id,
             category_id,
             details,
+            quantity,
             sub_category_id,
         }
     };
@@ -134,7 +137,6 @@ class AssetTransferRequestComponent extends Component {
                             this.setState({
                                 transferTableData: [...this.state.transferTableData, ...transferTableData]
                             }, () => {
-                                console.log(transferTableData, 138)
                                 this.setState({
                                     category_id: '',
                                     sub_category_id: '',
@@ -154,7 +156,6 @@ class AssetTransferRequestComponent extends Component {
 
     handleSubmit = () => {
         const {transferCredential} = this.state;
-        console.log(transferCredential, 178)
         axios.post(apiUrl() + 'transfer-request/entry', transferCredential)
             .then(res => {
                 if (res.data.status){
@@ -208,7 +209,7 @@ class AssetTransferRequestComponent extends Component {
 
     render() {
         const {
-            category_id, sub_category_id, success, successMessage, error, errorMessage, details, transferCredential,
+            category_id, sub_category_id, success, successMessage, error, errorMessage, details, transferCredential, quantity,
             errorDict, isLoading, transferData, parent_id, subLocation, user_id, transferTableData
         } = this.state;
 
@@ -264,6 +265,15 @@ class AssetTransferRequestComponent extends Component {
                             />
                         </div>
                         <div className="px-1 mb-2">
+                            <label className={'ui-custom-label'}>Quantity</label>
+                            <input name={'quantity'}
+                                   value={quantity}
+                                   onChange={this.handleChange}
+                                   className={`ui-custom-input ${errorDict && !errorDict.quantity && 'is-invalid'}`}
+                                   placeholder={'Quantity'}
+                            />
+                        </div>
+                        <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Parent Location</label>
                             <select name={'parent_id'}
                                     onChange={this.handleChange}
@@ -286,7 +296,7 @@ class AssetTransferRequestComponent extends Component {
                     </div>
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">Request List</p>
                         </nav>
                         {isLoading ? <Spinner/> : transferTableData.length > 0 ? <>
                             <PrimeDataTable

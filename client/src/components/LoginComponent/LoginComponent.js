@@ -46,7 +46,6 @@ class LoginComponent extends Component {
 
         Axios.get('https://ipapi.co/json/')
             .then(res => {
-                console.log(res, 28)
                 const payload = {
                     email,
                     password,

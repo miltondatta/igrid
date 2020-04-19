@@ -67,7 +67,6 @@ class DeliveryReceivedComponent extends Component {
         }, () => {
             axios.post(apiUrl() + '/my-received-requisition-details/by/credentials', {user_id: this.state.user.id})
                 .then(res => {
-                    console.log(res.data, 70)
                     this.setState({
                         viewDetails: true,
                         deliveryReceivedDetailsData: res.data.resData,
@@ -99,7 +98,7 @@ class DeliveryReceivedComponent extends Component {
                                 };
                                 printData.push(newObj);
                             });
-                            console.log(printData);
+
                             this.setState({printData});
                         });
                     })

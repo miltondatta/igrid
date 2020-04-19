@@ -33,7 +33,6 @@ class AssetReqHomeComponent extends Component {
         Axios.get(apiUrl() + 'requisition/total/' + id)
             .then(res => {
                 if (res.data.status){
-                    console.log(res, 47)
                     this.setState({
                         pendingRequisition: res.data.total[0].pending,
                         inProgressRequisition: res.data.total[0].in_progress,

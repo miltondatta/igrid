@@ -24,7 +24,6 @@ class RequisitionStatusComponent extends Component {
 
         Axios.get(apiUrl() + 'requisition-master/my-req/' + id)
             .then(res => {
-                console.log(res, 23)
                 this.setState({
                     requisitionStatus: res.data
                 })
@@ -34,7 +33,6 @@ class RequisitionStatusComponent extends Component {
     assetList = (id) => {
         Axios.get(apiUrl() + 'requisition-details/status/' + id)
             .then(res => {
-                console.log(res, 23)
                 this.setState({
                     viewDetails: true,
                     requisitionDetailsStatus: res.data

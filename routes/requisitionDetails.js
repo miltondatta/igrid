@@ -200,8 +200,6 @@ route.get('/requisition-details/details', async (req,res,next) => {
                     WHERE requisition_details.requisition_id = ${requisition_id}
     `)
 
-    console.log(ress[0].assId,ress[0].subassid, 202)
-
     const [av_assets, metaData] = await db.query(`
         SELECT COUNT(assets.id) as av_assets from assets
             WHERE assets.assign_to = ${id} AND assets.asset_category = ${ress[0].assid} AND assets.asset_sub_category = ${ress[0].subassid}

@@ -1,18 +1,31 @@
 const db = require('../config/db')
+const Status = require('./status')
 const Sequelize = require('sequelize')
 const UserRoles = require('./userroles')
 const AssetCategory = require('./asset/assetCategory')
 const AssetSubCategory = require('./asset/assetSubCategory')
 
 
-const TransferRequest = db.define('transferRequests', {
+const TransferRequest = db.define('transfer_requests', {
   details: {
     type: Sequelize.STRING
+  },
+  quantity: {
+    type: Sequelize.INTEGER
   },
   request_from: {
     type: Sequelize.INTEGER,
     references: {
       model: UserRoles,
+      key: 'id'
+    }
+  },
+  status: {
+    allowNull: false,
+    defaultValue: 6,
+    type: Sequelize.INTEGER,
+    references: {
+      model: Status,
       key: 'id'
     }
   },

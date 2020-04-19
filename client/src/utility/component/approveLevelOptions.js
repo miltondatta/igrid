@@ -17,7 +17,6 @@ class ApproveLevelOptions extends Component {
     getData = () => {
         Axios.get(apiUrl() + 'approval_level/options')
             .then(resData => {
-                console.log(resData.data, 17)
                 this.setState({
                     data: resData.data
                 })

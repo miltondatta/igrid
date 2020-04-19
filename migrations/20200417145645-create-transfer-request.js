@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('transferRequests', {
+    return queryInterface.createTable('transfer_requests', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,6 +10,18 @@ module.exports = {
       },
       details: {
         type: Sequelize.STRING
+      },
+      quantity: {
+        type: Sequelize.INTEGER
+      },
+      status: {
+        allowNull: false,
+        defaultValue: 6,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'statuses',
+          key: 'id'
+        }
       },
       request_to     : {
         type       : Sequelize.INTEGER,

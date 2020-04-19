@@ -110,7 +110,6 @@ class ChallanComponent extends Component {
     }
 
     assetList = (id) => {
-        console.log(id)
         Axios.get(apiUrl() + 'assets-entry/assets/' + id)
             .then(resData => {
                 if (resData.data.status) {
@@ -140,7 +139,6 @@ class ChallanComponent extends Component {
         Axios.get(apiUrl() + 'assets-entry/' + endpoint + id)
             .then(resData => {
                 let data = resData.data[0]
-                console.log(data);
                 if (endpoint === 'specific-challan/') {
                     this.setState({
                         challan_id: id,
@@ -157,7 +155,6 @@ class ChallanComponent extends Component {
                         added_by: data.added_by,
                         challanComments: data.comments
                     })
-                    console.log(resData.data, 116)
                 } else {
                     this.setState({
                         targetAsset: resData.data,
@@ -366,7 +363,6 @@ class ChallanComponent extends Component {
     }
 
     addProduct = () => {
-        console.log(this.validate('assets'), 349)
         if (Object.values(this.validate('assets')).includes(false)) {
             return
         }

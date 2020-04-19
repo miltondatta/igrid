@@ -179,6 +179,10 @@ input[type=date],
    margin-bottom: 0;
 }
 
+select:disabled{
+   background: #e8f5ff;
+}
+
 .ui-custom-file .bottom{
    position: absolute;
    font-size: 11px;

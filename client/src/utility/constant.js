@@ -100,7 +100,7 @@ export const sidenav = [
             {
                 id: 14,
                 name: 'Incoming Transfer Request',
-                link: '/asset-transfer',
+                link: '/incoming-transfer-req',
                 icon: ""
             },
             {

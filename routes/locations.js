@@ -133,7 +133,6 @@ route.post('/locations/entry', (req,res,next) => {
     if (location_name !== '' && location_code !== '' && hierarchy !== '') {
         Locations.findAll({where: {location_code, hierarchy}})
             .then(resData => {
-                console.log(resData, 46)
                 if (resData.length === 0) {
                     Locations.create(req.body)
                         .then(resData => {

@@ -48,7 +48,6 @@ class FortnightlyReportComponent extends Component {
         }
         Axios.get(apiUrl() + 'mis/basic/report/daily' , {params: data})
             .then(res => {
-                console.log(res.data)
                 this.setState({
                     dailyReport: res.data
                 })

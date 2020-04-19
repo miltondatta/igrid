@@ -51,7 +51,6 @@ route.post('/vendors/entry', (req,res,next) => {
         } else {
             Vendors.findAll({where: {vendor_name}})
                 .then(resData => {
-                    console.log(resData, 53)
                     if(resData.length > 0) {
                         res.status(200).json({message: 'Vendor Exists'})
                     } else {

@@ -122,7 +122,6 @@ class LostAssetsComponent extends Component {
         Axios.post(apiUrl() + 'lost-assets/entry', data)
             .then(resData => {
                 if (resData.data.status) {
-                    console.log(resData, 186)
                     this.setState({
                         success: true,
                         successMessage: resData.data.message
