@@ -144,6 +144,7 @@ class AssetTransferRequestComponent extends Component {
                                     category_id: '',
                                     sub_category_id: '',
                                     parent_id: '',
+                                    quantity: '',
                                     details: '',
                                     user_id: ''
                                 })
@@ -161,10 +162,8 @@ class AssetTransferRequestComponent extends Component {
         const {transferCredential} = this.state;
         let totalReceiver = []
         transferCredential.forEach(item => {
-            if(!totalReceiver.includes(item.request_to)) totalReceiver.push(item.request_to)
+            if(!totalReceiver.includes(item.request_to)) totalReceiver.push({request_to: item.request_to, status: true})
         })
-        socket.emit('transferRequestSubmit', {request_to: totalReceiver})
-        return
         axios.post(apiUrl() + 'transfer-request/entry', transferCredential)
             .then(res => {
                 if (res.data.status){
@@ -173,6 +172,7 @@ class AssetTransferRequestComponent extends Component {
                         success: true,
                         successMessage: res.data.message,
                     }, () => {
+                        socket.emit('transferRequestSubmit', {request_to: totalReceiver})
                         setTimeout(() => {
                             this.setState({
                                 success: false,
@@ -285,6 +285,7 @@ class AssetTransferRequestComponent extends Component {
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Parent Location</label>
                             <select name={'parent_id'}
+                                    value={parent_id}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Parent</option>

@@ -74,7 +74,7 @@ class PrimeDataTable extends Component {
         const {edit, del, details, approve, modal,add, track, remove, feedback, file, docDelete, docDetails, action, deleteModalTitle, unavailable, delivery} = this.props
         return (
             <div>
-                {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action || unavailable) &&
+                {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) &&
                 <p className={'ui-all-action'}>
                     {edit && <span data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(rowData.id, edit)}}>
                                 <i className="icofont-ui-edit"></i>
@@ -104,8 +104,6 @@ class PrimeDataTable extends Component {
                                 <i className="icofont-ui-delete"></i>
                             </span>}
                     {docDetails && <span className="cursor-pointer text-primary" onClick={() => {this.props.docDetails(rowData.id)}}><i className="fas fa-info-circle"></i></span>}
-                    {unavailable && <span className="cursor-pointer text-primary" onClick={() => {this.unavailable(rowData.id)}}><button className={'btn btn-danger py-1'}>Unavailable</button></span>}
-                    {delivery && <span className="cursor-pointer text-primary" onClick={() => {this.props.delivery(rowData.id)}}><button className={'btn btn-secondary py-1'}>Delivery</button></span>}
                     {action &&
                     <>
                                 <span className={'d-flex justify-content-center'}>
@@ -228,7 +226,16 @@ class PrimeDataTable extends Component {
     actionUnavailable = (rowData, column) => {
         return (
             <div>
-                <button className={'btn btn-danger py-1'}>Unavailable</button>
+                <button onClick={() => {this.unavailable(rowData.id)}} className={'btn btn-danger py-1'}><i className="fas fa-folder-minus"></i></button>
+            </div>
+        )
+    }
+
+    actionDelivery = (rowData, column) => {
+        return (
+            <div>
+                <button onClick={() => {this.props.delivery(rowData.id)}} className={'btn btn-secondary py-1'}><i
+                    className="fas fa-dolly-flatbed"></i></button>
             </div>
         )
     }
@@ -270,10 +277,12 @@ class PrimeDataTable extends Component {
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     >
                         {dynamicColumns}
-                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action || unavailable || delivery) && <Column filter={false} body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width:'200px', height: '45px'}}/>}
+                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column filter={false} body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width:'200px', height: '45px'}}/>}
                         {this.props.handleQuantity && <Column style={{width:'200px', height: '45px'}} body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
                         {this.props.handleComment && <Column style={{width:'200px', height: '45px'}} body={this.actionComment} field={'comment'} header={'Comment'}/>}
                         {this.props.handleMultiselect && <Column style={{width:'200px', height: '45px'}} body={this.actionProduct} field={'products'} header={'Products'}/>}
+                        {unavailable && <Column style={{width:'95px', height: '45px', textAlign: 'center'}} body={this.actionUnavailable} field={'unavailable'} header={'Unavailable'}/>}
+                        {delivery && <Column style={{width:'80px', height: '45px', textAlign: 'center'}} body={this.actionDelivery} field={'delivery'} header={'Delivery'}/>}
                     </DataTable>
                 </div>
             </>

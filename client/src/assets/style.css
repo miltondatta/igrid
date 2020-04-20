@@ -278,7 +278,11 @@ select:disabled{
 .bg-glass{background-color: #ffffff9e}
 .bg-gray-pink{background-color: #de6f7e}
 
-.no-project{font-size: 17px; color: #727272;}
+.no-project{
+   font-size: 17px;
+   color: #525252;
+   background: #edf7ff;
+   border-radius: 5px;}
 
 .bg-purple-red{background: linear-gradient(to right, #ff5d6c, #ef2f40, #ff2a63)}
 .bg-purple-orange{background: linear-gradient(to right, #ffdf37, #ffc41b, #ffc507)}

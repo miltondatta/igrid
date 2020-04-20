@@ -69,6 +69,7 @@ db.authenticate()
 
 
 // Initialization
+let incomingAssetRequest = [];
 const port = normalizePort(process.env.PORT || '5000');
 const app = express();
 app.set('port', port);
@@ -76,21 +77,34 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 // Socket Setup
-let incomingAssetRequest = [];
 io.on('connection', (socket) => {
     console.log('a user connected');
 
 
     socket.on('transferRequestSubmit', (data) => {
         incomingAssetRequest = data.request_to
+        assetTransferEmit()
     })
-    io.emit('incomingTransferRequest' , incomingAssetRequest)
 
+    socket.on('requestChecked', (data) => {
+        incomingAssetRequest.forEach((item, index) => {
+            if (index === data.index) {
+                item.status = false
+            }
+        })
+        assetTransferEmit()
+    })
+
+    assetTransferEmit()
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
 });
+
+const assetTransferEmit = () => {
+    io.emit('incomingTransferRequest' , incomingAssetRequest)
+}
 
 // Middleware
 app.use(cors());

@@ -24,6 +24,7 @@ class Topnav extends Component {
             currentHover: '',
             notification: '',
             showUserOption: false,
+            assetRequest: false,
             toggleNotification: false,
             menuData: []
         }
@@ -45,8 +46,19 @@ class Topnav extends Component {
     }
 
     componentDidMount() {
+        const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
         socket.on('incomingTransferRequest', (data) => {
-            console.log(data, 49)
+            data.forEach((item, index) => {
+                    console.log(parseInt(item.request_to, 10) === id && item.status, 52)
+                if (parseInt(item.request_to, 10) === id && item.status) {
+                    this.setState({
+                        assetRequest: true,
+                        assetRequestInd: index
+                    }, () => {
+                        console.log(this.state.assetRequest, 57)
+                    })
+                }
+            })
         })
         this.getNotification();
         this.getMenu();
@@ -199,7 +211,7 @@ class Topnav extends Component {
 
     render() {
         const {home} = this.props
-        const {showUserOption, toggleNotification, notification, menuData} = this.state 
+        const {showUserOption, toggleNotification, notification, menuData, assetRequest, assetRequestInd} = this.state
         const moduleName = window.location.pathname.replace('/', '').split('/')
         let breadCrumb = moduleName.map((item, index) => (
             <>
@@ -208,6 +220,8 @@ class Topnav extends Component {
                 </li>}
             </>
         ))
+
+
         const {userName, image, userType, id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
 
         if (moduleName[0] === 'admin' && id !== 1) {
@@ -236,17 +250,25 @@ class Topnav extends Component {
                             {toggleNotification && <div className="ui-notification">
                                 <p className={'ui-notification-header'}>Notification</p>
                                 <div>
-                                    {notification ? <p className={'align-items-center no-project px-2 f-14px text-left'}>
-                                        You Have {notification} Notification
-                                        <br />
-                                        Go To <Link to={'/requisition-status'}>Requisition Status</Link>
-                                    </p> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
+                                    {(notification || assetRequest) ? <>
+                                        {notification && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                            You Have {notification} Notification
+                                            <br />
+                                            Go To <Link to={'/requisition-status'}>Requisition Status</Link>
+                                        </p>}
+                                        {assetRequest && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                            You Have Pending Asset Transfer Request
+                                            <br />
+                                            Go To <Link onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} to={'/incoming-transfer-req'}>Incoming Asset Transfer</Link>
+                                        </p>}
+                                    </>
+                                        : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
                                         <i className="f-20px mr-1 text-grey icofont-exclamation-circle"></i> Notification is currently empty
                                     </p>}
                                 </div>
                             </div>}
                             <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
-                                {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
+                                {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification + 1}</p>}
                             </i>
                             <div className="ui-dropdown-holder">
                                 <span onClick={this.handleUserOptions}>{userName}</span>
@@ -297,17 +319,24 @@ class Topnav extends Component {
                                 {toggleNotification && <div className="ui-notification">
                                     <p className={'ui-notification-header'}>Notification</p>
                                     <div>
-                                        {notification ? <p className={'align-items-center no-project px-2 f-14px text-left'}>
-                                            You Have {notification} Notification
-                                            <br />
-                                            Go To <Link to={'/requisition-status'}>Requisition Status</Link>
-                                        </p> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
+                                        {(notification || assetRequest) ? <>
+                                            {notification && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                                You Have {notification} Notification
+                                                <br />
+                                                Go To <Link to={'/requisition-status'}>Requisition Status</Link>
+                                            </p>}
+                                            {assetRequest && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                                You Have Pending Asset Transfer Request
+                                                <br />
+                                                Go To <Link onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} to={'/incoming-transfer-req'}>Incoming Asset Transfer</Link>
+                                            </p>}
+                                        </> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
                                             <i className="f-20px mr-1 text-grey icofont-exclamation-circle"></i> Notification is currently empty
                                         </p>}
                                     </div>
                                 </div>}
                                 <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
-                                    {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
+                                    {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification + 1}</p>}
                                 </i>
 
                                 <div className="ui-dropdown-holder">

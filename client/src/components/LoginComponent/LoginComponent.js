@@ -140,9 +140,7 @@ class LoginComponent extends Component {
 
     renderRedirect = () => {
         if(localStorage.getItem('user') && this.state.redirect){
-            return(
-                <Redirect to='/' />
-            )
+            window.location.href = '/'
         }
     }
 
