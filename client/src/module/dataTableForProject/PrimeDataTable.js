@@ -243,7 +243,6 @@ class PrimeDataTable extends Component {
     render() {
         const {cols, success, successMessage, error, errorMessage} = this.state
         const {edit, del, details, approve, dnger,add, track, remove, feedback, file, docDelete, docDetails, action, productDelivery, unavailable, delivery} = this.props
-        console.log(this.props.data, 129)
         let dynamicColumns = cols.map((col,i) => {
             if (productDelivery) {
                 if (col.field === 'category_name' || col.field === 'sub_category_name' || col.field === 'role_name' || col.field === 'location_name' || col.field === 'update_quantity'){

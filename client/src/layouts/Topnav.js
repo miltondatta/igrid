@@ -1,7 +1,8 @@
 import Axios from 'axios'
 import jwt from "jsonwebtoken";
-import {Link, Redirect, withRouter} from 'react-router-dom'
+import io from 'socket.io-client'
 import React, {Component} from 'react'
+import {Link, Redirect, withRouter} from 'react-router-dom'
 import {
     documentNav,
     sidenav,
@@ -12,6 +13,8 @@ import {
     profileCategory
 } from "../utility/constant";
 import {BackEnd_BaseUrl} from "../config/private";
+
+const socket = io('http://localhost:5000/');
 
 class Topnav extends Component {
 
@@ -42,6 +45,9 @@ class Topnav extends Component {
     }
 
     componentDidMount() {
+        socket.on('incomingTransferRequest', (data) => {
+            console.log(data, 49)
+        })
         this.getNotification();
         this.getMenu();
     }

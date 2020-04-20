@@ -2,14 +2,17 @@ import React, {Component} from 'react';
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import LocationsOptions from "../../utility/component/locationOptions";
+import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import UserOptionsByLocation from "../../utility/component/userOptionsByLocation";
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
-import UserOptionsByLocation from "../../utility/component/userOptionsByLocation";
-import Spinner from "../../layouts/Spinner";
-import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
-import axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import Spinner from "../../layouts/Spinner";
+import io from 'socket.io-client'
 import jwt from "jsonwebtoken";
+import axios from "axios";
+
+const socket = io('http://localhost:5000/')
 
 class AssetTransferRequestComponent extends Component {
 
@@ -156,6 +159,12 @@ class AssetTransferRequestComponent extends Component {
 
     handleSubmit = () => {
         const {transferCredential} = this.state;
+        let totalReceiver = []
+        transferCredential.forEach(item => {
+            if(!totalReceiver.includes(item.request_to)) totalReceiver.push(item.request_to)
+        })
+        socket.emit('transferRequestSubmit', {request_to: totalReceiver})
+        return
         axios.post(apiUrl() + 'transfer-request/entry', transferCredential)
             .then(res => {
                 if (res.data.status){

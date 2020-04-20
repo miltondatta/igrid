@@ -16,7 +16,6 @@ class LocationsOptions extends Component {
 
     getData = () => {
         const {selectedId} = this.props
-        console.log(selectedId)
         if (typeof selectedId !== 'undefined') {
             Axios.get(apiUrl() + 'locations/' + selectedId)
                 .then(resData => {

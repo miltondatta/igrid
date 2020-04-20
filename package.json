@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "server": "nodemon ./bin/www",
+    "start": "node ./app.js",
+    "server": "nodemon ./app.js",
     "ms": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "client": "cd client && npm start",
     "i_client": "cd client && npm install",
@@ -37,6 +37,7 @@
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1",
     "slick-carousel": "^1.8.1",
+    "socket.io": "^2.3.0",
     "uuidv4": "^6.0.5"
   },
   "devDependencies": {

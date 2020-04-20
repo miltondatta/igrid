@@ -1,10 +1,13 @@
 // Imports
 const path = require('path');
 const cors = require('cors');
+const http = require('http');
 const helmet = require('helmet');
 const logger = require('morgan');
 const db = require('./config/db');
 const express = require('express');
+const socketIo = require("socket.io");
+const debug = require('debug')('igrid:server');
 const cookieParser = require('cookie-parser');
 
 // Routes
@@ -66,8 +69,28 @@ db.authenticate()
 
 
 // Initialization
+const port = normalizePort(process.env.PORT || '5000');
 const app = express();
+app.set('port', port);
+const server = http.createServer(app);
+const io = socketIo(server);
 
+// Socket Setup
+let incomingAssetRequest = [];
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+
+    socket.on('transferRequestSubmit', (data) => {
+        incomingAssetRequest = data.request_to
+    })
+    io.emit('incomingTransferRequest' , incomingAssetRequest)
+
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
 
 // Middleware
 app.use(cors());
@@ -82,8 +105,8 @@ app.use(express.static(path.join(__dirname, 'public/assets')));
 app.use(express.static(path.join(__dirname, 'public/vendor')));
 app.use(express.static(path.join(__dirname, 'public/modules')));
 app.use(express.static(path.join(__dirname, 'public/document')));
-app.use(express.static(path.join(__dirname, 'public/repair-assets')));
 app.use(express.static(path.join(__dirname, 'public/complaints')));
+app.use(express.static(path.join(__dirname, 'public/repair-assets')));
 app.use(express.static(path.join(__dirname, 'public/complaint_feedbacks')));
 
 
@@ -133,5 +156,47 @@ app.use('/api/v1/complaint/mapping', ComplaintMapping);
 app.use('/api/v1/complaint/feedback', ComplaintFeedback); 
 app.use('/api/v1/complaint/forward', ComplaintForward);
 app.use('/api/v1/', AssetLifeCycle);
+
+
+
+function normalizePort(val){
+    let port = parseInt(val, 10);
+    if (isNaN(port)) return val;
+    if (port >= 0) return port;
+    return false;
+}
+function onError (error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    let bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+function onListening () {
+    let addr = server.address();
+    let bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+}
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 module.exports = app;
