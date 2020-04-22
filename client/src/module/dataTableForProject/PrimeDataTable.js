@@ -226,7 +226,32 @@ class PrimeDataTable extends Component {
     actionUnavailable = (rowData, column) => {
         return (
             <div>
-                <button onClick={() => {this.unavailable(rowData.id)}} className={'btn btn-danger py-1'}><i className="fas fa-folder-minus"></i></button>
+                <button data-toggle="modal" data-target="#requestCancel" className={'btn btn-danger py-1'}><i className="fas fa-folder-minus"></i></button>
+                <div className="modal fade" id="requestCancel" tabIndex="-1" role="dialog"
+                     aria-labelledby="requestCancel" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Asset Transfer Request</h5>
+                                <button type="button" className="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <h5 className={'w-100 f-18px'}>Are you sure you want to cancel this transfer request?</h5>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary"
+                                        data-dismiss="modal">Close
+                                </button>
+                                <button type="button" className="btn btn-danger" data-dismiss="modal"
+                                        onClick={() => {this.unavailable(rowData.id)}}>Cancel Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

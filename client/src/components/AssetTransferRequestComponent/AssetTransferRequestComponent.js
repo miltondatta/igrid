@@ -80,7 +80,8 @@ class AssetTransferRequestComponent extends Component {
     };
 
     getFormData = () => {
-        const {category_id, sub_category_id, user: {id}, details, quantity} = this.state;
+        const {location_id} = jwt.decode(localStorage.getItem('user')).data
+        const {category_id, sub_category_id, user: {id}, details, quantity, parent_id} = this.state;
 
         return {
             request_from: id,
@@ -88,6 +89,8 @@ class AssetTransferRequestComponent extends Component {
             details,
             quantity,
             sub_category_id,
+            location_to: parent_id,
+            location_from: location_id,
         }
     };
 

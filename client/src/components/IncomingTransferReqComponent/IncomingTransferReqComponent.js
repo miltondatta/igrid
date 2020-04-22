@@ -25,7 +25,7 @@ class IncomingTransferReqComponent extends Component {
     }
 
     getData = id => {
-            axios.get(apiUrl() + '/transfer-request/' + id)
+            axios.get(apiUrl() + 'transfer-request/' + id)
                 .then(res => {
                     if (res.data.status){
                         const {payload} = res.data

@@ -238,9 +238,9 @@ class Topnav extends Component {
                 <div className='ui-topnav w-100 px-4'>
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
                         <div className={'w-100 h-100 align-items-center d-flex'}>
-                            <Link to={'/'}>
+                            <a href={'/'}>
                                 <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
-                            </Link>
+                            </a>
                             <span className={`text-white ui-nav-init-link ml-5 mr-2 `}>Site Map</span>
                             <Link to={'/contact'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'contact' && 'link-active'}`}>Contact Us</span></Link>
                             <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
@@ -254,12 +254,12 @@ class Topnav extends Component {
                                         {notification && <p className={'align-items-center no-project px-2 f-14px text-left'}>
                                             You Have {notification} Notification
                                             <br />
-                                            Go To <Link to={'/requisition-status'}>Requisition Status</Link>
+                                            Go To <a href={'/requisition-status'}>Requisition Status</a>
                                         </p>}
                                         {assetRequest && <p className={'align-items-center no-project px-2 f-14px text-left'}>
                                             You Have Pending Asset Transfer Request
                                             <br />
-                                            Go To <Link onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} to={'/incoming-transfer-req'}>Incoming Asset Transfer</Link>
+                                            Go To <a onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} href={'/incoming-transfer-req'}>Incoming Asset Transfer</a>
                                         </p>}
                                     </>
                                         : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
@@ -305,9 +305,9 @@ class Topnav extends Component {
                     <div className='ui-topnav w-100 px-4'>
                         <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
                             <div className={'w-100 h-100 align-items-center d-flex'}>
-                                <Link to={'/'}>
+                                <a href={'/'}>
                                     <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
-                                </Link>
+                                </a>
                                 <div className={'ui-search-bar'}>
                                     <ol className="breadcrumb h-100">
                                         <li className="breadcrumb-item"><Link to={'/'}>Home</Link></li>
@@ -323,12 +323,12 @@ class Topnav extends Component {
                                             {notification && <p className={'align-items-center no-project px-2 f-14px text-left'}>
                                                 You Have {notification} Notification
                                                 <br />
-                                                Go To <Link to={'/requisition-status'}>Requisition Status</Link>
+                                                Go To <a href={'/requisition-status'}>Requisition Status</a>
                                             </p>}
                                             {assetRequest && <p className={'align-items-center no-project px-2 f-14px text-left'}>
                                                 You Have Pending Asset Transfer Request
                                                 <br />
-                                                Go To <Link onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} to={'/incoming-transfer-req'}>Incoming Asset Transfer</Link>
+                                                Go To <a onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} href={'/incoming-transfer-req'}>Incoming Asset Transfer</a>
                                             </p>}
                                         </> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
                                             <i className="f-20px mr-1 text-grey icofont-exclamation-circle"></i> Notification is currently empty

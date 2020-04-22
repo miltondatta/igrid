@@ -104,6 +104,12 @@ export const sidenav = [
                 icon: ""
             },
             {
+                id: 14,
+                name: 'Transfer Request Status',
+                link: '/transfer-req-status',
+                icon: ""
+            },
+            {
                 id: 11,
                 name: 'Asset Disposal',
                 link: '/asset-disposal',

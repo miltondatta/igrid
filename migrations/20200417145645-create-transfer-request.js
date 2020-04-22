@@ -37,6 +37,20 @@ module.exports = {
           key   : 'id'
         }
       },
+      location_to: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'locations',
+          key: 'id'
+        }
+      },
+      location_from: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'locations',
+          key: 'id'
+        }
+      },
       category_id     : {
         type       : Sequelize.INTEGER,
         references : {

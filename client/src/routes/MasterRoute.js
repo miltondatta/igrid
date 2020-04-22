@@ -357,6 +357,10 @@ const AsyncIncomingTransferReq = Loadable({
     loader: () => import('../containers/IncomingTransferReq.js'),
     loading: Loader,
 });
+const AsyncTransferRequestStatus = Loadable({
+    loader: () => import('../containers/TransferRequestStatus.js'),
+    loading: Loader,
+});
 
 class MasterRoute extends Component{
     render(){
@@ -452,6 +456,7 @@ class MasterRoute extends Component{
                             <Route exact path='/delivery-report/all' component={AsyncAllDeliveryReport}/>
                             <Route exact path='/asset-repair-list' component={AsyncRepairMaintenanceList}/>
                             <Route exact path='/mis/fortnightly-report' component={AsyncFortnightlyReport}/>
+                            <Route exact path='/transfer-req-status' component={AsyncTransferRequestStatus}/>
                             <Route exact path='/incoming-transfer-req' component={AsyncIncomingTransferReq}/>
                             <Route exact path='/admin/complain-category' component={AsyncComplaintCategory}/>
                             <Route exact path='/admin/asset-sub-category' component={AsyncAssetSubCategory}/>

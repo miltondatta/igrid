@@ -1,6 +1,7 @@
 const db = require('../config/db')
 const Status = require('./status')
 const Sequelize = require('sequelize')
+const Locations = require('./locations')
 const UserRoles = require('./userroles')
 const AssetCategory = require('./asset/assetCategory')
 const AssetSubCategory = require('./asset/assetSubCategory')
@@ -17,6 +18,20 @@ const TransferRequest = db.define('transfer_requests', {
     type: Sequelize.INTEGER,
     references: {
       model: UserRoles,
+      key: 'id'
+    }
+  },
+  location_to: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Locations,
+      key: 'id'
+    }
+  },
+  location_from: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Locations,
       key: 'id'
     }
   },

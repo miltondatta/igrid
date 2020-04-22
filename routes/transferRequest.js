@@ -28,6 +28,31 @@ route.get('/transfer-request/:id', async (req,res,next) => {
     }
 })
 
+// Read Transfer Status
+route.get('/transfer-request-status/:id', async (req,res,next) => {
+    try{
+        const [data, mestaData] = await db.query(`
+        select transfer_requests.id, CONCAT(req_to."firstName" , ' ' ,req_to."lastName") as request_to, locations.location_name as location, asset_categories.category_name as category,
+               asset_sub_categories.sub_category_name as sub_category, transfer_requests.details, transfer_requests.quantity, statuses.status_name as status
+        from transfer_requests
+            JOIN statuses on transfer_requests.status = statuses.id
+            JOIN locations on transfer_requests.location_to = locations.id
+            JOIN users as req_to on transfer_requests.request_to = req_to.id
+            JOIN asset_categories on transfer_requests.category_id = asset_categories.id
+            JOIN asset_sub_categories on transfer_requests.sub_category_id = asset_sub_categories.id
+        WHERE request_from = ${req.params.id}
+    `)
+        if (data.length > 0) {
+            res.status(200).json({payload: data, status: true})
+        } else {
+            res.status(200).json()
+        }
+    } catch(err) {
+        console.log(err, 22)
+        res.status(200).json({message: 'Something Went Wrong!'})
+    }
+})
+
 // Read
 route.post('/transfer-request/unavailable/:id/:status', async (req,res,next) => {
     TransferRequest.update({status: req.params.status}, {where: {id: req.params.id}})
@@ -41,11 +66,11 @@ route.post('/transfer-request/unavailable/:id/:status', async (req,res,next) => 
 
 // Update
 route.put('/transfer-request/update/:id', (req,res,next) => {
-    const {status_name} = req.body
-    if(status_name === '') {
+    const {quantity} = req.body
+    if(quantity === '') {
         res.status(200).json({message: 'All fields required!'})
     } else {
-        TransferRequest.update({status_name}, {where: {id: req.params.id}})
+        TransferRequest.update({quantity}, {where: {id: req.params.id}})
             .then(resData => {
                 res.status(200).json(resData)
             })

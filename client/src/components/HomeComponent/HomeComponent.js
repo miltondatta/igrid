@@ -46,38 +46,38 @@ const HomeComponent = () => {
                     <NoticeBoardComponent />
                 </div>
                 <div className={'ui-home-options'}>
-                    <Link to={'/asset-dashboard'}>
+                    <a href={'/asset-dashboard'}>
                         <div className={'ui-cards ui-asset'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/asset.png'} alt="document_management"/>
                             </div>
                             <p>ASSET REQUISITION & TRACKING</p>
                         </div>
-                    </Link>
-                    <Link to={'/mis/dashboard'}>
+                    </a>
+                    <a href={'/mis/dashboard'}>
                         <div className={'ui-cards ui-mis'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/mis_report.png'} alt="document_management"/>
                             </div>
                             <p>MIS REPORT</p>
                         </div>
-                    </Link>
-                    <Link to={'/location'}>
+                    </a>
+                    <a href={'/location'}>
                         <div className={'ui-cards ui-location'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/location_finder.png'} alt="document_management"/>
                             </div>
                             <p>LOCATION FINDER</p>
                         </div>
-                    </Link>
-                    <Link to={'/documents/document-list-search'}>
+                    </a>
+                    <a href={'/documents/document-list-search'}>
                         <div className={'ui-cards ui-document'}>
                             <div className={'ui-card-left'}>
                                 <img className={'mb-5'} src={process.env.PUBLIC_URL + '/media/image/document_management.png'} alt="document_management"/>
                             </div>
                             <p className={'mt-2'}>DOCUMENT MANAGEMENT</p>
                         </div>
-                    </Link>
+                    </a>
                 </div>
             </div>
         </>

@@ -173,26 +173,35 @@ class AssetTransferComponent extends Component {
 
     transferRequestSent = () => {
         const {state} = this.props.location
-        axios.post(apiUrl() + 'transfer-request/unavailable/' + state.id + '/4')
-            .then(res => {
-                if(res.data.status){
-                    this.setState({
-                        success: true,
-                        successMessage: res.data.message
-                    }, () => {
-                        setTimeout(() => {
-                            this.setState({
-                                success: false
-                            })
-                            window.location.reload()
-                        }, 2300);
-                    })
-                }
-            })
+        if(state && state.transfer_request) {
+            axios.post(apiUrl() + 'transfer-request/unavailable/' + state.id + '/4')
+                .then(res => {
+                    if(res.data.status){
+                        this.setState({
+                            success: true,
+                            successMessage: res.data.message
+                        }, () => {
+                            this.updateRequestQuantity()
+                            setTimeout(() => {
+                                this.setState({
+                                    success: false
+                                })
+                            }, 2300);
+                        })
+                    }
+                })
+        }
     }
 
     handleSubmit = () => {
         const {transferCredential} = this.state;
+
+        const {state} = this.props.location
+        if(state && state.transfer_request) {
+            this.setState({
+                updatedQuantity: transferCredential.length
+            })
+        }
 
         axios.post(apiUrl() + 'asset-transfer/by/credentials', {transferCredential})
             .then(res => {
@@ -228,6 +237,21 @@ class AssetTransferComponent extends Component {
                 console.log(err.response);
             })
     };
+
+    updateRequestQuantity = () => {
+        const {state} = this.props.location
+        const {updatedQuantity} = this.state
+        const payload = {quantity: updatedQuantity}
+        if (state && state.transfer_request) {
+            axios.put(apiUrl() + 'transfer-request/update/' + state.id, payload)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+    }
 
     getFormData = () => {
         const {
