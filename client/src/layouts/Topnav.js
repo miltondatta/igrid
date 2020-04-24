@@ -83,6 +83,7 @@ class Topnav extends Component {
         const { id, role_id } = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         id !== null && Axios.get(apiUrl() + 'menu/get/' + role_id)
             .then(res => {
+                console.log(res, 86)
                 this.setState({
                     menuData: res.data
                 })
@@ -90,123 +91,129 @@ class Topnav extends Component {
     }
 
     renderCategory = () => {
+        const {menuData} = this.state
+        console.log(menuData, 95)
         const moduleName = window.location.pathname.split('/').filter(value => value !== '')[0];
         const {userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         let data = [];
         if (moduleName === 'documents') {
-            data = documentNav;
+            data = menuData[4];
         } else if (moduleName === 'admin') {
-            data = systemAdmin
+            data = menuData[1];
         } else if (moduleName === 'profile') {
-            data = profileCategory
+            data = menuData[6]
         } else if (moduleName === 'location') {
-            data = locationCategory
+            data = menuData[5]
         } else if (moduleName === 'mis') {
-            data = misCategory
+            data = menuData[3]
         } else {
-            data = sidenav;
+            data = menuData[2];
         }
+
+        console.log(data, 112)
 
         const {currentHover} = this.state
         const {pathname} = this.props.location
-        return (
-            <>
-                {data.map((items, index) => {
-                    return (
-                        <>
-                            {items.subCat ? <div key={index + 20}
-                                                 className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
-                                                 onMouseOut={() => {
-                                                     this.setState({currentHover: ''})
-                                                 }} onMouseOver={() => {
-                                this.handleMouseOver(items.id)
-                            }}>
-                                <div>
-                                    <i className={`f-14px ${items.icon}`}></i>
-                                    <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'}
-                                          key={index}>{items.name}</span>
-                                    {items.subCat && <div className={`ui-subcategory`}
-                                                          style={{display: currentHover !== items.id && 'none'}}>
-                                        {items.categories.map((subItems, key) => (
-                                            <>
-                                                {(items.id === 4) && (userType === 2 || userType === 6) ? ((subItems.id === 4 || subItems.id === 5) ? <a key={subItems.id} href={subItems.link}>
-                                                    <p key={key + 10}
-                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                        {subItems.name}
-                                                    </p>
-                                                </a> : null) : (items.id === 4 && userType === 1) ? (subItems.id !== 4 || subItems.id !== 5) && <a key={subItems.id} href={subItems.link}>
-                                                    <p key={key + 10}
-                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                        {subItems.name}
-                                                    </p>
-                                                </a> : <a key={subItems.id} href={subItems.link}>
-                                                    <p key={key + 10}
-                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                        {subItems.name}
-                                                    </p>
-                                                </a> }
-                                            </>
-                                        ))}
-                                    </div>}
-                                </div>
-                            </div> : items.id === 33 ? userType === 0 && <Link to={items.link} className={'h-100'}>
-                                <div key={index + 20}
-                                     className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
-                                     onMouseOut={() => {
-                                         this.setState({currentHover: ''})
-                                     }} onMouseOver={() => {
+        if (menuData.length > 0) {
+            return (
+                <>
+                    {data.map((items, index) => {
+                        return (
+                            <>
+                                {items.sub_menu ? <div key={index + 20}
+                                                     className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
+                                                     onMouseOut={() => {
+                                                         this.setState({currentHover: ''})
+                                                     }} onMouseOver={() => {
                                     this.handleMouseOver(items.id)
                                 }}>
                                     <div>
                                         <i className={`f-14px ${items.icon}`}></i>
                                         <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'}
                                               key={index}>{items.name}</span>
-                                        {items.subCat && <div className={`ui-subcategory`}
+                                        {items.sub_menu && <div className={`ui-subcategory`}
                                                               style={{display: currentHover !== items.id && 'none'}}>
-                                            {items.categories.map((subItems, key) => (
+                                            {items.submenus.map((subItems, key) => (
                                                 <>
-                                                    <p key={key + 10}
-                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                        <a key={subItems.id} href={subItems.link}> {subItems.name}</a>
-                                                    </p>
+                                                    {(items.id === 4) && (userType === 2 || userType === 6) ? ((subItems.id === 4 || subItems.id === 5) ? <a key={subItems.id} href={subItems.link}>
+                                                        <p key={key + 10}
+                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                            {subItems.name}
+                                                        </p>
+                                                    </a> : null) : (items.id === 4 && userType === 1) ? (subItems.id !== 4 || subItems.id !== 5) && <a key={subItems.id} href={subItems.link}>
+                                                        <p key={key + 10}
+                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                            {subItems.name}
+                                                        </p>
+                                                    </a> : <a key={subItems.id} href={subItems.link}>
+                                                        <p key={key + 10}
+                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                            {subItems.name}
+                                                        </p>
+                                                    </a> }
                                                 </>
                                             ))}
                                         </div>}
                                     </div>
-                                </div>
-                            </Link> : <Link to={items.link} className={'h-100'} onClick={() => {
-                                items.id === 34 && localStorage.removeItem('user')
-                            }}>
-                                <div key={index + 20}
-                                     className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
-                                     onMouseOut={() => {
-                                         this.setState({currentHover: ''})
-                                     }} onMouseOver={() => {
-                                    this.handleMouseOver(items.id)
+                                </div> : items.id === 33 ? userType === 0 && <Link to={items.link} className={'h-100'}>
+                                    <div key={index + 20}
+                                         className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
+                                         onMouseOut={() => {
+                                             this.setState({currentHover: ''})
+                                         }} onMouseOver={() => {
+                                        this.handleMouseOver(items.id)
+                                    }}>
+                                        <div>
+                                            <i className={`f-14px ${items.icon}`}></i>
+                                            <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'}
+                                                  key={index}>{items.name}</span>
+                                            {items.subCat && <div className={`ui-subcategory`}
+                                                                  style={{display: currentHover !== items.id && 'none'}}>
+                                                {items.categories.map((subItems, key) => (
+                                                    <>
+                                                        <p key={key + 10}
+                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                            <a key={subItems.id} href={subItems.link}> {subItems.name}</a>
+                                                        </p>
+                                                    </>
+                                                ))}
+                                            </div>}
+                                        </div>
+                                    </div>
+                                </Link> : <Link to={items.link} className={'h-100'} onClick={() => {
+                                    items.id === 34 && localStorage.removeItem('user')
                                 }}>
-                                    <div>
-                                        <i className={`f-14px ${items.icon}`}></i>
-                                        <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'}
-                                              key={index}>{items.name}</span>
-                                        {items.subCat && <div className={`ui-subcategory`}
-                                                              style={{display: currentHover !== items.id && 'none'}}>
-                                            {items.categories.map((subItems, key) => (
-                                                <>
-                                                    <p key={key + 10}
-                                                       className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                        <a key={subItems.id} href={subItems.link}> {subItems.name}</a>
-                                                    </p>
-                                                </>
-                                            ))}
-                                        </div>}
+                                    <div key={index + 20}
+                                         className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
+                                         onMouseOut={() => {
+                                             this.setState({currentHover: ''})
+                                         }} onMouseOver={() => {
+                                        this.handleMouseOver(items.id)
+                                    }}>
+                                        <div>
+                                            <i className={`f-14px ${items.icon}`}></i>
+                                            <span className={'ml-1 f-15px f-weight-500 mb-0 text-white'}
+                                                  key={index}>{items.name}</span>
+                                            {items.subCat && <div className={`ui-subcategory`}
+                                                                  style={{display: currentHover !== items.id && 'none'}}>
+                                                {items.categories.map((subItems, key) => (
+                                                    <>
+                                                        <p key={key + 10}
+                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
+                                                            <a key={subItems.id} href={subItems.link}> {subItems.name}</a>
+                                                        </p>
+                                                    </>
+                                                ))}
+                                            </div>}
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>}
-                        </>
-                    )
-                })}
-            </>
-        )
+                                </Link>}
+                            </>
+                        )
+                    })}
+                </>
+            )
+        }
     }
 
     render() {
