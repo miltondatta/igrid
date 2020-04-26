@@ -120,11 +120,12 @@ class Topnav extends Component {
                     {data.map((items, index) => {
                         return (
                             <>
-                                {items.sub_menu ? <div key={index + 20}
-                                                     className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
-                                                     onMouseOut={() => {
-                                                         this.setState({currentHover: ''})
-                                                     }} onMouseOver={() => {
+                                {items.sub_menu ?
+                                <div key={index + 20}
+                                     className={`px-4 text-white ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
+                                     onMouseOut={() => {
+                                         this.setState({currentHover: ''})
+                                     }} onMouseOver={() => {
                                     this.handleMouseOver(items.id)
                                 }}>
                                     <div>
@@ -135,27 +136,17 @@ class Topnav extends Component {
                                                               style={{display: currentHover !== items.id && 'none'}}>
                                             {items.submenus.map((subItems, key) => (
                                                 <>
-                                                    {(items.id === 4) && (userType === 2 || userType === 6) ? ((subItems.id === 4 || subItems.id === 5) ? <a key={subItems.id} href={subItems.link}>
+                                                    <a key={subItems.id} href={subItems.link}>
                                                         <p key={key + 10}
                                                            className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
                                                             {subItems.name}
                                                         </p>
-                                                    </a> : null) : (items.id === 4 && userType === 1) ? (subItems.id !== 4 || subItems.id !== 5) && <a key={subItems.id} href={subItems.link}>
-                                                        <p key={key + 10}
-                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                            {subItems.name}
-                                                        </p>
-                                                    </a> : <a key={subItems.id} href={subItems.link}>
-                                                        <p key={key + 10}
-                                                           className={`m-0 ${pathname === subItems.link ? 'ui-subcat-active' : 'ui-subcat-hover'}`}>
-                                                            {subItems.name}
-                                                        </p>
-                                                    </a> }
+                                                    </a>
                                                 </>
                                             ))}
                                         </div>}
                                     </div>
-                                </div> : items.id === 33 ? userType === 0 && <Link to={items.link} className={'h-100'}>
+                                </div> : items.id === 76 ? userType === 0 && <Link to={items.link} className={'h-100'}>
                                     <div key={index + 20}
                                          className={`px-4 ui-navbtn h-100 text-center d-flex align-items-center ui-hover-option`}
                                          onMouseOut={() => {
