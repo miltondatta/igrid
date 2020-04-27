@@ -394,6 +394,32 @@ module.exports = {
                 "updatedAt": new Date()
             },
             {
+                "id": 83,
+                "name": "Delivery Report (All)",
+                "icon": "",
+                "sub_menu": false,
+                "link": "/delivery-report/all",
+                "parent_id": 26,
+                "module_id": 2,
+                "visible": true,
+                "order_by": 5,
+                "createdAt": new Date(),
+                "updatedAt": new Date()
+            },
+            {
+                "id": 84,
+                "name": "Assets Report (All)",
+                "icon": "",
+                "sub_menu": false,
+                "link": "/asset-report/all",
+                "parent_id": 26,
+                "module_id": 2,
+                "visible": true,
+                "order_by": 6,
+                "createdAt": new Date(),
+                "updatedAt": new Date()
+            },
+            {
                 "id": 31,
                 "name": "System Configuration",
                 "icon": "icofont-ui-settings",
