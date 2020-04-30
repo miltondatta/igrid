@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import jwt from 'jsonwebtoken';
+import {withRouter} from 'react-router-dom'
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
 import AssetProductByUserOptions from "../../utility/component/assetProductByUserOptions";
@@ -44,6 +45,22 @@ class AssetTransferComponent extends Component {
     }
 
     componentDidMount() {
+        const {state} = this.props.location
+        if (state) {
+            if (state.transfer_request) {
+                setTimeout(() => {
+                    this.setState({
+                        user_id: state.req_user_id,
+                        category_id: state.category_id,
+                    })
+                }, 500)
+                setTimeout(() => {
+                    this.setState({
+                        sub_category_id: state.sub_category_id
+                    })
+                }, 800)
+            }
+        }
         const user = jwt.decode(localStorage.getItem('user')).data;
         if (Object.keys(user).length) this.setState({user});
     }
@@ -62,6 +79,7 @@ class AssetTransferComponent extends Component {
     };
 
     addTransfer = () => {
+        const {state} = this.props.location
         if (Object.values(this.validate()).includes(false)) return false;
         const {transferData, transferCredential, category_id, sub_category_id, product_id, product_serial, user_id} = this.state;
         const newTransfer = this.getFormData();
@@ -108,10 +126,15 @@ class AssetTransferComponent extends Component {
                         if (user_id) Object.assign(newTransfer, {assign_to: user_id});
                         let newTransferArray = [newTransfer];
 
+                        if (!state) {
+                            this.setState({
+                                parent_id: 1,
+                                user_id: '',
+                            })
+                        }
+
                         this.setState({
                             transferCredential: [...transferCredential, ...newTransferArray],
-                            parent_id: 1,
-                            user_id: '',
                             subLocation: []
                         }, () => {
                             let newTransferObj = {};
@@ -148,8 +171,37 @@ class AssetTransferComponent extends Component {
         });
     };
 
+    transferRequestSent = () => {
+        const {state} = this.props.location
+        if(state && state.transfer_request) {
+            axios.post(apiUrl() + 'transfer-request/unavailable/' + state.id + '/4')
+                .then(res => {
+                    if(res.data.status){
+                        this.setState({
+                            success: true,
+                            successMessage: res.data.message
+                        }, () => {
+                            this.updateRequestQuantity()
+                            setTimeout(() => {
+                                this.setState({
+                                    success: false
+                                })
+                            }, 2300);
+                        })
+                    }
+                })
+        }
+    }
+
     handleSubmit = () => {
         const {transferCredential} = this.state;
+
+        const {state} = this.props.location
+        if(state && state.transfer_request) {
+            this.setState({
+                updatedQuantity: transferCredential.length
+            })
+        }
 
         axios.post(apiUrl() + 'asset-transfer/by/credentials', {transferCredential})
             .then(res => {
@@ -161,6 +213,8 @@ class AssetTransferComponent extends Component {
                     successMessage: success && msg
                 }, () => {
                     this.emptyStateValue();
+                    this.transferRequestSent()
+                    window.history.pushState(null, '');
                     setTimeout(() => {
                         window.location.reload();
                     }, 2300);
@@ -184,6 +238,21 @@ class AssetTransferComponent extends Component {
             })
     };
 
+    updateRequestQuantity = () => {
+        const {state} = this.props.location
+        const {updatedQuantity} = this.state
+        const payload = {quantity: updatedQuantity}
+        if (state && state.transfer_request) {
+            axios.put(apiUrl() + 'transfer-request/update/' + state.id, payload)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+    }
+
     getFormData = () => {
         const {
             category_id, sub_category_id, product_id, product_serial, user: {id}
@@ -200,6 +269,7 @@ class AssetTransferComponent extends Component {
     };
 
     validate = () => {
+        const {state} = this.props.location
         const {
             category_id, sub_category_id, product_id, product_serial, parent_id, user_id
         } = this.state;
@@ -209,9 +279,12 @@ class AssetTransferComponent extends Component {
             sub_category_id: sub_category_id !== '',
             product_id: product_id !== '',
             product_serial: product_serial !== '',
-            parent_id: parent_id !== '',
             user_id: user_id !== ''
         };
+
+        if (!state){
+            errorDict[parent_id] = parent_id !== ''
+        }
 
         this.setState({errorDict});
         return errorDict;
@@ -233,11 +306,13 @@ class AssetTransferComponent extends Component {
     getSubLocation = id => {
         const {subLocation} = this.state;
         if (subLocation.filter(item => item.parent_id === parseInt(id)).length) return false;
-        axios.get(apiUrl() + 'locations/' + id)
+        axios.get(apiUrl() + 'locations/render/' + id)
             .then(resData => {
-                this.setState({
-                    subLocation: [...subLocation, ...resData.data]
-                })
+                if (resData.data.length > 0) {
+                    this.setState({
+                        subLocation: [...subLocation, ...resData.data]
+                    })
+                }
             })
     };
 
@@ -253,6 +328,7 @@ class AssetTransferComponent extends Component {
     };
 
     render() {
+        const {state} = this.props.location
         const {
             category_id, sub_category_id, product_id, product_serial, success, successMessage, error, errorMessage,
             errorDict, isLoading, transferData, parent_id, subLocation, user_id, transferTableData
@@ -262,7 +338,7 @@ class AssetTransferComponent extends Component {
             <div className="px-1 mb-2" key={index}>
                 <label className={'ui-custom-label'}>Select Sub Location {item.location_name}</label>
                 <select name={'parent_id'} onChange={this.handleChange} className={`ui-custom-input`}>
-                    <option value="">Select Sub Location {item.location_name}</option>
+                    <option value="">Select Sub Location {item.hierarchy_name}</option>
                     <LocationsOptions selectedId={item.parent_id}/>
                 </select>
             </div>));
@@ -278,12 +354,15 @@ class AssetTransferComponent extends Component {
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 admin-input-height position-relative`}>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Asset Transfer</p>
+                            <p className="text-blue f-weight-700 f-20px m-0">Asset Transfer
+                                {state && <button onClick={() => {window.history.pushState(null, ''); window.location.reload()}} className={' ml-2 btn btn-info py-1'}>
+                                    <i className="fas fa-chevron-left"></i> Go Back</button>}</p>
                         </nav>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Category</label>
                             <select name={'category_id'} value={category_id}
                                     onChange={this.handleChange}
+                                    disabled={(state && state.transfer_request)}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Category</option>
                                 <AssetCategoryByUserOption/>
@@ -296,6 +375,7 @@ class AssetTransferComponent extends Component {
                             <label className={'ui-custom-label'}>Sub Category</label>
                             <select name={'sub_category_id'} value={sub_category_id}
                                     onChange={this.handleChange}
+                                    disabled={(state && state.transfer_request)}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Sub Category</option>
                                 <AssetSubCategoryByUserOption
@@ -333,6 +413,7 @@ class AssetTransferComponent extends Component {
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Parent Location</label>
                             <select name={'parent_id'}
+                                    disabled={(state && state.transfer_request)}
                                     onChange={this.handleChange}
                                     className={`ui-custom-input`}>
                                 <option value="">Select Parent</option>
@@ -344,9 +425,10 @@ class AssetTransferComponent extends Component {
                             <label className={'ui-custom-label'}>User</label>
                             <select name={'user_id'} value={user_id}
                                     onChange={this.handleChange}
+                                    disabled={(state && state.transfer_request)}
                                     className={`ui-custom-input`}>
                                 <option value="">Select User</option>
-                                <UserOptionsByLocation location_id={parent_id && parent_id - 1}/>
+                                <UserOptionsByLocation userId={state ? state.req_user_id : false} location_id={parent_id && parent_id}/>
                             </select>
                             {errorDict && !errorDict.user_id &&
                             <span className="error">User Field is required</span>
@@ -401,4 +483,4 @@ class AssetTransferComponent extends Component {
     }
 }
 
-export default AssetTransferComponent;
+export default withRouter(AssetTransferComponent);

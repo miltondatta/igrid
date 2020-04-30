@@ -297,7 +297,6 @@ class AssetRegComponent extends Component {
                         }, 2300)
                     })
                 } else {
-                    console.log(resData, 267)
                     this.setState({
                         error: true,
                         errorMessage: resData.data.message

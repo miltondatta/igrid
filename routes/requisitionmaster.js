@@ -22,12 +22,12 @@ route.get('/requisition/total/:id', async (req,res,next) => {
         const [data, metaData] = await db.query(`
             Select distinct (Select COUNT(id) from requisition_masters WHERE status = 0 and request_by = ${req.params.id}) as pending,
                 (Select COUNT(id) from requisition_masters WHERE status = 2 and request_by = ${req.params.id}) as in_progress,
-                 (Select COUNT(id) from requisition_masters WHERE status = 3 and request_by = ${req.params.id}) as closed,
-                 (Select COUNT(id) from assets) as registered_assets,
-                 (Select COUNT(id) from products) as total_products,
-                 (Select Distinct COUNT(category_name) from asset_categories) as total_category,
-                 (Select Distinct COUNT(sub_category_name) from asset_sub_categories) as total_sub_category,
-               (Select Distinct COUNT(id) from lost_assets where added_by = ${req.params.id}) as totalLostAssets,
+                (Select COUNT(id) from requisition_masters WHERE status = 3 and request_by = ${req.params.id}) as closed,
+                (Select COUNT(id) from assets) as registered_assets,
+                (Select COUNT(id) from products) as total_products,
+                (Select Distinct COUNT(category_name) from asset_categories) as total_category,
+                (Select Distinct COUNT(sub_category_name) from asset_sub_categories) as total_sub_category,
+                (Select Distinct COUNT(id) from lost_assets where added_by = ${req.params.id}) as totalLostAssets,
                 (select  Distinct COUNT(id) from assets where is_disposal is true and assign_to = ${req.params.id}) as totalDisposal,
                 (select  Distinct COUNT(id) from asset_histories where status = 4 and assign_from = '${req.params.id}') as totalTransfer
             from asset_categories
@@ -95,7 +95,6 @@ route.post('/requisition-master/entry', (req,res,next) => {
     } else {
         RequisitionMaster.create(sendData)
             .then(resData => {
-                console.log(resData.dataValues.id, 52)
                 RequisitionMaster.update({requisition_no: 'Req-' + resData.dataValues.id},{where: {id: resData.dataValues.id}})
                     .then(() => {
                         RequisitionMaster.findAll({attributes: ['id', 'mobile','email','request_date'],where: {id: resData.dataValues.id}})

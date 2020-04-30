@@ -55,9 +55,9 @@ route.get('/requisition-approve/specific', async (req,res,next) => {
             JOIN requisition_masters ON requisition_approves.requisition_id = requisition_masters.id
             JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
             JOIN asset_sub_categories ON requisition_details.asset_category = asset_sub_categories.id
-            JOIN user_roles ON requisition_approves.role_id = user_roles.id
+            JOIN user_roles ON requisition_masters.role_id = user_roles.id
             JOIN users ON requisition_masters.request_by = users.id
-            JOIN locations ON requisition_approves.location_id = locations.id
+            JOIN locations ON requisition_masters.location_id = locations.id
             WHERE requisition_approves.requisition_id = ${requisition_id} AND requisition_approves.role_id = '${role_id}' AND requisition_approves.update_by = '${user_id}' AND requisition_approves.delivery_to IS NULL
         `)
     if (results.length > 0) {

@@ -19,12 +19,13 @@ class AssetReqHomeComponent extends Component {
             closedRequisition: 0,
             pendingRequisition: 0,
             inProgressRequisition: 0,
+            complaintStatus: []
         }
     }
 
     componentDidMount() {
+        this.getComplaintStatus()
         this.getPendingRequisition()
-
     }
 
     getPendingRequisition = () => {
@@ -32,7 +33,6 @@ class AssetReqHomeComponent extends Component {
         Axios.get(apiUrl() + 'requisition/total/' + id)
             .then(res => {
                 if (res.data.status){
-                    console.log(res, 47)
                     this.setState({
                         pendingRequisition: res.data.total[0].pending,
                         inProgressRequisition: res.data.total[0].in_progress,
@@ -49,9 +49,44 @@ class AssetReqHomeComponent extends Component {
             })
     }
 
+    getComplaintStatus = () => {
+        const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        Axios.get(apiUrl() + 'complaint/db/complaint-status/' + id)
+            .then(res => {
+                if (res.data.status) {
+                    this.setState({
+                        complaintStatus: res.data.data
+                    })
+                }
+            })
+    }
 
     render() {
-        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets, totalTransfer} = this.state
+        const {totalCateogry, totalSubCateogry, totalProducts, totalAssets, pendingRequisition, inProgressRequisition, closedRequisition, totaldisposal, totallostassets, totalTransfer, complaintStatus} = this.state
+        const dispComplaint = complaintStatus.length > 0 ? Object.keys(complaintStatus[0]).map((item, index) => {
+            return(
+                <>
+                    <div key={index}>
+                        <p>{complaintStatus[0][item]}</p>
+                        <p className={'f-capitalize'}>{item.replace('_', ' ')}</p>
+                    </div>
+                </>
+            )
+        }) :
+                <>
+                    <div>
+                        <p>0</p>
+                        <p className={'f-capitalize'}>pending</p>
+                    </div>
+                    <div>
+                        <p>0</p>
+                        <p className={'f-capitalize'}>in progress</p>
+                    </div>
+                    <div>
+                        <p>0</p>
+                        <p className={'f-capitalize'}>solved</p>
+                    </div>
+                </>
         return (
             <div className={'ui-asset-dashboard p-4'}>
                 <div className="ui-asset-dashboard-top">
@@ -134,7 +169,7 @@ class AssetReqHomeComponent extends Component {
                             </div>
                             <p>Asset</p>
                         </div>
-                        <div className={'ui-asset-body-bottom'}>
+                        <div className={'ui-asset-body-bottom ui-assets'}>
                             <div>
                                 <p>{totalTransfer}</p>
                                 <p>Transfer</p>
@@ -147,6 +182,19 @@ class AssetReqHomeComponent extends Component {
                                 <p>{totallostassets}</p>
                                 <p>Disposal</p>
                             </div>
+                        </div>
+                    </div>
+                    <div className={'ui-body'}>
+                        <div className={'ui-asset-body-top'}>
+                            <div>
+                                <div className="ui-icon-container-3">
+                                    <i className="fas fa-flag-checkered"></i>
+                                </div>
+                            </div>
+                            <p>Complaints</p>
+                        </div>
+                        <div className={'ui-asset-body-bottom'}>
+                            {dispComplaint}
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,8 @@ import {Column} from 'primereact/column';
 import {DataTable} from 'primereact/datatable';
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import SuccessModal from "../../utility/success/successModal";
+import ErrorModal from "../../utility/error/errorModal";
 
 class PrimeDataTable extends Component {
 
@@ -15,6 +17,10 @@ class PrimeDataTable extends Component {
         this.state = {
             cols: [],
             comments: '',
+            error: false,
+            success: false,
+            errorMessage: '',
+            successMessage: '',
             selectedCustomers: null
         };
     }
@@ -44,9 +50,29 @@ class PrimeDataTable extends Component {
             })
     }
 
+    unavailable = (id) => {
+        const {unavailable} = this.props
+        Axios.post(apiUrl() + unavailable + '/unavailable/' + id + '/9')
+            .then(res => {
+                if(res.data.status){
+                    this.setState({
+                        success: true,
+                        successMessage: res.data.message
+                    }, () => {
+                        setTimeout(() => {
+                            this.setState({
+                                success: false
+                            })
+                            window.location.reload()
+                        }, 2300);
+                    })
+                }
+            })
+    }
+
     actionTemplate = (rowData, column) => {
         const {delId} = this.state
-        const {edit, del, details, approve, modal,add, track, remove, feedback, file, docDelete, docDetails, action, deleteModalTitle} = this.props
+        const {edit, del, details, approve, modal,add, track, remove, feedback, file, docDelete, docDetails, action, deleteModalTitle, unavailable, delivery} = this.props
         return (
             <div>
                 {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) &&
@@ -172,9 +198,32 @@ class PrimeDataTable extends Component {
             )
         })
 
-        return (<div className={'ui-multiselect'}>
-            {selectAsset}
-        </div>)
+        return (
+            <>
+                <button
+                    className={"btn btn-info btn-sm"}
+                    data-toggle="modal"
+                    data-target="#deliverProduct">Products</button>
+                <div className="modal fade" id="deliverProduct" tabIndex="-1" role="dialog"
+                     aria-labelledby="rowDeleteModal" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Deliver Products</h5>
+                                <button type="button" className="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <div className={'ui-multiselect'}>
+                                    {selectAsset}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>)
     }
 
     actionDanger = (rowData, column) => {
@@ -204,48 +253,96 @@ class PrimeDataTable extends Component {
         )
     }
 
+    actionUnavailable = (rowData, column) => {
+        return (
+            <div>
+                <button data-toggle="modal" data-target="#requestCancel" className={'btn btn-danger py-1'}><i className="fas fa-folder-minus"></i></button>
+                <div className="modal fade" id="requestCancel" tabIndex="-1" role="dialog"
+                     aria-labelledby="requestCancel" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Asset Transfer Request</h5>
+                                <button type="button" className="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <h5 className={'w-100 f-18px'}>Are you sure you want to cancel this transfer request?</h5>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary"
+                                        data-dismiss="modal">Close
+                                </button>
+                                <button type="button" className="btn btn-danger" data-dismiss="modal"
+                                        onClick={() => {this.unavailable(rowData.id)}}>Cancel Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    actionDelivery = (rowData, column) => {
+        return (
+            <div>
+                <button onClick={() => {this.props.delivery(rowData.id)}} className={'btn btn-secondary py-1'}><i
+                    className="fas fa-dolly-flatbed"></i></button>
+            </div>
+        )
+    }
+
     displayData = (rowData, column) => {
         return(
-            <>{(rowData[column.field] === "" || rowData[column.field] === null || rowData[column.field] === " ") ? 'N/A' : rowData[column.field]}</>
+            <>{(rowData[column.field] === "" || rowData[column.field] === null || rowData[column.field] === " ") ? 'N/A' :
+                (rowData[column.field] === false || rowData[column.field] === true) ? ((rowData[column.field] === false || rowData[column.field] === true) ? 'False' :  'True') : rowData[column.field]}</>
         )
     }
 
     render() {
-        const {cols} = this.state
-        const {edit, del, details, approve, dnger,add, track, remove, feedback, file, docDelete, docDetails, action, productDelivery} = this.props
-        console.log(this.props.data, 129)
+        const {cols, success, successMessage, error, errorMessage} = this.state
+        const {edit, del, details, approve, dnger,add, track, remove, feedback, file, docDelete, docDetails, action, productDelivery, unavailable, delivery} = this.props
         let dynamicColumns = cols.map((col,i) => {
             if (productDelivery) {
                 if (col.field === 'category_name' || col.field === 'sub_category_name' || col.field === 'role_name' || col.field === 'location_name' || col.field === 'update_quantity'){
-                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else if(dnger) {
                 if (col.field === 'description') {
-                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
+                    return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.actionDanger} key={col.field} field={col.field} header={col.header} />
                 } else {
-                    return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                    return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
                 }
             } else {
-                return <Column sortable={true} filter={true} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
+                return <Column sortable={true} filter={true} style={{width:'200px', height: '45px'}} filterPlaceholder={col.header} body={this.displayData} key={col.field} field={col.field} header={col.header} />;
             }
         });
 
         return (
+            <>
+                {success && <SuccessModal successMessage={successMessage}/>}
+                {error && <ErrorModal errorMessage={errorMessage}/>}
                 <div className="content-section implementation mt-3">
-                    <DataTable value={this.props.data} responsive={true} className="p-datatable-customers" dataKey="id"
+                    <DataTable value={this.props.data} responsive={true} className="p-datatable-customers" dataKey="id" scrollable={true}
                                selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({selectedCustomers: e.value})}
                                paginator rows={10} emptyMessage="No customers found" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                     >
                         {dynamicColumns}
-                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width: '8em'}}/>}
-                        {this.props.handleQuantity && <Column body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
-                        {this.props.handleComment && <Column body={this.actionComment} field={'comment'} header={'Comment'}/>}
-                        {this.props.handleMultiselect && <Column body={this.actionProduct} field={'products'} header={'Products'}/>}
-                        {this.props.comments && <Column body={this.actionComComments} field={'solution'} header={'Edit Solution'}/>}
-                        {this.props.done && <Column body={this.actionComDone} field={'action'} header={'Action'}/>}
+                        {(edit || feedback || del || add || details || approve || track || remove || file || docDelete || docDetails || action) && <Column filter={false} body={this.actionTemplate} field={'action'} header={'Action'} style={{textAlign:'center', width:'200px', height: '45px'}}/>}
+                        {this.props.handleQuantity && <Column style={{width:'200px', height: '45px'}} body={this.actionQuantity} field={'quantity'} header={'Quantity'} />}
+                        {this.props.handleComment && <Column style={{width:'200px', height: '45px'}} body={this.actionComment} field={'comment'} header={'Comment'}/>}
+                        {this.props.handleMultiselect && <Column style={{width:'200px', height: '45px'}} body={this.actionProduct} field={'products'} header={'Products'}/>}
+                        {unavailable && <Column style={{width:'95px', height: '45px', textAlign: 'center'}} body={this.actionUnavailable} field={'unavailable'} header={'Unavailable'}/>}
+                        {delivery && <Column style={{width:'80px', height: '45px', textAlign: 'center'}} body={this.actionDelivery} field={'delivery'} header={'Delivery'}/>}
+                        {this.props.comments && <Column  style={{width:'200px', height: '45px'}} body={this.actionComComments} field={'solution'} header={'Edit Solution'}/>}
+                        {this.props.done && <Column  style={{width:'200px', height: '45px'}} body={this.actionComDone} field={'action'} header={'Action'}/>}
                     </DataTable>
                 </div>
+            </>
         );
     }
 }

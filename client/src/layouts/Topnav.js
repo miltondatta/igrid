@@ -1,7 +1,8 @@
 import Axios from 'axios'
 import jwt from "jsonwebtoken";
-import {Link, Redirect, withRouter} from 'react-router-dom'
+import io from 'socket.io-client'
 import React, {Component} from 'react'
+import {Link, Redirect, withRouter} from 'react-router-dom'
 import {
     documentNav,
     sidenav,
@@ -14,6 +15,8 @@ import {
 } from "../utility/constant";
 import {BackEnd_BaseUrl} from "../config/private";
 
+const socket = io('http://localhost:5000/');
+
 class Topnav extends Component {
 
     constructor(props) {
@@ -22,7 +25,9 @@ class Topnav extends Component {
             currentHover: '',
             notification: '',
             showUserOption: false,
-            toggleNotification: false
+            assetRequest: false,
+            toggleNotification: false,
+            menuData: []
         }
     }
 
@@ -42,7 +47,22 @@ class Topnav extends Component {
     }
 
     componentDidMount() {
-        this.getNotification()
+        const {id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        socket.on('incomingTransferRequest', (data) => {
+            data.forEach((item, index) => {
+                    console.log(parseInt(item.request_to, 10) === id && item.status, 52)
+                if (parseInt(item.request_to, 10) === id && item.status) {
+                    this.setState({
+                        assetRequest: true,
+                        assetRequestInd: index
+                    }, () => {
+                        console.log(this.state.assetRequest, 57)
+                    })
+                }
+            })
+        })
+        this.getNotification();
+        this.getMenu();
     }
 
     getNotification = () => {
@@ -60,7 +80,20 @@ class Topnav extends Component {
             })
     }
 
+    getMenu = () => {
+        const { id, role_id } = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+        id !== null && Axios.get(apiUrl() + 'menu/get/' + role_id)
+            .then(res => {
+                console.log(res, 86)
+                this.setState({
+                    menuData: res.data
+                })
+            })
+    }
+
     renderCategory = () => {
+        const {menuData} = this.state
+        console.log(menuData, 95)
         const moduleName = window.location.pathname.split('/').filter(value => value !== '')[0];
         const {userType} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
         let data = [];
@@ -184,7 +217,7 @@ class Topnav extends Component {
 
     render() {
         const {home} = this.props
-        const {showUserOption, toggleNotification, notification} = this.state
+        const {showUserOption, toggleNotification, notification, menuData, assetRequest, assetRequestInd} = this.state
         const moduleName = window.location.pathname.replace('/', '').split('/');
         let breadCrumb = moduleName.map((item, index) => (
             <>
@@ -193,6 +226,8 @@ class Topnav extends Component {
                 </li>}
             </>
         ))
+
+
         const {userName, image, userType, id} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
 
         if (moduleName[0] === 'admin' && id !== 1) {
@@ -209,29 +244,37 @@ class Topnav extends Component {
                 <div className='ui-topnav w-100 px-4'>
                     <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
                         <div className={'w-100 h-100 align-items-center d-flex'}>
-                            <Link to={'/'}>
+                            <a href={'/'}>
                                 <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
-                            </Link>
+                            </a>
                             {/*<span className={`text-white ui-nav-init-link ml-5 mr-2 `}>Site Map</span>*/}
                             <Link to={'/contact'}><span className={`text-white ui-nav-init-link ml-5 mx-2 ${moduleName[0] === 'contact' && 'link-active'}`}>Contact Us</span></Link>
                             <Link to={'/about'}><span className={`text-white ui-nav-init-link mx-2 ${moduleName[0] === 'about' && 'link-active'}`}>About Us</span></Link>
                             {/*<span className={'text-white ui-nav-init-link mx-2'}>Help Center</span>*/}
                         </div>
                         <div className={'text-white ui-user-nav h-100'}>
-                            {toggleNotification && <div className="ui-notification" style={{right: userType === 0 ? '33.5%' : '33.5%'}}>
+                            {toggleNotification && <div className="ui-notification">
                                 <p className={'ui-notification-header'}>Notification</p>
                                 <div>
-                                    {notification ? <p className={'align-items-center no-project px-2 f-14px text-left'}>
-                                        You Have {notification} Notification
-                                        <br />
-                                        Go To <Link to={'/requisition-status'}>Requisition Status</Link>
-                                    </p> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
+                                    {(notification || assetRequest) ? <>
+                                        {notification && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                            You Have {notification} Notification
+                                            <br />
+                                            Go To <a href={'/requisition-status'}>Requisition Status</a>
+                                        </p>}
+                                        {assetRequest && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                            You Have Pending Asset Transfer Request
+                                            <br />
+                                            Go To <a onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} href={'/incoming-transfer-req'}>Incoming Asset Transfer</a>
+                                        </p>}
+                                    </>
+                                        : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
                                         <i className="f-20px mr-1 text-grey icofont-exclamation-circle"></i> Notification is currently empty
                                     </p>}
                                 </div>
                             </div>}
                             <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
-                                {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
+                                {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification + 1}</p>}
                             </i>
                             <div className="ui-dropdown-holder">
                                 <span onClick={this.handleUserOptions}>{userName}</span>
@@ -268,9 +311,9 @@ class Topnav extends Component {
                     <div className='ui-topnav w-100 px-4'>
                         <div className={`position-relative ui-topnav-container w-100  align-items-center h-100`}>
                             <div className={'w-100 h-100 align-items-center d-flex'}>
-                                <Link to={'/'}>
+                                <a href={'/'}>
                                     <img alt='Logo' src={process.env.PUBLIC_URL + '/media/image/logo_white.png'}/>
-                                </Link>
+                                </a>
                                 <div className={'ui-search-bar'}>
                                     <ol className="breadcrumb h-100">
                                         <li className="breadcrumb-item"><Link to={'/'}>Home</Link></li>
@@ -282,17 +325,24 @@ class Topnav extends Component {
                                 {toggleNotification && <div className="ui-notification">
                                     <p className={'ui-notification-header'}>Notification</p>
                                     <div>
-                                        {notification ? <p className={'align-items-center no-project px-2 f-14px text-left'}>
-                                            You Have {notification} Notification
-                                            <br />
-                                            Go To <Link to={'/requisition-status'}>Requisition Status</Link>
-                                        </p> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
+                                        {(notification || assetRequest) ? <>
+                                            {notification && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                                You Have {notification} Notification
+                                                <br />
+                                                Go To <a href={'/requisition-status'}>Requisition Status</a>
+                                            </p>}
+                                            {assetRequest && <p className={'align-items-center no-project px-2 f-14px text-left'}>
+                                                You Have Pending Asset Transfer Request
+                                                <br />
+                                                Go To <a onClick={() => {socket.emit('requestChecked' , {index: assetRequestInd})}} href={'/incoming-transfer-req'}>Incoming Asset Transfer</a>
+                                            </p>}
+                                        </> : <p className={'d-flex align-items-center no-project px-2 f-14px text-left'}>
                                             <i className="f-20px mr-1 text-grey icofont-exclamation-circle"></i> Notification is currently empty
                                         </p>}
                                     </div>
                                 </div>}
                                 <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
-                                    {notification !== '' && <p className={'ui-notification-count'}>{notification}</p>}
+                                    {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification + 1}</p>}
                                 </i>
 
                                 <div className="ui-dropdown-holder">

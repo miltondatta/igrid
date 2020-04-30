@@ -168,15 +168,15 @@ route.get('/requisition-details/delivery', async (req, res, next) => {
 // Read
 route.get('/requisition-details/status/:id', async (req,res,next) => {
     const [data, master] = await db.query(`
-        SELECT requisition_details.id, requisition_masters.request_date, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name as category, asset_sub_categories.sub_category_name as sub_category, CONCAT('REQ_NO_', requisition_masters.requisition_no) as requisition_no,
+        SELECT requisition_details.id, requisition_masters.request_date, CONCAT(users."firstName", ' ', users."lastName") as checked_by, asset_categories.category_name as category, asset_sub_categories.sub_category_name as sub_category, requisition_masters.requisition_no as requisition_no,
                requisition_details.brand, requisition_details.model, requisition_approves.update_quantity, statuses.status_name FROM requisition_details 
         Left JOIN requisition_masters ON requisition_details.requisition_id = requisition_masters.id
-        Left JOIN requisition_approves ON requisition_approves.requisition_id = requisition_masters.id
+        Left JOIN requisition_approves ON requisition_approves.requisition_details_id = requisition_details.id
         Left JOIN users ON requisition_approves.update_by = users.id
         Left JOIN asset_categories ON requisition_details.asset_category = asset_categories.id
         Left JOIN asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
         Left JOIN statuses ON requisition_approves.status = statuses.id
-        WHERE requisition_masters.id = ${req.params.id}
+        WHERE requisition_masters.id = ${req.params.id} AND requisition_details.requisition_id = ${req.params.id}  ORDER BY requisition_approves.id;
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -199,8 +199,6 @@ route.get('/requisition-details/details', async (req,res,next) => {
                  Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
                     WHERE requisition_details.requisition_id = ${requisition_id}
     `)
-
-    console.log(ress[0].assId,ress[0].subassid, 202)
 
     const [av_assets, metaData] = await db.query(`
         SELECT COUNT(assets.id) as av_assets from assets

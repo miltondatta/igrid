@@ -71,7 +71,6 @@ class AdminInputContainer extends Component {
         }
         Axios.post(apiUrl() + getApi + '/entry', this.getApiData())
             .then(res => {
-                console.log(res)
                 if(!res.data.status){
                     this.setState({
                         error: true,
@@ -540,7 +539,6 @@ class AdminInputContainer extends Component {
             Axios.get(apiUrl() + 'locations/render/' + id)
                 .then(resData => {
                     if(resData.data) {
-                        console.log(resData.data, 445)
                         this.setState({
                             locationHolder: [...this.state.locationHolder, ...resData.data]
                         })
@@ -555,7 +553,6 @@ class AdminInputContainer extends Component {
             Axios.get(apiUrl() + 'locations/render/' + id)
                 .then(resData => {
                     if(resData.data.length > 0) {
-                        console.log(resData.data, 445)
                         this.setState({
                             locationHolder: [...this.state.locationHolder, ...resData.data]
                         })

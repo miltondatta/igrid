@@ -58,3 +58,33 @@
     }
     .reactDataTable .tbody p{font-size: 14px !important;}
 }
+
+
+
+@media only screen and (max-width: 1200px) {
+    .ui-hometop {
+        grid-template-columns: 27% 71.7%;
+    }
+    .ui-notice-container{
+        height: 125px;
+    }
+    .ui-hometop .ui-home-options{
+        grid-gap: 10px;
+        grid-template-columns: 24% 24% 24% 24%;
+    }
+    .ui-home-responsive{
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 45px;
+        align-items: center;
+    }
+    .list-unstyled-notice{
+        margin-bottom: 0;
+        width: unset;
+    }
+    .ui-hometop .ui-home-options .ui-cards img{
+        width: 60px;
+    }
+}

@@ -1,0 +1,180 @@
+.p-multiselect{
+    width: 100%;
+    height: 100%;
+}
+
+.p-multiselect .p-multiselect-label-container{
+    height: 100%;
+}
+
+body .p-multiselect .p-multiselect-label.p-placeholder{
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+body .p-multiselect .p-multiselect-label{
+    max-width: 250px;
+}
+
+.red-select .p-multiselect{border: 2px solid red}
+
+
+.ui-mis-gsection{
+    background: white;
+    border-radius: 5px;box-shadow: 0 0 5px 2px #e2e2e2;
+    box-shadow: 0 0 5px 2px #e2e2e2;
+}
+
+.ui-mis-gsection .ui-graph-container{
+    height: 100%;
+}
+.ui-mis-gsection .ui-graph-container .ui-graph-holder{
+    height: 80%;
+}
+
+.ui-mis-gsection .ui-graph-container .ui-top{
+    display: grid;
+    position: relative;
+    align-items: center;
+    grid-template-columns: 63% 30% 7%;
+}
+
+.ui-mis-gsection .ui-graph-container .ui-top h5{
+    color: #777;
+    font-size: 16px;
+}
+
+.ui-mis-gsection .ui-graph-container .ui-top i {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.ui-dropdown{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.ui-dropdown .p-dropdown{
+    width: 98%;
+    border: 1px solid #d8d8d8 !important;
+}
+
+.ui-mis-report{
+    transition: .5s all;
+}
+
+.ui-mis-report .ui-mis-body{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% 80%
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs{
+    margin: 10px 0 10px 10px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 2px #e2e2e2;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-title{
+    padding: 10px;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 18px;
+    font-weight: 500;
+    color: #666;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 60% 40%;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-title p{
+    margin: 0;
+}
+
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-title i{
+    text-align: right;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-body div{
+    padding: 10px 5px;
+    background: #e6f3f5;
+    margin: 5px;
+    border-radius: 5px;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 90% 10%;
+    color: #666;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-body div p{
+    font-weight: 500;
+    margin: 0;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs .ui-body div i{
+    text-align: right;
+}
+
+.ui-graphholder-main{
+    height: 75vh;
+    overflow-y: auto;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs{
+    height: 72vh;
+    overflow-y: auto;
+}
+
+.ui-mis-report .ui-mis-body .ui-side-logs::-webkit-scrollbar,
+.ui-graphholder-main::-webkit-scrollbar{
+    display: none;
+}
+
+@media only screen and (max-width: 1440px) {
+    .ui-mis-gsection .ui-graph-container{height: 90%}
+    .ui-mis-gsection .ui-graph-container .ui-top{grid-template-columns: 60% 33% 7%;}
+}
+
+@media only screen and (max-width: 1380px) {
+    .ui-mis-graph .ui-mis-gsection{
+        height: 300px;
+    }
+    .ui-mis-gsection .ui-graph-container .ui-graph-holder{
+        height: 70%
+    }
+    .ui-mis-gsection .ui-graph-container .ui-top h5,
+    body .p-dropdown .p-dropdown-label.p-placeholder{
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 1180px) {
+    .ui-mis-graph .ui-mis-gsection{
+        height: 280px;
+    }
+}
+
+@media only screen and (max-height: 900px){
+    .ui-mis-report .ui-mis-body{height: 97%}
+    .ui-graphholder-main{height: 72vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 70vh;}
+}
+
+@media only screen and (max-height: 800px){
+    .ui-mis-report .ui-mis-body{height: 92%}
+    .ui-graphholder-main{height: 68vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 67vh;}
+}
+
+@media only screen and (max-height: 768px){
+    .ui-mis-report .ui-mis-body{height: 90%}
+    .ui-graphholder-main{height: 67vh;}
+    .ui-mis-report .ui-mis-body .ui-side-logs{height: 64.5vh;}
+}

@@ -155,7 +155,7 @@ class DeliveryRequestComponent extends Component {
                 {printDelivery && <PrintDelivery resData={resData} comeBack={this.comeBack} />}
                 {showDetails ?  <>
                     <nav className="navbar text-center mb-2 pl-2 rounded">
-                        <p onClick={() => {this.setState({showDetails: false, detailedData: []})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
+                        <p onClick={() => {this.setState({resData: []}, () => {this.setState({showDetails: false, detailedData: [], })})}} className="text-blue cursor-pointer f-weight-700 f-22px m-0" ><i className="fas mr-1 fa-chevron-circle-left"></i>Go Back</p>
                     </nav>
                     {resData.length > 0 && <PrimeDataTable
                         data={resData}

@@ -18,7 +18,6 @@ class AssetListOptions extends Component {
         const {userId} = this.props
         Axios.get(apiUrl() + 'assets/user/options/' + userId)
             .then(resData => {
-                console.log(resData.data, 17)
                 this.setState({
                     data: resData.data
                 })

@@ -42,6 +42,11 @@ module.exports = {
         status_name: 'Solved',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        status_name: 'Unavailable',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
       ], {});
   },

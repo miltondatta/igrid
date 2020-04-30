@@ -42,10 +42,10 @@ class LoginComponent extends Component {
 
     submitLogin = () => {
         if (Object.values(this.validate()).includes(false)) return false;
-        const {email,password} = this.state
+        const {email,password} = this.state;
+
         Axios.get('https://ipapi.co/json/')
             .then(res => {
-                console.log(res, 28)
                 const payload = {
                     email,
                     password,
@@ -82,6 +82,45 @@ class LoginComponent extends Component {
                         }
                     })
                     .catch(err => {console.log(err)})
+            }).catch(err => { 
+                console.log(err);
+                const payload = {
+                    email,
+                    password,
+                    ip: '127.0.0.1'
+                }
+                Axios.post(apiUrl() + 'users/login',payload)
+                    .then(resData => {
+                        if(resData.data.status){
+                            console.log(jwt.decode(resData.data.token))
+                            localStorage.setItem('user', resData.data.token)
+                            this.setState({
+                                success: true,
+                                successMessage: resData.data.message,
+                                redirect: true
+                            }, () => {
+                                setTimeout(() => {
+                                    this.setState({
+                                        success: false,
+                                    })
+                                }, 2300)
+                            })
+                        } else {
+                            this.setState({
+                                error: true,
+                                errorMessage: resData.data.message,
+                                redirect: true
+                            }, () => {
+                                setTimeout(() => {
+                                    this.setState({
+                                        error: false,
+                                    })
+                                }, 2300)
+                            })
+                        }
+                    })
+                    .catch(err => {console.log(err)})
+                
             })
     }
 
@@ -101,9 +140,7 @@ class LoginComponent extends Component {
 
     renderRedirect = () => {
         if(localStorage.getItem('user') && this.state.redirect){
-            return(
-                <Redirect to='/' />
-            )
+            window.location.href = '/'
         }
     }
 

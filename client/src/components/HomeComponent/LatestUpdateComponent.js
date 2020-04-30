@@ -50,7 +50,7 @@ class LatestUpdateComponent extends Component {
 
         return (
             <div className={'ui-noticeboard'}>
-                <div className={'p-2 overflow-hidden h-215px'}>
+                <div className={'p-2 overflow-hidden ui-notice-container'}>
                     <div className="ui-notice">
                         <div className="noticeText">
                             {allNotice}

@@ -12,8 +12,14 @@ class UserOptionsByLocation extends Component {
     }
 
     getData = memoize(location_id => {
-        if (location_id === '') return false;
-        Axios.get(apiUrl() + 'user-info/by/location/' + location_id)
+        const {userId} = this.props
+        if (userId) {
+
+        } else if(location_id === ''){
+            return false
+        }
+        let endPoint = userId ? 'user-info/by-user/' + userId : 'user-info/by/location/' + location_id
+        Axios.get(apiUrl() + endPoint)
             .then(resData => {
                 this.setState({
                     userData: resData.data[0]

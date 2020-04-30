@@ -86,7 +86,6 @@ class BranchRequisitionComponent extends Component {
                                 };
                                 printData.push(newObj);
                             });
-                            console.log(printData);
                             this.setState({printData});
                         });
                     })
@@ -106,7 +105,6 @@ class BranchRequisitionComponent extends Component {
     render() {
 
         const {requisitionTableData, viewDetails, requisitionDetailsTableData, printDelivery, printData, isLoading} = this.state;
-        console.log(requisitionTableData, 55)
         return (
             <div className={'bg-white rounded admin-input-height p-2 m-2'}>
                 {printDelivery && <PrintDelivery resData={printData} comeBack={this.comeBack}/>}

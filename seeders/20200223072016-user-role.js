@@ -37,6 +37,18 @@ module.exports = {
         role_desc: 'Stock Manager',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        role_name: 'Engineer-Hardward',
+        role_desc: 'Hardware Support',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        role_name: 'Engineer-Software',
+        role_desc: 'Software Support',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }], {});
   },
 

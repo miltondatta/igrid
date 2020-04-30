@@ -161,8 +161,10 @@ class ReactDataTable extends Component {
                             {feedback && <span data-toggle={`${modal && 'modal'}`} data-target={`${modal && modal}`} className="cursor-pointer text-warning" onClick={() => {this.props.updateEdit(item.id, edit)}}>
                                 <i className="icofont-ui-edit"></i>
                             </span>}
-                            {del && <span onClick={() => {this.setState({delId: item.id})}} className="cursor-pointer text-danger" data-toggle="modal"
-                                       data-target="#rowDeleteModal">
+                            {del && <span onClick={() => {this.setState({delId: item.id})}}
+                                          className="cursor-pointer text-danger"
+                                          data-toggle="modal"
+                                          data-target="#rowDeleteModal">
                                 <i className="icofont-ui-delete"></i>
                             </span>}
                             {add && <span className="cursor-pointer text-project" onClick={() => {this.props.addAssets(item.id)}}>

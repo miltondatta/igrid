@@ -3,9 +3,8 @@
 .ui-multiselect{
     width: auto;
     padding: 5px;
-    height: 32px;
+    height: 200px;
     overflow-y: auto;
-    position: absolute;
     border: 1px solid #ccc;
     border-radius: 5px;
     top: 0;
@@ -30,11 +29,6 @@
 .ui-multiselect > div > label{
     margin-left: 5px;
     word-break: break-word;
-}
-
-.ui-multiselect:hover{
-    z-index: 5;
-    height: 155px;
 }
 
 

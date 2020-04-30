@@ -19,8 +19,8 @@ let storage = multer.diskStorage({
 let upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf)$/)) {
-            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf format allowed!'));
+        if (!file.originalname.match(/\.(jpg|jpeg|png|doc|docx|pdf|xlsx)$/)) {
+            return cb(new Error('Only .png, .jpg, .jpeg, .doc, .docx, .pdf, .xlsx format allowed!'));
 
         }
         cb(null, true);
@@ -119,8 +119,8 @@ route.post('/lost-assets/entry', (req, res, next) => {
         } else if (err) {
             return res.status(500).json(err)
         }
-console.log(req.body, 122)
-        Location.findOne({where: {parent_id: req.body.location_id}})
+
+        Location.findOne({where: {id: req.body.location_id}})
             .then(resData => {
                 const {parent_id, asset_id, police_station, incident_time, gd_no, gd_date, role_id, added_by, incident_type, incident_date} = req.body;
                 if (asset_id !== '' && parent_id !== '' && incident_time !== '' && police_station !== '' && gd_no !== '' && gd_date !== '') {
@@ -135,7 +135,7 @@ console.log(req.body, 122)
                         police_station,
                         gd_no,
                         gd_date,
-                        gd_other_file: req.file.filename ? req.file.filename : null
+                        gd_other_file: req.file ? req.file.filename : null
                     };
 
                     LostAsset.create(newLostAsset)
@@ -143,7 +143,6 @@ console.log(req.body, 122)
                             res.status(200).json({message: 'Data Saved Successfully', status: true});
                         })
                         .catch(err => {
-                            console.log(err, 14);
                             res.status(200).json({message: 'Something went wrong', err});
                         })
                 } else {
@@ -151,9 +150,9 @@ console.log(req.body, 122)
                 }
             })
             .catch(err => {
-                console.log(err, 154);
+                console.log(err);
                 res.status(200).json({message: 'Something went wrong', err})
-            })
+            });
     })
 });
 
