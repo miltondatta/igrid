@@ -52,7 +52,7 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER
       },
-      solutionDetails: {
+      solution_details: {
         type: Sequelize.STRING,
         defaultValue: null,
         allowNull: true
