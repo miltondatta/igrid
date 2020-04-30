@@ -248,7 +248,7 @@ class PrimeDataTable extends Component {
         return (
             <p>
                 <button className={'btn btn-success p-1 px-2'} onClick={() => {this.props.done(this.state.comments, rowData.id)}}>
-                    <i className="fas fa-edit"></i></button>
+                    <i className="fas fa-check-square"></i></button>
             </p>
         )
     }

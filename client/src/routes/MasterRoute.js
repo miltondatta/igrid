@@ -399,7 +399,7 @@ class MasterRoute extends Component{
                             <Route exact path='/profile' component={AsyncProile}/>
                             <Route exact path='/challan' component={AsyncChallan}/>
                             <Route exact path='/contact' component={AsyncContact}/>
-                            <Route exact path='/complaint' component={AsyncComplain}/>
+                            <Route exact path='/complain' component={AsyncComplain}/>
                             <Route exact path='/admin/brand' component={AsyncBrands}/>
                             <Route exact path='/admin/model' component={AsyncModels}/>
                             <Route exact path='/requisition' component={AsyncAsset} />

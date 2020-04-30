@@ -1,43 +1,44 @@
 import Axios from "axios";
 import React, {Component} from 'react';
 import {apiUrl} from "../constant";
-import memoize from 'memoize-one';
 
 class ComSubCategoryOptions extends Component {
-    constructor(props) {
-        super(props);
+    constructor(props){
+        super(props)
         this.state = {
-            allData: []
+            assetCategory: []
         }
     }
+    componentDidMount() {
+        this.getData()
+    }
 
-    getData = memoize(category_id => {
-        if (!category_id) return;
-        Axios.get(apiUrl() + 'complaint/sub/category/by/' + category_id)
+    getData = () => {
+        Axios.get(apiUrl() + 'com-sub-category-options')
             .then(resData => {
                 this.setState({
-                    allData: resData.data
+                    assetCategory: resData.data
                 })
             })
-            .catch(err => {
-                console.log(err.response);
-            })
-    });
+    }
 
     render() {
-        const {category_id} = this.props;
-        this.getData(category_id);
+        const {assetCategory} = this.state
+        if (this.props.stateForceUpdate) {
+            this.getData()
+            this.props.forceUp()
+        }
 
-        const {allData} = this.state;
-        const options = allData.length > 0 && allData.map((item, index) => (
+        const {com_category_id} = this.props
+        const filteredCategory = assetCategory.length > 0 && assetCategory.filter(item => item.complain_id === parseInt(com_category_id, 10))
+        const assetCategoryOptions = filteredCategory.length > 0 && filteredCategory.map((item, index) => (
             <option key={index} value={item.id}>{item.sub_complaint_name}</option>
-        ));
-
-        return (
+        ))
+        return(
             <>
-                {options}
+                {assetCategoryOptions}
             </>
-        );
+        )
     }
 }
 

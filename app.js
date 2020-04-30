@@ -165,9 +165,9 @@ app.use('/api/v1/document/sub/category', DocumentSubCategory);
 app.use('/api/v1/mis/indicator/category', IndicatorCategory);
 app.use('/api/v1/mis/indicator/sub/category', IndicatorSubCategory);
 app.use('/api/v1/asset-repair', AssetRepair);
-app.use('/api/v1/complaint', ComplaintRouter);
+app.use('/api/v1/', ComplaintRouter);
 app.use('/api/v1/complaint/mapping', ComplaintMapping);
-app.use('/api/v1/complaint/feedback', ComplaintFeedback); 
+app.use('/api/v1/complaint/feedback', ComplaintFeedback);
 app.use('/api/v1/complaint/forward', ComplaintForward);
 app.use('/api/v1/', AssetLifeCycle);
 

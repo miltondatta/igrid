@@ -24,16 +24,16 @@ route.get('/com-sub-category', async (req,res,next) => {
 })
 
 // Read
-route.get('/complaint/sub/category/by/:category_id', (req,res) => {
-    ComSubCategory.findAll({attributes: ['id', 'sub_complaint_name'], where: {complain_id: req.params.category_id}})
+route.get('/com-sub-category-options', (req,res,next) => {
+    ComSubCategory.findAll({attributes: ['id', 'sub_complaint_name', 'complain_id']})
         .then(resData => {
-            res.status(200).json(resData);
+            res.status(200).json(resData)
         })
         .catch(err => {
-            console.log(err.message);
-            res.status(200).json({message: 'Something Went Wrong', err});
+            console.log(err)
+            res.status(200).json({message: 'Something Went Wrong', err})
         })
-});
+})
 
 // Update
 route.put('/com-sub-category/update/:id', (req,res,next) => {

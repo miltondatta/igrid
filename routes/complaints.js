@@ -10,7 +10,7 @@ route.get('/complaints/:id', async (req,res,next) => {
         SELECT complaints.id, "comCategories".complaint_name, "comSubCategories".sub_complaint_name, "complaints"."status", "complaints"."solution_details" as solution FROM complaints
             JOIN "comCategories" ON "comCategories".id = complaints.complaint_category
             JOIN "comSubCategories" ON "comSubCategories".id = complaints.complaint_sub_category
-            WHERE complaints."created_by" = ${req.params.id}
+            WHERE complaints."createdBy" = ${req.params.id}
     `)
     if (data.length > 0) {
         res.status(200).json(data)
@@ -26,7 +26,7 @@ route.get('/complaintslist', async (req,res,next) => {
                complaints."problem_details" as problemDetails,"complaints"."solution_details" as solution FROM complaints
                  JOIN "comCategories" ON "comCategories".id = complaints.complaint_category
                  JOIN "comSubCategories" ON "comSubCategories".id = complaints.complaint_sub_category
-                 JOIN users ON users.id = complaints."created_by"
+                 JOIN users ON users.id = complaints."createdBy"
     `)
     if (data.length > 0) {
         res.status(200).json(data)
