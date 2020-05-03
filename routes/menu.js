@@ -19,8 +19,8 @@ const route = express.Router();
 route.get('/menu/get/:role_id', async (req, res) => {
     try {
         let mainMenus = await getMenuByParent(0);
-        let subMenu = await getAllSubMenu();
-        let allMenus = [];
+        let subMenu   = await getAllSubMenu();
+        let allMenus  = [];
         mainMenus.length > 0 && mainMenus.forEach(element => {
             allMenus[element.module_id] = [];
         });

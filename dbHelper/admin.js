@@ -12,7 +12,7 @@ const getMenuByParent = async (parent_id) => {
 
 const getAllSubMenu = async () => {
     const [menu_datas] = await db.query(`
-        SELECT * FROM menus WHERE parent_id > 0
+        SELECT * FROM menus WHERE parent_id > 0 ORDER BY order_by ASC
     `);
     return menu_datas;
 };

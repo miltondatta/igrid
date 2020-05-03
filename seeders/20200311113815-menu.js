@@ -1094,6 +1094,19 @@ module.exports = {
                 "order_by": 3,
                 "createdAt": new Date(),
                 "updatedAt": new Date()
+            },
+            {
+                "id": 85,
+                "name": "Asset Transfer Request",
+                "icon": "",
+                "sub_menu": false,
+                "link": "/asset-transfer-request",
+                "parent_id": 8,
+                "module_id": 2,
+                "visible": true,
+                "order_by": 14,
+                "createdAt": new Date(),
+                "updatedAt": new Date()
             }
         ], {});
     },
