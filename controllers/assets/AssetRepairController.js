@@ -22,6 +22,8 @@ const upload = multer({
     }
 }).array('file');
 
+
+
 exports.index = async (req, res) => {
     try {
         const {added_by} = req.body;

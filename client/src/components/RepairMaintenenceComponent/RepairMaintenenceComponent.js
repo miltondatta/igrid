@@ -15,6 +15,7 @@ import SuccessModal from "../../utility/success/successModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 
 class RepairMaintenenceComponent extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -163,7 +164,7 @@ class RepairMaintenenceComponent extends Component {
                 }, () => {
                     this.emptyStateValue();
                     setTimeout(() => {
-                        window.location.reload();
+                        // window.location.reload();
                     }, 2300);
                 })
             })
@@ -203,11 +204,11 @@ class RepairMaintenenceComponent extends Component {
                     details: item.details
                 };
             }
-
             jsonData.push(data);
         });
 
         let formData = new FormData();
+
         formData.append('jsonData', JSON.stringify(jsonData));
 
         repairCredential.length && repairCredential.map((item) => {
