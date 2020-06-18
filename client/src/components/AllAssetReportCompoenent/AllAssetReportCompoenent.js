@@ -153,7 +153,7 @@ class AllAssetReportCompoenent extends Component {
                             <div className={'position-relative w-25'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                    <button className={`${typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]] ? 'p-0' : null)}`}>{(typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]]) ? <ReactExcelExport misReport excelData={assetReport} /> : 'Excel')}</button>
+                                    <button className={`${typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]] ? 'p-0' : null)}`}>{(typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]]) ? <ReactExcelExport excelData={assetReport} /> : 'Excel')}</button>
                                     <button onClick={this.pdfViewr}>PDF</button>
                                 </div>}
                             </div>

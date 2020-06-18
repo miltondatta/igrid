@@ -41,7 +41,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date(),
             },
             {
                 "challan_id"            : 1,
@@ -81,7 +83,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date(),
             },
             {
                 "challan_id"            : 1,
@@ -121,7 +125,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date(),
             },
             {
                 "challan_id"            : 1,
@@ -161,7 +167,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date(),
             },
             {
                 "challan_id"            : 1,
@@ -201,7 +209,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -241,7 +251,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -281,7 +293,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -321,7 +335,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -361,7 +377,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -401,7 +419,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -441,7 +461,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -481,7 +503,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -521,7 +545,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -561,7 +587,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -601,7 +629,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -641,7 +671,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -681,7 +713,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
 
             {
@@ -722,7 +756,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -762,7 +798,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -802,7 +840,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -842,7 +882,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -882,7 +924,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -922,7 +966,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -962,7 +1008,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1002,7 +1050,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1042,7 +1092,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1082,7 +1134,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1122,7 +1176,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1162,7 +1218,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1202,7 +1260,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1242,7 +1302,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1282,7 +1344,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+createdAt          : new Date(),
+updatedAt          : new Date()
             },
             {
                 "challan_id"            : 1,
@@ -1322,7 +1386,9 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date(),
             },
             {
                 "challan_id"            : 1,
@@ -1362,11 +1428,13 @@ module.exports = {
                 "insurance_value"       : 0,
                 "insurance_premium"     : 0,
                 "insurance_company"     : 0,
-                "insurance_expire_date" : "09-04-10"
+                "insurance_expire_date" : "09-04-10",
+                createdAt          : new Date(),
+                updatedAt          : new Date(),
             },
         ], {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('assets', null, {});
     }

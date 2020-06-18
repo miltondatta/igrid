@@ -9,8 +9,12 @@ class ReactExcelExport extends Component {
     render() {
         const {excelData, misReport} = this.props
         let listObj = Object.keys(excelData)[0]
-        const filterData = misReport ? listObj.length > 0 && Object.keys(excelData[listObj][0]).filter(item => item !== 'id') : Object.keys(excelData[0]).filter(item => item !== 'id')
+        const filterData = misReport ?
+            listObj.length > 0 && Object.keys(excelData[listObj][0]).filter(item => item !== 'id')
+            :
+            Object.keys(excelData[0]).filter(item => item !== 'id')
         let exclCol = null
+        console.log(filterData, 12)
 
         if (misReport) {
             let processedData = []
