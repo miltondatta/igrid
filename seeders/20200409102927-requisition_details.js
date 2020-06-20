@@ -13,19 +13,9 @@ module.exports = {
                 "expected_date"      : "09-04-10",
                 "file"               : null,
                 "asset_sub_category" : 10,
-                "quantity"           : 3
-            },
-            {
-                "requisition_id"     : 1,
-                "asset_category"     : 4,
-                "brand"              : null,
-                "model"              : null,
-                "reason"             : "New room",
-                "details"            : "needed",
-                "expected_date"      : "09-04-10",
-                "file"               : null,
-                "asset_sub_category" : 9,
-                "quantity"           : 6
+                "quantity"           : 3,
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             },
             {
                 "requisition_id"     : 1,
@@ -37,11 +27,13 @@ module.exports = {
                 "expected_date"      : "09-04-10",
                 "file"               : null,
                 "asset_sub_category" : 11,
-                "quantity"           : 1
+                "quantity"           : 1,
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             }
         ], {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('requisition_details', null, {});
     }

@@ -170,7 +170,6 @@ class AllDeliveryReportComponent extends Component {
                                             className={`ui-custom-input w-100 ${errorDict && !errorDict.date_from && 'border-red'}`}
                                             inputFormat="DD/MM/YYYY"
                                             onChange={date => this.setState({date_from: date})}
-                                            ranges={disabledRanges}
                                             value={date_from}
                                 />
                             </div>
@@ -181,7 +180,6 @@ class AllDeliveryReportComponent extends Component {
                                             className={`ui-custom-input w-100 ${errorDict && !errorDict.date_to && 'border-red'}`}
                                             inputFormat="DD/MM/YYYY"
                                             onChange={date => this.setState({date_to: date})}
-                                            ranges={disabledRanges}
                                             value={date_to}
                                 />
                             </div>

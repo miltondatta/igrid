@@ -31,7 +31,7 @@ route.get('/requisition-details', async (req,res,next) => {
     let user_id         = req.query.id;
     let location_id     = req.query.location_id;
 
-    //check if this role id exist in approval_levels table 
+    //check if this role id exist in approval_levels table
     //We can skip this step if we want
     const [approval_levels, approval_levels_meta] = await db.query(`
         SELECT * from approval_levels
@@ -62,9 +62,9 @@ route.get('/requisition-details', async (req,res,next) => {
         location_ids.push(item.id);
     });
     location_ids    =   location_ids.join(",");
-    console.log(location_ids);
+    console.log(location_ids, 65);
 
-    //Get update/approve requistion by child user to display for this user 
+    //Get update/approve requistion by child user to display for this user
     let child_approve_reqId = []
     if (location_ids) {
         const [resultsChildMain, metadataChildMain] = await db.query(`
@@ -75,9 +75,9 @@ route.get('/requisition-details', async (req,res,next) => {
             child_approve_reqId.push(item.requisition_details_id)
         });
     }
-    console.log(child_approve_reqId);
+    console.log(child_approve_reqId, 78);
 
-    //Get new created requistion by child user to display for this user 
+    //Get new created requistion by child user to display for this user
     let child_created_reqId = []
     if (location_ids) {
         const [resultsChildCreated, metadataChildCreated] = await db.query(`
@@ -88,9 +88,9 @@ route.get('/requisition-details', async (req,res,next) => {
             child_created_reqId.push(item.requisition_details_id)
         });
     }
-    console.log(child_created_reqId);
+    console.log(child_created_reqId, 91);
 
-     //Get update requistion by login user to subtract those request 
+     //Get update requistion by login user to subtract those request
      let updated_reqId = []
      const [resultsMain, metadataMain] = await db.query(`
          SELECT requisition_approves.requisition_details_id from requisition_approves
@@ -99,13 +99,13 @@ route.get('/requisition-details', async (req,res,next) => {
      resultsMain.length > 0 && resultsMain.forEach(item => {
          updated_reqId.push(item.requisition_details_id)
      });
-     console.log(updated_reqId);
+     console.log(updated_reqId, 102);
 
     let pending_requisition_details_id =  [...child_approve_reqId, ...child_created_reqId];
     if(updated_reqId.length) {
         pending_requisition_details_id     =   pending_requisition_details_id.filter(item => !updated_reqId.includes(item));
     }
-    console.log(pending_requisition_details_id);   
+    console.log(pending_requisition_details_id, 108);
 
     let results = [];
     if (pending_requisition_details_id.length) {
@@ -129,8 +129,8 @@ route.get('/requisition-details', async (req,res,next) => {
         res.status(200).json(results)
     } else {
         res.status(200).json({ message: "No Data Found" })
-    }    
-    
+    }
+
 })
 
 // Read

@@ -6,11 +6,13 @@ module.exports = {
             {
                 "complaint_id" : 2,
                 "fw_by"        : 9,
-                "fw_to"        : 10
+                "fw_to"        : 10,
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             }
         ], {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('challans', null, {});
     }

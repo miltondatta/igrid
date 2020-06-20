@@ -62,7 +62,7 @@ class AdminInputContainer extends Component {
             isLoading: false,
         }
     }
-    
+
     handleSubmit = () => {
         const {getApi} = this.props
         console.log(this.getApiData(), 50)
@@ -507,6 +507,7 @@ class AdminInputContainer extends Component {
                 [name]: value
             }, () => {
                 this.locationApi(value)
+                this.validate()
             })
         } else {
             this.setState({
@@ -1531,6 +1532,7 @@ class AdminInputContainer extends Component {
                     role_id: typeof role_id !== 'undefined' && role_id !== '',
                     parent_id: typeof parent_id !== 'undefined' && parent_id !== 0,
                 }
+                console.log(parent_id, 1534)
                 this.setState({
                     errorDict
                 })

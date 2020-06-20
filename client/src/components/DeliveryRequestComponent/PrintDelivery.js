@@ -28,8 +28,8 @@ class PrintDelivery extends Component {
                     <div className={'ui-print'}>
                         <div className="print-header">
                             <h5>iGrid Requisition Delivery</h5>
-                            <strong>Some Branch Name, Gate No, and Other Info</strong>
-                            <strong>Location Information</strong>
+                            <strong>This is a system generated delivery voucher</strong>
+                            <strong>Please save this copy!</strong>
                         </div>
                         <div className="print-body">
                             <div className="client-info">

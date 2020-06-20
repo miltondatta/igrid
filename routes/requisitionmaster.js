@@ -107,6 +107,7 @@ route.post('/requisition-master/entry', (req,res,next) => {
                     })
             })
             .catch(err => {
+                console.log(err, 110)
                 res.status(200).json({message: 'Something went wrong', err})
             })
     }

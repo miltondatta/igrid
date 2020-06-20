@@ -2,6 +2,7 @@ const Users = require('./user')
 const db = require('../config/db')
 const Sequelize = require('sequelize')
 const UserRoles = require('./userroles')
+const Locations = require('./locations')
 const UserAssociateRole = require('./userassociaterole')
 
 

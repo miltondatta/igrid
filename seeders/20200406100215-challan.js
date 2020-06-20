@@ -14,11 +14,13 @@ module.exports = {
                 "received_by"         : "shuvo",
                 "added_by"            : 6,
                 "attachment"          : "1586417710253-ReferenceCard.pdf",
-                "comments"            : null
+                "comments"            : null,
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             }
         ], {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('challans', null, {});
     }

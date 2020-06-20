@@ -12,11 +12,13 @@ module.exports = {
                 "request_by"     : 7,
                 "request_date"   : "09-04-20",
                 "delivery_date"  : null,
-                "status"         : 0
+                "status"         : 0,
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             }
         ], {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('requisition_masters', null, {});
     }

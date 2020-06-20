@@ -72,6 +72,7 @@ class Topnav extends Component {
                 if(res.data.message){
                     return
                 } else {
+                    console.log(res.data, 75)
                     this.setState({
                         notification: res.data
                     })
@@ -274,7 +275,7 @@ class Topnav extends Component {
                                 </div>
                             </div>}
                             <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
-                                {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification + 1}</p>}
+                                {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification}</p>}
                             </i>
                             <div className="ui-dropdown-holder">
                                 <span onClick={this.handleUserOptions}>{userName}</span>
@@ -342,7 +343,7 @@ class Topnav extends Component {
                                     </div>
                                 </div>}
                                 <i className="fas fa-bell cursor-pointer" onClick={() => {this.setState({toggleNotification: !toggleNotification})}}>
-                                    {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification + 1}</p>}
+                                    {(notification !== '' || assetRequest) && <p className={'ui-notification-count'}>{notification}</p>}
                                 </i>
 
                                 <div className="ui-dropdown-holder">
