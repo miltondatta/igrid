@@ -19,6 +19,7 @@ class PrimeDataTable extends Component {
             comments: '',
             error: false,
             success: false,
+            openModalVal: '',
             errorMessage: '',
             successMessage: '',
             selectedCustomers: null
@@ -183,8 +184,9 @@ class PrimeDataTable extends Component {
 
     actionProduct = (rowData, column) => {
         const {products} = this.props
+        const {openModalVal} = this.state
+        console.log(rowData, 151)
         const filteredCategory = products.length > 0 && products.filter(item => (item.asset_category === parseInt(rowData.asset_category, 10) && item.asset_sub_category === parseInt(rowData.asset_sub_category, 10)))
-        console.log(filteredCategory, 151)
         const selectAsset = filteredCategory.length > 0 && filteredCategory.map((item, index) => {
             return(
                 <div>
@@ -203,8 +205,8 @@ class PrimeDataTable extends Component {
                 <button
                     className={"btn btn-info btn-sm"}
                     data-toggle="modal"
-                    data-target="#deliverProduct">Products</button>
-                <div className="modal fade" id="deliverProduct" tabIndex="-1" role="dialog"
+                    data-target={`#deliverProduct${rowData.id}`}>Products</button>
+                <div className="modal fade" id={`deliverProduct${rowData.id}`} tabIndex="-1" role="dialog"
                      aria-labelledby="rowDeleteModal" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
@@ -223,6 +225,7 @@ class PrimeDataTable extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="modal-bg"></div>
             </>)
     }
 

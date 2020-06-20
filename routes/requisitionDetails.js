@@ -94,7 +94,7 @@ route.get('/requisition-details', async (req,res,next) => {
      let updated_reqId = []
      const [resultsMain, metadataMain] = await db.query(`
          SELECT requisition_approves.requisition_details_id from requisition_approves
-             WHERE update_by = '${user_id}'  
+              WHERE update_by = '${user_id}' OR delivery_to IS NOT NULL
      `)
      resultsMain.length > 0 && resultsMain.forEach(item => {
          updated_reqId.push(item.requisition_details_id)
@@ -177,18 +177,27 @@ route.get('/requisition-details/status/:id', async (req,res,next) => {
         Left JOIN asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
         Left JOIN statuses ON requisition_approves.status = statuses.id
         WHERE requisition_masters.id = ${req.params.id} AND requisition_details.requisition_id = ${req.params.id}  ORDER BY requisition_approves.id;
-    `)
+    `);
+
+    console.log(data, 182)
+
+    data.forEach(item => {
+        if(item.update_quantity === 0) {
+            item.status_name = 'Rejected'
+        }
+    })
+
     if (data.length > 0) {
         res.status(200).json(data)
     } else {
         res.status(200).json()
     }
-})
+});
 
 // Read
 route.get('/requisition-details/details', async (req,res,next) => {
     const {id, requisition_id}= req.query;
-    let reqId = []
+    let reqId = [];
 
 
     const [ress, Metares] = await db.query(`
@@ -200,12 +209,21 @@ route.get('/requisition-details/details', async (req,res,next) => {
                     WHERE requisition_details.requisition_id = ${requisition_id}
     `)
 
+    console.log(ress, 208)
+
+    let avAssetId = []
+    let avSubAssetId = []
+    let avAsset = []
+
+    ress.length > 0 && ress.forEach(item => {
+        avAssetId.push(item.assid)
+        avSubAssetId.push(item.subassid)
+    });
+
     const [av_assets, metaData] = await db.query(`
         SELECT COUNT(assets.id) as av_assets from assets
             WHERE assets.assign_to = ${id} AND assets.asset_category = ${ress[0].assid} AND assets.asset_sub_category = ${ress[0].subassid}
-    `)
-
-    console.log(av_assets, 208)
+    `);
 
 
     const [resultsMain, metadataMain] = await db.query(`
@@ -226,13 +244,21 @@ route.get('/requisition-details/details', async (req,res,next) => {
                     WHERE requisition_details.requisition_id = ${requisition_id}`);
 
         let payLoad = results.filter(item => !reqId.includes(item.id))
-        payLoad[0]['av_assets'] = av_assets[0].av_assets
-    console.log(payLoad, 231)
-        if (results.length > 0) {
-            res.status(200).json(payLoad)
-        } else {
-            res.status(200).json({message: "No Data Found"})
-        }
+
+        avAssetId.forEach(async (item, index) => {
+            const [av_assets, metaData] = await db.query(`
+                SELECT COUNT(assets.id) as av_assets from assets
+                    WHERE assets.assign_to = ${id} AND assets.asset_category = ${item} AND assets.asset_sub_category = ${avSubAssetId[index]}
+            `);
+            payLoad[index]['av_assets'] = av_assets[0].av_assets
+            if(index === avAssetId.length - 1) {
+                if (results.length > 0) {
+                    res.status(200).json(payLoad)
+                } else {
+                    res.status(200).json({message: "No Data Found"})
+                }
+            }
+        });
 })
 
 // Update
