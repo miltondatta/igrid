@@ -223,7 +223,7 @@ route.get('/requisition-details/details', async (req,res,next) => {
                  Join users ON requisition_masters.request_by = users.id
                  Join asset_categories ON requisition_details.asset_category = asset_categories.id
                  Join asset_sub_categories ON requisition_details.asset_sub_category = asset_sub_categories.id
-                    WHERE requisition_details.requisition_id = ${requisition_id}`)
+                    WHERE requisition_details.requisition_id = ${requisition_id}`);
 
         let payLoad = results.filter(item => !reqId.includes(item.id))
         payLoad[0]['av_assets'] = av_assets[0].av_assets
