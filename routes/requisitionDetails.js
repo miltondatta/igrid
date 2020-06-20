@@ -179,8 +179,6 @@ route.get('/requisition-details/status/:id', async (req,res,next) => {
         WHERE requisition_masters.id = ${req.params.id} AND requisition_details.requisition_id = ${req.params.id}  ORDER BY requisition_approves.id;
     `);
 
-    console.log(data, 182)
-
     data.forEach(item => {
         if(item.update_quantity === 0) {
             item.status_name = 'Rejected'

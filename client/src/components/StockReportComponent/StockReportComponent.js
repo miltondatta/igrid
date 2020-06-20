@@ -3,9 +3,7 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 import {apiUrl} from "../../utility/constant";
 import ErrorModal from "../../utility/error/errorModal";
-import SuccessModal from "../../utility/success/successModal";
 import ReactExcelExport from "../../module/react-excel-export/reactExcelExport";
-
 import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
@@ -193,7 +191,7 @@ class StockReportComponent extends Component {
                     :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
 
-                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={allData} />}
+                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Stock Report'}  tableData={allData} />}
             </>
         );
     }

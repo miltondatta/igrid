@@ -114,6 +114,11 @@ class AllDeliveryReportComponent extends Component {
         return errorDict
     }
 
+    pdfViewr = () => {
+        const {assetReport} = this.state
+        assetReport.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
+    }
+
     render() {
         const {hierarchies, parentID, assetReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict, dailyReport, date_to, date_from} = this.state
 
@@ -220,8 +225,7 @@ class AllDeliveryReportComponent extends Component {
                         </div>}
                 </div>
 
-                {pdf &&
-                <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'} tableData={dailyReport}/>}
+                {pdf && <TablePdfViewer admin pdfViewr={this.pdfViewr} reportTitle={'All Delivery Report'} tableData={assetReport}/>}
             </>
         );
     }
