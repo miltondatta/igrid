@@ -20,7 +20,7 @@ module.exports = {
             location_id    : {
                 type       : Sequelize.INTEGER,
                 references : {
-                    model : 'user_associate_roles',
+                    model : 'locations',
                     key   : 'id'
                 }
             },

@@ -19,7 +19,7 @@ const RequisitionMaster = db.define('requisition_masters', {
   location_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: UserAssociateRole,
+      model: Locations,
       key: 'id'
     }
   },

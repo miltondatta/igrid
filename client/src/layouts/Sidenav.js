@@ -54,6 +54,7 @@ class Sidenav extends Component {
     }
 
     render(){
+
         const {sideNav} = this.props
         const {userName} = this.state
         const {image} = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''

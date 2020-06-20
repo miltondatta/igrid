@@ -217,6 +217,8 @@ class Topnav extends Component {
     }
 
     render() {
+
+        console.log(jwt.decode(localStorage.getItem('user')) && jwt.decode(localStorage.getItem('user')).data, 58)
         const {home} = this.props
         const {showUserOption, toggleNotification, notification, menuData, assetRequest, assetRequestInd} = this.state
         const moduleName = window.location.pathname.replace('/', '').split('/');
