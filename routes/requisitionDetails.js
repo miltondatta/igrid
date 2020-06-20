@@ -62,7 +62,6 @@ route.get('/requisition-details', async (req,res,next) => {
         location_ids.push(item.id);
     });
     location_ids    =   location_ids.join(",");
-    console.log(location_ids);
 
     //Get update/approve requistion by child user to display for this user 
     let child_approve_reqId = []
@@ -75,7 +74,6 @@ route.get('/requisition-details', async (req,res,next) => {
             child_approve_reqId.push(item.requisition_details_id)
         });
     }
-    console.log(child_approve_reqId);
 
     //Get new created requistion by child user to display for this user 
     let child_created_reqId = []
@@ -88,25 +86,24 @@ route.get('/requisition-details', async (req,res,next) => {
             child_created_reqId.push(item.requisition_details_id)
         });
     }
-    console.log(child_created_reqId);
+    
 
      //Get update requistion by login user to subtract those request 
      let updated_reqId = []
      const [resultsMain, metadataMain] = await db.query(`
          SELECT requisition_approves.requisition_details_id from requisition_approves
-             WHERE update_by = '${user_id}'  
+             WHERE update_by = '${user_id}' OR delivery_to IS NOT NULL  
      `)
      resultsMain.length > 0 && resultsMain.forEach(item => {
          updated_reqId.push(item.requisition_details_id)
      });
-     console.log(updated_reqId);
 
     let pending_requisition_details_id =  [...child_approve_reqId, ...child_created_reqId];
     if(updated_reqId.length) {
         pending_requisition_details_id     =   pending_requisition_details_id.filter(item => !updated_reqId.includes(item));
     }
-    console.log(pending_requisition_details_id);   
-
+    
+    
     let results = [];
     if (pending_requisition_details_id.length) {
         pending_requisition_details_id = pending_requisition_details_id.join(",");
