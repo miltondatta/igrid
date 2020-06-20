@@ -87,7 +87,7 @@ class TablePdfViewer extends Component {
                     <i className="fas fa-times-circle"></i>
                 </div>
                 <PDFViewer>
-                    <Document style={styles.document}>
+                    <Document style={styles.document} >
                         <Page size="A4" style={styles.page} wrap={true}>
                             <View style={styles.sectionTop}>
                                 <Image style={{width: 65, marginBottom: 15}} src={process.env.PUBLIC_URL + '/media/image/logo.png'} />
