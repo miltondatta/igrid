@@ -313,6 +313,10 @@ const AsyncStockReport = Loadable({
     loader: () => import('../containers/Report/StockReport.js'),
     loading: Loader,
 });
+const AsyncStockDepriciationReport = Loadable({
+    loader: () => import('../containers/Report/StockDepriciationReport.js'),
+    loading: Loader,
+});
 const AsyncMy404Component = Loadable({
     loader: () => import('./404Page/404Page'),
     loading: Loader,
@@ -413,6 +417,7 @@ class MasterRoute extends Component{
                             <Route exact path='/documents' component={AsyncDocManagement}/>
                             <Route exact path='/location' component={AsyncLocationFinder}/>
                             <Route exact path='/stock-report' component={AsyncStockReport}/>
+                            <Route exact path='/stock-depriciation-report' component={AsyncStockDepriciationReport}/>
                             <Route exact path='/admin/amc-types' component={AsyncAmcTypes}/>
                             <Route exact path='/profile/pass-reset' component={AsyncPasswordReset}/>
                             <Route exact path='/mis/dashboard' component={AsyncMISDashboard}/>

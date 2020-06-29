@@ -277,6 +277,19 @@ module.exports = {
                 "updatedAt": new Date()
             },
             {
+                "id": 86,
+                "name": "Depreciation  Report",
+                "icon": "",
+                "sub_menu": false,
+                "link": "/stock-depriciation-report",
+                "parent_id": 20,
+                "module_id": 2,
+                "visible": true,
+                "order_by": 5,
+                "createdAt": new Date(),
+                "updatedAt": new Date()
+            },
+            {
                 "id": 22,
                 "name": "Delivery Report",
                 "icon": "",

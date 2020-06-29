@@ -166,6 +166,12 @@ export const sidenav = [
                 icon: ""
             },
             {
+                id: 6,
+                name: 'Stock Depreciation Report',
+                link: '/stock-depriciation-report',
+                icon: ""
+            },
+            {
                 id: 1,
                 name: 'Delivery Report',
                 link: '/delivery-report',

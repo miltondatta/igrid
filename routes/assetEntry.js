@@ -448,6 +448,45 @@ route.post('/assets/all/by/id', async (req, res) => {
     }
 });
 
+// Assets Own Stock Depriciation
+route.post('/assets/depreciation/report', async (req, res) => {
+    try {
+        const {user_id, category_id, sub_category_id} = req.body;
+
+        let queryText = '';
+        if (user_id) queryText = 'where assets.assign_to = ' + user_id;
+        if (category_id) queryText += ' and assets.asset_category = ' + category_id;
+        if (sub_category_id) queryText += ' and assets.asset_sub_category = ' + sub_category_id;
+
+        const [data, metadata] = await db.query(`select
+                                       assets.id,
+                                       products.product_name as product,
+                                       asset_categories.category_name as category,
+                                       asset_sub_categories.sub_category_name as sub_category,
+                                       assets.product_serial,
+                                       assets.book_value,
+                                       assets.salvage_value,
+                                       assets.useful_life
+                                from assets
+                                         left join asset_categories on assets.asset_category = asset_categories.id
+                                         left join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
+                                         left join products on assets.product_id = products.id
+                                         left join conditions on assets.condition = conditions.id
+                                ${queryText} 
+                                group by assets.id, conditions.condition_type, products.product_name, asset_categories.category_name,
+                                            asset_sub_categories.sub_category_name`);
+
+        if (data.length > 0) {
+            return res.status(200).json({response: data, status: true });
+        } else {
+            return res.status(200).json({message: "No Data Found"});
+        }
+    } catch (err) {
+        console.error(err.message);
+        return res.status(200).json({message: err.message});
+    }
+});
+
 // Assets Own Stock Data By User
 route.post('/assets-report/all', async (req, res) => {
     try {
