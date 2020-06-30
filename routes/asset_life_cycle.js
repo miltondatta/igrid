@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../config/db');
 const router = express.Router();
 const Asset = require('../models/asset/assets');
+const {depreciationCalculation} = require('../utility/custom');
 
 
 router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
@@ -64,6 +65,9 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
                other_cost,
                asset_types.type_name,
                depreciation_methods.method_name,
+               depreciation_method,
+               salvage_value,
+               useful_life,
                rate,
                book_value,
                warranty,
@@ -100,7 +104,7 @@ router.get('/asset/lifecycle/details/:asset_id', async (req, res) => {
             depreciation_method: item.method_name,
             rate: item.rate,
             book_value: item.book_value,
-            book_value_after_depreciation: '',
+            book_value_after_depreciation: depreciationCalculation(item),
             warranty: item.warranty,
             asset_delivery: {
                 deliver_from: asset_deliver_from.length > 0 ? asset_deliver_from[index].assign_from : '',
