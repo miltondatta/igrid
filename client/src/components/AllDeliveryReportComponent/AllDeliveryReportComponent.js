@@ -223,7 +223,7 @@ class AllDeliveryReportComponent extends Component {
                 </div>
 
                 {pdf &&
-                <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'} tableData={dailyReport}/>}
+                <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'All Delivery Report'} tableData={dailyReport}/>}
             </>
         );
     }

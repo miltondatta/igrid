@@ -151,7 +151,7 @@ class MaintenanceReportComponent extends Component {
                     :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
 
-                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={deliveryReportData} />}
+                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Maintenance Report'}  tableData={deliveryReportData} />}
             </>
         );
     }

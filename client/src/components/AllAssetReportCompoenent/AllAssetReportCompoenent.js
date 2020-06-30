@@ -168,7 +168,7 @@ class AllAssetReportCompoenent extends Component {
                     </div>}
                 </div>
 
-                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={assetReport} />}
+                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'All Assets Report'}  tableData={assetReport} />}
             </>
         );
     }

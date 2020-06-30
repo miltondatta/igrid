@@ -21,7 +21,8 @@ class StockDepReportComponent extends Component {
             category_id: '',
             sub_category_id: '',
             errorObj: null,
-            isLoading: false
+            isLoading: false,
+            searchClicked: false,
         };
     }
 
@@ -79,6 +80,7 @@ class StockDepReportComponent extends Component {
 
         this.setState({
             isLoading: true,
+            searchClicked: true,
             allData: []
         }, () => {
             axios.post(apiUrl() + 'assets/depreciation/report', {
@@ -128,13 +130,14 @@ class StockDepReportComponent extends Component {
     }
 
     render() {
-        const {error, optionDropDown, errorMessage, category_id, sub_category_id, errorObj, allData, pdf} = this.state
-        console.log(allData, 72)
+        const {error, optionDropDown, errorMessage, category_id, sub_category_id, errorObj, allData, pdf, searchClicked} = this.state;
+
         return (
             <>
-                {error &&
-                <ErrorModal errorMessage={errorMessage} />
+                {error && searchClicked &&
+                    <ErrorModal errorMessage={errorMessage} />
                 }
+
                 <div className={'rounded m-2 bg-white max-h-80vh ui-report-container px-3'}>
                     <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                         <p className="text-blue f-weight-700 f-20px m-0">Stock Depreciation Report</p>
@@ -193,7 +196,7 @@ class StockDepReportComponent extends Component {
                     :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
                 </div>
 
-                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={allData} />}
+                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Stock Report'}  tableData={allData} />}
             </>
         );
     }
