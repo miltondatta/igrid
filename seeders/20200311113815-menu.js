@@ -277,7 +277,7 @@ module.exports = {
                 "updatedAt": new Date()
             },
             {
-                "id": 86,
+                "id": 87,
                 "name": "Depreciation  Report",
                 "icon": "",
                 "sub_menu": false,
@@ -1118,6 +1118,19 @@ module.exports = {
                 "module_id": 2,
                 "visible": true,
                 "order_by": 14,
+                "createdAt": new Date(),
+                "updatedAt": new Date()
+            },
+            {
+                "id": 86,
+                "name": "Asset Life Cycle",
+                "icon": "",
+                "sub_menu": false,
+                "link": "/asset-life-cycle",
+                "parent_id": 8,
+                "module_id": 2,
+                "visible": true,
+                "order_by": 18,
                 "createdAt": new Date(),
                 "updatedAt": new Date()
             }
