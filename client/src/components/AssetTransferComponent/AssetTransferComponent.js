@@ -368,6 +368,12 @@ class AssetTransferComponent extends Component {
                                         className={`ui-custom-input ui-disabled`} />
                             </div>
                             <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Location</label>
+                                <input value={user.location_name}
+                                        disabled={true}
+                                        className={`ui-custom-input ui-disabled`} />
+                            </div>
+                            <div className="px-1 mb-2">
                                 <label className={'ui-custom-label'}>Category</label>
                                 <select name={'category_id'} value={category_id}
                                         onChange={this.handleChange}

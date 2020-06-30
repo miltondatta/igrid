@@ -124,16 +124,23 @@ router.post('/users/login', (req,res,next) => {
                             const address = data[0].dataValues.address
                             const image = data[0].dataValues.image
 
-                            let location_id = null;
-                            let userType    = null;
+                            let location_id     = null;
+                            let userType        = null;
+                            let location_name   = null;
 
 
-                            const [results, metadata] = await db.query(`SELECT user_associate_roles.location_id as location_id, user_associate_roles.role_id as role_id FROM user_associate_roles WHERE user_associate_roles.user_id = ${data[0].dataValues.id}`)
+                            const [results, metadata] = await db.query(`
+                                        SELECT user_associate_roles.location_id as location_id, user_associate_roles.role_id as role_id FROM user_associate_roles
+                                         WHERE user_associate_roles.user_id = ${data[0].dataValues.id}`)
+                            const [locationData, locationDataMetadata] = await db.query(`
+                                        select location_name from locations where id = ${results[0].location_id}`)
+                            console.log(locationData)
                             if(results.length > 0) {
-                                 location_id = results[0].location_id
-                                 userType    = results[0].role_id
+                                 location_name = locationData[0].location_name;
+                                 location_id = results[0].location_id;
+                                 userType    = results[0].role_id;
                             }
-                            payload = {id, userName, email, phone_number, pin, address, image, userType, role_id: results[0].role_id, location_id}
+                            payload = {id, userName, email, phone_number, pin, address, image, userType, role_id: results[0].role_id, location_id, location_name}
 
                             const token = jwt.sign({
                                 exp: Math.floor(Date.now() / 1000) + (8 * 60 * 60),
