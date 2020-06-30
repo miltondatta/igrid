@@ -134,9 +134,10 @@ router.post('/users/login', (req,res,next) => {
                                          WHERE user_associate_roles.user_id = ${data[0].dataValues.id}`)
                             const [locationData, locationDataMetadata] = await db.query(`
                                         select location_name from locations where id = ${results[0].location_id}`)
-                            console.log(locationData)
-                            if(results.length > 0) {
-                                 location_name = locationData[0].location_name;
+                            if(locationData.length > 0) {
+                                location_name = locationData[0].location_name;
+                            }
+                            if(results.length > 0) {                                 
                                  location_id = results[0].location_id;
                                  userType    = results[0].role_id;
                             }
