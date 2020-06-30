@@ -1,8 +1,8 @@
-const Users = require('./user')
-const db = require('../config/db')
-const Sequelize = require('sequelize')
-const UserRoles = require('./userroles')
-const UserAssociateRole = require('./userassociaterole')
+const Users = require('./user');
+const db = require('../config/db');
+const Sequelize = require('sequelize');
+const Locations = require('./locations');
+const UserRoles = require('./userroles');
 
 
 const RequisitionMaster = db.define('requisition_masters', {
@@ -18,7 +18,7 @@ const RequisitionMaster = db.define('requisition_masters', {
   location_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: UserAssociateRole,
+      model: Locations,
       key: 'id'
     }
   },
