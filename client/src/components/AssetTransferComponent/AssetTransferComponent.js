@@ -343,6 +343,8 @@ class AssetTransferComponent extends Component {
                 </select>
             </div>));
 
+        const user = jwt.decode(localStorage.getItem('user')).data
+
         return (
             <>
                 {error &&
@@ -353,63 +355,76 @@ class AssetTransferComponent extends Component {
                 }
                 <div className="px-2 my-2 ui-dataEntry">
                     <div className={`bg-white rounded p-2 admin-input-height position-relative`}>
+                        <div className={'ui-transfer-from'}>
+                            <nav className="navbar text-center mb-2 pl-2 rounded">
+                                <p className="text-blue f-weight-700 f-20px m-0">Transfer From
+                                    {state && <button onClick={() => {window.history.pushState(null, ''); window.location.reload()}} className={' ml-2 btn btn-info py-1'}>
+                                        <i className="fas fa-chevron-left"></i> Go Back</button>}</p>
+                            </nav>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>From</label>
+                                <input value={user.userName}
+                                        disabled={true}
+                                        className={`ui-custom-input ui-disabled`} />
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Category</label>
+                                <select name={'category_id'} value={category_id}
+                                        onChange={this.handleChange}
+                                        disabled={(state && state.transfer_request)}
+                                        className={`ui-custom-input`}>
+                                    <option value="">Select Category</option>
+                                    <AssetCategoryByUserOption/>
+                                </select>
+                                {errorDict && !errorDict.category_id &&
+                                <span className="error">Category Field is required</span>
+                                }
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Sub Category</label>
+                                <select name={'sub_category_id'} value={sub_category_id}
+                                        onChange={this.handleChange}
+                                        disabled={(state && state.transfer_request)}
+                                        className={`ui-custom-input`}>
+                                    <option value="">Select Sub Category</option>
+                                    <AssetSubCategoryByUserOption
+                                        category_id={category_id}/>
+                                </select>
+                                {errorDict && !errorDict.sub_category_id &&
+                                <span className="error">Sub Category Field is required</span>
+                                }
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Product</label>
+                                <select name={'product_id'} value={product_id}
+                                        onChange={this.handleChange}
+                                        className={`ui-custom-input`}>
+                                    <option value="">Select Product</option>
+                                    <AssetProductByUserOptions category_id={category_id} sub_category_id={sub_category_id}/>
+                                </select>
+                                {errorDict && !errorDict.product_id &&
+                                <span className="error">Product Field is required</span>
+                                }
+                            </div>
+                            <div className="px-1 mb-2">
+                                <label className={'ui-custom-label'}>Product Serial</label>
+                                <select name={'product_serial'} value={product_serial}
+                                        onChange={this.handleChange}
+                                        className={`ui-custom-input`}>
+                                    <option value="">Select Product Serial</option>
+                                    <AssetListByUserOptions category_id={category_id} sub_category_id={sub_category_id}
+                                                            product_id={product_id}/>
+                                </select>
+                                {errorDict && !errorDict.product_serial &&
+                                <span className="error">Product Serial Field is required</span>
+                                }
+                            </div>
+                        </div>
                         <nav className="navbar text-center mb-2 pl-2 rounded">
-                            <p className="text-blue f-weight-700 f-20px m-0">Asset Transfer
+                            <p className="text-blue f-weight-700 f-20px m-0">Transfer To
                                 {state && <button onClick={() => {window.history.pushState(null, ''); window.location.reload()}} className={' ml-2 btn btn-info py-1'}>
                                     <i className="fas fa-chevron-left"></i> Go Back</button>}</p>
                         </nav>
-                        <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Category</label>
-                            <select name={'category_id'} value={category_id}
-                                    onChange={this.handleChange}
-                                    disabled={(state && state.transfer_request)}
-                                    className={`ui-custom-input`}>
-                                <option value="">Select Category</option>
-                                <AssetCategoryByUserOption/>
-                            </select>
-                            {errorDict && !errorDict.category_id &&
-                            <span className="error">Category Field is required</span>
-                            }
-                        </div>
-                        <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Sub Category</label>
-                            <select name={'sub_category_id'} value={sub_category_id}
-                                    onChange={this.handleChange}
-                                    disabled={(state && state.transfer_request)}
-                                    className={`ui-custom-input`}>
-                                <option value="">Select Sub Category</option>
-                                <AssetSubCategoryByUserOption
-                                    category_id={category_id}/>
-                            </select>
-                            {errorDict && !errorDict.sub_category_id &&
-                            <span className="error">Sub Category Field is required</span>
-                            }
-                        </div>
-                        <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Product</label>
-                            <select name={'product_id'} value={product_id}
-                                    onChange={this.handleChange}
-                                    className={`ui-custom-input`}>
-                                <option value="">Select Product</option>
-                                <AssetProductByUserOptions category_id={category_id} sub_category_id={sub_category_id}/>
-                            </select>
-                            {errorDict && !errorDict.product_id &&
-                            <span className="error">Product Field is required</span>
-                            }
-                        </div>
-                        <div className="px-1 mb-2">
-                            <label className={'ui-custom-label'}>Product Serial</label>
-                            <select name={'product_serial'} value={product_serial}
-                                    onChange={this.handleChange}
-                                    className={`ui-custom-input`}>
-                                <option value="">Select Product Serial</option>
-                                <AssetListByUserOptions category_id={category_id} sub_category_id={sub_category_id}
-                                                        product_id={product_id}/>
-                            </select>
-                            {errorDict && !errorDict.product_serial &&
-                            <span className="error">Product Serial Field is required</span>
-                            }
-                        </div>
                         <div className="px-1 mb-2">
                             <label className={'ui-custom-label'}>Parent Location</label>
                             <select name={'parent_id'}
@@ -436,6 +451,7 @@ class AssetTransferComponent extends Component {
                         </div>
                         <button onClick={this.addTransfer} className="submit-btn-normal mt-5">Add Transfer</button>
                     </div>
+
                     <div className="rounded bg-white admin-input-height p-2">
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p className="text-blue f-weight-700 f-20px m-0">Transfer List</p>
@@ -445,11 +461,11 @@ class AssetTransferComponent extends Component {
                                 remove={this.cancelTransfer}
                                 data={transferTableData}
                             />
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
-                            There are No Transfer Asset</h4>}
+                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Transfer Asset</h4>}
                         {transferTableData.length ?
                             <button className="submit-btn-normal mt-3" data-toggle="modal" data-target="#assetTransferModal">Submit</button> : ''}
                     </div>
+
                     <div className="modal fade" id="assetTransferModal" tabIndex="-1" role="dialog"
                          aria-labelledby="assetTransferModal" aria-hidden="true">
                         <div className="modal-dialog modal-lg" role="document">

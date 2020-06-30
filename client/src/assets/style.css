@@ -103,6 +103,10 @@ select:focus{
    height: auto;
 }
 
+.ui-disabled{
+   background: #dfe3e6;
+}
+
 .ui-custom-input,
 .ui-custom-input-no-top,
 .ui-custom-keyInput,
@@ -142,6 +146,12 @@ select:focus{
    color: white;
    margin-right: 5px;
    height: 24px;
+}
+
+.ui-transfer-from{
+   background: #ebf3f9;
+   padding: 5px;
+   border-radius: 5px;
 }
 
 .ui-custom-keyInput{
