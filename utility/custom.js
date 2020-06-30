@@ -14,7 +14,7 @@ const capitalize = (input) => {
 
 const depreciationCalculation = (item) => {
     let value_after_dep = "";
-    console.log(item.depreciation_method);
+    console.log(item.depreciation_method, 17);
     switch (item.depreciation_method) {
         case 1:
             value_after_dep = parseInt(item.book_value - ((item.book_value - item.salvage_value)/(item.useful_life/12)));
@@ -24,9 +24,9 @@ const depreciationCalculation = (item) => {
         case 3:
             break;
         case 4:
-            break;        
+            break;
         default:
-            value_after_dep = "n/a";  
+            value_after_dep = "n/a";
     }
     return value_after_dep;
 };

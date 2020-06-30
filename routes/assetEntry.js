@@ -8,6 +8,7 @@ const Assets = require('../models/asset/assets')
 const AssetHistory = require('../models/asset/asset_history')
 const UserAssociateRole = require('../models/userassociaterole')
 const moment = require('moment');
+const {depreciationCalculation} = require('../utility/custom');
 
 const route = express.Router()
 
@@ -466,7 +467,8 @@ route.post('/assets/depreciation/report', async (req, res) => {
                                        assets.product_serial,
                                        assets.book_value,
                                        assets.salvage_value,
-                                       assets.useful_life
+                                       assets.useful_life,
+                                       assets.depreciation_method
                                 from assets
                                          left join asset_categories on assets.asset_category = asset_categories.id
                                          left join asset_sub_categories on assets.asset_sub_category = asset_sub_categories.id
@@ -477,6 +479,11 @@ route.post('/assets/depreciation/report', async (req, res) => {
                                             asset_sub_categories.sub_category_name`);
 
         if (data.length > 0) {
+            console.log(data, 481)
+            data.forEach(item => {
+                item["after_depreciation"]= depreciationCalculation(item)
+                delete item.depreciation_method
+            })
             return res.status(200).json({response: data, status: true });
         } else {
             return res.status(200).json({message: "No Data Found"});
