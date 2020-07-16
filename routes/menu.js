@@ -7,7 +7,7 @@ const db = require('../config/db');
 
 const route = express.Router();
 
-/* 
+/*
     All Modules ID
     0   =   Admin
     1   =   Asset Requisition & Tracking
@@ -41,11 +41,16 @@ route.get('/menu/get/:role_id', async (req, res) => {
     }
 });
 
+
 route.post('/menu/entry', async (req, res) => {
     try {
         const {name, icon, sub_menu, link, parent_id, module_id, visible, order_by} = req.body;
 
+        let IDs = await db.query(`SELECT id FROM menus ORDER BY id ASC`);
+        let lastId = IDs.length > 0 && IDs[0][IDs[0].length - 1].id;
+
         const newMenu = {
+            id: lastId + 1,
             name,
             icon,
             sub_menu,
@@ -85,7 +90,6 @@ route.post('/menu/entry', async (req, res) => {
             success: true
         });
     } catch (err) {
-        console.error(err.message);
         return res.status(500).json({err: err});
     }
 });

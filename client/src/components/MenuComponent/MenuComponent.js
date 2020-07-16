@@ -8,6 +8,7 @@ import Spinner from "../../layouts/Spinner";
 
 import ModuleOptions from "../../utility/component/moduleOptions";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import jwt from "jsonwebtoken";
 
 class MenuComponent extends Component {
     constructor(props) {
@@ -51,7 +52,8 @@ class MenuComponent extends Component {
         this.setState({
             isLoading: true
         }, () => {
-            axios.get(apiUrl() + 'menu/get')
+            const { role_id } = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
+            role_id !== null && axios.get(apiUrl() + 'menu/get/' + role_id)
                 .then(res => {
                     this.setState({
                         menuData: [],

@@ -11,6 +11,7 @@ import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -46,7 +47,7 @@ class DeliveryReportComponent extends Component {
             date_from : moment(date_from).format('YYYY-MM-DD'),
             date_to : moment(date_to).format('YYYY-MM-DD'),
             user_id: id
-        }   
+        }
         Axios.post(apiUrl() + 'requisition-approve/delivery/between', data)
             .then(resData => {
                 if (resData.status) {
@@ -150,7 +151,7 @@ class DeliveryReportComponent extends Component {
                         <PrimeDataTable
                             data={deliveryReportData}
                         />
-                    :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    :  <NodataFound />}
                 </div>
 
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Delivery Report'}  tableData={deliveryReportData} />}

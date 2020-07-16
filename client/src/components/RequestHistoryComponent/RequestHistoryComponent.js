@@ -6,6 +6,7 @@ import {apiUrl} from "../../utility/constant";
 import SuccessModal from "../../utility/success/successModal";
 import ErrorModal from "../../utility/error/errorModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class RequestHistoryComponent extends Component {
     constructor(props){
@@ -215,7 +216,7 @@ class RequestHistoryComponent extends Component {
                                 assetList={this.assetList}
                                 data={data}
                             />
-                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                        : <NodataFound />}
                     </> : <>
                         <nav className="navbar text-center mb-2 mt-1 pl-2 rounded">
                             <p onClick={() => {this.setState({showDetails: false, detailedData: []}, () => {this.getData()})}} className="text-blue cursor-pointer f-weight-700 f-20px m-0" ><i className="fas fa-chevron-circle-left"></i> Go Back</p>

@@ -8,6 +8,7 @@ import ErrorModal from "../../../utility/error/errorModal";
 import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../../utility/custom";
+import NodataFound from "../../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -163,7 +164,7 @@ class MonthlyReportComponent extends Component {
                             })
                         }
                     </div>
-                    
+
                     {collapsId.includes(index) && dailyReport[main].map((mainData, index3) => {
                         return (
                             <div key={index} className="ui-report-header">
@@ -224,7 +225,7 @@ class MonthlyReportComponent extends Component {
                         </div>
                     </div>
 
-                    {!haveData ? <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4> : <div className="ui-report-container">
+                    {!haveData ? <NodataFound /> : <div className="ui-report-container">
                         <div className="ui-report-header"  style={{zIndex: 5}}>
                             {reportHeader}
                         </div>

@@ -9,6 +9,7 @@ import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class MisInputContainer extends Component {
     constructor(props) {
@@ -576,7 +577,7 @@ class MisInputContainer extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                        </> : <NodataFound />}
                     </div>
                 </div>
             </>

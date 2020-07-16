@@ -6,6 +6,7 @@ import {apiUrl} from "../../utility/constant";
 
 import PrintDelivery from "./PrintDelivery";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class DeliveryRequestComponent extends Component {
 
@@ -174,7 +175,7 @@ class DeliveryRequestComponent extends Component {
                             details={'reqHistory'}
                             assetList={this.assetList}
                             subAssets={this.subAssets}
-                        />  : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>
+                        />  : <NodataFound />
                     }
                 </>}
             </div>

@@ -80,8 +80,8 @@ class Topnav extends Component {
     }
 
     getMenu = () => {
-        const { id, role_id } = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : ''
-        id !== null && Axios.get(apiUrl() + 'menu/get/' + role_id)
+        const { id, role_id } = jwt.decode(localStorage.getItem('user')) ? jwt.decode(localStorage.getItem('user')).data : '';
+        id !== null && role_id !== null && Axios.get(apiUrl() + 'menu/get/' + role_id)
             .then(res => {
                 console.log(res, 86)
                 this.setState({

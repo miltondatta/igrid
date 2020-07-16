@@ -13,6 +13,9 @@
         width: 500px;
         height: 420px;
     }
+    .max-h-80vh{
+        max-height: 90vh;
+    }
 }
 
 @media only screen and (max-width: 1550px) {

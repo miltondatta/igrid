@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class LostAssetsStatusComponent extends Component {
 
@@ -115,7 +116,7 @@ class LostAssetsStatusComponent extends Component {
                                     <PrimeDataTable
                                         data={lostAsFB}
                                     />
-                                </div>: <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                                </div>: <NodataFound />}
 
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Your Feedback</p>
@@ -143,7 +144,7 @@ class LostAssetsStatusComponent extends Component {
                             updateEdit={this.updateEdit}
                             data={lostAssets}
                         />
-                    : <h4 className={'no-project px-2 mt-3'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    : <NodataFound />}
                 </div>
             </>
         );

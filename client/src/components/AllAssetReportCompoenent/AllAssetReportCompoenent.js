@@ -5,6 +5,7 @@ import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import Axios from "axios";
 import {apiUrl} from "../../utility/constant";
+import NodataFound from "../../utility/component/nodataFound";
 
 class AllAssetReportCompoenent extends Component {
 
@@ -160,7 +161,7 @@ class AllAssetReportCompoenent extends Component {
                         </div>
                     </div>
 
-                    {assetReport.length === 0 ? <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4> : <div className="ui-report-container">
+                    {assetReport.length === 0 ? <NodataFound /> : <div className="ui-report-container">
                         <div className="ui-report-header">
                             {reportHeader}
                         </div>

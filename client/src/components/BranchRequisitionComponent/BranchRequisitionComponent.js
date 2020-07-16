@@ -7,6 +7,7 @@ import PrintDelivery from "../DeliveryRequestComponent/PrintDelivery";
 import '../../assets/print.css';
 import Spinner from "../../layouts/Spinner";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class BranchRequisitionComponent extends Component {
     constructor(props) {
@@ -126,7 +127,7 @@ class BranchRequisitionComponent extends Component {
                         data={requisitionTableData}
                         assetList={this.assetList}
                         details
-                    /> : <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>
+                    /> : <NodataFound />
                 }
             </div>
         );

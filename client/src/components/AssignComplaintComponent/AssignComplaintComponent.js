@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 import moment from "moment";
+import NodataFound from "../../utility/component/nodataFound";
 
 class AssignComplaintComponent extends Component {
     constructor(props) {
@@ -76,8 +77,7 @@ class AssignComplaintComponent extends Component {
                             data={complaintsTableData}
                             docDetails={this.docDetails}
                         />
-                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i>
-                            Currently There are No Complaint!</h4>}
+                        : <NodataFound />}
                 </>}
             </div>
         );

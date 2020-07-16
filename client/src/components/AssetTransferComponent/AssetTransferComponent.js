@@ -15,6 +15,7 @@ import Spinner from "../../layouts/Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import SuccessModal from "../../utility/success/successModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class AssetTransferComponent extends Component {
 
@@ -467,7 +468,7 @@ class AssetTransferComponent extends Component {
                                 remove={this.cancelTransfer}
                                 data={transferTableData}
                             />
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Transfer Asset</h4>}
+                        </> : <NodataFound />}
                         {transferTableData.length ?
                             <button className="submit-btn-normal mt-3" data-toggle="modal" data-target="#assetTransferModal">Submit</button> : ''}
                     </div>

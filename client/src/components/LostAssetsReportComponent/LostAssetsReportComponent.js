@@ -11,6 +11,7 @@ import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -149,7 +150,7 @@ console.log(errorDict , 91)
                         <PrimeDataTable
                             data={deliveryReportData}
                         />
-                    :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    :  <NodataFound />}
                 </div>
 
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Lost Asset Report'}  tableData={deliveryReportData} />}

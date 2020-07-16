@@ -10,6 +10,7 @@ import TablePdfViewer from "../../module/table-pdf-viewer/tablePdfViewer";
 import AssetCategoryByUserOption from "../../utility/component/assetCategoryByUserOption";
 import AssetSubCategoryByUserOption from "../../utility/component/assetSubCategoryByUserOption";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class StockReportComponent extends Component {
 
@@ -191,7 +192,7 @@ class StockReportComponent extends Component {
                         <PrimeDataTable
                             data={allData}
                         />
-                    :  <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently There are No Data</h4>}
+                    :  <NodataFound />}
                 </div>
 
                 {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'Stock Report'}  tableData={allData} />}

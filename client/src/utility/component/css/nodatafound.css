@@ -1,0 +1,11 @@
+.no-data-found-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: linear-gradient(152deg, #ebf8fc, #eefbfd, #fffffe, transparent,transparent);
+    justify-content: center;
+}
+
+.no-data-found-container img{
+
+}
