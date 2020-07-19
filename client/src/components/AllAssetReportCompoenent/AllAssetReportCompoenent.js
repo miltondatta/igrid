@@ -102,6 +102,11 @@ class AllAssetReportCompoenent extends Component {
         return errorDict
     }
 
+    pdfViewr = () => {
+        const {assetReport} = this.state
+        assetReport.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
+    }
+
     render() {
         const {hierarchies, parentID, assetReport, pdf, optionDropDown, haveData, errorMessage, error, errorDict} = this.state
 
@@ -141,7 +146,7 @@ class AllAssetReportCompoenent extends Component {
         return (
             <>
                 {error &&
-                    <ErrorModal ops errorMessage={errorMessage} />
+                <ErrorModal ops errorMessage={errorMessage} />
                 }
                 <div className="ui-mis-report ui-other-report">
                     <div className="ui-top-container">
@@ -154,7 +159,9 @@ class AllAssetReportCompoenent extends Component {
                             <div className={'position-relative w-25'}>
                                 <button onClick={() => {this.setState((prevState) => ({optionDropDown: !prevState.optionDropDown}))}} className={'mx-2 report-export-btn'}>Export</button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
-                                    <button className={`${typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]] ? 'p-0' : null)}`}>{(typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]]) ? <ReactExcelExport misReport excelData={assetReport} /> : 'Excel')}</button>
+                                    <button className={`${typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]] ? 'p-0' : null)}`}>
+                                        {(typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]]) ? <ReactExcelExport excelData={assetReport} /> : 'Excel')}
+                                    </button>
                                     <button onClick={this.pdfViewr}>PDF</button>
                                 </div>}
                             </div>
@@ -169,7 +176,7 @@ class AllAssetReportCompoenent extends Component {
                     </div>}
                 </div>
 
-                {pdf && <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'All Assets Report'}  tableData={assetReport} />}
+                {pdf && <TablePdfViewer admin pdfViewr={this.pdfViewr} reportTitle={'All Assets Report'}  tableData={assetReport} />}
             </>
         );
     }

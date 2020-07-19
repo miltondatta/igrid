@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 import {apiUrl} from "../../utility/constant";
 import jwt from "jsonwebtoken";
+import NodataFound from "../../utility/component/nodataFound";
 
 class TransferRequestStatusComponent extends Component {
 
@@ -37,8 +38,7 @@ class TransferRequestStatusComponent extends Component {
                             data={data}
                         />
                     </> :
-                    <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are
-                        Request!</h4>}
+                    <NodataFound />}
             </div>
         );
     }

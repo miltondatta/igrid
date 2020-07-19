@@ -6,6 +6,7 @@ import Spinner from "../../layouts/Spinner";
 
 import ErrorModal from "../../utility/error/errorModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class RepairMaintenanceListComponent extends Component {
     constructor(props) {
@@ -100,8 +101,7 @@ class RepairMaintenanceListComponent extends Component {
                             data={repairMaintenanceTableData}
                         />
                     </> :
-                    <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are
-                        No Repair & Maintenance Asset</h4>}
+                    <NodataFound />}
             </div>
         );
     }

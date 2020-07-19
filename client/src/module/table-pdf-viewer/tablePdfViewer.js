@@ -4,7 +4,8 @@ import {Document, Page, PDFViewer, StyleSheet, Text, View, Image} from "@react-p
 
 class TablePdfViewer extends Component {
     render() {
-        const {tableData, pdfViewr, reportTitle, admin} = this.props
+        const {tableData, pdfViewr, reportTitle, admin} = this.props;
+        console.log(Object.keys(tableData[0]).length, 8);
         const styles = StyleSheet.create({
             page: {
                 alignItems: 'center',
@@ -80,7 +81,7 @@ class TablePdfViewer extends Component {
                     ))}
 
                 </View>
-            )})
+            )});
         return (
             <div className={'ui-pdf w-100'}>
                 <div className="ui-close" onClick={pdfViewr}>

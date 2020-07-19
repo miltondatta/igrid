@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import Spinner from "../../layouts/Spinner";
 
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class DisposalAssetListComponent extends Component {
     constructor(props) {
@@ -78,8 +79,7 @@ class DisposalAssetListComponent extends Component {
                             data={disposalListTableData}
                         />
                     </> :
-                    <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are
-                        No Disposal Asset</h4>}
+                    <NodataFound />}
             </div>
         );
     }

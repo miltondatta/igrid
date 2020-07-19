@@ -9,6 +9,7 @@ import Spinner from "../../layouts/Spinner";
 import ModuleOptions from "../../utility/component/moduleOptions";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 import jwt from "jsonwebtoken";
+import NodataFound from "../../utility/component/nodataFound";
 
 class MenuComponent extends Component {
     constructor(props) {
@@ -574,8 +575,7 @@ class MenuComponent extends Component {
                                 </div>
                             </div>
                         </> :
-                        <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
-                            are No Data</h4>}
+                        <NodataFound />}
                 </div>
             </div>
         </>;

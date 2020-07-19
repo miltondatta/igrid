@@ -17,7 +17,9 @@ module.exports = {
                 "status"                 : 8,
                 "solution_details"       : "solved.",
                 "solved_by"              : "Hardware Manager",
-                "solved_at"              : "2010-04-09 17:42:01.461000 +00:00"
+                "solved_at"              : "2010-04-09 17:42:01.461000 +00:00",
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             },
             {
                 "complaint_no"           : "c-1002",
@@ -33,11 +35,13 @@ module.exports = {
                 "status"                 : 7,
                 "solution_details"       : null,
                 "solved_by"              : null,
-                "solved_at"              : null
+                "solved_at"              : null,
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             }
         ], {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('challans', null, {});
     }

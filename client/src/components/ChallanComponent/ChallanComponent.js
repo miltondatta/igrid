@@ -21,6 +21,7 @@ import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -615,7 +616,7 @@ class ChallanComponent extends Component {
                                 updateEdit={this.updateEdit}
                                 assetList={this.assetList}
                                 data={challans}
-                            /> : <h4 className={'no-project px-2 py-2'}><i className="icofont-exclamation-circle"></i> Currently There are No Challan</h4>}
+                            /> : <NodataFound />}
                     </div> </div> :
                         <div>
                             <div className="ui-dataEntry">

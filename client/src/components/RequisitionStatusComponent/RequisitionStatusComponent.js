@@ -4,6 +4,7 @@ import {apiUrl} from "../../utility/constant";
 import jwt from "jsonwebtoken";
 
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class RequisitionStatusComponent extends Component {
     constructor(props) {
@@ -62,8 +63,7 @@ class RequisitionStatusComponent extends Component {
                         assetList={this.assetList}
                         data={requisitionStatus}
                     />
-                : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
-                    are No Data</h4>}
+                : <NodataFound />}
             </div>
         );
     }

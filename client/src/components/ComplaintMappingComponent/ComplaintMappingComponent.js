@@ -8,6 +8,7 @@ import UserRoleOptions from "../../utility/component/userRoleOptions";
 import ComCategoryOptions from "../../utility/component/comCategoryOption";
 import Spinner from "../../layouts/Spinner";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class ComplaintMappingComponent extends Component {
     constructor(props) {
@@ -334,8 +335,7 @@ class ComplaintMappingComponent extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
-                            There are No Data</h4>}
+                        </> : <NodataFound />}
                     </div>
                 </div>
             </>

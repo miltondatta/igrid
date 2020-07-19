@@ -20,6 +20,7 @@ import SuccessModal from "../../utility/success/successModal";
 import {getFileExtension} from "../../utility/custom";
 import Spinner from "../Spinner";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class AdminInputContainer extends Component {
     constructor(props){
@@ -62,7 +63,7 @@ class AdminInputContainer extends Component {
             isLoading: false,
         }
     }
-    
+
     handleSubmit = () => {
         const {getApi} = this.props
         console.log(this.getApiData(), 50)
@@ -1798,7 +1799,7 @@ class AdminInputContainer extends Component {
                                 data={dataTableData}
                                 deleteModalTitle={title}
                             />
-                        </> : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are No {title}</h4>}
+                        </> : <NodataFound />}
                     </div>
                 </div>
             </>

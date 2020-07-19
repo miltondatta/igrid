@@ -9,6 +9,7 @@ import Spinner from "../../layouts/Spinner";
 import ErrorModal from "../../utility/error/errorModal";
 import {disabledRanges} from "../../utility/custom";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -413,8 +414,7 @@ class DocumentListSearch extends Component {
                                     file={this.fileDownload}
                                     docDetails={this.docDetails}
                                 />
-                            </> : <h4 className={'no-project px-2'}><i
-                                className="icofont-exclamation-circle"></i> Currently There are No Content</h4>}
+                            </> : <NodataFound />}
                         </div>
                     </div>
                 </div>

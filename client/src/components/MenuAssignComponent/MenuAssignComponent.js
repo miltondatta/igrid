@@ -8,6 +8,7 @@ import Spinner from "../../layouts/Spinner";
 import ModuleOptions from "../../utility/component/moduleOptions";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class MenuAssignComponent extends Component {
     constructor(props) {
@@ -463,8 +464,7 @@ class MenuAssignComponent extends Component {
                                 </div>
                             </div>
                         </> :
-                        <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"/> Currently There
-                            are No Data</h4>}
+                        <NodataFound />}
                 </div>
             </div>
         </>;

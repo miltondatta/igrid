@@ -10,6 +10,7 @@ import SuccessModal from "../../utility/success/successModal";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 import UserRoleOptions from "../../utility/component/userRoleOptions";
 import UserOptionsByRole from "../../utility/component/userOptionsByRole";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -607,9 +608,7 @@ class ComplaintDetailsComponent extends Component {
                                         data={complaintFeedBackTableData}
                                         file={this.fileDownload}
                                     />
-                                    : <h4 className={'no-project px-2 mt-3'}><i
-                                        className="icofont-exclamation-circle"></i> Currently There are No FeedBack
-                                    </h4>}
+                                    : <NodataFound />}
                                 <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">
                                     <p className="text-blue f-weight-700 f-20px m-0">Your Feedback</p>
                                 </nav>
@@ -665,9 +664,7 @@ class ComplaintDetailsComponent extends Component {
                                     <PrimeDataTable
                                         data={this.state.complaintForwardTableData}
                                     />
-                                    : <h4 className={'no-project px-2 mt-3'}><i
-                                        className="icofont-exclamation-circle"></i> Currently There are No Forward
-                                    </h4>}
+                                    : <NodataFound />}
                                 {item && item.status !== 8 && forward_check.length < 1 &&
                                 <>
                                     <nav className="navbar text-center mb-0 mt-1 pl-0 rounded">

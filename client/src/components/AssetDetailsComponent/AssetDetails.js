@@ -7,6 +7,7 @@ import AssetSubCategoryByUserOption from "../../utility/component/assetSubCatego
 import Spinner from "../../layouts/Spinner";
 
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 class AssetDetails extends Component {
     constructor(props) {
@@ -183,8 +184,7 @@ class AssetDetails extends Component {
                         <PrimeDataTable
                             data={allDetailsTableData}
                         />
-                        : <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i>
-                        Currently There are No Own Stock</h4>}
+                        : <NodataFound />}
                 </>}
             </div>
         );

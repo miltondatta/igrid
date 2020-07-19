@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    background: linear-gradient(152deg, #ebf8fc, #eefbfd, #fffffe, transparent,transparent);
+    background: linear-gradient(152deg, #ebf8fc, #eefbfd, #fffffe, white,white);
     justify-content: center;
 }
 

@@ -14,11 +14,13 @@ module.exports = {
                 "police_station": "Khilgaon",
                 "gd_no": "GD3456789",
                 "gd_date": "09-04-10",
-                "gd_other_file": ""
+                "gd_other_file": "",
+                createdAt          : new Date(),
+                updatedAt          : new Date()
             }
         ] , {});
     },
-    
+
     down : (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('lost_assets', null, {});
     }

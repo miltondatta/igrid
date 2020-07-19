@@ -10,6 +10,7 @@ import SuccessModal from "../../utility/success/successModal";
 import LocationsWithHOptions from "../../utility/component/locationWithHierarchy";
 import moment from "moment";
 import DatePicker from "react-datepicker2";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -112,6 +113,12 @@ class AllDeliveryReportComponent extends Component {
             errorDict
         })
         return errorDict
+    };
+
+
+    pdfViewr = () => {
+        const {assetReport} = this.state
+        assetReport.length > 0 && this.setState((prevState) => ({pdf: !prevState.pdf, optionDropDown: false}))
     }
 
     render() {
@@ -152,7 +159,7 @@ class AllDeliveryReportComponent extends Component {
                     <div style={{flexBasis: '14.3%'}}>{main.location}</div>
                 </div>
             )
-        })
+        });
 
         return (
             <>
@@ -202,8 +209,10 @@ class AllDeliveryReportComponent extends Component {
                                 </button>
                                 {optionDropDown && <div className={'ui-dropdown-btn'}>
                                     <button
-                                        className={`${typeof dailyReport !== 'undefined' && (dailyReport[Object.keys(dailyReport)[0]] ? 'p-0' : null)}`}>{(typeof dailyReport !== 'undefined' && (dailyReport[Object.keys(dailyReport)[0]]) ?
-                                        <ReactExcelExport misReport excelData={dailyReport}/> : 'Excel')}</button>
+                                        className={`${typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]] ? 'p-0' : null)}`}>
+                                        {(typeof assetReport !== 'undefined' && (assetReport[Object.keys(assetReport)[0]]) ?
+                                        <ReactExcelExport excelData={assetReport}/> : 'Excel')}
+                                    </button>
                                     <button onClick={this.pdfViewr}>PDF</button>
                                 </div>}
                             </div>
@@ -211,8 +220,7 @@ class AllDeliveryReportComponent extends Component {
                     </div>
 
                     {!haveData ?
-                        <h4 className={'no-project px-2 mt-4'}><i className="icofont-exclamation-circle"></i> Currently
-                            There are No Data</h4> : <div className="ui-report-container">
+                        <NodataFound /> : <div className="ui-report-container">
                             <div className="ui-report-header">
                                 {reportHeader}
                             </div>
@@ -221,7 +229,7 @@ class AllDeliveryReportComponent extends Component {
                 </div>
 
                 {pdf &&
-                <TablePdfViewer pdfViewr={this.pdfViewr} reportTitle={'All Delivery Report'} tableData={dailyReport}/>}
+                <TablePdfViewer pdfViewr={this.pdfViewr} admin reportTitle={'All Delivery Report'} tableData={assetReport}/>}
             </>
         );
     }

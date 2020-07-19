@@ -5,6 +5,7 @@ import {apiUrl} from "../../utility/constant";
 import {Redirect} from 'react-router-dom'
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
 import ErrorModal from "../../utility/error/errorModal";
+import NodataFound from "../../utility/component/nodataFound";
 
 class IncomingTransferReqComponent extends Component {
     constructor(props) {
@@ -105,8 +106,7 @@ class IncomingTransferReqComponent extends Component {
                                 unavailable={'transfer-request'}
                             />
                         </> :
-                        <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently There are
-                            Request!</h4>}
+                        <NodataFound />}
                 </div>
             </>
         );

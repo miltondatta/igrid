@@ -12,6 +12,7 @@ import moment from "moment";
 import DatePicker from 'react-datepicker2';
 import {disabledRanges} from "../../utility/custom";
 import PrimeDataTable from "../../module/dataTableForProject/PrimeDataTable";
+import NodataFound from "../../utility/component/nodataFound";
 
 moment.locale('en');
 
@@ -286,8 +287,7 @@ class LostAssetsComponent extends Component {
                                     data={lostAssets}
                                 />
                             </> :
-                            <h4 className={'no-project px-2'}><i className="icofont-exclamation-circle"></i> Currently
-                                There are No Data</h4>}
+                            <NodataFound />}
                     </div>
                 </div>
             </>
